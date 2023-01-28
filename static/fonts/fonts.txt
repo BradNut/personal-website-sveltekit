@@ -1,0 +1,4 @@
+Primary font: Fira Mono normal
+Bold: Khand 600
+Paragraphs: Open Sans normal
+"Fira Code", "Helvetica Neue", cursive, sans-serif
