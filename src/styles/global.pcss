@@ -1,0 +1,271 @@
+/* Setup */
+
+/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap'); */
+
+:root {
+	/* Define Colors as colors */
+	--white: #ffffff;
+	--grey: #efefef;
+	--yellow: #ffc600;
+	--light: #ffffff;
+	--black: #2e2e2e;
+	--dark: #000000;
+	--lighterDark: #131415;
+	--shellYellow: #ffc850;
+	--lightGrey: #d8d8d8;
+	--lightShade: #f8f7f5;
+	--darkGrey: #272727;
+
+	/* Define Colors intentions */
+	--primary: var(--black);
+	--danger: var(--grey);
+	--background: var(--lighterDark);
+	--textColor: var(--lightGrey);
+	--buttonTextColor: var(--black);
+	--lineColor: var(--grey);
+	--cardBg: var(--darkGrey);
+	--headerBackground: var(--darkGrey);
+	--footerBackground: var(--darkGrey);
+	--linkHover: var(--shellYellow);
+	--lightHairLine: #c5c5c5;
+
+	/* Styles */
+	--line: solid 1px var(--lineColor);
+
+	/* Type */
+	--headingFont: 'Fira Code', monospace;
+	--bodyFont: 'Fira Sans', Sans-Serif;
+	--baseFontSize: 100%;
+	--h1: 3.052rem;
+	--h2: 2.441rem;
+	--h3: 1.953rem;
+	--h4: 1.563rem;
+	--h5: 1.25rem;
+	--h6: 1.8rem;
+	--bodyTextSize: 1.8rem;
+	--smallText: 1.44rem;
+	--lineHeight: 1.75;
+
+	/* Elevation */
+	--level-0: none;
+	--level-1: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+	--level-2: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	--level-3: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+	--level-4: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+	/* Positioning */
+	--containerPadding: 2.5%;
+	--headerHeight: 8rem;
+	--borderRadius: 10px;
+	--maxWidth: 1200px;
+
+	/* Cards */
+	--cardHeightMin: 15rem;
+	--cardHeightMax: 50rem;
+	--cardWidthMin: 15rem;
+
+	/* Media Queries - Not yet supported in CSS */
+	/* 
+      --xsmall: 340px;
+      --small: 500px;
+      --large: 960px;
+      --wide: 1200px;
+    */
+}
+
+html {
+	background: var(--background) none repeat scroll 0% 0%;
+	font-size: 62.5%;
+	box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: inherit;
+}
+
+body {
+	line-height: var(--lineHeight);
+	color: var(--textColor);
+}
+
+/* Scrollbar Styles */
+body::-webkit-scrollbar {
+	width: 12px;
+}
+
+html {
+	scrollbar-width: thin;
+	scrollbar-color: var(--lightGrey) var(--darkGrey);
+}
+
+body::-webkit-scrollbar-track {
+	background: var(--darkGrey);
+}
+
+body::-webkit-scrollbar-thumb {
+	background-color: var(--lightGrey);
+	border-radius: 6px;
+	border: 3px solid var(--darkGrey);
+}
+
+.gatsby-image-wrapper img[src*='base64\\,'] {
+	image-rendering: -moz-crisp-edges;
+	image-rendering: pixelated;
+}
+
+::selection {
+	background: var(--white);
+	color: var(--background);
+}
+
+fieldset {
+	border-color: rgba(0, 0, 0, 0.1);
+	border-width: 1px;
+}
+
+a.button,
+button {
+	background: var(--darkAccent);
+	color: var(--lightShade);
+	border: 0;
+	padding: 0.6rem 1rem;
+	border-radius: 2px;
+	cursor: pointer;
+	--cast: 2px;
+	box-shadow: var(--cast) var(--cast) 0 var(--lightAccent);
+	text-shadow: 0.5px 0.5px 0 rgba(0, 0, 0, 0.2);
+	transition: all 0.2s;
+	text-decoration: none;
+	&:hover {
+		--cast: 4px;
+	}
+	&:active {
+		--cast: 2px;
+	}
+}
+
+a {
+	text-decoration-color: var(--shellYellow);
+}
+
+a:hover {
+	color: var(--linkHover);
+}
+
+input,
+textarea {
+	font-size: 1.5rem;
+	padding: 0.4rem;
+}
+
+textarea {
+	resize: vertical;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: var(--headingFont);
+	font-weight: 400;
+	color: var(--white);
+}
+
+h1 {
+	margin-top: 0;
+	font-size: var(--h1);
+}
+
+h2 {
+	font-size: var(--h2);
+}
+
+h3 {
+	font-size: var(--h3);
+}
+
+h4 {
+	font-size: var(--h4);
+}
+
+h5 {
+	font-size: var(--h5);
+}
+
+hr {
+	border: 0;
+	height: 8px;
+}
+
+nav {
+	a::after {
+		content: '';
+		position: absolute;
+		width: 100%;
+		height: 2px;
+		bottom: -5px;
+		left: 0px;
+		background: var(--linkHover);
+		transition: transform 0.3s ease 0s;
+		transform: scale(0);
+	}
+
+	a {
+		position: relative;
+		font-size: 2rem;
+		text-decoration: none;
+
+		&[aria-current='page'],
+		&.active,
+		&.current-parent {
+			&:after {
+				transform: scale(1);
+			}
+		}
+
+		&:hover {
+			&:after {
+				transform: scale(1);
+			}
+		}
+	}
+}
+
+img {
+	max-width: 100%;
+}
+
+figure {
+	margin-inline: 2rem;
+}
+
+.emoji:hover {
+	cursor: pointer;
+}
+
+.card {
+	display: grid;
+	align-items: center;
+	padding: 1.5rem;
+	background: var(--cardBg);
+	box-shadow: var(--level-3);
+	border-radius: var(--borderRadius);
+	max-width: var(--cardWidthMax);
+	min-width: var(--cardWidthMin);
+	max-height: var(--cardHeightMax);
+	min-height: var(--cardHeightMin);
+}
+
+/* First item will never have margin top */
+.card > *:first-child {
+	margin-top: 0;
+}
+
+/* Last item will never have margin bottom */
+.card > *:last-child {
+	margin-bottom: 0;
+}
