@@ -1,9 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import github from '@iconify-icons/radix-icons/github-logo';
-	import linkedin from '@iconify-icons/radix-icons/linkedin-logo';
-	import email from '@iconify-icons/material-symbols/mail';
-  const userNames = {
+	import ContactHub from '$lib/components/contactHub/index.svelte';
+	const userNames = {
     github: 'BradNut',
     linkedIn: 'bradley-shellnut',
     email: 'bradleyshellnut@pm.me',
@@ -11,11 +9,7 @@
 </script>
 
 <footer>
-	<div>
-		<iconify-icon icon={github} width="24" height="24" />
-		<iconify-icon icon={linkedin} width="24" height="24" />
-		<iconify-icon icon={email} width="24" height="24" />
-	</div>
+	<ContactHub showGithub showLinkedIn showEmail justify {userNames} />
 	<nav class="footer-list" aria-label="footer navigation">
 		<a class:active={$page.url.pathname === '/'} href="/">Home</a>
 		<a class:active={$page.url.pathname === '/about'} href="/about">About</a>
@@ -29,21 +23,20 @@
 		Bradley Shellnut &copy; 2012 - {new Date().getFullYear()}
 	</p>
 </footer>
-<!-- 
+
 <style lang="postcss">
-	display: grid;
-  grid-template-rows: repeat(2, 1fr);
-  background: var(--footerBackground);
-  align-items: center;
-  align-content: center;
-  gap: 1rem;
+	footer {
+		display: grid;
+		grid-template-rows: repeat(3, 1fr);
+		background: var(--footerBackground);
+		place-content: center;
+		place-items: center;
+		padding: 2rem;
 
-  margin-top: 6rem;
-  padding: 2rem;
-
-  @media (max-width: 800px) {
-    margin-top: 2rem;
-  }
+		@media (max-width: 800px) {
+			margin-top: 2rem;
+		}
+	}
 
   hr {
     display: block;
@@ -54,15 +47,16 @@
     width: 100%;
     border-width: thin 0 0 0;
     transition: inherit;
-    /* border-color: var(--lightShade);
-    color: var(--lightShade); */
+    border-color: var(--lightShade);
+    color: var(--lightShade);
   }
 
   p {
     margin: 0;
     padding: 0.2rem;
     font-weight: 600;
-    /* color: var(--lightShade); */
+		text-align: center;
+    color: var(--lightShade);
   }
 
   ul {
@@ -81,4 +75,4 @@
 		margin: 1rem;
 		line-height: 1rem;
 	}
-</style> -->
+</style>

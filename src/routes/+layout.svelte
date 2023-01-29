@@ -1,4 +1,5 @@
 <script lang="ts">
+	import 'iconify-icon';
 	import Header from '$lib/components/header/index.svelte';
 	import Footer from '$lib/components/footer/index.svelte';
 	import '$root/styles/styles.pcss';
@@ -13,7 +14,7 @@
 </div>
 
 <style lang="postcss">
-	/* .loading {
+	.loading {
 		position: fixed;
 		top: 50%;
 		left: 50%;
@@ -26,7 +27,7 @@
 		h3 {
 			color: white;
 		}
-	} */
+	}
 
 	.background {
 		background: black;
