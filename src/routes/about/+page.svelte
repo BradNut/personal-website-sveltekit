@@ -1,5 +1,4 @@
 <script lang="ts">
-	export const prerender = true;
 	import SEO from "$root/lib/components/SEO.svelte";
 	import Graphql from '@iconify-icons/simple-icons/graphql';
 	import Nextdotjs from '@iconify-icons/simple-icons/next-dot-js';

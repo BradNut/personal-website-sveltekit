@@ -1,19 +1,12 @@
-<!-- import React from 'react';
-import styled from 'styled-components';
-import Logo from './Logo';
-import Nav from './Nav'; -->
-
 <script lang="ts">
+	import Logo from '$lib/components/logo/index.svelte';
 	import Nav from '$lib/components/nav/index.svelte';
 </script>
 
-
 <header>
-	<!-- <Logo /> -->
-	<h1>Test</h1>
+	<Logo />
 	<Nav />
 </header>
-
 
 <style lang="postcss">
 	header {
