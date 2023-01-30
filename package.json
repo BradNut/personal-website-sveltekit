@@ -16,6 +16,7 @@
 	"devDependencies": {
 		"@iconify-icons/material-symbols": "^1.2.25",
 		"@iconify-icons/radix-icons": "^1.2.8",
+		"@iconify-icons/simple-icons": "^1.2.41",
 		"@leveluptuts/svelte-side-menu": "^1.0.5",
 		"@leveluptuts/svelte-toy": "^2.0.3",
 		"@playwright/test": "^1.28.1",

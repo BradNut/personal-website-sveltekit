@@ -3,8 +3,15 @@
 	import Header from '$lib/components/header/index.svelte';
 	import Footer from '$lib/components/footer/index.svelte';
 	import '$root/styles/styles.pcss';
-	import SEO from '$root/lib/components/SEO.svelte';
+	import Analytics from '$lib/components/analytics/index.svelte';
+	import SEO from '$lib/components/SEO.svelte';
+
+	const dev = process.env.NODE_ENV !== 'production';
 </script>
+
+{#if !dev}
+	<Analytics />
+{/if}
 
 <SEO />
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from "./$types";
-	import SEO from '$lib/components/SEO.svelte';
+	import SEO from '$root/lib/components/SEO.svelte';
 
 	export let data: PageData;
   const userNames = {
@@ -18,12 +18,11 @@
 	</div>
 	<div>
 		<p>
-			I'm a full stack software engineer currently working on Java Spring,
-			PostgreSQL, and React / Angular JS.
+			I'm a full stack software engineer currently working on Java Spring, PostgreSQL, and React / Angular JS.
 		</p>
 		<p>
 			At home you can usually find me learning new things and working with
-			Gatsby, Svelte Kit, and NextJS.
+			SvelteKit, Next.js, and Gatsby.
 		</p>
 		<p>
 			Or you may find me jamming out to music 🎶, hiking ⛰️, making{' '}
