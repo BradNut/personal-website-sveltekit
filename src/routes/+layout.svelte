@@ -88,10 +88,15 @@
 		}
 	}
 
-  p,
-  li {
+  :global(p) {
     word-wrap: normal;
     font-size: var(--bodyTextSize);
     color: var(--lightShade);
   }
+
+	:global(li) {
+    word-wrap: normal;
+    font-size: var(--bodyTextSize);
+    color: var(--lightShade);
+	}
 </style>

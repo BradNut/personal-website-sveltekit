@@ -63,7 +63,7 @@
     margin: 0.5rem;
   }
 
-	nav .footer-list {
+	.footer-list {
 		display: flex;
 		flex-wrap: wrap;
 		flex-direction: row;
