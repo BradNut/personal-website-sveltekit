@@ -3,7 +3,10 @@
 	import Header from '$lib/components/header/index.svelte';
 	import Footer from '$lib/components/footer/index.svelte';
 	import '$root/styles/styles.pcss';
+	import SEO from '$root/lib/components/SEO.svelte';
 </script>
+
+<SEO />
 
 <div class="wrapper">
 	<Header />

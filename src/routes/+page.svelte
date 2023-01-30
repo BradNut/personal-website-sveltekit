@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { PageData } from "./$types";
+	import SEO from '$lib/components/SEO.svelte';
 
 	export let data: PageData;
   const userNames = {
@@ -9,9 +10,7 @@
   };
 </script>
 
-<svelte:head>
-	<title>Bored Game | Home</title>
-</svelte:head>
+<SEO title="Home" />
 
 <div class="home">
 	<div>
