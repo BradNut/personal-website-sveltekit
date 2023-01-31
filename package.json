@@ -20,6 +20,7 @@
 		"@leveluptuts/svelte-side-menu": "^1.0.5",
 		"@leveluptuts/svelte-toy": "^2.0.3",
 		"@playwright/test": "^1.28.1",
+		"@rgossiaux/svelte-headlessui": "^1.0.2",
 		"@sveltejs/adapter-auto": "^1.0.0",
 		"@sveltejs/adapter-vercel": "^1.0.5",
 		"@sveltejs/kit": "^1.0.0",

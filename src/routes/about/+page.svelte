@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SEO from "$root/lib/components/SEO.svelte";
+	import { Image } from 'svelte-lazy-loader';
 	import Graphql from '@iconify-icons/simple-icons/graphql';
 	import Nextdotjs from '@iconify-icons/simple-icons/next-dot-js';
 	import Prisma from '@iconify-icons/simple-icons/prisma';
@@ -9,7 +9,7 @@
 	import Remix from '@iconify-icons/simple-icons/remix';
 	import Svelte from '@iconify-icons/simple-icons/svelte';
 	import TypeScript from '@iconify-icons/simple-icons/typescript';
-
+	import SEO from "$root/lib/components/SEO.svelte";
 	import adventure from '$lib/assets/images/adventure.png';
 	import orange_derp from '$lib/assets/images/orange_derp.jpg';
 	import tortie_derp from '$lib/assets/images/tortie_derp.jpg';
@@ -288,7 +288,7 @@
 				"
 			>
 				<figure>
-					<img src={adventure} alt="Road Trip Adventure" />
+					<Image src={adventure} alt="Road Trip Adventure" />
 					<p class="center">Route 66 Road Trip</p>
 				</figure>
 			</div>
@@ -297,11 +297,11 @@
 			<p>Bringing these two cats, Turnip and Taco, along for the ride.</p>
 			<div class="cat-pics">
 				<figure>
-					<img src={tortie_derp} alt="Turnip Cat" />
+					<Image src={tortie_derp} alt="Turnip Cat" />
 					<p class="center">Turnip</p>
 				</figure>
 				<figure>
-					<img src={orange_derp} alt="Taco Cat" />
+					<Image src={orange_derp} alt="Taco Cat" />
 					<p class="center">Taco 🌮</p>
 				</figure>
 			</div>
