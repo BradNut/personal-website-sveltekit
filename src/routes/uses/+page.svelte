@@ -39,33 +39,28 @@
 		</p>
 	</div>
 	<div class="uses-block-styles">
-		<div style="display: grid; grid-template-columns: minmax(400px, 0.65fr); justify-content: center; margin-bottom: 2rem;">
+		<div style="display: grid; justify-content: center; margin-bottom: 2rem;">
 			<figure>
 				<img src={DesktopImage} alt="Clean desktop" width="400px"/>
 			</figure>
 		</div>
 		<h2>Hardware & Accessories</h2>
 		<ul>
+			<li>MacBook Pro 15-inch for work.</li>
 			<li>
-				Computers 💻
-				<ul>
-					<li>MacBook Pro 15-inch for work.</li>
-					<li>
-						Personal desktop running{' '}
-						<a
-							target="_blank"
-							aria-label="PopOS Linux Distro"
-							title="https://pop.system76.com/"
-							href="https://pop.system76.com/"
-							rel="noreferrer"
-						>
-							PopOS
-						</a>
-						.
-					</li>
-					<li>Dell XPS 13 running PopOS.</li>
-				</ul>
+				Personal desktop running{' '}
+				<a
+					target="_blank"
+					aria-label="PopOS Linux Distro"
+					title="https://pop.system76.com/"
+					href="https://pop.system76.com/"
+					rel="noreferrer"
+				>
+					PopOS
+				</a>
+				.
 			</li>
+			<li>Dell XPS 13 running PopOS.</li>
 			<li>
 				Phone 📱: Pixel 6 running{' '}
 				<a
@@ -112,7 +107,7 @@
 					href="https://secretlabus.myshopify.com/collections/omega-series#omega_2020-stealth"
 					rel="noreferrer"
 				>
-					Secretlab Omega 2020 Fabric
+					SecretLab Omega 2020 Fabric
 				</a>
 			</li>
 			<li>
@@ -158,48 +153,7 @@
 		<h3>Terminal & Shell Setup</h3>
 		<ul>
 			<li>
-				<a
-					target="_blank"
-					aria-label="Hyper JS Terminal"
-					href="https://hyper.is/"
-					rel="noreferrer"
-				>
-					HyperJS
-				</a>
-				: Mostly using for personal development on PopOS or Ubuntu. I get by
-				with just a few plugins listed below:
-				<div class="uses-flat-list">
-					<li>
-						<a
-							target="_blank"
-							aria-label="HyperJS Cobalt Theme"
-							href="https://github.com/wesbos/hyperterm-cobalt2-theme"
-							rel="noreferrer"
-						>
-							Cobalt2 Theme
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							aria-label="Tabs Enhanced Plugin"
-							href="https://github.com/henrikdahl/hyper-tabs-enhanced"
-							rel="noreferrer"
-						>
-							Hyper Tabs Enhanced
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							aria-label="Statusline Plugin"
-							href="https://github.com/henrikdahl/hyper-statusline"
-							rel="noreferrer"
-						>
-							Hyper Statusline
-						</a>
-					</li>
-				</div>
+				On Linux just the built in terminal running ZSH and <a target="_blank" aria-label="Starship prompt" href="https://starship.rs" rel="noreferrer">Starship</a>.
 			</li>
 			<li>
 				<a
@@ -496,103 +450,90 @@
 		<h2>Privacy Hardware and Software</h2>
 		<p>
 			For the past few years I've been working towards moving my data to
-			selfhosted systems and systems I trust to hold my data.
+			self-hosted systems and systems I trust to hold my data.
 		</p>
 		<p>
 			If you want to see more info about this head to my{' '}
 			<a href="/privacy">Privacy</a> page.
 		</p>
+		<p>Hardware Authentication</p>
 		<ul>
 			<li>
-				Hardware
-				<ul>
-					<li>
-						Hardware Authentication
-						<ul>
-							<li>
-								<a
-									target="_blank"
-									aria-label="YubiKey 5C"
-									href="https://www.yubico.com/product/yubikey-5c/"
-									rel="noreferrer"
-								>
-									YubiKey 5C
-								</a>
-							</li>
-						</ul>
-					</li>
-					<li>
-						NAS Servers
-						<ul>
-							<li>
-								<a
-									target="_blank"
-									aria-label="Synology NAS"
-									href="https://synology.com/"
-									rel="noreferrer"
-								>
-									Synology DS918+
-								</a>
-							</li>
-							<li>Mac Mini 2015</li>
-						</ul>
-					</li>
-				</ul>
+				<a
+					target="_blank"
+					aria-label="YubiKey 5C"
+					href="https://www.yubico.com/product/yubikey-5c/"
+					rel="noreferrer"
+				>
+					YubiKey 5C
+				</a>
+			</li>
+		</ul>
+		<p>NAS Servers</p>
+		<ul>
+			<li>
+				<a
+					target="_blank"
+					aria-label="Synology NAS"
+					href="https://synology.com/"
+					rel="noreferrer"
+				>
+					Synology DS918+
+				</a>
+			</li>
+			<li>Mac Mini 2015</li>
+		</ul>
+		<p>Software</p>
+		<ul>
+			<li>
+				<a
+					target="_blank"
+					aria-label="Bitwarden Password Manager"
+					href="https://bitwarden.com/"
+					rel="noreferrer"
+				>
+					Bitwarden
+				</a>
 			</li>
 			<li>
-				Software
-				<ul>
-					<li>
-						<a
-							target="_blank"
-							aria-label="Bitwarden Password Manager"
-							href="https://bitwarden.com/"
-							rel="noreferrer"
-						>
-							Bitwarden
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							aria-label="Element Messaging App"
-							href="https://element.io/"
-							rel="noreferrer"
-						>
-							Element (Riot.im)
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							aria-label="FreeTube Video App"
-							href="https://freetubeapp.io/"
-							rel="noreferrer"
-						>
-							FreeTube App
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							aria-label="Mullvad VPN"
-							href="https://mullvad.net/en/"
-							rel="noreferrer"
-						>
-							Mullvad VPN
-						</a>
-					</li>
-					<li>
-						<a
-							target="_blank"
-							aria-label="Signal Messenger"
-							href="https://www.signal.org/"
-							rel="noreferrer"
-						>
-							Signal
-						</a>
-					</li>
-				</ul>
+				<a
+					target="_blank"
+					aria-label="Element Messaging App"
+					href="https://element.io/"
+					rel="noreferrer"
+				>
+					Element (Riot.im)
+				</a>
+			</li>
+			<li>
+				<a
+					target="_blank"
+					aria-label="FreeTube Video App"
+					href="https://freetubeapp.io/"
+					rel="noreferrer"
+				>
+					FreeTube App
+				</a>
+			</li>
+			<li>
+				<a
+					target="_blank"
+					aria-label="Mullvad VPN"
+					href="https://mullvad.net/en/"
+					rel="noreferrer"
+				>
+					Mullvad VPN
+				</a>
+			</li>
+			<li>
+				<a
+					target="_blank"
+					aria-label="Signal Messenger"
+					href="https://www.signal.org/"
+					rel="noreferrer"
+				>
+					Signal
+				</a>
 			</li>
 		</ul>
 	</div>
@@ -601,6 +542,7 @@
 <style lang="postcss">
 	.uses {
 		li {
+			list-style: none;
 			a {
 				:hover {
 					color: var(--shellYellow);
