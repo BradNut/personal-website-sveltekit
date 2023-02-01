@@ -43,10 +43,12 @@
 					<div class="gridItemStyles">
 						<div>
 							<h2>Personal Website</h2>
-							<Image
-								src={personalSite}
-								alt="Home Page bradleyshellnut.com"
-							/>
+							<div>
+								<Image
+									src={personalSite}
+									alt="Home Page bradleyshellnut.com"
+								/>
+							</div>
 						</div>
 						<div>
 							<p>
@@ -140,7 +142,9 @@
 					<div class="gridItemStyles">
 						<div>
 							<h2>Wedding Website</h2>
-							<Image src={weddingWebsite} alt="Wedding Website" />
+							<div>
+								<Image src={weddingWebsite} alt="Wedding Website" />
+							</div>
 							<p>
 								<a
 									href="https://weddingsite-six.vercel.app/"
@@ -210,10 +214,12 @@
 					<div class="gridItemStyles">
 						<div>
 							<h2>Old Personal Website</h2>
-							<Image
-								src={oldSite}
-								alt="Home Page of old bradleyshellnut.com"
-							/>
+							<div>
+								<Image
+									src={oldSite}
+									alt="Home Page of old bradleyshellnut.com"
+								/>
+							</div>
 							<p>
 								<a
 									href="https://web.archive.org/web/20201205233507/https://bradleyshellnut.com/about"
@@ -244,10 +250,12 @@
 				<div class="gridItemStyles">
 					<div>
 						<h2>Mark Shellnut Architect </h2>
-						<Image
-							src={shellnutArchitectWebsite}
-							alt="Mark Shellnut Architect"
-						/>
+						<div>
+							<Image
+								src={shellnutArchitectWebsite}
+								alt="Mark Shellnut Architect"
+							/>
+						</div>
 						<p>
 							<a
 								href="https://markshellnutarchitect.com/"
@@ -302,7 +310,7 @@
 		gap: 3rem;
 		margin: 0.5rem auto;
 
-		@media (max-width: 580px) {
+		@media (max-width: 767px) {
 			grid-template-columns: repeat(1, minmax(150px, 400px));
 			grid-gap: 1.2rem;
 			margin: 0.2rem 0;
@@ -311,12 +319,12 @@
 
 	:global(.gridItemStyles) {
 		display: grid;
-		grid-template-columns: 0.5fr 0.5fr;
+		grid-template-columns: minmax(200px, 0.5fr) 0.5fr;
 		width: 100%;
 		gap: 2rem;
 		margin: 0 auto;
 
-		@media (max-width: 580px) {
+		@media (max-width: 767px) {
 			grid-template-columns: 1fr;
 		}
 

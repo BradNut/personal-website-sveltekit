@@ -1,6 +1,7 @@
 <script lang="ts">
 	import SEO from "$root/lib/components/SEO.svelte";
 	import DesktopImage from '$lib/assets/images/Desktop_so_clean.jpg';
+	import { Image } from "svelte-lazy-loader";
 </script>
 
 <SEO title="Uses" />
@@ -39,9 +40,11 @@
 		</p>
 	</div>
 	<div class="uses-block-styles">
-		<div style="display: grid; justify-content: center; margin-bottom: 2rem;">
+		<div style="display: grid; grid-template-columns: minmax(400px, 0.65fr); justify-content: center; margin-bottom: 2rem;">
 			<figure>
-				<img src={DesktopImage} alt="Clean desktop" width="400px"/>
+				<div>
+					<Image src={DesktopImage} alt="Clean desktop" />
+				</div>
 			</figure>
 		</div>
 		<h2>Hardware & Accessories</h2>
