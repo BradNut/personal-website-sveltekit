@@ -6,12 +6,16 @@
     TabPanel,
     TabPanels,
   } from "@rgossiaux/svelte-headlessui";
-	import { Image } from "svelte-lazy-loader";
+	import { Image, Picture } from "svelte-lazy-loader";
 	import SEO from "$root/lib/components/SEO.svelte";
-	import oldSite from '$lib/assets/images/Old_Website_Bradley_Shellnut.png';
-	import personalSite from "$lib/assets/images/Bradley_Shellnut_New_Site.png";
-  import weddingWebsite from "$lib/assets/images/Wedding_Website.png";
-  import shellnutArchitectWebsite from "$lib/assets/images/Mark_Shellnut_Architect.png";
+	import personalSite from "$lib/assets/images/Bradley_Shellnut_New_Site.png?format=webp;avif;png&metadata";
+	import personalSiteBlurred from "$lib/assets/images/Bradley_Shellnut_New_Site.png?w=100&png&blur=10";
+  import weddingWebsite from "$lib/assets/images/Wedding_Website.png?format=webp;avif;png&metadata";
+	import weddingWebsiteBlurred from "$lib/assets/images/Wedding_Website.png?w=100&png&blur=10";
+	import oldSite from '$lib/assets/images/Old_Website_Bradley_Shellnut.png?format=webp;avif;png&metadata';
+	import oldSiteBlurred from '$lib/assets/images/Old_Website_Bradley_Shellnut.png?w=100&png&blur=10';
+  import shellnutArchitectWebsite from "$lib/assets/images/Mark_Shellnut_Architect.png?format=webp;avif;png&metadata";
+	import shellnutArchitectWebsiteBlurred from "$lib/assets/images/Mark_Shellnut_Architect.png?w=100&png&blur=10";
 </script>
 
 <SEO title="Portfolio" />
@@ -44,10 +48,11 @@
 						<div>
 							<h2>Personal Website</h2>
 							<div>
-								<Image
-									src={personalSite}
-									alt="Home Page bradleyshellnut.com"
-								/>
+								<Picture placeholder={personalSiteBlurred} src="images/Bradley_Shellnut_New_Site.png" alt="Home Page of bradleyshellnut.com">
+									{#each personalSite as { src, format }}
+										<source data-srcset={src} type="image/{format}" />
+									{/each}
+								</Picture>
 							</div>
 						</div>
 						<div>
@@ -143,7 +148,11 @@
 						<div>
 							<h2>Wedding Website</h2>
 							<div>
-								<Image src={weddingWebsite} alt="Wedding Website" />
+								<Picture placeholder={weddingWebsiteBlurred} src="images/Wedding_Website.png" alt="Wedding Website">
+									{#each weddingWebsite as { src, format }}
+										<source data-srcset={src} type="image/{format}" />
+									{/each}
+								</Picture>
 							</div>
 							<p>
 								<a
@@ -215,10 +224,11 @@
 						<div>
 							<h2>Old Personal Website</h2>
 							<div>
-								<Image
-									src={oldSite}
-									alt="Home Page of old bradleyshellnut.com"
-								/>
+								<Picture placeholder={oldSiteBlurred} src="images/Old_Website_Bradley_Shellnut.png" alt="Home Page of the old bradleyshellnut.com website">
+									{#each oldSite as { src, format }}
+										<source data-srcset={src} type="image/{format}" />
+									{/each}
+								</Picture>
 							</div>
 							<p>
 								<a
@@ -251,10 +261,11 @@
 					<div>
 						<h2>Mark Shellnut Architect </h2>
 						<div>
-							<Image
-								src={shellnutArchitectWebsite}
-								alt="Mark Shellnut Architect"
-							/>
+							<Picture placeholder={shellnutArchitectWebsiteBlurred} src="images/Mark_Shellnut_Architect.png" alt="Mark Shellnut Architect's Website">
+								{#each shellnutArchitectWebsite as { src, format }}
+									<source data-srcset={src} type="image/{format}" />
+								{/each}
+							</Picture>
 						</div>
 						<p>
 							<a
@@ -303,6 +314,10 @@
 </div>
 
 <style lang="postcss">
+	:global(img) {
+		border-radius: 3px;
+	}
+
 	:global(.portfolioStyles) {
 		margin-top: 1rem;
 		display: grid;
