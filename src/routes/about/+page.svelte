@@ -280,7 +280,7 @@
 		<h2>Other fun things about me&hellip;</h2>
 		<div style="display: grid;">
 			<p>
-				Currently on a road trip around the U.S. vaguely following Route 66!
+				Currently living in Seattle after a long road trip!
 			</p>
 			<div
 				style="
@@ -296,7 +296,7 @@
 							<source data-srcset={src} type="image/{format}" />
 						{/each}
 					</Picture>
-					<p class="center">Route 66 Road Trip</p>
+					<p class="center">Seattle Space Needle</p>
 				</figure>
 			</div>
 		</div>
@@ -325,6 +325,11 @@
 </div>
 
 <style lang="postcss">
+	:global(img) {
+		height: auto;
+		max-width: 100%;
+	}
+
 	.about {
 		display: grid;
 		grid-gap: 2.5rem;
