@@ -61,7 +61,7 @@
 		max-width: 850px;
 		margin: 0 auto;
 		padding: 2rem 0rem;
-		max-width: 80vw;
+		/* max-width: 80vw; */
 
 		@media (min-width: 1600px) {
 			max-width: 70vw;

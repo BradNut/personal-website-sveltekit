@@ -5,6 +5,8 @@ import {
 	WALLABAG_PASSWORD,
 	WALLABAG_URL
 } from '$env/static/private';
+import type { Article } from '$root/lib/types/article';
+import type { PageQuery } from '$root/lib/types/pageQuery';
 import { URLSearchParams } from 'url';
 
 const base: string = WALLABAG_URL;
@@ -15,7 +17,7 @@ export async function fetchArticlesApi(
 	queryParams: Record<string, string>,
 	data?: Record<string, unknown>
 ) {
-	let lastFetched = null;
+	let lastFetched: Date | null = null;
 
 	const authBody = {
 		grant_type: 'password',
@@ -33,10 +35,13 @@ export async function fetchArticlesApi(
 
 	const auth = await authResponse.json();
 
-	const pageQuery = {
+	const pageQuery: PageQuery = {
 		sort: 'updated',
-		perPage: 500
+		perPage: 6,
+		since: 0
 	};
+	const entriesQueryParams = new URLSearchParams(pageQuery);
+	console.log(`Entries params: ${entriesQueryParams}`);
 
 	if (lastFetched) {
 		pageQuery.since = Math.round(lastFetched / 1000);
@@ -44,45 +49,43 @@ export async function fetchArticlesApi(
 
 	lastFetched = new Date();
 
-	let nbEntries = 0;
-	const pageResponse = await fetch(
-		`${WALLABAG_URL}/api/entries.json?${new URLSearchParams(pageQuery)}`,
-		{
-			method: 'GET',
-			headers: {
-				Authorization: `Bearer ${auth.access_token}`
-			}
+	const nbEntries = 0;
+	const pageResponse = await fetch(`${WALLABAG_URL}/api/entries.json?${entriesQueryParams}`, {
+		method: 'GET',
+		headers: {
+			Authorization: `Bearer ${auth.access_token}`
 		}
-	);
+	});
 
 	if (!pageResponse.ok) {
 		throw new Error(pageResponse.statusText);
 	}
 
-	let entries = await pageResponse.json();
-	const articles = [];
+	const entries = await pageResponse.json();
+	const articles: Article[] = [];
 
-	do {
-		nbEntries += entries._embedded.items.length;
-		console.log(`number of articles fetched: ${nbEntries}`);
-		entries._embedded.items.forEach((article) => {
-			article.created_at = new Date(article.created_at);
-			article.updated_at = new Date(article.updated_at);
-			article.archived_at = article.archived_at ? new Date(article.archived_at) : null;
-			articles.push(article);
-		});
+	// do {
+	// 	nbEntries += entries._embedded.items.length;
+	console.log(`number of articles fetched: ${entries._embedded.items.length}`);
+	entries._embedded.items.forEach((article: Article) => {
+		article.created_at = new Date(article.created_at);
+		article.updated_at = new Date(article.updated_at);
+		article.archived_at = article.archived_at ? new Date(article.archived_at) : null;
+		articles.push(article);
+	});
 
-		if (!entries._links.next) {
-			return;
-		}
-		const response = await fetch(entries._links.next.href, {
-			method: 'GET',
-			headers: {
-				Authorization: `Bearer ${auth.access_token}`
-			}
-		});
-		entries = await response.json();
-	} while (entries._links.next);
+	// if (!entries._links.next) {
+	// 	return;
+	// }
+	// console.log(`Links next ${JSON.stringify(entries._links.next)}`);
+	// const response = await fetch(entries._links.next.href, {
+	// 	method: 'GET',
+	// 	headers: {
+	// 		Authorization: `Bearer ${auth.access_token}`
+	// 	}
+	// });
+	// entries = await response.json();
+	// } while (entries._links.next);
 
 	return { articles };
 }

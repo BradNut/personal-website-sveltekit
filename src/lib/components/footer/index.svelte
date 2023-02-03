@@ -31,6 +31,7 @@
 		background: var(--footerBackground);
 		place-content: center;
 		place-items: center;
+		margin-top: 5rem;
 		padding: 2rem;
 
 		@media (max-width: 800px) {
