@@ -89,7 +89,7 @@
 									</a>
 								</li>
 								<li>
-									Bee, Shell, Nut, and Adventure Icons made by{' '}
+									Bee, Shell, Nut, and Seattle Icons made by{' '}
 									<a
 										target="_blank"
 										href="https://www.flaticon.com/authors/freepik"

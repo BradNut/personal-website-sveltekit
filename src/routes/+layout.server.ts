@@ -1,6 +1,5 @@
-import { error, type ServerLoad } from '@sveltejs/kit';
-import { fetchArticlesApi } from './api';
-// import type { PageServerLoad } from './$types';
+export const prerender = true;
+import { type ServerLoad } from '@sveltejs/kit';
 
 export const load: ServerLoad = async ({ isDataRequest, cookies, params, setHeaders }) => {
 	const queryParams = {

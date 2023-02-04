@@ -6,7 +6,7 @@ export const load: PageLoad = async ({ fetch, parent, url, setHeaders }) => {
 	const parentData = await parent();
 
 	const cacheBust = getCurrentCookieValue('articles-cache') || parentData.articlesCacheBust;
-	const search = url.searchParams.get('search') || '';
+	// const search = url.searchParams.get('search') || '';
 
 	const resp = await fetch(`/api/articles?cache=${cacheBust}`);
 	const articles: Article[] = await resp.json();

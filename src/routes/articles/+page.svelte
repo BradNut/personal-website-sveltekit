@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { page } from "$app/stores";
+	import { Article } from "$lib/types/article";
+	import { ArticleTag } from "$lib/types/articleTag";
 	import SEO from "$root/lib/components/SEO.svelte";
 
 	$: ({ articles } = $page.data);
@@ -24,7 +26,7 @@
 		base="/articles"
 	/> -->
 	<div class="articlesStyles">
-		{#each articles as article}
+		{#each articles as article (article.hashed_url)}
 			<div class="articleStyles card">
 				<section>
 					<h3>
@@ -43,7 +45,7 @@
 					<div class="tagStyles">
 						<p>Tags:</p>
 						{#each article.tags as tag}
-							<p>{tag.label}</p>
+							<p>{tag}</p>
 						{/each}
 					</div>
 				</section>

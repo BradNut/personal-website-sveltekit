@@ -5,7 +5,9 @@ import {
 	WALLABAG_PASSWORD,
 	WALLABAG_URL
 } from '$env/static/private';
-import type { Article } from '$root/lib/types/article';
+import intersect from 'just-intersect';
+import type { Article, WallabagArticle } from '$root/lib/types/article';
+import { ArticleTag } from '$root/lib/types/articleTag';
 import type { PageQuery } from '$root/lib/types/pageQuery';
 import { URLSearchParams } from 'url';
 
@@ -37,7 +39,7 @@ export async function fetchArticlesApi(
 
 	const pageQuery: PageQuery = {
 		sort: 'updated',
-		perPage: 6,
+		perPage: 500,
 		since: 0
 	};
 	const entriesQueryParams = new URLSearchParams(pageQuery);
@@ -67,11 +69,27 @@ export async function fetchArticlesApi(
 	// do {
 	// 	nbEntries += entries._embedded.items.length;
 	console.log(`number of articles fetched: ${entries._embedded.items.length}`);
-	entries._embedded.items.forEach((article: Article) => {
-		article.created_at = new Date(article.created_at);
-		article.updated_at = new Date(article.updated_at);
-		article.archived_at = article.archived_at ? new Date(article.archived_at) : null;
-		articles.push(article);
+	entries._embedded.items.forEach((article: WallabagArticle) => {
+		if (articles?.length === 30) {
+			console.log('Reached 30 articles');
+			return;
+		}
+		const rawTags = article?.tags?.map((tag) => tag.slug);
+		if (intersect(rawTags, Object.values(ArticleTag))?.length > 0) {
+			const tags = rawTags.map((rawTag) => rawTag as unknown as ArticleTag);
+
+			articles.push({
+				tags,
+				title: article.title,
+				url: article.url,
+				hashed_url: article.hashed_url,
+				reading_time: article.reading_time,
+				preview_picture: article.preview_picture,
+				created_at: new Date(article.created_at),
+				updated_at: new Date(article.updated_at),
+				archived_at: article.archived_at ? new Date(article.archived_at) : null
+			});
+		}
 	});
 
 	// if (!entries._links.next) {
