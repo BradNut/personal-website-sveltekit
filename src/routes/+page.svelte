@@ -1,8 +1,7 @@
 <script lang="ts">
-	import type { PageData } from "./$types";
 	import SEO from '$root/lib/components/SEO.svelte';
 
-	export let data: PageData;
+	// export let data: PageData;
   const userNames = {
     github: 'BradNut',
     linkedIn: 'bradley-shellnut',

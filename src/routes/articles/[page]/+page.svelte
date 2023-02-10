@@ -1,30 +1,43 @@
 <script lang="ts">
 	import { page } from "$app/stores";
-	import { Article } from "$lib/types/article";
+	import { articleStore } from "$lib/stores/articleStore";
 	import { ArticleTag } from "$lib/types/articleTag";
+	import Pagination from "$lib/components/pagination/index.svelte";
 	import SEO from "$root/lib/components/SEO.svelte";
+	import type { Article } from "$root/lib/types/article";
+	import type { PageData } from "./$types";
 
-	$: ({ articles } = $page.data);
-
-	const currentPage: number = 1;
-	// const articles = data?.articles?.nodes;
-  // const maxArticles = parseInt(process.env.GATSBY_WALLABAG_MAX_ARTICLES);
-  // const totalCount =
-  //   data.articles.totalCount > maxArticles ? maxArticles : articles.length;
+	export let data: PageData;
+	let articles: Article[];
+	$: ({ articles, currentPage, totalPages, totalArticles, limit } = data);
+	// let currentPage: number;
+	// let perPage: number;
+	// let maxPages: number;
+	// $: ({ currentPage, perPage, maxPages } = $page?.data);
+	// console.log('Articles Page params', $page?.params);
+	// console.log('Articles Page', { currentPage, perPage, maxPages });
+	// console.log(`Page data: ${JSON.stringify(data)}`)
+	// console.log(`Article Page Path Slug ${$page.params.page}`);
+	// console.log(`Article Page Current Page: ${currentPage}`)
+	// $: start = (currentPage - 1) * perPage;
+	// $: skip = currentPage * perPage;
+	// console.log(`Article Store size: ${$articleStore.length}`);
+	
+	// $: articles = $articleStore.slice(start, start + perPage);
 </script>
 
-<SEO title={`Tech Articles - Page ${currentPage}`} />
+<SEO title={`Tech Articles - Page ${$page?.params?.page}`} />
 
 <div class="pageStyles">
 	<h1 style="margin-bottom: 2rem">Favorite Tech Articles</h1>
-	<!-- <Pagination
-		clazz="top-pagination"
-		pageSize={parseInt(process.env.GATSBY_PAGE_SIZE)}
-		totalCount={totalCount}
-		currentPage={pageContext.currentPage || 1}
-		skip={pageContext.skip}
+	<Pagination
+		additionalClasses="top-pagination"
+		pageSize={limit}
+		totalCount={totalArticles}
+		currentPage={currentPage || 1}
+		skip={page}
 		base="/articles"
-	/> -->
+	/>
 	<div class="articlesStyles">
 		{#each articles as article (article.hashed_url)}
 			<div class="articleStyles card">
@@ -33,7 +46,7 @@
 						<a
 							target="_blank"
 							aria-label={`Link to ${article.title}`}
-							href={article.url}
+							href={article.url.href}
 							rel="noreferrer"
 						>
 							{article.title}
@@ -52,14 +65,14 @@
 			</div>
 		{/each}
 	</div>
-	<!-- <Pagination
-		clazz="bottom-pagination"
-		pageSize={parseInt(process.env.GATSBY_PAGE_SIZE)}
-		totalCount={totalCount}
-		currentPage={pageContext.currentPage || 1}
-		skip={pageContext.skip}
+	<Pagination
+		additionalClasses="bottom-pagination"
+		pageSize={limit}
+		totalCount={totalPages}
+		currentPage={currentPage || 1}
+		skip={page}
 		base="/articles"
-	/> -->
+	/>
 </div>
 
 <style lang="postcss">
@@ -95,6 +108,9 @@
 		display: grid;
 		grid-template-rows: 1fr auto;
 		align-items: start;
+		a {
+			cursor: pointer;
+		}
 
 		/* p {
 			margin: 0.4rem 0.25rem;
