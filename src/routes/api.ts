@@ -3,7 +3,9 @@ import {
 	WALLABAG_CLIENT_SECRET,
 	WALLABAG_USERNAME,
 	WALLABAG_PASSWORD,
-	WALLABAG_URL
+	WALLABAG_URL,
+	WALLABAG_MAX_ARTICLES,
+	PAGE_SIZE
 } from '$env/static/private';
 import intersect from 'just-intersect';
 import type { Article, WallabagArticle } from '$root/lib/types/article';
@@ -39,8 +41,11 @@ export async function fetchArticlesApi(
 
 	const pageQuery: PageQuery = {
 		sort: 'updated',
-		perPage: 500,
-		since: 0
+		perPage: +PAGE_SIZE,
+		since: 0,
+		page: +queryParams?.page || 1,
+		tags: 'programming',
+		content: 'metadata'
 	};
 	const entriesQueryParams = new URLSearchParams(pageQuery);
 	console.log(`Entries params: ${entriesQueryParams}`);
@@ -63,17 +68,17 @@ export async function fetchArticlesApi(
 		throw new Error(pageResponse.statusText);
 	}
 
-	const entries = await pageResponse.json();
+	const { _embedded, page, pages, total, limit } = await pageResponse.json();
 	const articles: Article[] = [];
 
 	// do {
 	// 	nbEntries += entries._embedded.items.length;
-	console.log(`number of articles fetched: ${entries._embedded.items.length}`);
-	entries._embedded.items.forEach((article: WallabagArticle) => {
-		if (articles?.length === 30) {
-			console.log('Reached 30 articles');
-			return;
-		}
+	console.log(`number of articles fetched: ${_embedded.items.length}`);
+	_embedded.items.forEach((article: WallabagArticle) => {
+		// if (articles?.length === +WALLABAG_MAX_ARTICLES) {
+		// 	console.log('Reached 30 articles');
+		// 	return;
+		// }
 		const rawTags = article?.tags?.map((tag) => tag.slug);
 		if (intersect(rawTags, Object.values(ArticleTag))?.length > 0) {
 			const tags = rawTags.map((rawTag) => rawTag as unknown as ArticleTag);
@@ -105,5 +110,5 @@ export async function fetchArticlesApi(
 	// entries = await response.json();
 	// } while (entries._links.next);
 
-	return { articles };
+	return { articles, currentPage: page, totalPages: pages, limit, totalArticles: total };
 }

@@ -6,6 +6,7 @@ const state = () => {
 	const { subscribe, set, update } = writable<Article[]>([]);
 
 	function addAll(articles: Article[]) {
+		// console.log(typeof articles);
 		for (const article of articles) {
 			add(article);
 		}
