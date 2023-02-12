@@ -1,7 +1,4 @@
 <script lang="ts">
-	import { page } from "$app/stores";
-	import { articleStore } from "$lib/stores/articleStore";
-	import { ArticleTag } from "$lib/types/articleTag";
 	import Pagination from "$lib/components/pagination/index.svelte";
 	import SEO from "$root/lib/components/SEO.svelte";
 	import type { Article } from "$root/lib/types/article";
@@ -9,15 +6,14 @@
 
 	export let data: PageData;
 	let articles: Article[];
+	let currentPage: number;
+	let totalPages: number;
+	let totalArticles: number;
+	let limit: number;
 	$: ({ articles, currentPage, totalPages, totalArticles, limit } = data);
-	console.log(`Article +page currentPage: ${currentPage}`);
-	console.log({ articles, currentPage, totalPages, totalArticles, limit });
 </script>
 
-<svelte:head>
-	<title>{`Tech Articles - Page ${currentPage} | Bradley Shellnut`}</title>
-	<meta name="og:site_name" content={`Tech Articles - Page ${currentPage}`} />
-</svelte:head>
+<SEO title={`Tech Articles - Page ${currentPage}`} />
 
 <div class="pageStyles">
 	<h1 style="margin-bottom: 2rem">Favorite Tech Articles</h1>
@@ -26,7 +22,7 @@
 		pageSize={limit}
 		totalCount={totalArticles}
 		currentPage={currentPage || 1}
-		skip={page}
+		skip={currentPage}
 		base="/articles"
 	/>
 	<div class="articlesStyles">
@@ -61,7 +57,7 @@
 		pageSize={limit}
 		totalCount={totalPages}
 		currentPage={currentPage || 1}
-		skip={page}
+		skip={currentPage}
 		base="/articles"
 	/>
 </div>

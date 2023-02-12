@@ -9,12 +9,12 @@
     siteUrl,
   };
 
-	export let title: string;
+	export let title = defaultMetadata.defaultTitle;
 	export let description = defaultMetadata.defaultDescription;
 	export let image = defaultMetadata.defaultImage;
 	export let location: string = '';
 
-  const seo = {
+  $: seo = {
     title,
     description,
     image: `${siteUrl}${image}`,
