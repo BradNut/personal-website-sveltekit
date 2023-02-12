@@ -10,23 +10,14 @@
 	export let data: PageData;
 	let articles: Article[];
 	$: ({ articles, currentPage, totalPages, totalArticles, limit } = data);
-	// let currentPage: number;
-	// let perPage: number;
-	// let maxPages: number;
-	// $: ({ currentPage, perPage, maxPages } = $page?.data);
-	// console.log('Articles Page params', $page?.params);
-	// console.log('Articles Page', { currentPage, perPage, maxPages });
-	// console.log(`Page data: ${JSON.stringify(data)}`)
-	// console.log(`Article Page Path Slug ${$page.params.page}`);
-	// console.log(`Article Page Current Page: ${currentPage}`)
-	// $: start = (currentPage - 1) * perPage;
-	// $: skip = currentPage * perPage;
-	// console.log(`Article Store size: ${$articleStore.length}`);
-	
-	// $: articles = $articleStore.slice(start, start + perPage);
+	console.log(`Article +page currentPage: ${currentPage}`);
+	console.log({ articles, currentPage, totalPages, totalArticles, limit });
 </script>
 
-<SEO title={`Tech Articles - Page ${$page?.params?.page}`} />
+<svelte:head>
+	<title>{`Tech Articles - Page ${currentPage} | Bradley Shellnut`}</title>
+	<meta name="og:site_name" content={`Tech Articles - Page ${currentPage}`} />
+</svelte:head>
 
 <div class="pageStyles">
 	<h1 style="margin-bottom: 2rem">Favorite Tech Articles</h1>

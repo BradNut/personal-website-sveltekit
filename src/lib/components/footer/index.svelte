@@ -16,7 +16,7 @@
 		<a class:active={$page.url.pathname === '/portfolio'} href="/portfolio">Portfolio</a>
 		<a class:active={$page.url.pathname === '/uses'} href="/uses">Uses</a>
 		<a class:active={$page.url.pathname === '/privacy'} href="/privacy">Privacy</a>
-		<a class:active={$page.url.pathname === '/articles'} href="/articles">Favorite Articles</a>
+		<a class:active={$page.url.pathname === '/articles/1'} href="/articles">Favorite Articles</a>
 	</nav>
 	<!-- <p className="center"> -->
 	<p>

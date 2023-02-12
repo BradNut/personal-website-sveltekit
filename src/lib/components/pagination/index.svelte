@@ -7,18 +7,11 @@
   export let base: string;
 
   // make some variables
-  console.log(`Total count: ${totalCount}`);
-  console.log(`Page Size: ${pageSize}`);
-  const totalPages = Math.ceil(totalCount / pageSize);
-  console.log(`Total Pages: ${totalPages}`)
-  console.log(`Current Page: ${currentPage} and type: ${typeof currentPage}`)
-  let prevPage = currentPage - 1;
-  console.log(`PrevPage: ${prevPage}`)
-  console.log(`Pagination current Page: ${currentPage}`)
-  let nextPage = currentPage + 1;
-  let hasNextPage = nextPage <= totalPages;
-  let hasPrevPage = prevPage >= 1;
-  console.log({ nextPage, hasNextPage, hasPrevPage })
+  $: totalPages = Math.ceil(totalCount / pageSize);
+  $: prevPage = currentPage - 1;
+  $: nextPage = currentPage + 1;
+  $: hasNextPage = nextPage <= totalPages;
+  $: hasPrevPage = prevPage >= 1;
 </script>
 
 <div class={`paginationStyles ${additionalClasses}`}>

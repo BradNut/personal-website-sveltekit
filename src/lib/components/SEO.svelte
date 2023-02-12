@@ -9,7 +9,7 @@
     siteUrl,
   };
 
-	export let title = defaultMetadata.defaultTitle;
+	export let title: string;
 	export let description = defaultMetadata.defaultDescription;
 	export let image = defaultMetadata.defaultImage;
 	export let location: string = '';
@@ -23,7 +23,7 @@
 </script>
 
 <svelte:head>
-	<title>{`${seo.title} - ${defaultMetadata.defaultTitle}`}</title>
+	<title>{`${seo.title} | ${defaultMetadata.defaultTitle}`}</title>
 	<link rel="icon" type="image/gif" href="/b_shell_nut_favicon.gif" />
 	<meta name="description" content={seo.description} />
 	<meta name="og:type" content="website" />
