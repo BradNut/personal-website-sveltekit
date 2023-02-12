@@ -68,6 +68,8 @@ export async function fetchArticlesApi(
 		throw new Error(pageResponse.statusText);
 	}
 
+	const cacheControl = pageResponse.headers.get('cache-control');
+
 	const { _embedded, page, pages, total, limit } = await pageResponse.json();
 	const articles: Article[] = [];
 
@@ -110,5 +112,12 @@ export async function fetchArticlesApi(
 	// entries = await response.json();
 	// } while (entries._links.next);
 
-	return { articles, currentPage: page, totalPages: pages, limit, totalArticles: total };
+	return {
+		articles,
+		currentPage: page,
+		totalPages: pages,
+		limit,
+		totalArticles: total,
+		cacheControl
+	};
 }

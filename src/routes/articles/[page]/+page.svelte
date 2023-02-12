@@ -55,7 +55,7 @@
 	<Pagination
 		additionalClasses="bottom-pagination"
 		pageSize={limit}
-		totalCount={totalPages}
+		totalCount={totalArticles}
 		currentPage={currentPage || 1}
 		skip={currentPage}
 		base="/articles"

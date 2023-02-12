@@ -9,9 +9,17 @@ export const GET: RequestHandler = async ({ url, setHeaders }: RequestEvent) => 
 		});
 
 		if (response?.articles) {
-			setHeaders({
-				'cache-control': 'max-age=60'
-			});
+			if (response?.cacheControl) {
+				if (!response.cacheControl.includes('no-cache')) {
+					setHeaders({
+						'cache-control': response?.cacheControl
+					});
+				} else {
+					setHeaders({
+						'cache-control': 'max-age=43200'
+					});
+				}
+			}
 
 			// const articlesResponse = response.articles;
 			// console.log(`Found articles ${articlesResponse?.articles?.length}`);
