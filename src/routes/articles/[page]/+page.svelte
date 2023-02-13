@@ -11,9 +11,13 @@
 	let totalArticles: number;
 	let limit: number;
 	$: ({ articles, currentPage, totalPages, totalArticles, limit } = data);
+	$: seoTitle = `Tech Articles - Page ${currentPage} | Bradley Shellnut`;
 </script>
 
-<SEO title={`Tech Articles - Page ${currentPage}`} />
+<svelte:head>
+	<title>{seoTitle}</title>
+	<meta name="og:site_name" content={seoTitle} />
+</svelte:head>
 
 <div class="pageStyles">
 	<h1 style="margin-bottom: 2rem">Favorite Tech Articles</h1>
