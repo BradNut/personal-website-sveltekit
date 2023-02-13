@@ -5,13 +5,15 @@ import {
 	WALLABAG_PASSWORD,
 	WALLABAG_URL,
 	WALLABAG_MAX_ARTICLES,
-	PAGE_SIZE
+	PAGE_SIZE,
+	USE_REDIS_CACHE
 } from '$env/static/private';
 import intersect from 'just-intersect';
 import type { Article, WallabagArticle } from '$root/lib/types/article';
 import { ArticleTag } from '$root/lib/types/articleTag';
 import type { PageQuery } from '$root/lib/types/pageQuery';
 import { URLSearchParams } from 'url';
+import { redis } from '$root/lib/server/redis';
 
 const base: string = WALLABAG_URL;
 
@@ -21,7 +23,27 @@ export async function fetchArticlesApi(
 	queryParams: Record<string, string>,
 	data?: Record<string, unknown>
 ) {
-	let lastFetched: Date | null = null;
+	const pageQuery: PageQuery = {
+		sort: 'updated',
+		perPage: +PAGE_SIZE,
+		since: 0,
+		page: +queryParams?.page || 1,
+		tags: 'programming',
+		content: 'metadata'
+	};
+	const entriesQueryParams = new URLSearchParams(pageQuery);
+	console.log(`Entries params: ${entriesQueryParams}`);
+	if (USE_REDIS_CACHE) {
+		const cached = await redis.get(entriesQueryParams.toString());
+
+		if (cached) {
+			const response = JSON.parse(cached);
+			console.log('Cache hit!');
+			const ttl = await redis.ttl(entriesQueryParams.toString());
+
+			return { ...response, cacheControl: `max-age=${ttl}` };
+		}
+	}
 
 	const authBody = {
 		grant_type: 'password',
@@ -39,24 +61,6 @@ export async function fetchArticlesApi(
 
 	const auth = await authResponse.json();
 
-	const pageQuery: PageQuery = {
-		sort: 'updated',
-		perPage: +PAGE_SIZE,
-		since: 0,
-		page: +queryParams?.page || 1,
-		tags: 'programming',
-		content: 'metadata'
-	};
-	const entriesQueryParams = new URLSearchParams(pageQuery);
-	console.log(`Entries params: ${entriesQueryParams}`);
-
-	if (lastFetched) {
-		pageQuery.since = Math.round(lastFetched / 1000);
-	}
-
-	lastFetched = new Date();
-
-	const nbEntries = 0;
 	const pageResponse = await fetch(`${WALLABAG_URL}/api/entries.json?${entriesQueryParams}`, {
 		method: 'GET',
 		headers: {
@@ -99,20 +103,7 @@ export async function fetchArticlesApi(
 		}
 	});
 
-	// if (!entries._links.next) {
-	// 	return;
-	// }
-	// console.log(`Links next ${JSON.stringify(entries._links.next)}`);
-	// const response = await fetch(entries._links.next.href, {
-	// 	method: 'GET',
-	// 	headers: {
-	// 		Authorization: `Bearer ${auth.access_token}`
-	// 	}
-	// });
-	// entries = await response.json();
-	// } while (entries._links.next);
-
-	return {
+	const responseData = {
 		articles,
 		currentPage: page,
 		totalPages: pages,
@@ -120,4 +111,10 @@ export async function fetchArticlesApi(
 		totalArticles: total,
 		cacheControl
 	};
+
+	if (USE_REDIS_CACHE) {
+		redis.set(entriesQueryParams.toString(), JSON.stringify(responseData), 'EX', 43200);
+	}
+
+	return responseData;
 }
