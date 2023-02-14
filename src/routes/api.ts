@@ -88,7 +88,7 @@ export async function fetchArticlesApi(
 			articles.push({
 				tags,
 				title: article.title,
-				url: article.url,
+				url: new URL(article.url),
 				hashed_url: article.hashed_url,
 				reading_time: article.reading_time,
 				preview_picture: article.preview_picture,

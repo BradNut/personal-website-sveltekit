@@ -18,7 +18,9 @@
 	import shellnutArchitectWebsiteBlurred from "$lib/assets/images/Mark_Shellnut_Architect.png?w=100&png&blur=10";
 </script>
 
-<SEO title="Portfolio" />
+<svelte:head>
+	<title>Portfolio | Bradley Shellnut</title>
+</svelte:head>
 
 <h1>Portfolio!</h1>
 <div class="portfolioTabStyles">

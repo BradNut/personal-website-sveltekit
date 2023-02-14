@@ -1,7 +1,13 @@
 <script lang="ts">
-	import SEO from '$root/lib/components/SEO.svelte';
+	import type { PageData } from './$types';
+	import Bandcamp from '$lib/components/bandcamp/index.svelte';
+	import SEO from '$lib/components/SEO.svelte';
+	import type { Album } from '$root/lib/types/album';
 
-	// export let data: PageData;
+	export let data: PageData;
+	let albums: Album[];
+	$: ({ albums } = data);
+	
   const userNames = {
     github: 'BradNut',
     linkedIn: 'bradley-shellnut',
@@ -57,7 +63,7 @@
 		</p>
 	</div>
 	<div class="social-info">
-		<!-- <Bandcamp /> -->
+		<Bandcamp {albums} />
 		<!-- <Articles /> -->
 	</div>
 </div>
