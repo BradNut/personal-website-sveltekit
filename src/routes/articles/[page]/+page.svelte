@@ -33,7 +33,7 @@
 						<a
 							target="_blank"
 							aria-label={`Link to ${article.title}`}
-							href={article.url}
+							href={article.url.toString()}
 							rel="noreferrer"
 						>
 							{article.title}

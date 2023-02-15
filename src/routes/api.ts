@@ -4,7 +4,7 @@ import {
 	WALLABAG_USERNAME,
 	WALLABAG_PASSWORD,
 	WALLABAG_URL,
-	WALLABAG_MAX_ARTICLES,
+	WALLABAG_MAX_PAGES,
 	PAGE_SIZE
 } from '$env/static/private';
 import intersect from 'just-intersect';
@@ -47,7 +47,12 @@ export async function fetchArticlesApi(
 		tags: 'programming',
 		content: 'metadata'
 	};
-	const entriesQueryParams = new URLSearchParams(pageQuery);
+	const entriesQueryParams = new URLSearchParams({
+		...pageQuery,
+		perPage: `${pageQuery.perPage}`,
+		since: `${pageQuery.since}`,
+		page: `${pageQuery.page}`
+	});
 	console.log(`Entries params: ${entriesQueryParams}`);
 
 	if (lastFetched) {
@@ -115,9 +120,9 @@ export async function fetchArticlesApi(
 	return {
 		articles,
 		currentPage: page,
-		totalPages: pages,
+		totalPages: pages <= WALLABAG_MAX_PAGES ? pages : WALLABAG_MAX_PAGES,
 		limit,
-		totalArticles: total,
+		totalArticles: total > limit * WALLABAG_MAX_PAGES ? limit * WALLABAG_MAX_PAGES : total,
 		cacheControl
 	};
 }

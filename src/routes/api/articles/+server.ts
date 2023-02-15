@@ -1,9 +1,12 @@
-import { json } from '@sveltejs/kit';
+import { json, error } from '@sveltejs/kit';
 import type { RequestHandler, RequestEvent } from './$types';
 import { fetchArticlesApi } from '$root/routes/api';
 
 export const GET: RequestHandler = async ({ url, setHeaders }: RequestEvent) => {
 	try {
+		if (+url?.searchParams?.get('page') > WALLABAG_MAX_PAGES) {
+			throw new Error('Page does not exist');
+		}
 		const response = await fetchArticlesApi('get', `fetchArticles`, {
 			page: url?.searchParams?.get('page') || '1'
 		});
@@ -21,18 +24,10 @@ export const GET: RequestHandler = async ({ url, setHeaders }: RequestEvent) => 
 				}
 			}
 
-			// const articlesResponse = response.articles;
-			// console.log(`Found articles ${articlesResponse?.articles?.length}`);
-			// const articles = [];
-
-			// for (const article of articlesResponse) {
-			// 	const { tags, title, url, hashed_url, reading_time, preview_picture } = article;
-			// 	articles.push({ tags, title, url, hashed_url, reading_time, preview_picture });
-			// }
-
 			return json(response);
 		}
 	} catch (error) {
 		console.error(error);
+		throw error(error);
 	}
 };
