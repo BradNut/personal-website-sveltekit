@@ -1,14 +1,16 @@
 import { json, error } from '@sveltejs/kit';
+import { WALLABAG_MAX_PAGES } from '$env/static/private';
 import type { RequestHandler, RequestEvent } from './$types';
 import { fetchArticlesApi } from '$root/routes/api';
 
 export const GET: RequestHandler = async ({ url, setHeaders }: RequestEvent) => {
 	try {
-		if (+url?.searchParams?.get('page') > WALLABAG_MAX_PAGES) {
+		const page = url?.searchParams?.get('page') || '1';
+		if (+page > +WALLABAG_MAX_PAGES) {
 			throw new Error('Page does not exist');
 		}
 		const response = await fetchArticlesApi('get', `fetchArticles`, {
-			page: url?.searchParams?.get('page') || '1'
+			page
 		});
 
 		if (response?.articles) {
@@ -26,8 +28,8 @@ export const GET: RequestHandler = async ({ url, setHeaders }: RequestEvent) => 
 
 			return json(response);
 		}
-	} catch (error) {
-		console.error(error);
-		throw error(error);
+	} catch (e) {
+		console.error(e);
+		throw error(404, 'Page does not exist');
 	}
 };

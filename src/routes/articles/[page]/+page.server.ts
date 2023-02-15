@@ -13,7 +13,7 @@ export type ArticlePageLoad = {
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
 	const { page } = params;
-	if (+page > WALLABAG_MAX_PAGES) {
+	if (+page > +WALLABAG_MAX_PAGES) {
 		throw error(404, {
 			message: 'Not found'
 		});
