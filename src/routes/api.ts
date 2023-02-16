@@ -26,14 +26,20 @@ export async function fetchArticlesApi(
 ) {
 	const pageQuery: PageQuery = {
 		sort: 'updated',
-		perPage: +PAGE_SIZE,
+		perPage: +queryParams?.limit || +PAGE_SIZE,
 		since: 0,
 		page: +queryParams?.page || 1,
 		tags: 'programming',
 		content: 'metadata'
 	};
-	const entriesQueryParams = new URLSearchParams(pageQuery);
+	const entriesQueryParams = new URLSearchParams({
+		...pageQuery,
+		perPage: `${pageQuery.perPage}`,
+		since: `${pageQuery.since}`,
+		page: `${pageQuery.page}`
+	});
 	console.log(`Entries params: ${entriesQueryParams}`);
+
 	if (USE_REDIS_CACHE) {
 		const cached = await redis.get(entriesQueryParams.toString());
 
@@ -62,29 +68,6 @@ export async function fetchArticlesApi(
 
 	const auth = await authResponse.json();
 
-	const pageQuery: PageQuery = {
-		sort: 'updated',
-		perPage: +queryParams?.limit || +PAGE_SIZE,
-		since: 0,
-		page: +queryParams?.page || 1,
-		tags: 'programming',
-		content: 'metadata'
-	};
-	const entriesQueryParams = new URLSearchParams({
-		...pageQuery,
-		perPage: `${pageQuery.perPage}`,
-		since: `${pageQuery.since}`,
-		page: `${pageQuery.page}`
-	});
-	console.log(`Entries params: ${entriesQueryParams}`);
-
-	if (lastFetched) {
-		pageQuery.since = Math.round(lastFetched / 1000);
-	}
-
-	lastFetched = new Date();
-
-	const nbEntries = 0;
 	const pageResponse = await fetch(`${WALLABAG_URL}/api/entries.json?${entriesQueryParams}`, {
 		method: 'GET',
 		headers: {
@@ -127,7 +110,7 @@ export async function fetchArticlesApi(
 		}
 	});
 
-	return {
+	const responseData = {
 		articles,
 		currentPage: page,
 		totalPages: pages > +WALLABAG_MAX_PAGES ? +WALLABAG_MAX_PAGES : pages,
