@@ -1,7 +1,21 @@
 <script lang="ts">
-	import SEO from '$root/lib/components/SEO.svelte';
+	import type { PageData } from './$types';
+	import Bandcamp from '$lib/components/bandcamp/index.svelte';
+	import Articles from '$lib/components/articles/index.svelte';
+	import SEO from '$lib/components/SEO.svelte';
+	import type { Album } from '$lib/types/album';
+	import type { Article } from '$lib/types/article';
+	import type { ArticlePageLoad } from './articles/[page]/+page.server';
 
-	// export let data: PageData;
+	export let data: PageData;
+	let albums: Album[];
+	let articlesData: ArticlePageLoad;
+	let articles: Article[];
+	let totalArticles: number;
+	$: ({ albums, articlesData } = data);
+	$: ({ articles, totalArticles } = articlesData);
+	$: console.log(`All data: ${JSON.stringify(articlesData)}`);
+	
   const userNames = {
     github: 'BradNut',
     linkedIn: 'bradley-shellnut',
@@ -57,8 +71,8 @@
 		</p>
 	</div>
 	<div class="social-info">
-		<!-- <Bandcamp /> -->
-		<!-- <Articles /> -->
+		<Bandcamp {albums} />
+		<Articles {articles} {totalArticles} compact={true} />
 	</div>
 </div>
 

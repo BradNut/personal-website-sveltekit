@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Image, Picture } from 'svelte-lazy-loader';
+	import { Picture } from 'svelte-lazy-loader';
 	import Graphql from '@iconify-icons/simple-icons/graphql';
 	import Nextdotjs from '@iconify-icons/simple-icons/next-dot-js';
 	import Prisma from '@iconify-icons/simple-icons/prisma';

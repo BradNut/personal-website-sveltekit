@@ -7,7 +7,6 @@
     TabPanels,
   } from "@rgossiaux/svelte-headlessui";
 	import { Image, Picture } from "svelte-lazy-loader";
-	import SEO from "$root/lib/components/SEO.svelte";
 	import personalSite from "$lib/assets/images/Bradley_Shellnut_New_Site.png?format=webp;avif;png&metadata";
 	import personalSiteBlurred from "$lib/assets/images/Bradley_Shellnut_New_Site.png?w=100&png&blur=10";
   import weddingWebsite from "$lib/assets/images/Wedding_Website.png?format=webp;avif;png&metadata";
@@ -18,7 +17,9 @@
 	import shellnutArchitectWebsiteBlurred from "$lib/assets/images/Mark_Shellnut_Architect.png?w=100&png&blur=10";
 </script>
 
-<SEO title="Portfolio" />
+<svelte:head>
+	<title>Portfolio | Bradley Shellnut</title>
+</svelte:head>
 
 <h1>Portfolio!</h1>
 <div class="portfolioTabStyles">

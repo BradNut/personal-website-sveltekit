@@ -4,8 +4,9 @@ import {
 	WALLABAG_USERNAME,
 	WALLABAG_PASSWORD,
 	WALLABAG_URL,
-	WALLABAG_MAX_ARTICLES,
+	WALLABAG_MAX_PAGES,
 	PAGE_SIZE,
+	WALLABAG_MAX_ARTICLES,
 	USE_REDIS_CACHE
 } from '$env/static/private';
 import intersect from 'just-intersect';
@@ -61,6 +62,29 @@ export async function fetchArticlesApi(
 
 	const auth = await authResponse.json();
 
+	const pageQuery: PageQuery = {
+		sort: 'updated',
+		perPage: +queryParams?.limit || +PAGE_SIZE,
+		since: 0,
+		page: +queryParams?.page || 1,
+		tags: 'programming',
+		content: 'metadata'
+	};
+	const entriesQueryParams = new URLSearchParams({
+		...pageQuery,
+		perPage: `${pageQuery.perPage}`,
+		since: `${pageQuery.since}`,
+		page: `${pageQuery.page}`
+	});
+	console.log(`Entries params: ${entriesQueryParams}`);
+
+	if (lastFetched) {
+		pageQuery.since = Math.round(lastFetched / 1000);
+	}
+
+	lastFetched = new Date();
+
+	const nbEntries = 0;
 	const pageResponse = await fetch(`${WALLABAG_URL}/api/entries.json?${entriesQueryParams}`, {
 		method: 'GET',
 		headers: {
@@ -92,7 +116,7 @@ export async function fetchArticlesApi(
 			articles.push({
 				tags,
 				title: article.title,
-				url: article.url,
+				url: new URL(article.url),
 				hashed_url: article.hashed_url,
 				reading_time: article.reading_time,
 				preview_picture: article.preview_picture,
@@ -103,12 +127,12 @@ export async function fetchArticlesApi(
 		}
 	});
 
-	const responseData = {
+	return {
 		articles,
 		currentPage: page,
-		totalPages: pages,
+		totalPages: pages > +WALLABAG_MAX_PAGES ? +WALLABAG_MAX_PAGES : pages,
 		limit,
-		totalArticles: total,
+		totalArticles: total > +WALLABAG_MAX_ARTICLES ? +WALLABAG_MAX_ARTICLES : total,
 		cacheControl
 	};
 
