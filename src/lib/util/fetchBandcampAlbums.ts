@@ -1,10 +1,10 @@
-// import * as htmlparser2 from 'htmlparser2';
+import { BANDCAMP_USERNAME } from '$env/static/private';
 import scrapeIt from 'scrape-it';
 import type { Album } from '../types/album';
 
 export async function fetchBandcampAlbums() {
 	try {
-		const { data } = await scrapeIt('https://bandcamp.com/royvalentine', {
+		const { data } = await scrapeIt(`https://bandcamp.com/${BANDCAMP_USERNAME}`, {
 			collectionItems: {
 				listItem: '.collection-item-container',
 				data: {
