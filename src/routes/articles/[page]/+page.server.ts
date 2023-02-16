@@ -9,9 +9,10 @@ export type ArticlePageLoad = {
 	totalPages: number;
 	limit: number;
 	totalArticles: number;
+	cacheControl: string;
 };
 
-export const load: PageServerLoad = async ({ fetch, params }) => {
+export const load: PageServerLoad = async ({ fetch, params, setHeaders }) => {
 	const { page } = params;
 	if (+page > +WALLABAG_MAX_PAGES) {
 		throw error(404, {
@@ -19,9 +20,18 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 		});
 	}
 	const resp = await fetch(`/api/articles?page=${page}`);
-	const { articles, currentPage, totalPages, limit, totalArticles }: ArticlePageLoad =
+	const { articles, currentPage, totalPages, limit, totalArticles, cacheControl }: ArticlePageLoad =
 		await resp.json();
 
+	if (cacheControl?.includes('no-cache')) {
+		setHeaders({
+			'cache-control': cacheControl
+		});
+	} else {
+		setHeaders({
+			'cache-control': 'max-age=43200' // 12 hours
+		});
+	}
 	return {
 		articles,
 		currentPage,

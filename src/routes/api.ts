@@ -6,13 +6,15 @@ import {
 	WALLABAG_URL,
 	WALLABAG_MAX_PAGES,
 	PAGE_SIZE,
-	WALLABAG_MAX_ARTICLES
+	WALLABAG_MAX_ARTICLES,
+	USE_REDIS_CACHE
 } from '$env/static/private';
 import intersect from 'just-intersect';
 import type { Article, WallabagArticle } from '$root/lib/types/article';
 import { ArticleTag } from '$root/lib/types/articleTag';
 import type { PageQuery } from '$root/lib/types/pageQuery';
 import { URLSearchParams } from 'url';
+import { redis } from '$root/lib/server/redis';
 
 const base: string = WALLABAG_URL;
 
@@ -22,7 +24,33 @@ export async function fetchArticlesApi(
 	queryParams: Record<string, string>,
 	data?: Record<string, unknown>
 ) {
-	let lastFetched: Date | null = null;
+	const pageQuery: PageQuery = {
+		sort: 'updated',
+		perPage: +queryParams?.limit || +PAGE_SIZE,
+		since: 0,
+		page: +queryParams?.page || 1,
+		tags: 'programming',
+		content: 'metadata'
+	};
+	const entriesQueryParams = new URLSearchParams({
+		...pageQuery,
+		perPage: `${pageQuery.perPage}`,
+		since: `${pageQuery.since}`,
+		page: `${pageQuery.page}`
+	});
+	console.log(`Entries params: ${entriesQueryParams}`);
+
+	if (USE_REDIS_CACHE) {
+		const cached = await redis.get(entriesQueryParams.toString());
+
+		if (cached) {
+			const response = JSON.parse(cached);
+			console.log('Cache hit!');
+			const ttl = await redis.ttl(entriesQueryParams.toString());
+
+			return { ...response, cacheControl: `max-age=${ttl}` };
+		}
+	}
 
 	const authBody = {
 		grant_type: 'password',
@@ -40,29 +68,6 @@ export async function fetchArticlesApi(
 
 	const auth = await authResponse.json();
 
-	const pageQuery: PageQuery = {
-		sort: 'updated',
-		perPage: +queryParams?.limit || +PAGE_SIZE,
-		since: 0,
-		page: +queryParams?.page || 1,
-		tags: 'programming',
-		content: 'metadata'
-	};
-	const entriesQueryParams = new URLSearchParams({
-		...pageQuery,
-		perPage: `${pageQuery.perPage}`,
-		since: `${pageQuery.since}`,
-		page: `${pageQuery.page}`
-	});
-	console.log(`Entries params: ${entriesQueryParams}`);
-
-	if (lastFetched) {
-		pageQuery.since = Math.round(lastFetched / 1000);
-	}
-
-	lastFetched = new Date();
-
-	const nbEntries = 0;
 	const pageResponse = await fetch(`${WALLABAG_URL}/api/entries.json?${entriesQueryParams}`, {
 		method: 'GET',
 		headers: {
@@ -105,7 +110,7 @@ export async function fetchArticlesApi(
 		}
 	});
 
-	return {
+	const responseData = {
 		articles,
 		currentPage: page,
 		totalPages: pages > +WALLABAG_MAX_PAGES ? +WALLABAG_MAX_PAGES : pages,
@@ -113,4 +118,10 @@ export async function fetchArticlesApi(
 		totalArticles: total > +WALLABAG_MAX_ARTICLES ? +WALLABAG_MAX_ARTICLES : total,
 		cacheControl
 	};
+
+	if (USE_REDIS_CACHE) {
+		redis.set(entriesQueryParams.toString(), JSON.stringify(responseData), 'EX', 43200);
+	}
+
+	return responseData;
 }

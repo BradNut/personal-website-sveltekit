@@ -3,7 +3,7 @@ import { WALLABAG_MAX_PAGES } from '$env/static/private';
 import type { RequestHandler, RequestEvent } from './$types';
 import { fetchArticlesApi } from '$root/routes/api';
 
-export const GET: RequestHandler = async ({ url, setHeaders }: RequestEvent) => {
+export const GET: RequestHandler = async ({ setHeaders, url }: RequestEvent) => {
 	try {
 		const page = url?.searchParams?.get('page') || '1';
 		if (+page > +WALLABAG_MAX_PAGES) {

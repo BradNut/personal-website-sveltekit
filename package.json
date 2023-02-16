@@ -54,5 +54,8 @@
 		"vite-imagetools": "^4.0.18",
 		"vitest": "^0.25.3"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"ioredis": "^5.3.1"
+	}
 }
