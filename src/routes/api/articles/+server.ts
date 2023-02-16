@@ -10,7 +10,8 @@ export const GET: RequestHandler = async ({ url, setHeaders }: RequestEvent) => 
 			throw new Error('Page does not exist');
 		}
 		const response = await fetchArticlesApi('get', `fetchArticles`, {
-			page
+			page,
+			limit: url?.searchParams?.get('limit') || '6'
 		});
 
 		if (response?.articles) {
@@ -26,6 +27,7 @@ export const GET: RequestHandler = async ({ url, setHeaders }: RequestEvent) => 
 				}
 			}
 
+			console.log(`API response ${JSON.stringify(response)}`);
 			return json(response);
 		}
 	} catch (e) {

@@ -5,7 +5,8 @@ import {
 	WALLABAG_PASSWORD,
 	WALLABAG_URL,
 	WALLABAG_MAX_PAGES,
-	PAGE_SIZE
+	PAGE_SIZE,
+	WALLABAG_MAX_ARTICLES
 } from '$env/static/private';
 import intersect from 'just-intersect';
 import type { Article, WallabagArticle } from '$root/lib/types/article';
@@ -41,7 +42,7 @@ export async function fetchArticlesApi(
 
 	const pageQuery: PageQuery = {
 		sort: 'updated',
-		perPage: +PAGE_SIZE,
+		perPage: +queryParams?.limit || +PAGE_SIZE,
 		since: 0,
 		page: +queryParams?.page || 1,
 		tags: 'programming',
@@ -104,25 +105,12 @@ export async function fetchArticlesApi(
 		}
 	});
 
-	// if (!entries._links.next) {
-	// 	return;
-	// }
-	// console.log(`Links next ${JSON.stringify(entries._links.next)}`);
-	// const response = await fetch(entries._links.next.href, {
-	// 	method: 'GET',
-	// 	headers: {
-	// 		Authorization: `Bearer ${auth.access_token}`
-	// 	}
-	// });
-	// entries = await response.json();
-	// } while (entries._links.next);
-
 	return {
 		articles,
 		currentPage: page,
-		totalPages: pages <= WALLABAG_MAX_PAGES ? pages : WALLABAG_MAX_PAGES,
+		totalPages: pages > +WALLABAG_MAX_PAGES ? +WALLABAG_MAX_PAGES : pages,
 		limit,
-		totalArticles: total > limit * WALLABAG_MAX_PAGES ? limit * WALLABAG_MAX_PAGES : total,
+		totalArticles: total > +WALLABAG_MAX_ARTICLES ? +WALLABAG_MAX_ARTICLES : total,
 		cacheControl
 	};
 }
