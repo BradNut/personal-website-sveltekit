@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Image, Picture } from "svelte-lazy-loader";
+	import { Picture } from "svelte-lazy-loader";
 	import SEO from "$root/lib/components/SEO.svelte";
 	import desktop from '$lib/assets/images/Desktop_so_clean.jpg?format=webp;avif;jpg&metadata';
 	import desktopBlurred from '$lib/assets/images/Desktop_so_clean.jpg?w=100&jpg&blur=10';
