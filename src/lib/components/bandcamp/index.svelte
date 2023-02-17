@@ -11,7 +11,7 @@
 	<h2>Currently listening to:</h2>
 	<div class="albumsStyles">
 		{#each displayAlbums as album}
-			<div>
+			<div class="albumStyles">
 				<figure>
 					<a
 						title={`Link to ${album.title} by ${album.artist}`}
