@@ -5,7 +5,9 @@
 	import desktopBlurred from '$lib/assets/images/Desktop_so_clean.jpg?w=100&jpg&blur=10';
 </script>
 
-<SEO title="Uses" />
+<svelte:head>
+	<title>Uses | Bradley Shellnut</title>
+</svelte:head>
 
 <div class="uses">
 	<div>
@@ -44,7 +46,7 @@
 		<div style="display: grid; grid-template-columns: minmax(400px, 0.65fr); justify-content: center; margin-bottom: 2rem;">
 			<figure>
 				<div>
-					<Picture placeholder={desktopBlurred} src="images/Desktop_so_clean.jpg" alt="Clean desk with Samsung monitor and Ducky Keyboard">
+					<Picture placeholder={desktopBlurred} src="images/Desktop_so_clean.jpg" alt="Clean desk with Samsung monitor and Ducky Keyboard" loading="eager">
 						{#each desktop as { src, format }}
 							<source data-srcset={src} type="image/{format}" />
 						{/each}

@@ -48,8 +48,8 @@
 					<div class="gridItemStyles">
 						<div>
 							<h2>Personal Website</h2>
-							<div>
-								<Picture placeholder={personalSiteBlurred} src="images/Bradley_Shellnut_New_Site.png" alt="Home Page of bradleyshellnut.com">
+							<div style="min-width: 200px; min-height: 500px;">
+								<Picture placeholder={personalSiteBlurred} src="images/Bradley_Shellnut_New_Site.png" alt="Home Page of bradleyshellnut.com" loading="eager">
 									{#each personalSite as { src, format }}
 										<source data-srcset={src} type="image/{format}" />
 									{/each}
