@@ -27,7 +27,7 @@ export const GET: RequestHandler = async ({ setHeaders, url }: RequestEvent) => 
 				}
 			}
 
-			console.log(`API response ${JSON.stringify(response)}`);
+			// console.log(`API response ${JSON.stringify(response)}`);
 			return json(response);
 		}
 	} catch (e) {

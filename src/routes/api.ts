@@ -38,14 +38,14 @@ export async function fetchArticlesApi(
 		since: `${pageQuery.since}`,
 		page: `${pageQuery.page}`
 	});
-	console.log(`Entries params: ${entriesQueryParams}`);
+	// console.log(`Entries params: ${entriesQueryParams}`);
 
 	if (USE_REDIS_CACHE) {
 		const cached = await redis.get(entriesQueryParams.toString());
 
 		if (cached) {
 			const response = JSON.parse(cached);
-			console.log('Cache hit!');
+			// console.log('Cache hit!');
 			const ttl = await redis.ttl(entriesQueryParams.toString());
 
 			return { ...response, cacheControl: `max-age=${ttl}` };
@@ -86,7 +86,7 @@ export async function fetchArticlesApi(
 
 	// do {
 	// 	nbEntries += entries._embedded.items.length;
-	console.log(`number of articles fetched: ${_embedded.items.length}`);
+	// console.log(`number of articles fetched: ${_embedded.items.length}`);
 	_embedded.items.forEach((article: WallabagArticle) => {
 		// if (articles?.length === +WALLABAG_MAX_ARTICLES) {
 		// 	console.log('Reached 30 articles');

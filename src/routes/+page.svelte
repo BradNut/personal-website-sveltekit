@@ -14,7 +14,7 @@
 	let totalArticles: number;
 	$: ({ albums, articlesData } = data);
 	$: ({ articles, totalArticles } = articlesData);
-	$: console.log(`All data: ${JSON.stringify(articlesData)}`);
+	// $: console.log(`All data: ${JSON.stringify(articlesData)}`);
 	
   const userNames = {
     github: 'BradNut',

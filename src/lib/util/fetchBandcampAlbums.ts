@@ -27,7 +27,7 @@ export async function fetchBandcampAlbums() {
 		});
 
 		const albums: Album[] = data?.collectionItems || [];
-		console.log(`Albums ${JSON.stringify(albums)}`);
+		// console.log(`Albums ${JSON.stringify(albums)}`);
 
 		if (albums && albums?.length > 0) {
 			return albums;
@@ -35,6 +35,6 @@ export async function fetchBandcampAlbums() {
 			return [];
 		}
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 	}
 }
