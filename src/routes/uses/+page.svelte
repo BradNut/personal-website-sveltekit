@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { Picture } from "svelte-lazy-loader";
 	import SEO from "$root/lib/components/SEO.svelte";
-	import desktop from '$lib/assets/images/Desktop_so_clean.jpg?format=webp;avif;jpg&metadata';
+	import desktop from '$lib/assets/images/Desktop_so_clean.jpg';
+	import desktopFormats from '$lib/assets/images/Desktop_so_clean.jpg?format=webp;avif;jpg&metadata';
 	import desktopBlurred from '$lib/assets/images/Desktop_so_clean.jpg?w=100&jpg&blur=10';
 </script>
 
@@ -46,8 +47,8 @@
 		<div style="display: grid; grid-template-columns: minmax(400px, 0.65fr); justify-content: center; margin-bottom: 2rem;">
 			<figure>
 				<div>
-					<Picture placeholder={desktopBlurred} src="images/Desktop_so_clean.jpg" alt="Clean desk with Samsung monitor and Ducky Keyboard">
-						{#each desktop as { src, format }}
+					<Picture placeholder={desktopBlurred} src={desktop} alt="Clean desk with Samsung monitor and Ducky Keyboard" loading='eager'>
+						{#each desktopFormats as { src, format }}
 							<source data-srcset={src} type="image/{format}" />
 						{/each}
 					</Picture>

@@ -7,7 +7,8 @@
     TabPanels,
   } from "@rgossiaux/svelte-headlessui";
 	import { Image, Picture } from "svelte-lazy-loader";
-	import personalSite from "$lib/assets/images/Bradley_Shellnut_New_Site.png?format=webp;avif;png&metadata";
+	import personalSite from "$lib/assets/images/Bradley_Shellnut_New_Site.png";
+	import personalSiteFormats from "$lib/assets/images/Bradley_Shellnut_New_Site.png?format=webp;avif;png&metadata";
 	import personalSiteBlurred from "$lib/assets/images/Bradley_Shellnut_New_Site.png?w=100&png&blur=10";
   import weddingWebsite from "$lib/assets/images/Wedding_Website.png?format=webp;avif;png&metadata";
 	import weddingWebsiteBlurred from "$lib/assets/images/Wedding_Website.png?w=100&png&blur=10";
@@ -49,8 +50,8 @@
 						<div>
 							<h2>Personal Website</h2>
 							<div style="min-width: 200px; min-height: 500px;">
-								<Picture placeholder={personalSiteBlurred} src="images/Bradley_Shellnut_New_Site.png" alt="Home Page of bradleyshellnut.com">
-									{#each personalSite as { src, format }}
+								<Picture placeholder={personalSiteBlurred} src={personalSite} alt="Home Page of bradleyshellnut.com">
+									{#each personalSiteFormats as { src, format }}
 										<source data-srcset={src} type="image/{format}" />
 									{/each}
 								</Picture>
