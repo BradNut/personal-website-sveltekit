@@ -46,7 +46,7 @@
 		<div style="display: grid; grid-template-columns: minmax(400px, 0.65fr); justify-content: center; margin-bottom: 2rem;">
 			<figure>
 				<div>
-					<Picture placeholder={desktopBlurred} src="images/Desktop_so_clean.jpg" alt="Clean desk with Samsung monitor and Ducky Keyboard" loading="eager">
+					<Picture placeholder={desktopBlurred} src="images/Desktop_so_clean.jpg" alt="Clean desk with Samsung monitor and Ducky Keyboard">
 						{#each desktop as { src, format }}
 							<source data-srcset={src} type="image/{format}" />
 						{/each}

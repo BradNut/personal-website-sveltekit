@@ -49,7 +49,7 @@
 						<div>
 							<h2>Personal Website</h2>
 							<div style="min-width: 200px; min-height: 500px;">
-								<Picture placeholder={personalSiteBlurred} src="images/Bradley_Shellnut_New_Site.png" alt="Home Page of bradleyshellnut.com" loading="eager">
+								<Picture placeholder={personalSiteBlurred} src="images/Bradley_Shellnut_New_Site.png" alt="Home Page of bradleyshellnut.com">
 									{#each personalSite as { src, format }}
 										<source data-srcset={src} type="image/{format}" />
 									{/each}
