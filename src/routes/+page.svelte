@@ -29,7 +29,6 @@
 	<div>
 		<h1>Hello! I'm Bradley Shellnut.</h1>
 	</div>
-	<div>
 		<p>
 			I'm a full stack software engineer currently working on Java Spring, PostgreSQL, and React / Angular JS.
 		</p>
@@ -69,7 +68,6 @@
 			</a>
 			, or read more <a href="/about">about me</a>.
 		</p>
-	</div>
 	<div class="social-info">
 		<Bandcamp {albums} />
 		<Articles {articles} {totalArticles} compact={true} />

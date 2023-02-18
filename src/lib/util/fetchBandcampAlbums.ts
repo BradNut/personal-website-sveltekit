@@ -1,9 +1,22 @@
-import { BANDCAMP_USERNAME } from '$env/static/private';
+import { BANDCAMP_USERNAME, USE_REDIS_CACHE } from '$env/static/private';
 import scrapeIt from 'scrape-it';
+import { redis } from '../server/redis';
 import type { Album } from '../types/album';
 
 export async function fetchBandcampAlbums() {
 	try {
+		if (USE_REDIS_CACHE) {
+			const cached = await redis.get('bandcampAlbums');
+
+			if (cached) {
+				const response = JSON.parse(cached);
+				console.log(`Cache hit!`);
+				const ttl = await redis.ttl('bandcampAlbums');
+
+				return response;
+			}
+		}
+
 		const { data } = await scrapeIt(`https://bandcamp.com/${BANDCAMP_USERNAME}`, {
 			collectionItems: {
 				listItem: '.collection-item-container',
@@ -30,6 +43,9 @@ export async function fetchBandcampAlbums() {
 		// console.log(`Albums ${JSON.stringify(albums)}`);
 
 		if (albums && albums?.length > 0) {
+			if (USE_REDIS_CACHE) {
+				redis.set('bandcampAlbums', JSON.stringify(albums), 'EX', 43200);
+			}
 			return albums;
 		} else {
 			return [];

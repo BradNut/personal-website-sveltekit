@@ -16,6 +16,7 @@
               <h3>
                 <a
                   target="_blank"
+                  title={`Link to ${article.title}`}
                   aria-label={`Link to ${article.title}`}
                   href={article.url.toString()}
                   rel="noreferrer"
