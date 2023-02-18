@@ -47,15 +47,13 @@
 			<TabPanel>
 				<div class="portfolioStyles">
 					<div class="gridItemStyles">
-						<div>
+						<div class="portfolioPicture">
 							<h2>Personal Website</h2>
-							<div style="min-width: 200px; min-height: 500px;">
-								<Picture placeholder={personalSiteBlurred} src={personalSite} alt="Home Page of bradleyshellnut.com">
-									{#each personalSiteFormats as { src, format }}
-										<source data-srcset={src} type="image/{format}" />
-									{/each}
-								</Picture>
-							</div>
+							<Picture placeholder={personalSiteBlurred} src={personalSite} alt="Home Page of bradleyshellnut.com">
+								{#each personalSiteFormats as { src, format }}
+									<source data-srcset={src} type="image/{format}" />
+								{/each}
+							</Picture>
 						</div>
 						<div>
 							<p>
@@ -149,7 +147,7 @@
 					<div class="gridItemStyles">
 						<div>
 							<h2>Wedding Website</h2>
-							<div>
+							<div class="portfolioPicture">
 								<Picture placeholder={weddingWebsiteBlurred} src="images/Wedding_Website.png" alt="Wedding Website">
 									{#each weddingWebsite as { src, format }}
 										<source data-srcset={src} type="image/{format}" />
@@ -225,7 +223,7 @@
 					<div class="gridItemStyles">
 						<div>
 							<h2>Old Personal Website</h2>
-							<div>
+							<div class="portfolioPicture">
 								<Picture placeholder={oldSiteBlurred} src="images/Old_Website_Bradley_Shellnut.png" alt="Home Page of the old bradleyshellnut.com website">
 									{#each oldSite as { src, format }}
 										<source data-srcset={src} type="image/{format}" />
@@ -262,7 +260,7 @@
 				<div class="gridItemStyles">
 					<div>
 						<h2>Mark Shellnut Architect </h2>
-						<div>
+						<div class="portfolio-picture">
 							<Picture placeholder={shellnutArchitectWebsiteBlurred} src="images/Mark_Shellnut_Architect.png" alt="Mark Shellnut Architect's Website">
 								{#each shellnutArchitectWebsite as { src, format }}
 									<source data-srcset={src} type="image/{format}" />
@@ -334,20 +332,20 @@
 		}
 	}
 
+	:global(.portfolioPicture) {
+		border-radius: 3px;
+		width: minmax(200px, 500px);
+	}
+
 	:global(.gridItemStyles) {
 		display: grid;
-		grid-template-columns: minmax(200px, 0.5fr) 0.5fr;
+		grid-template-columns: minmax(200px, 0.7fr) 0.5fr;
 		width: 100%;
 		gap: 2rem;
 		margin: 0 auto;
 
 		@media (max-width: 767px) {
 			grid-template-columns: 1fr;
-		}
-
-		img {
-			border-radius: 3px;
-			max-width: 800px;
 		}
 
 		p {
