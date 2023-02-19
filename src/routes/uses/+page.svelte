@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Picture } from "svelte-lazy-loader";
-	import SEO from "$root/lib/components/SEO.svelte";
 	import desktop from '$lib/assets/images/Desktop_so_clean.jpg';
 	import desktopFormats from '$lib/assets/images/Desktop_so_clean.jpg?format=webp;avif;jpg&metadata';
 	import desktopBlurred from '$lib/assets/images/Desktop_so_clean.jpg?w=100&jpg&blur=10';
@@ -14,7 +13,7 @@
 	<div>
 		<h1>/Uses</h1>
 		<p>
-			Inspired by{' '}
+			Inspired by
 			<a
 				target="_blank"
 				href="https://wesbos.com"
@@ -22,7 +21,7 @@
 				rel="noreferrer"
 			>
 				Wes Bos's
-			</a>{' '}
+			</a>
 			<a
 				target="_blank"
 				href="https://wesbos.com/uses"
@@ -30,8 +29,8 @@
 				rel="noreferrer"
 			>
 				/uses
-			</a>{' '}
-			page and{' '}
+			</a>
+			page and
 			<a
 				target="_blank"
 				href="https://uses.tech/"
@@ -39,27 +38,22 @@
 				rel="noreferrer"
 			>
 				uses.tech
-			</a>
-			, this is a list of what I use everyday for my work and personal life.
+			</a>, this is a list of what I use everyday for my work and personal life.
 		</p>
 	</div>
 	<div class="uses-block-styles">
-		<div style="display: grid; grid-template-columns: minmax(400px, 0.65fr); justify-content: center; margin-bottom: 2rem;">
-			<figure>
-				<div>
-					<Picture placeholder={desktopBlurred} src={desktop} alt="Clean desk with Samsung monitor and Ducky Keyboard" loading='eager'>
-						{#each desktopFormats as { src, format }}
-							<source data-srcset={src} type="image/{format}" />
-						{/each}
-					</Picture>
-				</div>
-			</figure>
-		</div>
+		<figure>
+			<Picture placeholder={desktopBlurred} src={desktop} alt="Clean desk with Samsung monitor and Ducky Keyboard" loading='eager'>
+				{#each desktopFormats as { src, format }}
+					<source data-srcset={src} type="image/{format}" />
+				{/each}
+			</Picture>
+		</figure>
 		<h2>Hardware & Accessories</h2>
 		<ul>
 			<li>MacBook Pro 15-inch for work.</li>
 			<li>
-				Personal desktop running{' '}
+				Personal desktop running
 				<a
 					target="_blank"
 					aria-label="PopOS Linux Distro"
@@ -73,7 +67,7 @@
 			</li>
 			<li>Dell XPS 13 running PopOS.</li>
 			<li>
-				Phone 📱: Pixel 6 running{' '}
+				Phone 📱: Pixel 6 running
 				<a
 					target="_blank"
 					aria-label="GrapheneOS"
@@ -86,7 +80,7 @@
 				.
 			</li>
 			<li>
-				Keyboard ⌨️:{' '}
+				Keyboard ⌨️:
 				<a
 					target="_blank"
 					aria-label="Ducky Keyboard"
@@ -98,7 +92,7 @@
 				</a>
 			</li>
 			<li>
-				Mouse 🖱️:{' '}
+				Mouse 🖱️:
 				<a
 					target="_blank"
 					aria-label="Logitech G502 Gaming Mouse"
@@ -110,7 +104,7 @@
 				</a>
 			</li>
 			<li>
-				Chair 🪑:{' '}
+				Chair 🪑:
 				<a
 					target="_blank"
 					aria-label="Secretlab Omega 2020 Fabric"
@@ -122,7 +116,7 @@
 				</a>
 			</li>
 			<li>
-				Monitor 🖥️:{' '}
+				Monitor 🖥️:
 				<a
 					target="_blank"
 					aria-label="Samsung Odyssey G7 Gaming Monitor"
@@ -138,7 +132,7 @@
 	<div class="uses-block-styles">
 		<h2>Development</h2>
 		<p>
-			My development setup has been documented here:{' '}
+			My development setup has been documented here:
 			<a
 				target="_blank"
 				aria-label="Bradley Shellnut Computer Setup"
@@ -150,7 +144,7 @@
 			{'. '}
 		</p>
 		<p>
-			And documentation for my terminal and coding setup can be found here:{' '}
+			And documentation for my terminal and coding setup can be found here:
 			<a
 				target="_blank"
 				aria-label="Bradley Shellnut Dotfiles"
@@ -275,7 +269,7 @@
 				>
 					VSCodium
 				</a>
-				: Editor for non-Java projects. List of mostly used extensions:{' '}
+				: Editor for non-Java projects. List of mostly used extensions:
 				<a
 					target="_blank"
 					href="https://github.com/BradNut/dotfiles/blob/master/vs-code-extensions-i-use.md"
@@ -445,7 +439,7 @@
 				: My go to multi-platform Posting utility
 			</li>
 			<li>
-				Browser of choice:{' '}
+				Browser of choice:
 				<a
 					target="_blank"
 					aria-label="Firefox Best Edition"
@@ -464,7 +458,7 @@
 			self-hosted systems and systems I trust to hold my data.
 		</p>
 		<p>
-			If you want to see more info about this head to my{' '}
+			If you want to see more info about this head to my
 			<a href="/privacy">Privacy</a> page.
 		</p>
 		<p>Hardware Authentication</p>
@@ -551,6 +545,13 @@
 </div>
 
 <style lang="postcss">
+	figure {
+		display: grid;
+		grid-template-columns: minmax(400px, 0.65fr);
+		place-content: center;
+		margin-bottom: 2rem;
+	}
+
 	.uses {
 		li {
 			list-style: none;

@@ -1,5 +1,4 @@
 import type { PageServerLoad } from './lib/$types';
-import { PAGE_SIZE } from '$env/static/private';
 import { fetchBandcampAlbums } from '$root/lib/util/fetchBandcampAlbums';
 
 export const load: PageServerLoad = async ({ fetch, setHeaders }) => {

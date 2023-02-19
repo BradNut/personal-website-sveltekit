@@ -55,7 +55,7 @@
 								{/each}
 							</Picture>
 						</div>
-						<div>
+						<div class="portfolio-details">
 							<p>
 								My personal website written using the following
 								technologies.
@@ -329,6 +329,15 @@
 			grid-template-columns: repeat(1, minmax(150px, 400px));
 			grid-gap: 1.2rem;
 			margin: 0.2rem 0;
+		}
+	}
+
+	:global(.portfolio-details) {
+		margin: 1rem;
+
+		ul {
+			margin: 1rem;
+			list-style: circle;
 		}
 	}
 

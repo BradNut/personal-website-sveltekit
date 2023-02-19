@@ -1,15 +1,16 @@
 import { BANDCAMP_USERNAME, USE_REDIS_CACHE } from '$env/static/private';
 import scrapeIt from 'scrape-it';
+import type { ScrapeResult } from 'scrape-it';
 import { redis } from '../server/redis';
 import type { Album } from '../types/album';
 
 export async function fetchBandcampAlbums() {
 	try {
 		if (USE_REDIS_CACHE) {
-			const cached = await redis.get('bandcampAlbums');
+			const cached: string | null = await redis.get('bandcampAlbums');
 
 			if (cached) {
-				const response = JSON.parse(cached);
+				const response: Album[] = JSON.parse(cached);
 				console.log(`Cache hit!`);
 				const ttl = await redis.ttl('bandcampAlbums');
 
@@ -17,27 +18,30 @@ export async function fetchBandcampAlbums() {
 			}
 		}
 
-		const { data } = await scrapeIt(`https://bandcamp.com/${BANDCAMP_USERNAME}`, {
-			collectionItems: {
-				listItem: '.collection-item-container',
-				data: {
-					url: {
-						selector: '.collection-title-details > a.item-link',
-						attr: 'href'
-					},
-					artwork: {
-						selector: 'div.collection-item-art-container a img',
-						attr: 'src'
-					},
-					title: {
-						selector: 'span.item-link-alt > div.collection-item-title'
-					},
-					artist: {
-						selector: 'span.item-link-alt > div.collection-item-artist'
+		const { data }: ScrapeResult<Album[]> = await scrapeIt(
+			`https://bandcamp.com/${BANDCAMP_USERNAME}`,
+			{
+				collectionItems: {
+					listItem: '.collection-item-container',
+					data: {
+						url: {
+							selector: '.collection-title-details > a.item-link',
+							attr: 'href'
+						},
+						artwork: {
+							selector: 'div.collection-item-art-container a img',
+							attr: 'src'
+						},
+						title: {
+							selector: 'span.item-link-alt > div.collection-item-title'
+						},
+						artist: {
+							selector: 'span.item-link-alt > div.collection-item-artist'
+						}
 					}
 				}
 			}
-		});
+		);
 
 		const albums: Album[] = data?.collectionItems || [];
 		// console.log(`Albums ${JSON.stringify(albums)}`);

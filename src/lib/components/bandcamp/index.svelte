@@ -33,7 +33,7 @@
 					rel="noreferrer"
 				>
 					<h3>{album.title.length > 20 ? `${album.title.slice(0, 20)}...` : album.title}</h3>
-					<h3>by {album.artist}</h3>
+					<h3>{album.artist}</h3>
 				</a>
 			</div>
 		{/each}

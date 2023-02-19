@@ -77,7 +77,7 @@
 <style lang="postcss">
 	.home {
 		display: grid;
-		grid-gap: 2rem;
+		gap: 0.5rem;
 	}
 
 	.social-info {
