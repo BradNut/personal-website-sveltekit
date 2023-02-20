@@ -310,7 +310,7 @@
 		gap: 3rem;
 		margin: 0.5rem auto;
 
-		@media (max-width: 767px) {
+		@media (max-width: 800px) {
 			grid-template-columns: repeat(1, minmax(150px, 400px));
 			grid-gap: 1.2rem;
 			margin: 0.2rem 0;
@@ -327,15 +327,15 @@
 	}
 
 	:global(.portfolioPicture) {
-		border-radius: 3px;
-		width: minmax(200px, 500px);
+		/* border-radius: 3px; */
+		/* width: minmax(200px, 500px); */
 	}
 
 	:global(.gridItemStyles) {
 		display: grid;
-		grid-template-columns: minmax(200px, 0.7fr) 0.5fr;
+		grid-template-columns: minmax(200px, 450px) 1fr;
 		width: 100%;
-		gap: 2rem;
+		gap: 1.5rem;
 		margin: 0 auto;
 
 		@media (max-width: 767px) {

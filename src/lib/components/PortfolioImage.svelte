@@ -10,7 +10,7 @@
 		}
 	});
 	const { alt, width, height, src, sources, placeholder, loading } = imageData;
-	const sizes = '(max-width: 500px) 85vw, 350px';
+	const sizes = '(max-width: 600px) 500px, (max-width: 500px) 450px, 450px';
 </script>
 
 <Image
