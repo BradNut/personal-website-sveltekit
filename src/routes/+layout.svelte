@@ -1,12 +1,19 @@
 <script lang="ts">
 	import 'iconify-icon';
+	import lazyload from 'vanilla-lazyload';
+	import type { ILazyLoad } from 'vanilla-lazyload'
 	import Header from '$lib/components/header/index.svelte';
 	import Footer from '$lib/components/footer/index.svelte';
 	import '$root/styles/styles.pcss';
 	import Analytics from '$lib/components/analytics/index.svelte';
 	import SEO from '$lib/components/SEO.svelte';
+	import { browser } from '$app/environment';
 
 	const dev = process.env.NODE_ENV !== 'production';
+
+	if (browser && !document.lazyloadInstance) {
+    document.lazyloadInstance = new lazyload();
+  }
 </script>
 
 {#if !dev}

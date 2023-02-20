@@ -1,8 +1,25 @@
 <script lang="ts">
-	import { Picture } from "svelte-lazy-loader";
-	import desktop from '$lib/assets/images/Desktop_so_clean.jpg';
-	import desktopFormats from '$lib/assets/images/Desktop_so_clean.jpg?format=webp;avif;jpg&metadata';
+	import { onMount } from "svelte";
+	import { browser } from "$app/environment";
+	import { Image } from '@rodneylab/sveltekit-components';
+	import meta from '$lib/assets/images/Desktop_so_clean.jpg?w=500&metadata';
+	import srcsetJpeg from '$lib/assets/images/Desktop_so_clean.jpg?w=1536;1280;500&jpeg&srcset';
+	import srcsetWebp from '$lib/assets/images/Desktop_so_clean.jpg?w=1536;1280;500&webp&srcset';
 	import desktopBlurred from '$lib/assets/images/Desktop_so_clean.jpg?w=100&jpg&blur=10';
+
+	onMount(() => {
+		if (browser) {
+			document.lazyloadInstance.update();
+		}
+	});
+
+	const { width, height, src } = meta;
+	const sources = [
+		{ srcset: srcsetWebp, type: 'image/webp' },
+		{ srcset: srcsetJpeg, type: 'image/jpeg' },
+	];
+
+	const sizes = '(max-width: 0.65fr) calc(100vw - 32px), 0.65fr';
 </script>
 
 <svelte:head>
@@ -43,11 +60,7 @@
 	</div>
 	<div class="uses-block-styles">
 		<figure>
-			<Picture placeholder={desktopBlurred} src={desktop} alt="Clean desk with Samsung monitor and Ducky Keyboard" loading='eager'>
-				{#each desktopFormats as { src, format }}
-					<source data-srcset={src} type="image/{format}" />
-				{/each}
-			</Picture>
+			<Image alt="Clean desk with Samsung monitor and Ducky Keyboard" {width} {height} {src} {sources} placeholder={desktopBlurred} loading="eager" {sizes} />
 		</figure>
 		<h2>Hardware & Accessories</h2>
 		<ul>

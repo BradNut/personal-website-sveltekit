@@ -1,21 +1,19 @@
 <script lang="ts">
-  import {
-    Tab,
-    TabGroup,
-    TabList,
-    TabPanel,
-    TabPanels,
-  } from "@rgossiaux/svelte-headlessui";
-	import { Image, Picture } from "svelte-lazy-loader";
-	import personalSite from "$lib/assets/images/Bradley_Shellnut_New_Site.png";
-	import personalSiteFormats from "$lib/assets/images/Bradley_Shellnut_New_Site.png?format=webp;avif;png&metadata";
-	import personalSiteBlurred from "$lib/assets/images/Bradley_Shellnut_New_Site.png?w=100&png&blur=10";
-  import weddingWebsite from "$lib/assets/images/Wedding_Website.png?format=webp;avif;png&metadata";
-	import weddingWebsiteBlurred from "$lib/assets/images/Wedding_Website.png?w=100&png&blur=10";
-	import oldSite from '$lib/assets/images/Old_Website_Bradley_Shellnut.png?format=webp;avif;png&metadata';
-	import oldSiteBlurred from '$lib/assets/images/Old_Website_Bradley_Shellnut.png?w=100&png&blur=10';
-  import shellnutArchitectWebsite from "$lib/assets/images/Mark_Shellnut_Architect.png?format=webp;avif;png&metadata";
-	import shellnutArchitectWebsiteBlurred from "$lib/assets/images/Mark_Shellnut_Architect.png?w=100&png&blur=10";
+	import { onMount } from "svelte";
+	import { browser } from "$app/environment";
+	import lazyload from 'vanilla-lazyload';
+	import {
+		Tab,
+		TabGroup,
+		TabList,
+		TabPanel,
+		TabPanels,
+	} from "@rgossiaux/svelte-headlessui";
+	import PortfolioImage from '$lib/components/PortfolioImage.svelte';
+	
+	export let data: PageData;
+
+	const { personalSiteData, weddingSiteData, oldPersonalSiteData, markShellnutSiteData } = data;
 </script>
 
 <svelte:head>
@@ -49,11 +47,12 @@
 					<div class="gridItemStyles">
 						<div class="portfolioPicture">
 							<h2>Personal Website</h2>
-							<Picture placeholder={personalSiteBlurred} src={personalSite} alt="Home Page of bradleyshellnut.com">
+							<PortfolioImage imageData={personalSiteData} />
+							<!-- <Picture placeholder={personalSiteBlurred} src={personalSite} alt="Home Page of bradleyshellnut.com">
 								{#each personalSiteFormats as { src, format }}
 									<source data-srcset={src} type="image/{format}" />
 								{/each}
-							</Picture>
+							</Picture> -->
 						</div>
 						<div class="portfolio-details">
 							<p>
@@ -148,11 +147,7 @@
 						<div>
 							<h2>Wedding Website</h2>
 							<div class="portfolioPicture">
-								<Picture placeholder={weddingWebsiteBlurred} src="images/Wedding_Website.png" alt="Wedding Website">
-									{#each weddingWebsite as { src, format }}
-										<source data-srcset={src} type="image/{format}" />
-									{/each}
-								</Picture>
+								<PortfolioImage imageData={weddingSiteData} />
 							</div>
 							<p>
 								<a
@@ -224,11 +219,7 @@
 						<div>
 							<h2>Old Personal Website</h2>
 							<div class="portfolioPicture">
-								<Picture placeholder={oldSiteBlurred} src="images/Old_Website_Bradley_Shellnut.png" alt="Home Page of the old bradleyshellnut.com website">
-									{#each oldSite as { src, format }}
-										<source data-srcset={src} type="image/{format}" />
-									{/each}
-								</Picture>
+								<PortfolioImage imageData={oldPersonalSiteData} />
 							</div>
 							<p>
 								<a
@@ -261,11 +252,7 @@
 					<div>
 						<h2>Mark Shellnut Architect </h2>
 						<div class="portfolio-picture">
-							<Picture placeholder={shellnutArchitectWebsiteBlurred} src="images/Mark_Shellnut_Architect.png" alt="Mark Shellnut Architect's Website">
-								{#each shellnutArchitectWebsite as { src, format }}
-									<source data-srcset={src} type="image/{format}" />
-								{/each}
-							</Picture>
+							<PortfolioImage imageData={markShellnutSiteData} />
 						</div>
 						<p>
 							<a
