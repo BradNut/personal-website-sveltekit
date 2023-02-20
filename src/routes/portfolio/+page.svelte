@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { onMount } from "svelte";
-	import { browser } from "$app/environment";
-	import lazyload from 'vanilla-lazyload';
+	import type { PageData } from "./$types";
 	import {
 		Tab,
 		TabGroup,

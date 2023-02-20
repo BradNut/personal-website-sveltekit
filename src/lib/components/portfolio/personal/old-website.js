@@ -1,6 +1,6 @@
-import meta from '$lib/assets/images/portfolio/Old_Website_Bradley_Shellnut.png?w=450&metadata';
-import srcsetauto from '$lib/assets/images/portfolio/Old_Website_Bradley_Shellnut.png?w=1536;1280;500&png&srcset';
-import srcsetwebp from '$lib/assets/images/portfolio/Old_Website_Bradley_Shellnut.png?w=1536;1280;500&webp&srcset';
+import meta from '$lib/assets/images/portfolio/Old_Website_Bradley_Shellnut.png?w=450;1274;637;500&metadata';
+import srcsetauto from '$lib/assets/images/portfolio/Old_Website_Bradley_Shellnut.png?w=450;1274;637;500&png&srcset';
+import srcsetwebp from '$lib/assets/images/portfolio/Old_Website_Bradley_Shellnut.png?w=450;1274;637;500&webp&srcset';
 import placeholder from '$lib/assets/images/portfolio/Old_Website_Bradley_Shellnut.png?w=100&png&blur=10';
 
 const { width, height, src } = meta;
