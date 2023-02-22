@@ -6,16 +6,16 @@
     TabPanel,
     TabPanels,
   } from "@rgossiaux/svelte-headlessui";
-	import { Image, Picture } from "svelte-lazy-loader";
+	import { Picture } from "svelte-lazy-loader";
 	import personalSite from "$lib/assets/images/Bradley_Shellnut_New_Site.png";
-	import personalSiteFormats from "$lib/assets/images/Bradley_Shellnut_New_Site.png?format=webp;avif;png&metadata";
+	import personalSiteFormats from "$lib/assets/images/Bradley_Shellnut_New_Site.png?w=637;1274&format=webp;avif;png&metadata";
 	import personalSiteBlurred from "$lib/assets/images/Bradley_Shellnut_New_Site.png?w=100&png&blur=10";
   import weddingWebsite from "$lib/assets/images/Wedding_Website.png?format=webp;avif;png&metadata";
 	import weddingWebsiteBlurred from "$lib/assets/images/Wedding_Website.png?w=100&png&blur=10";
 	import oldSite from '$lib/assets/images/Old_Website_Bradley_Shellnut.png?format=webp;avif;png&metadata';
 	import oldSiteBlurred from '$lib/assets/images/Old_Website_Bradley_Shellnut.png?w=100&png&blur=10';
   import shellnutArchitectWebsite from "$lib/assets/images/Mark_Shellnut_Architect.png?format=webp;avif;png&metadata";
-	import shellnutArchitectWebsiteBlurred from "$lib/assets/images/Mark_Shellnut_Architect.png?w=100&png&blur=10";
+	import shellnutArchitectWebsiteBlurred from "$lib/assets/images/Mark_Shellnut_Architect.png?w=400px&blur=10";
 </script>
 
 <svelte:head>
@@ -49,7 +49,7 @@
 					<div class="gridItemStyles">
 						<div class="portfolioPicture">
 							<h2>Personal Website</h2>
-							<Picture placeholder={personalSiteBlurred} src={personalSite} alt="Home Page of bradleyshellnut.com">
+							<Picture placeholder={personalSiteBlurred} src={personalSite} loading="eager" alt="Home Page of bradleyshellnut.com">
 								{#each personalSiteFormats as { src, format }}
 									<source data-srcset={src} type="image/{format}" />
 								{/each}
@@ -261,7 +261,7 @@
 					<div>
 						<h2>Mark Shellnut Architect </h2>
 						<div class="portfolio-picture">
-							<Picture placeholder={shellnutArchitectWebsiteBlurred} src="images/Mark_Shellnut_Architect.png" alt="Mark Shellnut Architect's Website">
+							<Picture placeholder={shellnutArchitectWebsiteBlurred} src="images/Mark_Shellnut_Architect.png" alt="Mark Shellnut Architect's Website" loading="eager">
 								{#each shellnutArchitectWebsite as { src, format }}
 									<source data-srcset={src} type="image/{format}" />
 								{/each}
