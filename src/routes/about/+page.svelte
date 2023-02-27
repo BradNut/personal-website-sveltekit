@@ -16,6 +16,9 @@
 	import tortie_derp_blurred from '$lib/assets/images/tortie_derp.jpg?w=100&jpg&blur=10';
 	import orange_derp from '$lib/assets/images/orange_derp.jpg?format=webp;avif;jpg&metadata';
 	import orange_derp_blurred from '$lib/assets/images/orange_derp.jpg?w=100&jpg&blur=10';
+	import Tag from '$root/lib/components/Tag.svelte';
+	import ExternalLink from '$root/lib/components/ExternalLink.svelte';
+	import { Disclosure } from '@rgossiaux/svelte-headlessui';
 </script>
 
 <SEO title="About" />
@@ -82,6 +85,16 @@
 			</a>
 			<a
 				target="_blank"
+				aria-label="NextJS"
+				href="https://nextjs.org/"
+				class="center"
+				rel="noreferrer"
+			>
+				<iconify-icon icon={Nextdotjs} width="24" height="24" role="img" title="NextJS" />
+				<p>NextJS</p>
+			</a>
+			<a
+				target="_blank"
 				aria-label="Remix"
 				href="https://remix.run/"
 				class="center"
@@ -109,16 +122,6 @@
 			>
 				<iconify-icon icon={Prisma} width="24" height="24" role="img" title="Prisma" />
 				<p>Prisma</p>
-			</a>
-			<a
-				target="_blank"
-				aria-label="NextJS"
-				href="https://nextjs.org/"
-				class="center"
-				rel="noreferrer"
-			>
-				<iconify-icon icon={Nextdotjs} width="24" height="24" role="img" title="NextJS" />
-				<p>NextJS</p>
 			</a>
 			<a
 				target="_blank"
@@ -151,127 +154,102 @@
 		<div class="extracurricular">
 			<div class="card">
 				<h3>
-					<a
-						target="_blank"
-						aria-label="Wes Bos Courses"
+					<ExternalLink
+						ariaLabel="Wes Bos Courses"
 						href="https://wesbos.com/courses"
-						rel="noreferrer"
+						showIcon
 					>
 						Wes Bos
-					</a>
+					</ExternalLink>
 				</h3>
 				<div class="tags">
-					<p>React</p>
-					<p>GraphQL</p>
-					<p>Gatsby</p>
+					<Tag name="React" />
+					<Tag name="GraphQL" />
+					<Tag name="Gatsby" />
+					<Tag name="JavaScript" />
 				</div>
 			</div>
 			<div class="card">
 				<h3>
-					<a
-						target="_blank"
-						aria-label="Levelup Tutorials"
-						href="https://leveluptutorials.com"
-						rel="noreferrer"
-					>
-						LevelupTutorials
-					</a>{' '}
-					-{' '}
-					<a
-						target="_blank"
-						aria-label="Scott Tolinski"
+					<ExternalLink
+						ariaLabel="Scott Tolinski"
 						href="https://www.scotttolinski.com"
-						rel="noreferrer"
+						showIcon
 					>
 						Scott Tolinski
-					</a>
+					</ExternalLink>
+					<ExternalLink
+						ariaLabel="Levelup Tutorials"
+						href="https://levelup.video"
+						showIcon
+					>
+						Level Up Tutorials
+					</ExternalLink>
 				</h3>
 				<div class="tags">
-					<p>React</p>
-					<p>TypeScript</p>
-					<p>Svelte Kit</p>
-					<p>Remix</p>
-					<p>Figma</p>
-					<p>Design Systems</p>
+					<Tag name="React" />
+					<Tag name="TypeScript" />
+					<Tag name="Svelte Kit" />
+					<Tag name="Remix" />
+					<Tag name="Figma" />
+					<Tag name="Design Systems" />
 				</div>
 			</div>
 			<div class="card">
 				<h3>
-					<a
-						target="_blank"
-						aria-label="Levelup Tutorials"
-						href="https://leveluptutorials.com"
-						rel="noreferrer"
-					>
-						LevelupTutorials
-					</a>{' '}
-					-{' '}
-					<a
-						target="_blank"
-						aria-label="Amy Kapernick"
+					<ExternalLink
+						ariaLabel="Amy Kapernick"
 						href="https://www.amyskapers.dev/"
-						rel="noreferrer"
+						showIcon
 					>
 						Amy Kapernick
-					</a>
+					</ExternalLink>
+					<ExternalLink
+						ariaLabel="Levelup Tutorials"
+						href="https://levelup.video"
+						showIcon
+					>
+						Level Up Tutorials
+					</ExternalLink>
 				</h3>
 				<div class="tags">
-					<p>Accessibility for Everyone</p>
+					<Tag name="Accessibility for Everyone" />
 				</div>
 			</div>
 			<div class="card">
 				<h3>
-					<a
-						target="_blank"
-						aria-label="Andrew Mead on Udemy"
+					<ExternalLink
+						ariaLabel="Andrew Mead on Udemy"
 						href="https://www.udemy.com/user/andrewmead/"
-						rel="noreferrer"
+						showIcon
 					>
 						Andrew Mead
-					</a>
+					</ExternalLink>
 				</h3>
 				<div class="tags">
-					<p>GraphQL</p>
-					<p>Apollo</p>
-					<p>Prisma</p>
+					<Tag name="GraphQL" />
+					<Tag name="Apollo" />
+					<Tag name="Prisma" />
 				</div>
 			</div>
 			<div class="card">
 				<h3>
-					<a
-						target="_blank"
-						aria-label="Steven Grider on Udemy"
+					<ExternalLink
+						ariaLabel="Steven Grider on Udemy"
 						href="https://www.udemy.com/user/sgslo/"
-						rel="noreferrer"
+						showIcon
 					>
 						Steven Grider
-					</a>
+					</ExternalLink>
 				</h3>
 				<div class="tags">
-					<p>React</p>
-					<p>Redux</p>
-					<p>Docker</p>
-					<p>GraphQL</p>
-					<p>CSS</p>
-					<p>HTML</p>
-					<p>JS</p>
-				</div>
-			</div>
-			<div class="card">
-				<h3>
-					<a
-						target="_blank"
-						aria-label="Jonas Schmedtmann on Udemy"
-						href="https://www.udemy.com/user/jonasschmedtmann/"
-						rel="noreferrer"
-					>
-						Jonas Schmedtmann
-					</a>
-				</h3>
-				<div class="tags">
-					<p>CSS</p>
-					<p>HTML</p>
-					<p>JS</p>
+					<Tag name="React" />
+					<Tag name="Redux" />
+					<Tag name="Docker" />
+					<Tag name="GraphQL" />
+					<Tag name="CSS" />
+					<Tag name="HTML" />
+					<Tag name="JavaScript" />
 				</div>
 			</div>
 		</div>
@@ -336,7 +314,7 @@
 
 		p {
 			margin: 1rem;
-			padding: 0.2rem;
+			/* padding: 0.2rem; */
 		}
 	}
 
@@ -344,7 +322,8 @@
 		display: flex;
 		flex-wrap: wrap;
 		flex-direction: row;
-		grid-gap: 1rem;
+		place-content: center;
+		gap: 1rem;
 		margin-top: 1rem;
 		font-size: 2rem;
 
@@ -378,8 +357,8 @@
 	.extracurricular {
 		display: grid;
 		grid-template-columns: repeat(3, auto);
-		justify-content: center;
-		align-items: center;
+		/* justify-content: center; */
+		/* align-items: center; */
 		gap: 1.5rem;
 
 		@media (max-width: 1000px) {
@@ -389,7 +368,7 @@
 
 		@media (max-width: 700px) {
 			--cardHeightMin: 10rem;
-			grid-template-columns: 0.8fr;
+			grid-template-columns: 1fr;
 		}
 	}
 
@@ -398,16 +377,6 @@
 		flex-wrap: wrap;
 		justify-content: left;
 		align-items: center;
-
-		p {
-			background-color: var(--linkHover);
-			color: var(--buttonTextColor);
-			padding: 0.25rem 0.5rem;
-			margin: 0.5rem 0.25rem;
-			border-radius: 2px;
-			font-weight: 800;
-			font-size: 1.2rem;
-		}
 	}
 
 	.cat-pics {
