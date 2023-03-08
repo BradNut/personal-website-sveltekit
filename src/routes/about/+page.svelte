@@ -9,7 +9,6 @@
 	import Remix from '@iconify-icons/simple-icons/remix';
 	import Svelte from '@iconify-icons/simple-icons/svelte';
 	import TypeScript from '@iconify-icons/simple-icons/typescript';
-	import SEO from "$root/lib/components/SEO.svelte";
 	import space_needle from '$lib/assets/images/space-needle.png?format=webp;avif;png&metadata';
 	import space_needle_blurred from '$lib/assets/images/space-needle.png?w=100&png&blur=10';
 	import tortie_derp from '$lib/assets/images/tortie_derp.jpg?format=webp;avif;jpg&metadata';
@@ -18,10 +17,11 @@
 	import orange_derp_blurred from '$lib/assets/images/orange_derp.jpg?w=100&jpg&blur=10';
 	import Tag from '$root/lib/components/Tag.svelte';
 	import ExternalLink from '$root/lib/components/ExternalLink.svelte';
-	import { Disclosure } from '@rgossiaux/svelte-headlessui';
 </script>
 
-<SEO title="About" />
+<svelte:head>
+	<title>About | Bradley Shellnut</title>
+</svelte:head>
 
 <div class="about">
 	<div>
