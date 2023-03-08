@@ -9,7 +9,7 @@ portfolioImageAlt: 'Home Page of the old bradleyshellnut.com website'
     import ExternalLink from '$lib/components/ExternalLink.svelte';
 </script>
 
-### {portfolioSubHeading}
+{portfolioSubHeading}
 
 This was my first real personal website hosted on DigitalOcean.
 

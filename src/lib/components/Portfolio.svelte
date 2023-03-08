@@ -35,14 +35,13 @@
 <style lang="postcss">
 	:global(.portfolio-picture) {
 		border-radius: 3px;
-		max-width: 500px;
 	}
 
 	:global(.portfolio) {
 		display: grid;
-		grid-template-columns: minmax(200px, 500px) 1fr;
-		width: 100%;
-		margin: 1rem auto;
+		grid-template-columns: minmax(200px, 500px) auto;
+		/* width: 100%; */
+		margin: 1.5rem auto;
 
 		@media (max-width: 800px) {
 			grid-template-columns: minmax(200px, 500px);
@@ -60,8 +59,7 @@
 	}
 
 	:global(.portfolio-details ul) {
-		margin: 1rem;
-		list-style: disc;
-		padding-left: 1rem;
+		list-style-type: disc;
+		padding-left: 1.5rem;
 	}
 </style>

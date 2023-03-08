@@ -9,7 +9,7 @@ portfolioImageAlt: "Picture of Mark Shellnut Architect's Website"
     import ExternalLink from '$lib/components/ExternalLink.svelte';
 </script>
 
-### {portfolioSubHeading}
+{portfolioSubHeading}
 
 Tech stack:
 

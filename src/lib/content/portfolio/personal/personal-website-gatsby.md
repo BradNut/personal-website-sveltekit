@@ -9,7 +9,7 @@ portfolioImageAlt: 'Home Page of bradleyshellnut.com'
     import ExternalLink from '$lib/components/ExternalLink.svelte';
 </script>
 
-### {portfolioSubHeading}
+{portfolioSubHeading}
 
 Tech Stack:
 
@@ -24,7 +24,8 @@ Tech Stack:
 
 Current version was improved after the suggestions on <ExternalLink showIcon href="https://syntax.fm/show/444/syntax-highlight#t=33:19" ariaLabel="Syntax.fm Podcast Number 444">Show 444</ExternalLink> of the <ExternalLink showIcon 
 				href="https://syntax.fm/show/444/syntax-highlight#t=33:19"
-				ariaLabel="Syntax.fm Podcast">Syntax Podcast</ExternalLink>
-Previous archived version of my <ExternalLink showIcon 
+				ariaLabel="Syntax.fm Podcast">Syntax Podcast</ExternalLink>.
+
+You can view the previous archived version of my personal website <ExternalLink showIcon 
 href="https://web.archive.org/web/20210224002046/https://bradleyshellnut.com/"
-ariaLabel="Archive before Syntax Podcast">personal website</ExternalLink>.
+ariaLabel="Archive before Syntax Podcast">here</ExternalLink>.

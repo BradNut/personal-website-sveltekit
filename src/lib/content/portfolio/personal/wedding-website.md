@@ -9,7 +9,7 @@ portfolioImageAlt: 'Wedding Website'
     import ExternalLink from '$lib/components/ExternalLink.svelte';
 </script>
 
-### {portfolioSubHeading}
+{portfolioSubHeading}
 
 The app was initially created for my wedding but what is linked here is a public demo of the application.
 

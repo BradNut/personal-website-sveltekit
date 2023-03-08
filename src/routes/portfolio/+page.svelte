@@ -52,7 +52,6 @@
 				placeholder={personalSiteBlurred}
 				src={personalSite}
 				alt="Picture of Bradley Shellnut's Gatsby Personal Website"
-				loading="eager"
 				formats={personalSiteFormats}>
 				<PersonalWebsiteGatsby slot="portfolio-details" />
 			</Portfolio>
@@ -90,7 +89,6 @@
 					placeholder={shellnutArchitectWebsiteBlurred}
 					src={shellnutArchitectWebsite}
 					alt="Picture of Mark Shellnut Architect's Website"
-					loading="eager"
 					formats={shellnutArchitectWebsiteFormats}>
 					<MarkShellnutArchitect slot="portfolio-details" />
 				</Portfolio>
@@ -114,7 +112,6 @@
 	}
 
 	:global(.portfolioStyles) {
-		/* margin-top: 1rem; */
 		margin: 0.5rem auto;
 
 		@media (max-width: 800px) {
