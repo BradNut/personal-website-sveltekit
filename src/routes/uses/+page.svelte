@@ -1,8 +1,6 @@
 <script lang="ts">
-	import { Picture } from "svelte-lazy-loader";
-	import desktop from '$lib/assets/images/Desktop_so_clean.jpg';
-	import desktopFormats from '$lib/assets/images/Desktop_so_clean.jpg?format=webp;avif;jpg&metadata';
-	import desktopBlurred from '$lib/assets/images/Desktop_so_clean.jpg?w=100&jpg&blur=10';
+	import Img from '@zerodevx/svelte-img';
+	import desktop from '$lib/assets/images/Desktop_so_clean.jpg?run';
 </script>
 
 <svelte:head>
@@ -43,11 +41,7 @@
 	</div>
 	<div class="uses-block-styles">
 		<figure>
-			<Picture placeholder={desktopBlurred} src={desktop} alt="Clean desk with Samsung monitor and Ducky Keyboard" loading='eager'>
-				{#each desktopFormats as { src, format }}
-					<source data-srcset={src} type="image/{format}" />
-				{/each}
-			</Picture>
+			<Img class="portfolio-image better-blur" src={desktop} alt="Clean desk with Samsung monitor and Ducky Keyboard" loading="eager" />
 		</figure>
 		<h2>Hardware & Accessories</h2>
 		<ul>
