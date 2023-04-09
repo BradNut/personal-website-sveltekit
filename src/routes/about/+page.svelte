@@ -9,9 +9,9 @@
 	import Remix from '@iconify-icons/simple-icons/remix';
 	import Svelte from '@iconify-icons/simple-icons/svelte';
 	import TypeScript from '@iconify-icons/simple-icons/typescript';
-	import space_needle from '$lib/assets/images/space-needle.png?format=webp;avif;png&metadata?run';
-	import tortie_derp from '$lib/assets/images/tortie_derp.jpg?format=webp;avif;jpg&metadata?run';
-	import orange_derp from '$lib/assets/images/orange_derp.jpg?format=webp;avif;jpg&metadata?run';
+	import space_needle from '$lib/assets/images/space-needle.png?run';
+	import tortie_derp from '$lib/assets/images/tortie_derp.jpg?run';
+	import orange_derp from '$lib/assets/images/orange_derp.jpg?run';
 	import Tag from '$root/lib/components/Tag.svelte';
 	import ExternalLink from '$root/lib/components/ExternalLink.svelte';
 </script>
