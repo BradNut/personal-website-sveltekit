@@ -7,29 +7,19 @@
     TabPanel,
     TabPanels,
   } from "@rgossiaux/svelte-headlessui";
-	import { Picture } from "svelte-lazy-loader";
 	import GitHub from '@iconify-icons/simple-icons/github';
 	import Portfolio from '$lib/components/Portfolio.svelte';
-	import personalSite from "$lib/assets/images/Bradley_Shellnut_New_Site.png";
-	import personalSiteFormats from "$lib/assets/images/Bradley_Shellnut_New_Site.png?format=webp;avif;png&metadata";
-	import personalSiteBlurred from "$lib/assets/images/Bradley_Shellnut_New_Site.png?w=100&png&blur=10";
-  import weddingWebsite from "$lib/assets/images/Wedding_Website.png";
-	import weddingWebsiteFormats from "$lib/assets/images/Wedding_Website.png?format=webp;avif;png&metadata";
-	import weddingWebsiteBlurred from "$lib/assets/images/Wedding_Website.png?w=100&png&blur=10";
-	import oldSite from '$lib/assets/images/Old_Website_Bradley_Shellnut.png';
-	import oldSiteFormats from '$lib/assets/images/Old_Website_Bradley_Shellnut.png?format=webp;avif;png&metadata';
-	import oldSiteBlurred from '$lib/assets/images/Old_Website_Bradley_Shellnut.png?w=100&png&blur=10';
-	import shellnutArchitectWebsite from "$lib/assets/images/Mark_Shellnut_Architect.png";
-  import shellnutArchitectWebsiteFormats from "$lib/assets/images/Mark_Shellnut_Architect.png?format=webp;avif;png&metadata";
-	import shellnutArchitectWebsiteBlurred from "$lib/assets/images/Mark_Shellnut_Architect.png?w=100px&blur=10";
+	import personalSite from "$lib/assets/images/Bradley_Shellnut_New_Site.png?run";
+  import weddingWebsite from "$lib/assets/images/Wedding_Website.png?run";
+	import oldSite from '$lib/assets/images/Old_Website_Bradley_Shellnut.png?run';
+	import shellnutArchitectWebsite from "$lib/assets/images/Mark_Shellnut_Architect.png?run";
 	import PersonalWebsiteGatsby from "$lib/content/portfolio/personal/personal-website-gatsby.md";
 	import WeddingWebsite from '$lib/content/portfolio/personal/wedding-website.md';
-	import MarkShellnutArchitect from '$lib/content/portfolio/professional/mark-shellnut-architect.md';
+	import MarkShellnutArchitect from '$lib/content/portfolio/professional/mark-shellnut-architect.md?run';
 	import OldWebsite from '$lib/content/portfolio/personal/old-website.md';
 	import ExternalLink from '$lib/components/ExternalLink.svelte';
 
 	export let data: PageData;
-
 </script>
 
 <svelte:head>
@@ -49,17 +39,16 @@
 	<TabPanels>
 		<TabPanel>
 			<Portfolio name="Personal Website"
-				placeholder={personalSiteBlurred}
+				style="max-height: 640px;"
 				src={personalSite}
-				alt="Picture of Bradley Shellnut's Gatsby Personal Website"
-				formats={personalSiteFormats}>
+				loading="eager"
+				alt="Picture of Bradley Shellnut's Gatsby Personal Website">
 				<PersonalWebsiteGatsby slot="portfolio-details" />
 			</Portfolio>
 			<Portfolio name="Wedding Website"
-				placeholder={weddingWebsiteBlurred}
+				style="max-height: 640px;"
 				src={weddingWebsite}
-				alt="Picture of Bradley Shellnut's Gatsby Personal Website"
-				formats={weddingWebsiteFormats}>
+				alt="Picture of Bradley Shellnut's Gatsby Personal Website">
 				<span slot="portfolio-links">
 					<p>
 						<ExternalLink ariaLabel="View Wedding Website" href="https://weddingsite-six.vercel.app/" showIcon>View Site</ExternalLink>
@@ -71,10 +60,9 @@
 				<WeddingWebsite slot="portfolio-details" />
 			</Portfolio>
 			<Portfolio name="Old Personal Website"
-				placeholder={oldSiteBlurred}
+				style="max-height: 320px;"
 				src={oldSite}
-				alt="Home Page of the old bradleyshellnut.com website"
-				formats={oldSiteFormats}>
+				alt="Home Page of the old bradleyshellnut.com website">
 				<span slot="portfolio-links">
 					<p>
 						<ExternalLink ariaLabel="Archive of bradleyshellnut.com" href="https://web.archive.org/web/20201205233507/https://bradleyshellnut.com/about" showIcon>Link to an archive snapshot</ExternalLink>
@@ -86,10 +74,9 @@
 		<TabPanel>
 			<!-- <div class="portfolioStyles"> -->
 				<Portfolio name="Mark Shellnut Architect"
-					placeholder={shellnutArchitectWebsiteBlurred}
+					style="max-height: 640px;"
 					src={shellnutArchitectWebsite}
-					alt="Picture of Mark Shellnut Architect's Website"
-					formats={shellnutArchitectWebsiteFormats}>
+					alt="Picture of Mark Shellnut Architect's Website">
 					<MarkShellnutArchitect slot="portfolio-details" />
 				</Portfolio>
 			<!-- </div> -->
