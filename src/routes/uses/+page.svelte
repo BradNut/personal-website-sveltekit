@@ -41,7 +41,7 @@
 	</div>
 	<div class="uses-block-styles">
 		<figure>
-			<Img class="portfolio-image better-blur" src={desktop} alt="Clean desk with Samsung monitor and Ducky Keyboard" loading="eager" />
+			<Img class="portfolio-image better-blur" style="max-height: 480px; max-width: 620px;" src={desktop} alt="Clean desk with Samsung monitor and Ducky Keyboard" loading="eager" />
 		</figure>
 		<h2>Hardware & Accessories</h2>
 		<ul>
@@ -566,7 +566,7 @@
 	}
 
  .uses-block-styles {
-		margin: 4rem 0;
+		margin: 2.5rem 0;
 		@media (max-width: 800px) {
 			margin: 2rem 0;
 		}
