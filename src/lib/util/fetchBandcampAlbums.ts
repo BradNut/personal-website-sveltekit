@@ -44,7 +44,6 @@ export async function fetchBandcampAlbums() {
 		);
 
 		const albums: Album[] = data?.collectionItems || [];
-		// console.log(`Albums ${JSON.stringify(albums)}`);
 
 		if (albums && albums?.length > 0) {
 			if (USE_REDIS_CACHE) {

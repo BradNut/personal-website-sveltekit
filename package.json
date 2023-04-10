@@ -61,6 +61,8 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"ioredis": "^5.3.1"
+		"@types/nprogress": "^0.2.0",
+		"ioredis": "^5.3.1",
+		"nprogress": "^0.2.0"
 	}
 }

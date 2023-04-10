@@ -267,11 +267,6 @@
 			>
 				<figure>
 					<Img class="portfolio-image better-blur" src={space_needle} alt="Clip art of the Seattle space needle" />
-					<!-- <Picture placeholder={space_needle_blurred} src="images/space_needle.png" alt="Clip art of the Seattle space needle">
-						{#each space_needle as { src, format }}
-							<source data-srcset={src} type="image/{format}" />
-						{/each}
-					</Picture> -->
 					<p class="center">Seattle Space Needle</p>
 				</figure>
 			</div>
@@ -281,20 +276,10 @@
 			<div class="cat-pics">
 				<figure>
 					<Img class="portfolio-image better-blur" src={tortie_derp} alt="Turnip Cat" />
-					<!-- <Picture placeholder={tortie_derp_blurred} src="images/tortie_derp.jpg" alt="Turnip Cat">
-						{#each tortie_derp as { src, format }}
-							<source data-srcset={src} type="image/{format}" />
-						{/each}
-					</Picture> -->
 					<p class="center">Turnip</p>
 				</figure>
 				<figure>
 					<Img class="portfolio-image better-blur" src={orange_derp} alt="Taco Cat" />
-					<!-- <Picture placeholder={orange_derp_blurred} src="images/orange_derp.jpg" alt="Taco Cat">
-						{#each orange_derp as { src, format }}
-							<source data-srcset={src} type="image/{format}" />
-						{/each}
-					</Picture> -->
 					<p class="center">Taco 🌮</p>
 				</figure>
 			</div>

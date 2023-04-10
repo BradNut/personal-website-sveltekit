@@ -72,14 +72,12 @@
 			</Portfolio>
 		</TabPanel>
 		<TabPanel>
-			<!-- <div class="portfolioStyles"> -->
-				<Portfolio name="Mark Shellnut Architect"
-					style="max-height: 640px;"
-					src={shellnutArchitectWebsite}
-					alt="Picture of Mark Shellnut Architect's Website">
-					<MarkShellnutArchitect slot="portfolio-details" />
-				</Portfolio>
-			<!-- </div> -->
+			<Portfolio name="Mark Shellnut Architect"
+				style="max-height: 640px;"
+				src={shellnutArchitectWebsite}
+				alt="Picture of Mark Shellnut Architect's Website">
+				<MarkShellnutArchitect slot="portfolio-details" />
+			</Portfolio>
 		</TabPanel>
 	</TabPanels>
 </TabGroup>
@@ -96,15 +94,6 @@
 
 	:global(img) {
 		border-radius: 3px;
-	}
-
-	:global(.portfolioStyles) {
-		margin: 0.5rem auto;
-
-		@media (max-width: 800px) {
-			grid-gap: 1.2rem;
-			margin: 0.2rem 0;
-		}
 	}
 
 	:global(.tab-unselected) {

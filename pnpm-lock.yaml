@@ -1,9 +1,15 @@
 lockfileVersion: '6.0'
 
 dependencies:
+  '@types/nprogress':
+    specifier: ^0.2.0
+    version: 0.2.0
   ioredis:
     specifier: ^5.3.1
     version: 5.3.1
+  nprogress:
+    specifier: ^0.2.0
+    version: 0.2.0
 
 devDependencies:
   '@iconify-icons/material-symbols':
@@ -1217,6 +1223,10 @@ packages:
   /@types/node@18.11.18:
     resolution: {integrity: sha512-DHQpWGjyQKSHj3ebjFI/wRKcqQcdR+MoFBygntYOZytCqNfkd2ZC4ARDJ2DQqhjH5p85Nnd3jhUJIXrszFX/JA==}
     dev: true
+
+  /@types/nprogress@0.2.0:
+    resolution: {integrity: sha512-1cYJrqq9GezNFPsWTZpFut/d4CjpZqA0vhqDUPFWYKF1oIyBz5qnoYMzR+0C/T96t3ebLAC1SSnwrVOm5/j74A==}
+    dev: false
 
   /@types/postcss-preset-env@8.0.0(postcss@8.4.21):
     resolution: {integrity: sha512-Mjw3bkhK1SkPg9HgBxUic1hSzpF5p3fSslgZrSg8fPC9mkjoz6ghhVqr9a+kVVDSvE7Lrw6GY/D+yLxmJ4IDAg==}
@@ -3181,6 +3191,10 @@ packages:
       gauge: 3.0.2
       set-blocking: 2.0.0
     dev: true
+
+  /nprogress@0.2.0:
+    resolution: {integrity: sha512-I19aIingLgR1fmhftnbWWO3dXc0hSxqHQHQb3H8m+K3TnEn/iSeTZZOyvKXWqQESMwuUVnatlCnZdLBZZt2VSA==}
+    dev: false
 
   /nth-check@1.0.2:
     resolution: {integrity: sha512-WeBOdju8SnzPN5vTUJYxYUxLeXpCaVP5i5e0LF8fg7WORF2Wd7wFX/pk0tYZk7s8T+J7VLy0Da6J1+wCT0AtHg==}
