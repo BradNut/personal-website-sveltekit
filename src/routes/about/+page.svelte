@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Picture } from 'svelte-lazy-loader';
+	import Img from '@zerodevx/svelte-img';
 	import Graphql from '@iconify-icons/simple-icons/graphql';
 	import Nextdotjs from '@iconify-icons/simple-icons/next-dot-js';
 	import Prisma from '@iconify-icons/simple-icons/prisma';
@@ -9,12 +9,9 @@
 	import Remix from '@iconify-icons/simple-icons/remix';
 	import Svelte from '@iconify-icons/simple-icons/svelte';
 	import TypeScript from '@iconify-icons/simple-icons/typescript';
-	import space_needle from '$lib/assets/images/space-needle.png?format=webp;avif;png&metadata';
-	import space_needle_blurred from '$lib/assets/images/space-needle.png?w=100&png&blur=10';
-	import tortie_derp from '$lib/assets/images/tortie_derp.jpg?format=webp;avif;jpg&metadata';
-	import tortie_derp_blurred from '$lib/assets/images/tortie_derp.jpg?w=100&jpg&blur=10';
-	import orange_derp from '$lib/assets/images/orange_derp.jpg?format=webp;avif;jpg&metadata';
-	import orange_derp_blurred from '$lib/assets/images/orange_derp.jpg?w=100&jpg&blur=10';
+	import space_needle from '$lib/assets/images/space-needle.png?run';
+	import tortie_derp from '$lib/assets/images/tortie_derp.jpg?run';
+	import orange_derp from '$lib/assets/images/orange_derp.jpg?run';
 	import Tag from '$root/lib/components/Tag.svelte';
 	import ExternalLink from '$root/lib/components/ExternalLink.svelte';
 </script>
@@ -269,11 +266,7 @@
 				"
 			>
 				<figure>
-					<Picture placeholder={space_needle_blurred} src="images/space_needle.png" alt="Clip art of the Seattle space needle">
-						{#each space_needle as { src, format }}
-							<source data-srcset={src} type="image/{format}" />
-						{/each}
-					</Picture>
+					<Img class="portfolio-image better-blur" src={space_needle} alt="Clip art of the Seattle space needle" />
 					<p class="center">Seattle Space Needle</p>
 				</figure>
 			</div>
@@ -282,19 +275,11 @@
 			<p>Bringing these two cats, Turnip and Taco, along for the ride.</p>
 			<div class="cat-pics">
 				<figure>
-					<Picture placeholder={tortie_derp_blurred} src="images/tortie_derp.jpg" alt="Turnip Cat">
-						{#each tortie_derp as { src, format }}
-							<source data-srcset={src} type="image/{format}" />
-						{/each}
-					</Picture>
+					<Img class="portfolio-image better-blur" src={tortie_derp} alt="Turnip Cat" />
 					<p class="center">Turnip</p>
 				</figure>
 				<figure>
-					<Picture placeholder={orange_derp_blurred} src="images/orange_derp.jpg" alt="Taco Cat">
-						{#each orange_derp as { src, format }}
-							<source data-srcset={src} type="image/{format}" />
-						{/each}
-					</Picture>
+					<Img class="portfolio-image better-blur" src={orange_derp} alt="Taco Cat" />
 					<p class="center">Taco 🌮</p>
 				</figure>
 			</div>

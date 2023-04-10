@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { navigating } from "$app/stores";
+	import "nprogress/nprogress.css";
+	import NProgress from "nprogress";
 	import 'iconify-icon';
 	import Header from '$lib/components/header/index.svelte';
 	import Footer from '$lib/components/footer/index.svelte';
@@ -6,7 +9,20 @@
 	import Analytics from '$lib/components/analytics/index.svelte';
 	import SEO from '$lib/components/SEO.svelte';
 
+	 NProgress.configure({
+			// Full list: https://github.com/rstacruz/nprogress#configuration
+			minimum: 0.16,
+	});
+
 	const dev = process.env.NODE_ENV !== 'production';
+
+	$: {
+		if ($navigating) {
+			NProgress.start();
+		} else {
+			NProgress.done();
+		}
+	}
 </script>
 
 {#if !dev}
@@ -85,6 +101,15 @@
 		footer {
 			padding: 40px 0;
 		}
+	}
+
+	:global(#nprogress .bar) {
+		background: var(--lightGrey);
+	}
+
+	:global(#nprogress .spinner-icon) {
+		border-top-color: var(--lightGrey);
+		border-left-color: var(--lightGrey);
 	}
 
   :global(p) {
