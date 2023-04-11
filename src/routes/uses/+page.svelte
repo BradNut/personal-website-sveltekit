@@ -41,7 +41,7 @@
 	</div>
 	<div class="uses-block-styles">
 		<div class="uses-image">
-			<Img class="portfolio-image better-blur" style="width: 100%; max-height: 480px;" src={desktop} alt="Clean desk with Samsung monitor and Ducky Keyboard" loading="eager" />
+			<Img class="uses-image better-blur" src={desktop} alt="Clean desk with Samsung monitor and Ducky Keyboard" loading="eager" />
 		</div>
 		<h2>Hardware & Accessories</h2>
 		<ul>
@@ -497,16 +497,6 @@
 			<li>
 				<a
 					target="_blank"
-					aria-label="Element Messaging App"
-					href="https://element.io/"
-					rel="noreferrer"
-				>
-					Element (Riot.im)
-				</a>
-			</li>
-			<li>
-				<a
-					target="_blank"
 					aria-label="FreeTube Video App"
 					href="https://freetubeapp.io/"
 					rel="noreferrer"
@@ -592,6 +582,17 @@
 					color: var(--shellYellow);
 				}
 			}
+		}
+	}
+
+	:global(.uses-image) {
+		margin-left: auto;
+		margin-right: auto;
+		aspect-ratio: 4 / 3;
+		max-height: 480px;
+
+		@media(max-width: 800px) {
+			max-height: 350px;
 		}
 	}
 </style>
