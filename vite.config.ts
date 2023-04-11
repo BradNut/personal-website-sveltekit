@@ -10,7 +10,7 @@ const config: UserConfig = {
 			// By default, directives are `?width=480;1024;1920&format=avif;webp;jpg`
 			// Now we change it to generate 5 variants instead - `avif/jpg` formats at `640/1280` + LQIP
 			defaultDirectives: () =>
-				new URLSearchParams('?width=480;640;1024;1920&format=avif;webp;jpg&lqip=64')
+				new URLSearchParams('?width=320;480;640;1024;1920&format=avif;webp;jpg&lqip=64')
 		})
 	],
 	test: {

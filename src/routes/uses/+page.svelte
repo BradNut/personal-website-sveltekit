@@ -40,9 +40,9 @@
 		</p>
 	</div>
 	<div class="uses-block-styles">
-		<figure>
-			<Img class="portfolio-image better-blur" style="max-height: 480px; max-width: 620px;" src={desktop} alt="Clean desk with Samsung monitor and Ducky Keyboard" loading="eager" />
-		</figure>
+		<div class="uses-image">
+			<Img class="portfolio-image better-blur" style="width: 100%; max-height: 480px;" src={desktop} alt="Clean desk with Samsung monitor and Ducky Keyboard" loading="eager" />
+		</div>
 		<h2>Hardware & Accessories</h2>
 		<ul>
 			<li>MacBook Pro 15-inch for work.</li>
@@ -541,7 +541,8 @@
 <style lang="postcss">
 	figure {
 		display: grid;
-		grid-template-columns: minmax(400px, 0.65fr);
+		grid-template-columns: minmax(500px, 0.65fr);
+		border-radius: 3px;
 		place-content: center;
 		margin-bottom: 2rem;
 	}
@@ -563,6 +564,18 @@
 			border-radius: 3px;
 			max-width: 1000px;
 		}
+	}
+
+	.uses-image {
+		display: grid;
+		grid-template-columns: minmax(620px, 0.65fr);
+		place-content: center;
+
+		@media (max-width: 800px) {
+			grid-template-columns: minmax(480px, 0.65fr);
+		}
+		/* margin-left: auto; */
+		/* margin-right: auto; */
 	}
 
  .uses-block-styles {
@@ -600,5 +613,9 @@
 				}
 			}
 		}
+	}
+
+	:global(img) {
+		border-radius: 3px;
 	}
 </style>
