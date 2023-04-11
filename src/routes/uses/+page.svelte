@@ -539,14 +539,6 @@
 </div>
 
 <style lang="postcss">
-	figure {
-		display: grid;
-		grid-template-columns: minmax(500px, 0.65fr);
-		border-radius: 3px;
-		place-content: center;
-		margin-bottom: 2rem;
-	}
-
 	.uses {
 		li {
 			list-style: none;
@@ -564,18 +556,6 @@
 			border-radius: 3px;
 			max-width: 1000px;
 		}
-	}
-
-	.uses-image {
-		display: grid;
-		grid-template-columns: minmax(620px, 0.65fr);
-		place-content: center;
-
-		@media (max-width: 800px) {
-			grid-template-columns: minmax(480px, 0.65fr);
-		}
-		/* margin-left: auto; */
-		/* margin-right: auto; */
 	}
 
  .uses-block-styles {
@@ -613,9 +593,5 @@
 				}
 			}
 		}
-	}
-
-	:global(img) {
-		border-radius: 3px;
 	}
 </style>

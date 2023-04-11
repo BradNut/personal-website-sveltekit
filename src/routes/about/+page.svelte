@@ -265,10 +265,10 @@
 					justify-content: center;
 				"
 			>
-				<figure>
+				
 					<Img class="portfolio-image better-blur" src={space_needle} alt="Clip art of the Seattle space needle" />
 					<p class="center">Seattle Space Needle</p>
-				</figure>
+				
 			</div>
 		</div>
 		<div>
@@ -369,5 +369,6 @@
 		grid-template-columns: repeat(2, minmax(200px, 0.3fr));
 		align-items: center;
 		justify-content: center;
+		gap: 1rem;
 	}
 </style>
