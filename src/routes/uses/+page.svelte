@@ -41,7 +41,7 @@
 	</div>
 	<div class="uses-block-styles">
 		<div class="uses-image">
-			<Img class="portfolio-image better-blur" style="width: 100%; max-height: 480px; margin: 0 1rem;" src={desktop} alt="Clean desk with Samsung monitor and Ducky Keyboard" loading="eager" />
+			<Img class="portfolio-image better-blur" style="width: 100%; max-height: 480px;" src={desktop} alt="Clean desk with Samsung monitor and Ducky Keyboard" loading="eager" />
 		</div>
 		<h2>Hardware & Accessories</h2>
 		<ul>
