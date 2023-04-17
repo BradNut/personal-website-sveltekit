@@ -260,15 +260,13 @@
 			<div
 				style="
 					display: grid;
-					grid-template-columns: minmax(400px, 0.5fr);
+					grid-template-columns: minmax(200px, 400px);
 					align-items: center;
 					justify-content: center;
 				"
 			>
-				
-					<Img class="portfolio-image better-blur" src={space_needle} alt="Clip art of the Seattle space needle" />
-					<p class="center">Seattle Space Needle</p>
-				
+				<Img class="portfolio-image better-blur" src={space_needle} alt="Clip art of the Seattle space needle" />
+				<p class="center">Seattle Space Needle</p>
 			</div>
 		</div>
 		<div>

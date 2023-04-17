@@ -21,6 +21,7 @@
 <style lang="postcss">
 	.show-icon {
 		display: inline-flex;
+		align-items: center;
 		gap: 0.5rem;
 
 		&:hover {
