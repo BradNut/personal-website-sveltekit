@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { browser } from "$app/environment";
 	import { navigating } from "$app/stores";
 	import "nprogress/nprogress.css";
 	import NProgress from "nprogress";
@@ -17,7 +18,7 @@
 	const dev = process.env.NODE_ENV !== 'production';
 
 	$: {
-		if ($navigating) {
+		if (browser && $navigating) {
 			NProgress.start();
 		} else {
 			NProgress.done();
