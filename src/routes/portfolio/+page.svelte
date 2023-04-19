@@ -8,6 +8,7 @@
     TabPanels,
   } from "@rgossiaux/svelte-headlessui";
 	import GitHub from '@iconify-icons/simple-icons/github';
+	import SEO from '$lib/components/SEO.svelte';
 	import Portfolio from '$lib/components/Portfolio.svelte';
 	import personalSite from "$lib/assets/images/Bradley_Shellnut_New_Site.png?run";
   import weddingWebsite from "$lib/assets/images/Wedding_Website.png?run";
@@ -22,9 +23,7 @@
 	export let data: PageData;
 </script>
 
-<svelte:head>
-	<title>Portfolio | Bradley Shellnut</title>
-</svelte:head>
+<SEO title="Portfolio" />
 
 <h1>Portfolio!</h1>
 <TabGroup>

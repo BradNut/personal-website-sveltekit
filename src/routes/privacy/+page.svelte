@@ -1,5 +1,6 @@
 <script lang="ts">
-	import SEO from "$root/lib/components/SEO.svelte";
+	import ExternalLink from "$root/lib/components/ExternalLink.svelte";
+import SEO from "$root/lib/components/SEO.svelte";
 </script>
 
 <SEO title="Privacy Blog" />
@@ -15,30 +16,11 @@
 		they are willing to give to any business/entity.
 	</p>
 	<p>
-		For the sake of transparency I am using{' '}
-		<a
-			target="_blank"
-			aria-label="Umami Analytics FAQ"
-			href="https://umami.is/docs/faq"
-			rel="noreferrer"
-		>
-			Umami Analytics
-		</a>{' '}
-		to anonymously track visits to my site. You can completely block this
-		if you want by either using an AdBlocker like{' '}
-		<a
-			target="_blank"
-			aria-label="uBlock Origin"
-			href="https://ublockorigin.com/"
-			rel="noreferrer"
-		>
-			uBlock Origin
-		</a>{' '}
-		and/or set your browser to send "Do Not Track" requests as I honor
-		them.
+		For the sake of transparency I am using <ExternalLink ariaLabel="Umami Analytics FAQ" href="https://umami.is/docs/faq" showIcon>Umami Analytics</ExternalLink> to anonymously track visits to my site. You can completely block this if you want by either using an AdBlocker like
+		<ExternalLink ariaLabel="uBlock Origin" href="https://ublockorigin.com/" showIcon>uBlock Origin</ExternalLink> or setting your browser to send "Do Not Track" requests as I honor them.
 	</p>
 </div>
-<div style="margin-top: 2.5rem;">
+<div>
 	<h2>Useful Resources</h2>
 	<p>
 		Here are a few sites/lists of privacy oriented software for you to
@@ -46,34 +28,13 @@
 	</p>
 	<ul>
 		<li>
-			<a
-				target="_blank"
-				aria-label="Privacy Respecting Software"
-				href="https://github.com/Lissy93/personal-security-checklist/blob/master/5_Privacy_Respecting_Software.md"
-				rel="noreferrer"
-			>
-				Privacy Respecting Software
-			</a>
+			<ExternalLink ariaLabel="Privacy Respecting Software" href="https://github.com/Lissy93/personal-security-checklist/blob/master/5_Privacy_Respecting_Software.md" showIcon>Privacy Respecting Software</ExternalLink>
 		</li>
 		<li>
-			<a
-				target="_blank"
-				aria-label="Privacy Guides"
-				href="https://www.privacyguides.org/"
-				rel="noreferrer"
-			>
-				Privacy Guides
-			</a>
+			<ExternalLink ariaLabel="Privacy Guides" href="https://www.privacyguides.org/" showIcon>Privacy Guides</ExternalLink>
 		</li>
 		<li>
-			<a
-				target="_blank"
-				aria-label="Ethical Alternatives"
-				href="https://ethical.net/resources/"
-				rel="noreferrer"
-			>
-				Ethical Alternatives
-			</a>
+			<ExternalLink ariaLabel="Ethical Alternatives" href="https://ethical.net/resources/" showIcon>Ethical Alternatives</ExternalLink>
 		</li>
 	</ul>
 </div>
@@ -81,59 +42,20 @@
 	<h3>Privacy Centric Paid Services I use:</h3>
 	<ul>
 		<li>
-			Article Saving:{' '}
-			<a
-				target="_blank"
-				aria-label="Wallabag Article Saver"
-				href="https://github.com/wallabag/wallabag"
-				rel="noreferrer"
-			>
-				Wallabag
-			</a>
+			Article Saving: <ExternalLink ariaLabel="Wallabag Article Saver" href="https://wallabag.com/" showIcon>Wallabag</ExternalLink>
 		</li>
 		<li>
-			Anonymous Email Forwarding:{' '}
-			<a
-				target="_blank"
-				aria-label="AnonAddy Email Forwarding"
-				href="https://anonaddy.com/"
-				rel="noreferrer"
-			>
-				AnonAddy
-			</a>
+			Anonymous Email Forwarding:
+			<ExternalLink ariaLabel="AnonAddy Email Forwarding" href="https://anonaddy.com/" showIcon>AnonAddy</ExternalLink>
 		</li>
 		<li>
-			Email:{' '}
-			<a
-				target="_blank"
-				aria-label="ProtonMail"
-				href="https://protonmail.com"
-				rel="noreferrer"
-			>
-				ProtonMail
-			</a>
+			Email: <ExternalLink ariaLabel="ProtonMail" href="https://protonmail.com/" showIcon>ProtonMail</ExternalLink>
 		</li>
 		<li>
-			Notes:{' '}
-			<a
-				target="_blank"
-				aria-label="Standard Notes"
-				href="https://standardnotes.org/"
-				rel="noreferrer"
-			>
-				Standard Notes
-			</a>
+			Notes: <ExternalLink ariaLabel="Joplin" href="https://joplinapp.org/" showIcon>Joplin Notes</ExternalLink>
 		</li>
 		<li>
-			VPN:{' '}
-			<a
-				target="_blank"
-				aria-label="Mullvad VPN"
-				href="https://mullvad.net/en/"
-				rel="noreferrer"
-			>
-				Mullvad VPN
-			</a>
+			VPN: <ExternalLink ariaLabel="Mullvad VPN" href="https://mullvad.net/" showIcon>Mullvad VPN</ExternalLink>
 		</li>
 	</ul>
 </div>
@@ -141,48 +63,10 @@
 	<h3>NAS Servers for Self Hosting:</h3>
 	<ul>
 		<li>
-			<a
-				target="_blank"
-				aria-label="Synology NAS"
-				href="https://synology.com/"
-				rel="noreferrer"
-			>
-				Synology
-			</a>
-			: An easy, not cheap, local solution for Google Services like Drive,
-			Drive, Photos, Calendar, other services using Docker, etc. (Yes I
-			should use{' '}
-			<a
-				target="_blank"
-				aria-label="NextCloud Local Hosting Service"
-				href="https://nextcloud.com/"
-				rel="noreferrer"
-			>
-				NextCloud
-			</a>
-			...maybe eventually)
+			<ExternalLink ariaLabel="Synology NAS" href="https://synology.com/" showIcon>Synology NAS</ExternalLink>: An easy, not cheap, local solution for Google Services like Drive, Photos, Calendar, other services using Docker, etc. (Yes I should use <ExternalLink ariaLabel="NextCloud Local Hosting Service" href="https://nextcloud.com/" showIcon>NextCloud Local Hosting Service</ExternalLink>...maybe eventually)
 		</li>
 		<li>
-			Mac Mini: Used as a{' '}
-			<a
-				target="_blank"
-				aria-label="Plex"
-				href="https://www.plex.tv/"
-				rel="noreferrer"
-			>
-				Plex Server
-			</a>{' '}
-			for my Movies/TV/Music until I build a dedicated NAS and maybe
-			switch to{' '}
-			<a
-				target="_blank"
-				aria-label="JellyFin"
-				href="https://jellyfin.org/"
-				rel="noreferrer"
-			>
-				JellyFin
-			</a>{' '}
-			once it is more mature.
+			Mac Mini: Used as a <ExternalLink ariaLabel="Plex" href="https://www.plex.tv/" showIcon>Plex Server</ExternalLink> for my Movies/TV/Music until I build a dedicated NAS and maybe switch to <ExternalLink ariaLabel="JellyFin" href="https://jellyfin.org/" showIcon>JellyFin</ExternalLink> soon.
 		</li>
 	</ul>
 </div>
@@ -190,26 +74,7 @@
 	<h3>Software Deployed:</h3>
 	<ul>
 		<li>
-			<a
-				target="_blank"
-				aria-label="Traefik Cloud Proxy"
-				href="https://github.com/traefik/traefik"
-				rel="noreferrer"
-			>
-				Traefik
-			</a>
-			: A HTTP reverse proxy and load balancer.
-		</li>
-		<li>
-			<a
-				target="_blank"
-				aria-label="Syncthing File Synchronization"
-				href="https://github.com/syncthing/syncthing"
-				rel="noreferrer"
-			>
-				Syncthing
-			</a>
-			: An open source file synchronization program.
+			<ExternalLink ariaLabel="Syncthing File Synchronization" href="https://github.com/syncthing/syncthing" showIcon>Syncthing</ExternalLink>: An open source file synchronization program.
 		</li>
 	</ul>
 </div>
@@ -217,5 +82,12 @@
 <style lang="postcss">
 	div {
 		margin-bottom: 2rem;
+	}
+	p {
+		margin-bottom: 1rem;
+	}
+	ul {
+		list-style-type: square;
+		padding-inline-start: 4rem;
 	}
 </style>

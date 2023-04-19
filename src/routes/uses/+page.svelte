@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Img from '@zerodevx/svelte-img';
+	import SEO from "$lib/components/SEO.svelte";
 	import desktop from '$lib/assets/images/Desktop_so_clean.jpg?run';
 	import HardwareAccessories from '$lib/content/uses/hardware-accessories.md';
 	import Development from '$lib/content/uses/development.md';
@@ -7,9 +8,7 @@
 	import ExternalLink from '$root/lib/components/ExternalLink.svelte';
 </script>
 
-<svelte:head>
-	<title>Uses | Bradley Shellnut</title>
-</svelte:head>
+<SEO title="Uses" />
 
 <div class="uses">
 	<div>

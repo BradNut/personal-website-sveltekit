@@ -9,6 +9,7 @@
 	import Remix from '@iconify-icons/simple-icons/remix';
 	import Svelte from '@iconify-icons/simple-icons/svelte';
 	import TypeScript from '@iconify-icons/simple-icons/typescript';
+	import SEO from "$lib/components/SEO.svelte";
 	import space_needle from '$lib/assets/images/space-needle.png?run';
 	import tortie_derp from '$lib/assets/images/tortie_derp.jpg?run';
 	import orange_derp from '$lib/assets/images/orange_derp.jpg?run';
@@ -16,9 +17,7 @@
 	import ExternalLink from '$root/lib/components/ExternalLink.svelte';
 </script>
 
-<svelte:head>
-	<title>About | Bradley Shellnut</title>
-</svelte:head>
+<SEO title="About" />
 
 <div class="about">
 	<div>
