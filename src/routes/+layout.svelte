@@ -77,10 +77,10 @@
 		flex-direction: column;
 		margin: 0 auto;
 		padding: 2rem 0rem;
-		max-width: 85vw;
+		max-width: 65vw;
 
 		@media (min-width: 1600px) {
-			max-width: 70vw;
+			max-width: 50vw;
 		}
 
 		box-sizing: border-box;

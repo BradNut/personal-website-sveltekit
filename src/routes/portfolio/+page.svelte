@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { PageData } from "./$types";
   import {
     Tab,
     TabGroup,
@@ -19,8 +18,6 @@
 	import MarkShellnutArchitect from '$lib/content/portfolio/professional/mark-shellnut-architect.md?run';
 	import OldWebsite from '$lib/content/portfolio/personal/old-website.md';
 	import ExternalLink from '$lib/components/ExternalLink.svelte';
-
-	export let data: PageData;
 </script>
 
 <SEO title="Portfolio" />

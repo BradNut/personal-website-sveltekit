@@ -51,6 +51,10 @@
 
 	:global(.portfolio-details) {
 		margin: 0 1.5rem;
+
+		@media (max-width: 800px) {
+			margin: 1rem 1.5rem;
+		}
 	}
 
 	:global(.portfolio-details ul) {

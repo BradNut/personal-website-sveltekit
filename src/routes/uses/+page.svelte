@@ -20,12 +20,19 @@
 	<div class="uses-image">
 		<Img class="uses-image better-blur" src={desktop} alt="Clean desk with Samsung monitor and Ducky Keyboard" loading="eager" />
 	</div>
-	<HardwareAccessories />
-	<Development />
-	<PrivacyHardwareSoftware />
+	<div>
+		<HardwareAccessories />
+		<Development />
+		<PrivacyHardwareSoftware />
+	</div>
 </div>
 
 <style lang="postcss">
+	.uses {
+		display: grid;
+		gap: 2rem;
+	}
+
 	p {
 		margin: 1rem;
 	}

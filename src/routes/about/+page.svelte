@@ -13,6 +13,7 @@
 	import space_needle from '$lib/assets/images/space-needle.png?run';
 	import tortie_derp from '$lib/assets/images/tortie_derp.jpg?run';
 	import orange_derp from '$lib/assets/images/orange_derp.jpg?run';
+	import turnip from '$lib/assets/images/turnip.svg';
 	import Tag from '$root/lib/components/Tag.svelte';
 	import ExternalLink from '$root/lib/components/ExternalLink.svelte';
 </script>
@@ -273,7 +274,7 @@
 			<div class="cat-pics">
 				<figure>
 					<Img class="portfolio-image better-blur" src={tortie_derp} alt="Turnip Cat" />
-					<p class="center">Turnip</p>
+					<p class="center">Turnip <img class="icon" src={turnip} width="25px" height="25px" alt="Turnip" /></p>
 				</figure>
 				<figure>
 					<Img class="portfolio-image better-blur" src={orange_derp} alt="Taco Cat" />
@@ -288,6 +289,11 @@
 	:global(img) {
 		height: auto;
 		max-width: 100%;
+	}
+
+	.icon {
+		display: inline-block;
+		vertical-align: top;
 	}
 
 	.about {
@@ -366,6 +372,6 @@
 		grid-template-columns: repeat(2, minmax(200px, 0.3fr));
 		align-items: center;
 		justify-content: center;
-		gap: 1rem;
+		gap: 2rem;
 	}
 </style>
