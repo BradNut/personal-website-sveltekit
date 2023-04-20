@@ -1,10 +1,19 @@
 <script lang="ts">
+	import Img from '@zerodevx/svelte-img';
 	import type { Album } from "$root/lib/types/album";
 
 
 	export let albums: Album[];
 	const displayAlbums =
 		albums?.length > 6 ? albums.slice(0, 6) : albums;
+
+	for (let album of displayAlbums) {
+		album.src = [
+			{ format: 'avif', src: `${album.artwork}`, width: 230, height: 230 },
+			{ format: 'webp', src: `${album.artwork}`, width: 230, height: 230},
+			{ format: 'jpg', src: `${album.artwork}`, width: 230, height: 230}
+		]
+	}
 </script>
 
 <div>
@@ -19,12 +28,7 @@
 						href={album.url}
 						rel="noreferrer"
 					>
-						<img
-							src={`https://images.weserv.nl/?url=${encodeURIComponent(
-								album.artwork
-							)}&w=230&h=230`}
-							alt={`Album art for ${album.title}`}
-						/>
+						<Img src={album.src} alt={`Album art for ${album.title}`} />
 					</a>
 				</figure>
 				<a
@@ -80,6 +84,11 @@
 		display: grid;
 		justify-content: center;
 		text-align: center;
+
+		figure {
+			margin-left: auto;
+			margin-right: auto;
+		}
 
 		@media (max-width: 550px) {
 			grid-template-columns: 0.75fr 0.75fr;
