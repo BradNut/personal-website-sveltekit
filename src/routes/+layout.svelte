@@ -80,7 +80,7 @@
 		max-width: 85vw;
 
 		@media (min-width: 1600px) {
-			max-width: 50vw;
+			max-width: 60vw;
 		}
 
 		box-sizing: border-box;

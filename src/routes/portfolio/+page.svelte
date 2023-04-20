@@ -23,7 +23,7 @@
 <SEO title="Portfolio" />
 
 <h1>Portfolio!</h1>
-<TabGroup>
+<TabGroup class="tab-group">
 	<TabList aria-label="tabs portfolios" class="tab-list">
 		<Tab class={({selected}) => selected ? "tab-selected portfolio-tab" : "tab-unselected portfolio-tab"}>
 			<h2>Personal Sites</h2>
@@ -84,6 +84,12 @@
 </TabGroup>
 
 <style lang="postcss">
+	:global(.tab-group) {
+		@media(min-width: 1000px) {
+			max-width: 50vw;
+		}
+	}
+
 	:global(.tab-list) {
 		display: grid;
 		gap: 1rem;
