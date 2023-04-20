@@ -13,7 +13,7 @@
   import weddingWebsite from "$lib/assets/images/Wedding_Website.png?run";
 	import oldSite from '$lib/assets/images/Old_Website_Bradley_Shellnut.png?run';
 	import shellnutArchitectWebsite from "$lib/assets/images/Mark_Shellnut_Architect.png?run";
-	import PersonalWebsiteGatsby from "$lib/content/portfolio/personal/personal-website-gatsby.md";
+	import PersonalWebsiteSvelteKit from "$lib/content/portfolio/personal/personal-website-sveltekit.md";
 	import WeddingWebsite from '$lib/content/portfolio/personal/wedding-website.md';
 	import MarkShellnutArchitect from '$lib/content/portfolio/professional/mark-shellnut-architect.md?run';
 	import OldWebsite from '$lib/content/portfolio/personal/old-website.md';
@@ -39,7 +39,7 @@
 				src={personalSite}
 				loading="eager"
 				alt="Picture of Bradley Shellnut's Gatsby Personal Website">
-				<PersonalWebsiteGatsby slot="portfolio-details" />
+				<PersonalWebsiteSvelteKit slot="portfolio-details" />
 			</Portfolio>
 			<Portfolio name="Wedding Website"
 				style="max-height: 640px;"
