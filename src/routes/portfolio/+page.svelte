@@ -38,13 +38,18 @@
 				style="max-height: 640px;"
 				src={personalSite}
 				loading="eager"
-				alt="Picture of Bradley Shellnut's Gatsby Personal Website">
+				alt="Picture of Bradley Shellnut's Personal Website">
+				<span slot="portfolio-links">
+					<p>
+						<ExternalLink ariaLabel="View GitHub repository for my personal website" href="https://github.com/BradNut/personal-website-sveltekit" icon={GitHub} showIcon>GitHub repository</ExternalLink>
+					</p>
+				</span>
 				<PersonalWebsiteSvelteKit slot="portfolio-details" />
 			</Portfolio>
 			<Portfolio name="Wedding Website"
 				style="max-height: 640px;"
 				src={weddingWebsite}
-				alt="Picture of Bradley Shellnut's Gatsby Personal Website">
+				alt="Picture of NextJS Wedding Website">
 				<span slot="portfolio-links">
 					<p>
 						<ExternalLink ariaLabel="View Wedding Website" href="https://weddingsite-six.vercel.app/" showIcon>View Site</ExternalLink>
