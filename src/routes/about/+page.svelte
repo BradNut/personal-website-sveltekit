@@ -343,11 +343,14 @@
 	}
 
 	.extracurricular {
-		display: grid;
-		grid-template-columns: repeat(3, auto);
-		/* justify-content: center; */
-		/* align-items: center; */
+		display: flex;
+		flex-wrap: wrap;
+		place-content: center;
 		gap: 1.5rem;
+
+		.card {
+			max-width: 30rem;
+		}
 
 		@media (max-width: 1000px) {
 			grid-template-columns: repeat(2, auto);
