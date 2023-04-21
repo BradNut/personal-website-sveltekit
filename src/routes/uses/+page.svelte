@@ -46,5 +46,9 @@
 		@media(max-width: 800px) {
 			max-height: 350px;
 		}
+
+		@media(max-width: 500px) {
+			max-height: 300px;
+		}
 	}
 </style>
