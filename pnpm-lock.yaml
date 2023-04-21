@@ -13,8 +13,8 @@ dependencies:
 
 devDependencies:
   '@iconify-icons/material-symbols':
-    specifier: ^1.2.37
-    version: 1.2.37
+    specifier: ^1.2.38
+    version: 1.2.38
   '@iconify-icons/mdi':
     specifier: ^1.2.44
     version: 1.2.44
@@ -930,8 +930,8 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@iconify-icons/material-symbols@1.2.37:
-    resolution: {integrity: sha512-EDrnBXdj2Iem9pR0sT8Y/0m7ClP0ygiDuBdZn31wbfjRyEdWFU+yK98lOXO1j+DFUYuJXAe06NJ3GRfrJ0m5WA==}
+  /@iconify-icons/material-symbols@1.2.38:
+    resolution: {integrity: sha512-w2hv944ibUojEzPvDuVGuFtxYDyQpy1PnKj+Vm5eQ2fy8a26UBzjB0l3eHd50DIZVZv80b8oFPec1PCrh8rutA==}
     dependencies:
       '@iconify/types': 2.0.0
     dev: true
