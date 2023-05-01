@@ -10,5 +10,5 @@ export type ExternalImageSource = {
 	format: string;
 	src: string;
 	width: number;
-	height: number;
+	height?: number;
 };

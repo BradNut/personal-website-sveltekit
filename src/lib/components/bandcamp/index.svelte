@@ -10,8 +10,8 @@
 	for (let album of displayAlbums) {
 		album.src = [
 			{ format: 'avif', src: `${album.artwork}`, width: 230, height: 230 },
-			{ format: 'webp', src: `${album.artwork}`, width: 230, height: 230},
-			{ format: 'jpg', src: `${album.artwork}`, width: 230, height: 230}
+			{ format: 'webp', src: `${album.artwork}`, width: 230, height: 230 },
+			{ format: 'jpg', src: `${album.artwork}`, width: 230, height: 230 }
 		]
 	}
 </script>
@@ -28,7 +28,7 @@
 						href={album.url}
 						rel="noreferrer"
 					>
-						<Img src={album.src} alt={`Album art for ${album.title}`} />
+						<Img class="album-artwork" src={album.src} alt={`Album art for ${album.title}`} />
 					</a>
 				</figure>
 				<a
@@ -50,23 +50,41 @@
 		grid-template-columns: repeat(3, minmax(auto, 1fr));
 		gap: 1rem;
 
+		:global(.album-artwork) {
+			aspect-ratio: auto 230 / 230;
+			object-fit: cover;
+		}
+
 		@media (max-width: 1000px) {
 			grid-template-columns: repeat(2, minmax(150px, 1fr));
-			img {
-				width: 230px;
-				height: 100%;
-				object-fit: cover;
-			}
 		}
 
 		@media (max-width: 575px) {
 			height: 500px;
 			overflow-x: hidden;
 			overflow-y: auto;
-			::-webkit-scrollbar {
+
+			scrollbar-width: thin;
+			scrollbar-color: var(--lightGrey) var(--darkGrey);
+
+			&::-webkit-scrollbar {
 				width: 12px;
 			}
-			scrollbar-width: thin;
+
+			&::-webkit-scrollbar-track {
+				background: var(--darkGrey);
+			}
+
+			&::-webkit-scrollbar-thumb {
+				background-color: var(--lightGrey);
+				border-radius: 6px;
+				border: 3px solid var(--darkGrey);
+			}
+
+			/* ::-webkit-scrollbar {
+				width: 12px;
+			} */
+			/* scrollbar-width: thin;
 			scrollbar-color: var(--lightGrey) var(--darkGrey);
 			::-webkit-scrollbar-track {
 				background: var(--darkGrey);
@@ -75,7 +93,7 @@
 				background-color: var(--lightGrey);
 				border-radius: 6px;
 				border: 3px solid var(--darkGrey);
-			}
+			} */
 			grid-template-columns: minmax(230px, 1fr);
 		}
 	}
@@ -91,7 +109,6 @@
 		}
 
 		@media (max-width: 550px) {
-			grid-template-columns: 0.75fr 0.75fr;
 			font-size: 1rem;
 			align-items: center;
 		}

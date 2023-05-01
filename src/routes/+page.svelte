@@ -14,7 +14,6 @@
 	let totalArticles: number;
 	$: ({ albums, articlesData } = data);
 	$: ({ articles, totalArticles } = articlesData);
-	// $: console.log(`All data: ${JSON.stringify(articlesData)}`);
 	
   const userNames = {
     github: 'BradNut',
@@ -44,11 +43,11 @@
 				rel="noreferrer"
 			>
 				cocktails
-			</a>{' '}
+			</a>
 			🍸, or having fun with my cats. 🐈
 		</p>
 		<p>
-			Check me out on{' '}
+			Check me out on
 			<a
 				href={`https://www.linkedin.com/in/${userNames.linkedIn}`}
 				target="_blank"
@@ -57,7 +56,7 @@
 			>
 				LinkedIn
 			</a>
-			,{' '}
+			,
 			<a
 				href={`https://www.github.com/${userNames.github}`}
 				target="_blank"
