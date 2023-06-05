@@ -40,7 +40,7 @@
 		margin: 0.5rem;
 		padding: 2rem;
 
-		a + a {
+		& a + a {
 			margin-left: 25px;
 		}
 	}

@@ -58,11 +58,11 @@
     gap: 0.5rem;
     margin: 1.5rem 0;
 
-    a {
+    & a {
       overflow-wrap: anywhere;
     }
 
-    p {
+    & p {
       margin: 0.4rem 0.25rem;
     }
 	}
@@ -74,7 +74,7 @@
     justify-content: left;
     align-items: center;
 
-    p + p {
+    & p + p {
       background-color: var(--linkHover);
       color: var(--buttonTextColor);
       padding: 0.25rem 0.5rem;
@@ -92,11 +92,12 @@
     align-items: center;
     gap: 1rem;
 
-    a {
+    & a {
       font-size: 2rem;
-      svg {
-        text-decoration: none;
-      }
+    }
+
+    & a + svg {
+      text-decoration: none;
     }
 
     @media (max-width: 1000px) {
