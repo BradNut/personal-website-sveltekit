@@ -97,9 +97,6 @@ devDependencies:
   postcss-load-config:
     specifier: ^4.0.1
     version: 4.0.1(postcss@8.4.24)
-  postcss-nested:
-    specifier: ^6.0.1
-    version: 6.0.1(postcss@8.4.24)
   postcss-preset-env:
     specifier: ^8.4.2
     version: 8.4.2(postcss@8.4.24)
@@ -3611,16 +3608,6 @@ packages:
     dependencies:
       postcss: 8.4.24
       postcss-value-parser: 4.2.0
-    dev: true
-
-  /postcss-nested@6.0.1(postcss@8.4.24):
-    resolution: {integrity: sha512-mEp4xPMi5bSWiMbsgoPfcP74lsWLHkQbZc3sY+jWYd65CUwXrUaTp0fmNpa01ZcETKlIgUdFN/MpS2xZtqL9dQ==}
-    engines: {node: '>=12.0'}
-    peerDependencies:
-      postcss: ^8.2.14
-    dependencies:
-      postcss: 8.4.24
-      postcss-selector-parser: 6.0.11
     dev: true
 
   /postcss-nesting@11.2.2(postcss@8.4.24):
