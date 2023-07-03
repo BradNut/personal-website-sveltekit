@@ -104,13 +104,13 @@
 	}
 
 	:global(.tab-unselected) {
-		h2 {
+		& h2 {
 			border-bottom: 2px solid var(--white);
 		}
 	}
 	
 	:global(.tab-selected) {
-		h2 {
+		& h2 {
 			border-bottom: 2px solid var(--shellYellow);
 		}
 	}

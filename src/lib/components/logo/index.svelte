@@ -31,7 +31,7 @@
 		font-size: 2rem;
 		--scale: 0;
 
-		p::after {
+		& p::after {
 			content: '';
 			position: absolute;
 			width: 100%;
@@ -43,7 +43,7 @@
 			transform: scale(var(--scale));
 		}
 
-		a {
+		& a {
 			display: grid;
 			justify-items: center;
 			text-decoration: none;
@@ -57,7 +57,7 @@
 				--scale: 1;
 			}
 
-			p {
+			& p {
 				position: relative;
 				font-size: 0.5em;
 				/* padding-top: 0.3rem; */
@@ -70,7 +70,7 @@
 				}
 			}
 
-			img {
+			& img {
 				width: 3rem;
 			}
 		}

@@ -96,7 +96,7 @@
 		display: grid;
 		grid-template-rows: 1fr auto;
 		align-items: start;
-		a {
+		& a {
 			cursor: pointer;
 		}
 
@@ -112,7 +112,7 @@
 		justify-content: left;
 		align-items: center;
 
-		p + p {
+		& p + p {
 			background-color: var(--linkHover);
 			color: var(--buttonTextColor);
 			padding: 0.25rem 0.5rem;

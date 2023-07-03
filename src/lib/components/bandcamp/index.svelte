@@ -103,7 +103,7 @@
 		justify-content: center;
 		text-align: center;
 
-		figure {
+		& figure {
 			margin-left: auto;
 			margin-right: auto;
 		}

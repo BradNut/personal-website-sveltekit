@@ -300,7 +300,7 @@
 		display: grid;
 		grid-gap: 2.5rem;
 
-		p {
+		& p {
 			margin: 1rem;
 			/* padding: 0.2rem; */
 		}
@@ -315,7 +315,7 @@
 		margin-top: 1rem;
 		font-size: 2rem;
 
-		a {
+		& a {
 			display: grid;
 			justify-items: center;
 
@@ -327,7 +327,7 @@
 			margin-left: 1rem;
 			color: var(--lightGrey);
 
-			p {
+			& p {
 				font-size: 1.5rem;
 				padding-top: 0.3rem;
 				margin: 0;
@@ -335,7 +335,7 @@
 
 			&:hover {
 				color: var(--shellYellow);
-				p {
+				& p {
 					color: var(--shellYellow);
 				}
 			}
