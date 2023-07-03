@@ -28,7 +28,7 @@ import SEO from "$root/lib/components/SEO.svelte";
 	</p>
 	<ul>
 		<li>
-			<ExternalLink ariaLabel="Privacy Respecting Software" href="https://github.com/Lissy93/personal-security-checklist/blob/master/5_Privacy_Respecting_Software.md" showIcon>Privacy Respecting Software</ExternalLink>
+			<ExternalLink ariaLabel="Awesome Privacy" href="https://github.com/Lissy93/awesome-privacy" showIcon>Privacy Respecting Software List</ExternalLink>
 		</li>
 		<li>
 			<ExternalLink ariaLabel="Privacy Guides" href="https://www.privacyguides.org/" showIcon>Privacy Guides</ExternalLink>
