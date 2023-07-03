@@ -52,9 +52,6 @@ devDependencies:
   '@sveltejs/kit':
     specifier: ^1.21.0
     version: 1.21.0(svelte@3.59.2)(vite@4.3.9)
-  '@types/postcss-preset-env':
-    specifier: ^8.0.0
-    version: 8.0.0(postcss@8.4.24)
   '@typescript-eslint/eslint-plugin':
     specifier: ^5.60.1
     version: 5.60.1(@typescript-eslint/parser@5.60.1)(eslint@8.44.0)(typescript@4.9.5)
@@ -1285,15 +1282,6 @@ packages:
   /@types/nprogress@0.2.0:
     resolution: {integrity: sha512-1cYJrqq9GezNFPsWTZpFut/d4CjpZqA0vhqDUPFWYKF1oIyBz5qnoYMzR+0C/T96t3ebLAC1SSnwrVOm5/j74A==}
     dev: false
-
-  /@types/postcss-preset-env@8.0.0(postcss@8.4.24):
-    resolution: {integrity: sha512-Mjw3bkhK1SkPg9HgBxUic1hSzpF5p3fSslgZrSg8fPC9mkjoz6ghhVqr9a+kVVDSvE7Lrw6GY/D+yLxmJ4IDAg==}
-    deprecated: This is a stub types definition. postcss-preset-env provides its own type definitions, so you do not need this installed.
-    dependencies:
-      postcss-preset-env: 8.5.1(postcss@8.4.24)
-    transitivePeerDependencies:
-      - postcss
-    dev: true
 
   /@types/pug@2.0.6:
     resolution: {integrity: sha512-SnHmG9wN1UVmagJOnyo/qkk0Z7gejYxOYYmaAwr5u2yFYfsupN3sg10kyzN8Hep/2zbHxCnsumxOoRIRMBwKCg==}
