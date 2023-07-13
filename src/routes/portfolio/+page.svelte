@@ -1,11 +1,5 @@
 <script lang="ts">
-  import {
-    Tab,
-    TabGroup,
-    TabList,
-    TabPanel,
-    TabPanels,
-  } from "@rgossiaux/svelte-headlessui";
+	import { createTabs } from '@melt-ui/svelte';
 	import GitHub from '@iconify-icons/simple-icons/github';
 	import SEO from '$lib/components/SEO.svelte';
 	import Portfolio from '$lib/components/Portfolio.svelte';
@@ -18,100 +12,113 @@
 	import MarkShellnutArchitect from '$lib/content/portfolio/professional/mark-shellnut-architect.md?run';
 	import OldWebsite from '$lib/content/portfolio/personal/old-website.md';
 	import ExternalLink from '$lib/components/ExternalLink.svelte';
+
+	const { root, list, content, trigger } = createTabs({
+    value: 'personal',
+  });
 </script>
 
 <SEO title="Portfolio" />
 
 <h1>Portfolio!</h1>
-<TabGroup class="tab-group">
-	<TabList aria-label="tabs portfolios" class="tab-list">
-		<Tab class={({selected}) => selected ? "tab-selected portfolio-tab" : "tab-unselected portfolio-tab"}>
+<div {...$root} class="root tab-group">
+	<div {...$list} aria-label="tabs portfolios" class="list tab-list">
+		<button {...$trigger('personal')} use:trigger class="trigger">
 			<h2>Personal Sites</h2>
-		</Tab>
-		<Tab value="professional-sites" class={({selected}) => selected ? "tab-selected portfolio-tab" : "tab-unselected portfolio-tab"}>
+		</button>
+		<button {...$trigger('professional')} use:trigger value="professional-sites" class="trigger">
 			<h2>Professional Sites</h2>
-		</Tab>
-	</TabList>
-	<TabPanels>
-		<TabPanel>
-			<Portfolio name="Personal Website"
-				style="max-height: 640px;"
-				src={personalSite}
-				loading="eager"
-				alt="Picture of Bradley Shellnut's Personal Website">
-				<span slot="portfolio-links">
-					<p>
-						<ExternalLink ariaLabel="View GitHub repository for my personal website" href="https://github.com/BradNut/personal-website-sveltekit" icon={GitHub} showIcon>GitHub repository</ExternalLink>
-					</p>
-				</span>
-				<PersonalWebsiteSvelteKit slot="portfolio-details" />
-			</Portfolio>
-			<Portfolio name="Wedding Website"
-				style="max-height: 640px;"
-				src={weddingWebsite}
-				alt="Picture of NextJS Wedding Website">
-				<span slot="portfolio-links">
-					<p>
-						<ExternalLink ariaLabel="View Wedding Website" href="https://weddingsite-six.vercel.app/" showIcon>View Site</ExternalLink>
-					</p>
-					<p>
-						<ExternalLink ariaLabel="View GitHub repository for the wedding site" href="https://github.com/BradNut/weddingsite" icon={GitHub} showIcon>GitHub repository</ExternalLink>
-					</p>
-				</span>
-				<WeddingWebsite slot="portfolio-details" />
-			</Portfolio>
-			<Portfolio name="Old Personal Website"
-				style="max-height: 320px;"
-				src={oldSite}
-				alt="Home Page of the old bradleyshellnut.com website">
-				<span slot="portfolio-links">
-					<p>
-						<ExternalLink ariaLabel="Archive of bradleyshellnut.com" href="https://web.archive.org/web/20201205233507/https://bradleyshellnut.com/about" showIcon>Link to an archive snapshot</ExternalLink>
-					</p>
-				</span>
-				<OldWebsite slot="portfolio-details" />
-			</Portfolio>
-		</TabPanel>
-		<TabPanel>
-			<Portfolio name="Mark Shellnut Architect"
-				style="max-height: 640px;"
-				src={shellnutArchitectWebsite}
-				alt="Picture of Mark Shellnut Architect's Website">
-				<MarkShellnutArchitect slot="portfolio-details" />
-			</Portfolio>
-		</TabPanel>
-	</TabPanels>
-</TabGroup>
+		</button>
+	</div>
+	<div {...$content('personal')} class="content">
+		<Portfolio name="Personal Website"
+			style="max-height: 640px;"
+			src={personalSite}
+			loading="eager"
+			alt="Picture of Bradley Shellnut's Personal Website">
+			<span slot="portfolio-links">
+				<p>
+					<ExternalLink ariaLabel="View GitHub repository for my personal website" href="https://github.com/BradNut/personal-website-sveltekit" icon={GitHub} showIcon>GitHub repository</ExternalLink>
+				</p>
+			</span>
+			<PersonalWebsiteSvelteKit slot="portfolio-details" />
+		</Portfolio>
+		<Portfolio name="Wedding Website"
+			style="max-height: 640px;"
+			src={weddingWebsite}
+			alt="Picture of NextJS Wedding Website">
+			<span slot="portfolio-links">
+				<p>
+					<ExternalLink ariaLabel="View Wedding Website" href="https://weddingsite-six.vercel.app/" showIcon>View Site</ExternalLink>
+				</p>
+				<p>
+					<ExternalLink ariaLabel="View GitHub repository for the wedding site" href="https://github.com/BradNut/weddingsite" icon={GitHub} showIcon>GitHub repository</ExternalLink>
+				</p>
+			</span>
+			<WeddingWebsite slot="portfolio-details" />
+		</Portfolio>
+		<Portfolio name="Old Personal Website"
+			style="max-height: 320px;"
+			src={oldSite}
+			alt="Home Page of the old bradleyshellnut.com website">
+			<span slot="portfolio-links">
+				<p>
+					<ExternalLink ariaLabel="Archive of bradleyshellnut.com" href="https://web.archive.org/web/20201205233507/https://bradleyshellnut.com/about" showIcon>Link to an archive snapshot</ExternalLink>
+				</p>
+			</span>
+			<OldWebsite slot="portfolio-details" />
+		</Portfolio>
+	</div>
+	<div {...$content('professional')} class="content">
+		<Portfolio name="Mark Shellnut Architect"
+			style="max-height: 640px;"
+			src={shellnutArchitectWebsite}
+			alt="Picture of Mark Shellnut Architect's Website">
+			<MarkShellnutArchitect slot="portfolio-details" />
+		</Portfolio>
+	</div>
+</div>
 
 <style lang="postcss">
-	:global(.tab-group) {
+	.root {
+		display: flex;
+		flex-direction: column;
+		/* overflow: hidden; */
+		/* border-radius: var(--border-radius); */
+
+		& [data-orientation="vertical"] {
+			flex-direction: row;
+		}
+
 		@media(min-width: 1000px) {
 			max-width: 50vw;
 		}
 	}
 
-	:global(.tab-list) {
+	.list {
 		display: grid;
 		gap: 1rem;
 		grid-template-columns: auto auto;
 		place-content: start;
 		place-items: center;
 		margin-bottom: 1.5rem;
+		cursor: default;
+		user-select: none;
 	}
 
-	:global(img) {
-		border-radius: 3px;
+	.trigger[data-state='active'] {
+		& h2 {
+			border-bottom: 2px solid var(--shellYellow);
+		}
 	}
 
-	:global(.tab-unselected) {
+	.trigger[data-state='inactive'] {
 		& h2 {
 			border-bottom: 2px solid var(--white);
 		}
 	}
-	
-	:global(.tab-selected) {
-		& h2 {
-			border-bottom: 2px solid var(--shellYellow);
-		}
+
+	:global(img) {
+		border-radius: 3px;
 	}
 </style>
