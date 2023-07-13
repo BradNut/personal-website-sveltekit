@@ -58,7 +58,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@melt-ui/svelte": "^0.19.0",
+		"@melt-ui/svelte": "^0.19.1",
 		"@types/nprogress": "^0.2.0",
 		"ioredis": "^5.3.2",
 		"nprogress": "^0.2.0"
