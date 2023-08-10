@@ -74,6 +74,11 @@
 			style="max-height: 640px;"
 			src={shellnutArchitectWebsite}
 			alt="Picture of Mark Shellnut Architect's Website">
+			<span slot="portfolio-links">
+				<p>
+					<ExternalLink ariaLabel="View markshellnutarchitect.com" href="https://markshellnutarchitect.com" showIcon>Link to Mark Shellnut's Website</ExternalLink>
+				</p>
+			</span>
 			<MarkShellnutArchitect slot="portfolio-details" />
 		</Portfolio>
 	</div>
