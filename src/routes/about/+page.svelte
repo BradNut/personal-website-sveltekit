@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Img from '@zerodevx/svelte-img';
 	import Graphql from '@iconify-icons/simple-icons/graphql';
-	import Nextdotjs from '@iconify-icons/simple-icons/next-dot-js';
+	import Nextdotjs from '@iconify-icons/simple-icons/nextdotjs';
 	import Prisma from '@iconify-icons/simple-icons/prisma';
 	import Gatsby from '@iconify-icons/simple-icons/gatsby';
 	import Docker from '@iconify-icons/simple-icons/docker';
