@@ -10,18 +10,15 @@ const config = {
 	// Consult https://kit.svelte.dev/docs/integrations#preprocessors
 	// for more information about preprocessors
 	extensions: ['.svelte', ...mdsvexConfig.extensions],
-	preprocess: [vitePreprocess(),mdsvex(mdsvexConfig)],
+	preprocess: [vitePreprocess(), mdsvex(mdsvexConfig)],
+	vitePlugin: {
+		inspector: true,
+		toggleKeyCombo: 'control-alt-shift'
+	},
 	kit: {
 		adapter: adapter(),
 		alias: {
 			$root: './src'
-		}
-	},
-	vitePlugin: {
-		experimental: {
-			inspector: {
-				toggleKeyCombo: 'control-alt-shift'
-			}
 		}
 	}
 };

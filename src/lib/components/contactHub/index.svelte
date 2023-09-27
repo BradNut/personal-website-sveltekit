@@ -3,14 +3,9 @@
 	import github from '@iconify-icons/radix-icons/github-logo';
 	import linkedin from '@iconify-icons/radix-icons/linkedin-logo';
 	import twitter from '@iconify-icons/radix-icons/twitter-logo';
-  
-	export let showFacebook: boolean = false;
-	export let showInstagram: boolean = false;
+
 	export let showTwitter: boolean = false;
 	export let showLinkedIn: boolean = false;
-	export let showReddit: boolean = false;
-	export let showGithub: boolean = false;
-	export let showYoutube: boolean = false;
 	export let showEmail: boolean = false;
 	export let userNames: Record<string, string>;
 	export let showText: boolean = false;
@@ -30,7 +25,7 @@
 				aria-label="Contact through Twitter"
 				rel="noreferrer"
 			>
-				<iconify-icon icon={github} class="twitter-contact" width="24" height="24" />
+				<iconify-icon icon={twitter} class="twitter-contact" width="24" height="24" />
 			</a>
 		</span>
 	{/if}
@@ -60,7 +55,7 @@
 			</a>
 		</span>
   {/if}
-	{#if email && userNames?.email}
+	{#if showEmail && userNames?.email}
 		<span>
 			<a
 				href={`mailto:${userNames.email}`}
@@ -79,19 +74,14 @@
 	div {
 		display: flex;
 		flex-wrap: wrap;
-		/* margin-top: 1rem; */
 		align-items: center;
 
 		&.justifyCenter {
 			justify-content: center;
 		}
 
-		--facebookColor: #3b5999;
-		--instagramColor: #8e37b8;
-		--redditColor: #ff4500;
 		--twitterColor: #1da1f2;
 		--linkedInColor: #0a66c2;
-		--youTubeColor: #ff0000;
 		--githubColor: #72757e;
 		--emailColor: var(--linkHover);
 	}
@@ -112,24 +102,6 @@
       font-size: 3.55rem;
     }
   }
-  .facebook-contact {
-    color: var(--textColor);
-    &:hover {
-      color: var(--facebookColor);
-    }
-  }
-  .instagram-contact {
-    color: var(--textColor);
-    &:hover {
-      color: var(--instagramColor);
-    }
-  }
-  .reddit-contact {
-    color: var(--textColor);
-    &:hover {
-      color: var(--redditColor);
-    }
-  }
   .twitter-contact {
     color: var(--textColor);
     &:hover {
@@ -140,12 +112,6 @@
     color: var(--textColor);
     &:hover {
       color: var(--linkedInColor);
-    }
-  }
-  .youtube-contact {
-    color: var(--textColor);
-    &:hover {
-      color: var(--youTubeColor);
     }
   }
   .github-contact {
