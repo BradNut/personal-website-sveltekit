@@ -27,7 +27,7 @@
 		"@sveltejs/kit": "^1.25.1",
 		"@typescript-eslint/eslint-plugin": "^5.62.0",
 		"@typescript-eslint/parser": "^5.62.0",
-		"@zerodevx/svelte-img": "^1.2.11",
+		"@zerodevx/svelte-img": "^2.1.0",
 		"autoprefixer": "^10.4.16",
 		"eslint": "^8.45.0",
 		"eslint-config-prettier": "^8.8.0",

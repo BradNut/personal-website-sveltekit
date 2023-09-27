@@ -1,17 +1,17 @@
 <script lang="ts">
-	import Img from '@zerodevx/svelte-img';
+	import LazyImage from './LazyImage.svelte';
 
 	export let name: string;
 	export let src: Record<string, any>;
 	export let alt: string;
-	export let style: string;
+	export let style = "";
 	export let loading: "lazy" | "eager" = "lazy";
 </script>
 
 <div class="portfolio">
 	<div class="portfolio-picture">
 		<h2>{name}</h2>
-		<Img class="portfolio-image better-blur" {style} {src} {alt} {loading} />
+		<LazyImage {style} {src} {alt} {loading} />
 		<slot name="portfolio-links" />
 	</div>
 	<div class="portfolio-details">
@@ -22,14 +22,6 @@
 <style lang="postcss">
 	:global(.portfolio-picture) {
 		border-radius: 3px;
-	}
-
-	:global(img.better-blur)::after {
-		content: '';
-		position: absolute;
-		inset: 0;
-		backdrop-filter: blur(20px);
-		pointer-events: none;
 	}
 
 	:global(.portfolio) {

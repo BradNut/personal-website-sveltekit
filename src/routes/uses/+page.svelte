@@ -1,11 +1,12 @@
 <script lang="ts">
 	import Img from '@zerodevx/svelte-img';
 	import SEO from "$lib/components/SEO.svelte";
-	import desktop from '$lib/assets/images/Desktop_so_clean.jpg?run';
+	import ExternalLink from '$lib/components/ExternalLink.svelte';
+	import LazyImage from '$lib/components/LazyImage.svelte';
+	import desktop from '$lib/assets/images/Desktop_so_clean.jpg?as=run';
 	import HardwareAccessories from '$lib/content/uses/hardware-accessories.md';
 	import Development from '$lib/content/uses/development.md';
 	import PrivacyHardwareSoftware from '$lib/content/uses/privacy-hardware-software.md';
-	import ExternalLink from '$root/lib/components/ExternalLink.svelte';
 </script>
 
 <SEO title="Uses" />
@@ -18,7 +19,7 @@
 		</p>
 	</div>
 	<div class="uses-image">
-		<Img class="uses-image better-blur" src={desktop} alt="Clean desk with Samsung monitor and Ducky Keyboard" loading="eager" />
+		<LazyImage clazz="uses-image" src={desktop} alt="Clean desk with Samsung monitor and Ducky Keyboard" loading="eager" />
 	</div>
 	<div>
 		<HardwareAccessories />

@@ -3,13 +3,13 @@
 	import GitHub from '@iconify-icons/simple-icons/github';
 	import SEO from '$lib/components/SEO.svelte';
 	import Portfolio from '$lib/components/Portfolio.svelte';
-	import personalSite from "$lib/assets/images/Bradley_Shellnut_New_Site.png?run";
-  import weddingWebsite from "$lib/assets/images/Wedding_Website.png?run";
-	import oldSite from '$lib/assets/images/Old_Website_Bradley_Shellnut.png?run';
-	import shellnutArchitectWebsite from "$lib/assets/images/Mark_Shellnut_Architect.png?run";
+	import personalSite from "$lib/assets/images/Bradley_Shellnut_New_Site.png?as=run";
+  import weddingWebsite from "$lib/assets/images/Wedding_Website.png?as=run";
+	import oldSite from '$lib/assets/images/Old_Website_Bradley_Shellnut.png?as=run';
+	import shellnutArchitectWebsite from "$lib/assets/images/Mark_Shellnut_Architect.png?as=run";
 	import PersonalWebsiteSvelteKit from "$lib/content/portfolio/personal/personal-website-sveltekit.md";
 	import WeddingWebsite from '$lib/content/portfolio/personal/wedding-website.md';
-	import MarkShellnutArchitect from '$lib/content/portfolio/professional/mark-shellnut-architect.md?run';
+	import MarkShellnutArchitect from '$lib/content/portfolio/professional/mark-shellnut-architect.md?as=run';
 	import OldWebsite from '$lib/content/portfolio/personal/old-website.md';
 	import ExternalLink from '$lib/components/ExternalLink.svelte';
 

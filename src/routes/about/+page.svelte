@@ -10,9 +10,10 @@
 	import Svelte from '@iconify-icons/simple-icons/svelte';
 	import TypeScript from '@iconify-icons/simple-icons/typescript';
 	import SEO from "$lib/components/SEO.svelte";
-	import space_needle from '$lib/assets/images/space-needle.png?run';
-	import tortie_derp from '$lib/assets/images/tortie_derp.jpg?run';
-	import orange_derp from '$lib/assets/images/orange_derp.jpg?run';
+	import LazyImage from '$root/lib/components/LazyImage.svelte';
+	import adventure from '$lib/assets/images/adventure.png?as=run:0';
+	import tortie_derp from '$lib/assets/images/tortie_derp.jpg?as=run';
+	import orange_derp from '$lib/assets/images/orange_derp.jpg?as=run';
 	import turnip from '$lib/assets/images/turnip.svg';
 	import Tag from '$root/lib/components/Tag.svelte';
 	import ExternalLink from '$root/lib/components/ExternalLink.svelte';
@@ -255,7 +256,7 @@
 		<h2>Other fun things about me&hellip;</h2>
 		<div style="display: grid;">
 			<p>
-				Currently living in Seattle after a long road trip!
+				Currently traveling around the world!
 			</p>
 			<div
 				style="
@@ -265,19 +266,19 @@
 					justify-content: center;
 				"
 			>
-				<Img class="portfolio-image better-blur" src={space_needle} alt="Clip art of the Seattle space needle" />
-				<p class="center">Seattle Space Needle</p>
+				<LazyImage src={adventure} alt="Clip art of the car traveling in the forest" />
+				<p class="center">Traveling around</p>
 			</div>
 		</div>
 		<div>
 			<p>Bringing these two cats, Turnip and Taco, along for the ride.</p>
 			<div class="cat-pics">
 				<figure>
-					<Img class="portfolio-image better-blur" src={tortie_derp} alt="Turnip Cat" />
+					<LazyImage src={tortie_derp} alt="Turnip Cat" />
 					<p class="center">Turnip <img class="icon" src={turnip} width="25px" height="25px" alt="Turnip" /></p>
 				</figure>
 				<figure>
-					<Img class="portfolio-image better-blur" src={orange_derp} alt="Taco Cat" />
+					<LazyImage src={orange_derp} alt="Taco Cat" />
 					<p class="center">Taco 🌮</p>
 				</figure>
 			</div>

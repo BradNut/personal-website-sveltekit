@@ -56,8 +56,8 @@ devDependencies:
     specifier: ^5.62.0
     version: 5.62.0(eslint@8.45.0)(typescript@5.2.2)
   '@zerodevx/svelte-img':
-    specifier: ^1.2.11
-    version: 1.2.11(svelte@4.2.1)
+    specifier: ^2.1.0
+    version: 2.1.0(svelte@4.2.1)
   autoprefixer:
     specifier: ^10.4.16
     version: 10.4.16(postcss@8.4.30)
@@ -1465,14 +1465,13 @@ packages:
       - supports-color
     dev: true
 
-  /@zerodevx/svelte-img@1.2.11(svelte@4.2.1):
-    resolution: {integrity: sha512-LEjs8AjofvE2JxRPGTT/nvoFf10MqpXpylZ/Prs3vSN11FEavxRkBsCNZdsqcV9GMEkrk5LFfpxSteix/NHgtQ==}
+  /@zerodevx/svelte-img@2.1.0(svelte@4.2.1):
+    resolution: {integrity: sha512-ktOcv5svIm8qQQ7sBnSST1zaA5mJpTp+MbzaMeDNBEw4hulwzSD0VRPtq/pvYsjacA1OAw+JIN/qmBl7doh7HA==}
     peerDependencies:
       svelte: ^3.55.1 || ^4.0.0
     dependencies:
-      imagetools-core: 3.3.1
       svelte: 4.2.1
-      vite-imagetools: 4.0.18
+      vite-imagetools: 5.0.8
     transitivePeerDependencies:
       - rollup
     dev: true
@@ -2861,13 +2860,6 @@ packages:
     engines: {node: '>= 4'}
     dev: true
 
-  /imagetools-core@3.3.1:
-    resolution: {integrity: sha512-xllF2GDRg0SXCQQRxBAtE6N9dPAttc+ro+QDLnRmVSE5lH5clQxD2Al4XluirXj0T7lIH5VbetFmBLowW6ps+w==}
-    engines: {node: '>=12.0.0'}
-    dependencies:
-      sharp: 0.31.3
-    dev: true
-
   /imagetools-core@4.0.5:
     resolution: {integrity: sha512-sNRVfUwkUcsVWNn5inTHDXWzpPRWPWbSgGkuQmlsFCWXAR2+K5R5vG5tC3Qs4LeJaMugKB8hGVm6rvZjFHQrUw==}
     engines: {node: '>=12.0.0'}
@@ -3334,10 +3326,6 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       semver: 7.5.4
-    dev: true
-
-  /node-addon-api@5.1.0:
-    resolution: {integrity: sha512-eh0GgfEkpnoWDq+VY8OyvYhFEzBk6jIYbRKdIlyTiAXIVJ8PyBaKb0rp7oDtoddbdoHWhq8wwr+XZ81F1rpNdA==}
     dev: true
 
   /node-addon-api@6.1.0:
@@ -4316,21 +4304,6 @@ packages:
     resolution: {integrity: sha512-RVnVQxTXuerk653XfuliOxBP81Sf0+qfQE73LIYKcyMYHG94AuH0kgrQpRDuTZnSmjpysHmzxJXKNfa6PjFhyQ==}
     dev: true
 
-  /sharp@0.31.3:
-    resolution: {integrity: sha512-XcR4+FCLBFKw1bdB+GEhnUNXNXvnt0tDo4WsBsraKymuo/IAuPuCBVAL2wIkUw2r/dwFW5Q5+g66Kwl2dgDFVg==}
-    engines: {node: '>=14.15.0'}
-    requiresBuild: true
-    dependencies:
-      color: 4.2.3
-      detect-libc: 2.0.2
-      node-addon-api: 5.1.0
-      prebuild-install: 7.1.1
-      semver: 7.5.4
-      simple-get: 4.0.1
-      tar-fs: 2.1.1
-      tunnel-agent: 0.6.0
-    dev: true
-
   /sharp@0.32.6:
     resolution: {integrity: sha512-KyLTWwgcR9Oe4d9HwCwNM2l7+J0dUQwn/yf7S0EnTtb0eVS4RxO0eUSvxPtzT4F3SY+C4K6fqdv/DO27sJ/v/w==}
     engines: {node: '>=14.15.0'}
@@ -4924,16 +4897,6 @@ packages:
     dependencies:
       '@types/unist': 2.0.6
       unist-util-stringify-position: 2.0.3
-    dev: true
-
-  /vite-imagetools@4.0.18:
-    resolution: {integrity: sha512-PpvOy7eDQadfuJNarwPU9X8nK0AjtRsyxhfMjqg/wrAyssNgeaZWMGlWQK/U3YhV9+wpdV5Mep8FZvGa31IY1Q==}
-    engines: {node: '>=12.0.0'}
-    dependencies:
-      '@rollup/pluginutils': 5.0.2
-      imagetools-core: 3.3.1
-    transitivePeerDependencies:
-      - rollup
     dev: true
 
   /vite-imagetools@5.0.8:
