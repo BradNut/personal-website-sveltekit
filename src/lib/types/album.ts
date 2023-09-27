@@ -8,7 +8,7 @@ export type Album = {
 
 export type ExternalImageSource = {
 	format: string;
-	src: string;
-	width: number;
-	height?: number;
+	img: string;
+	w: number;
+	h?: number;
 };

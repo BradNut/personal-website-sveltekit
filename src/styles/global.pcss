@@ -65,7 +65,7 @@
 	--cardWidthMin: 15rem;
 
 	/* Media Queries - Not yet supported in CSS */
-	/* 
+	/*
       --xsmall: 340px;
       --small: 500px;
       --large: 960px;
@@ -264,4 +264,20 @@ figure {
 /* Last item will never have margin bottom */
 .card > *:last-child {
 	margin-bottom: 0;
+}
+
+.blur {
+	position: absolute;
+	inset: 0;
+	backdrop-filter: blur(20px);
+	pointer-events: none;
+}
+
+.wrap {
+	position: relative;
+	overflow: hidden;
+}
+
+.loaded {
+	display: none;
 }

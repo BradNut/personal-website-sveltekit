@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Img from '@zerodevx/svelte-img';
 	import type { Album } from "$root/lib/types/album";
+	import LazyImage from '../LazyImage.svelte';
 
 
 	export let albums: Album[];
@@ -8,11 +9,25 @@
 		albums?.length > 6 ? albums.slice(0, 6) : albums;
 
 	for (let album of displayAlbums) {
-		album.src = [
-			{ format: 'avif', src: `${album.artwork}`, width: 230, height: 230 },
-			{ format: 'webp', src: `${album.artwork}`, width: 230, height: 230 },
-			{ format: 'jpg', src: `${album.artwork}`, width: 230, height: 230 }
-		]
+		album.src = {
+			img: { src: `${album.artwork}`, w: 230, h: 230 },
+			sources: {
+				avif: [
+					{ src: `${album.artwork}`, w: 230, h: 230 },
+				],
+				webp: [
+					{ src: `${album.artwork}`, w: 230, h: 230 },
+				],
+				jpg: [
+					{ src: `${album.artwork}`, w: 230, h: 230 },
+				]
+			}
+		}
+		// [
+		// 	{ format: 'avif', src: `${album.artwork}`, width: 230, height: 230 },
+		// 	{ format: 'webp', src: `${album.artwork}`, width: 230, height: 230 },
+		// 	{ format: 'jpg', src: `${album.artwork}`, width: 230, height: 230 }
+		// ]
 	}
 </script>
 
@@ -28,7 +43,7 @@
 						href={album.url}
 						rel="noreferrer"
 					>
-						<Img class="album-artwork" src={album.src} alt={`Album art for ${album.title}`} />
+						<LazyImage clazz="album-artwork" src={album.src} alt={`Album art for ${album.title}`} />
 					</a>
 				</figure>
 				<a
