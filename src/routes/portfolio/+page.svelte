@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createTabs } from '@melt-ui/svelte';
+	import { createTabs, melt } from '@melt-ui/svelte';
 	import GitHub from '@iconify-icons/simple-icons/github';
 	import SEO from '$lib/components/SEO.svelte';
 	import Portfolio from '$lib/components/Portfolio.svelte';
@@ -13,24 +13,30 @@
 	import OldWebsite from '$lib/content/portfolio/personal/old-website.md';
 	import ExternalLink from '$lib/components/ExternalLink.svelte';
 
-	const { root, list, content, trigger } = createTabs({
-    value: 'personal',
-  });
+	const {
+		elements: { root, list, content, trigger }
+	} = createTabs({
+		defaultValue: 'personal'
+	});
+
+	const triggers = [
+		{ id: 'personal', title: 'Personal Sites' },
+		{ id: 'professional', title: 'Professional Sites'}
+	];
 </script>
 
 <SEO title="Portfolio" />
 
 <h1>Portfolio!</h1>
-<div {...$root} class="root tab-group">
-	<div {...$list} aria-label="tabs portfolios" class="list tab-list">
-		<button {...$trigger('personal')} use:trigger class="trigger">
-			<h2>Personal Sites</h2>
-		</button>
-		<button {...$trigger('professional')} use:trigger value="professional-sites" class="trigger">
-			<h2>Professional Sites</h2>
-		</button>
+<div use:melt={$root} class="root tab-group">
+	<div use:melt={$list} aria-label="tabs portfolios" class="list tab-list">
+		{#each triggers as triggerItem}
+			<button use:melt={$trigger(triggerItem.id)} class="trigger" type="button">
+				<h2>{triggerItem.title}</h2>
+			</button>
+		{/each}
 	</div>
-	<div {...$content('personal')} class="content">
+	<div use:melt={$content('personal')} class="content">
 		<Portfolio name="Personal Website"
 			style="max-height: 640px;"
 			src={personalSite}
@@ -69,7 +75,7 @@
 			<OldWebsite slot="portfolio-details" />
 		</Portfolio>
 	</div>
-	<div {...$content('professional')} class="content">
+	<div use:melt={$content('professional')} class="content">
 		<Portfolio name="Mark Shellnut Architect"
 			style="max-height: 640px;"
 			src={shellnutArchitectWebsite}
@@ -91,7 +97,7 @@
 		/* overflow: hidden; */
 		/* border-radius: var(--border-radius); */
 
-		& [data-orientation="vertical"] {
+		&[data-orientation="vertical"] {
 			flex-direction: row;
 		}
 
@@ -111,15 +117,17 @@
 		user-select: none;
 	}
 
-	.trigger[data-state='active'] {
-		& h2 {
-			border-bottom: 2px solid var(--shellYellow);
+	.trigger {
+		&[data-state='active'] {
+			h2 {
+				border-bottom: 2px solid var(--shellYellow);
+			}
 		}
-	}
 
-	.trigger[data-state='inactive'] {
-		& h2 {
-			border-bottom: 2px solid var(--white);
+	 	&[data-state='inactive'] {
+			h2 {
+				border-bottom: 2px solid var(--white);
+			}
 		}
 	}
 
