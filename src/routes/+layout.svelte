@@ -32,8 +32,18 @@
 		titleTemplate: '%s | Bradley Shellnut',
 		openGraph: {
 			type: 'website',
-			titleTemplate: '%s | Bradley Shellnut',
 			locale: 'en_US',
+			images: [
+				{
+					url: `${$page.data.baseUrl}b_shell_nut_favicon.gif`,
+					alt: 'Bradley Shellnut Website Logo'
+				}
+			]
+		},
+		twitter: {
+			card: 'summary_large_image',
+			image: `${$page.data.baseUrl}b_shell_nut_favicon.gif`,
+			imageAlt: 'Bradley Shellnut Website Logo'
 		},
 		...$page.data.metaTagsChild
 	}
