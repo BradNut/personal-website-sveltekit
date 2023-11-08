@@ -19,7 +19,7 @@
 	import ExternalLink from '$root/lib/components/ExternalLink.svelte';
 </script>
 
-<SEO title="About" />
+<!-- <SEO title="About" /> -->
 
 <div class="about">
 	<div>

@@ -1,19 +1,22 @@
 <script lang="ts">
-	import { browser } from "$app/environment";
-	import { navigating } from "$app/stores";
-	import "nprogress/nprogress.css";
+	import { MetaTags } from 'svelte-meta-tags';
 	import NProgress from "nprogress";
 	import 'iconify-icon';
+	import { browser } from "$app/environment";
+	import { navigating, page } from "$app/stores";
+	import "nprogress/nprogress.css";
+	import '$root/styles/styles.pcss';
 	import Header from '$lib/components/header/index.svelte';
 	import Footer from '$lib/components/footer/index.svelte';
-	import '$root/styles/styles.pcss';
 	import Analytics from '$lib/components/analytics/index.svelte';
-	import SEO from '$lib/components/SEO.svelte';
+	// import SEO from '$lib/components/SEO.svelte';
 
-	 NProgress.configure({
+	NProgress.configure({
 			// Full list: https://github.com/rstacruz/nprogress#configuration
 			minimum: 0.16,
 	});
+
+	export let data;
 
 	const dev = process.env.NODE_ENV !== 'production';
 
@@ -24,13 +27,27 @@
 			NProgress.done();
 		}
 	}
+
+	$: metaTags = {
+		titleTemplate: '%s | Bradley Shellnut',
+		description: 'My name is Bradley Shellnut and I\'m a Full Stack Software Engineer.',
+		openGraph: {
+			type: 'website',
+			titleTemplate: '%s | Bradley Shellnut',
+			locale: 'en_US',
+			description: 'My name is Bradley Shellnut and I\'m a Full Stack Software Engineer.',
+		},
+		...$page.data.metaTagsChild
+	}
 </script>
 
 {#if !dev}
 	<Analytics />
 {/if}
 
-<SEO />
+<MetaTags {...metaTags} />
+
+<!-- <SEO /> -->
 
 <div class="wrapper">
 	<Header />
