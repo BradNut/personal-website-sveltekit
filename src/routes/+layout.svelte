@@ -4,6 +4,7 @@
 	import 'iconify-icon';
 	import { browser } from "$app/environment";
 	import { navigating, page } from "$app/stores";
+	import { PUBLIC_SITE_URL } from '$env/static/public';
 	import "nprogress/nprogress.css";
 	import '$root/styles/styles.pcss';
 	import Header from '$lib/components/header/index.svelte';
@@ -17,6 +18,7 @@
 	});
 
 	const dev = process.env.NODE_ENV !== 'production';
+	const siteUrl = PUBLIC_SITE_URL || 'https://bradleyshellnut.com/';
 
 	$: {
 		if (browser && $navigating) {
@@ -28,21 +30,12 @@
 
 	$: metaTags = {
 		titleTemplate: '%s | Bradley Shellnut',
-		openGraph: {
-			type: 'website',
-			locale: 'en_US',
-			images: [
-				{
-					url: `${$page.data.baseUrl}b_shell_nut_favicon.gif`,
-					alt: 'Bradley Shellnut Website Logo'
-				}
-			]
-		},
-		twitter: {
-			card: 'summary_large_image',
-			image: `${$page.data.baseUrl}b_shell_nut_favicon.gif`,
-			imageAlt: 'Bradley Shellnut Website Logo'
-		},
+		additionalMetaTags: [
+			{
+				property: 'theme-color',
+				content: '#272727'
+			}
+		],
 		...$page.data.metaTagsChild
 	}
 </script>

@@ -1,23 +1,28 @@
 import type { MetaTagsProps } from 'svelte-meta-tags';
-import type { PageServerLoad } from './lib/$types';
-import { fetchBandcampAlbums } from '$root/lib/util/fetchBandcampAlbums';
+import { PUBLIC_SITE_URL } from '$env/static/public';
+import type { PageServerLoad } from './$types';
+import { fetchBandcampAlbums } from '$lib/util/fetchBandcampAlbums';
 
 export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
-	const baseUrl = new URL(url.origin).href;
+	const baseUrl = new URL(url.origin).href || PUBLIC_SITE_URL || 'https://bradleyshellnut.com';
+	const currentPageUrl = new URL(url.pathname, url.origin).href;
+
 	const metaTags: MetaTagsProps = Object.freeze({
 		title: 'Home',
 		description: "My name is Bradley Shellnut and I'm a Full Stack Software Engineer.",
 		openGraph: {
 			title: 'Home',
 			description: "My name is Bradley Shellnut and I'm a Full Stack Software Engineer.",
-			url: new URL(url.pathname, url.origin).href,
+			url: currentPageUrl,
 			siteName: 'Bradley Shellnut Personal Website',
 			type: 'website',
 			locale: 'en_US',
 			images: [
 				{
 					url: `${baseUrl}b_shell_nut_favicon.gif`,
-					alt: 'Bradley Shellnut Website Logo'
+					alt: 'Bradley Shellnut Website Logo',
+					width: 512,
+					height: 512
 				}
 			]
 		},
@@ -28,7 +33,7 @@ export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
 			image: `${baseUrl}b_shell_nut_favicon.gif`,
 			imageAlt: 'Bradley Shellnut Website Logo'
 		},
-		url: new URL(url.pathname, url.origin).href
+		url: currentPageUrl
 	});
 
 	const albums = async () => await fetchBandcampAlbums();
@@ -44,4 +49,3 @@ export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
 		articlesData: (await articles()).json()
 	};
 };
-// <link rel="icon" type="image/gif" href="/b_shell_nut_favicon.gif" />;

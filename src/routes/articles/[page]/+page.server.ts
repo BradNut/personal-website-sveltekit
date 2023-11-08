@@ -1,6 +1,7 @@
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { WALLABAG_MAX_PAGES } from '$env/static/private';
+import { PUBLIC_SITE_URL } from '$env/static/public';
 import type { Article } from '$lib/types/article';
 
 export type ArticlePageLoad = {
@@ -12,7 +13,7 @@ export type ArticlePageLoad = {
 	cacheControl: string;
 };
 
-export const load: PageServerLoad = async ({ fetch, params, setHeaders }) => {
+export const load: PageServerLoad = async ({ fetch, params, setHeaders, url }) => {
 	const { page } = params;
 	if (+page > +WALLABAG_MAX_PAGES) {
 		throw error(404, {
@@ -32,11 +33,45 @@ export const load: PageServerLoad = async ({ fetch, params, setHeaders }) => {
 			'cache-control': 'max-age=43200' // 12 hours
 		});
 	}
+
+	const baseUrl = new URL(url.origin).href || PUBLIC_SITE_URL || 'https://bradleyshellnut.com';
+	const currentPageUrl = new URL(url.pathname, url.origin).href;
+
+	const metaTags: MetaTagsProps = Object.freeze({
+		title: 'Favorite Articles',
+		description: 'My favorite articles',
+		openGraph: {
+			title: 'Facorite Articles',
+			description: 'My favorite articles',
+			url: currentPageUrl,
+			siteName: 'Bradley Shellnut Personal Website',
+			type: 'website',
+			locale: 'en_US',
+			images: [
+				{
+					url: `${baseUrl}b_shell_nut_favicon.gif`,
+					alt: 'Bradley Shellnut Website Logo',
+					width: 512,
+					height: 512
+				}
+			]
+		},
+		twitter: {
+			title: 'Favorite Articles',
+			description: 'My favorite articles',
+			card: 'summary_large_image',
+			image: `${baseUrl}b_shell_nut_favicon.gif`,
+			imageAlt: 'Bradley Shellnut Website Logo'
+		},
+		url: currentPageUrl
+	});
+
 	return {
 		articles,
 		currentPage,
 		totalPages,
 		limit,
-		totalArticles
+		totalArticles,
+		metaTagsChild: metaTags
 	};
 };
