@@ -1,9 +1,9 @@
 <script lang="ts">
 	import ExternalLink from "$root/lib/components/ExternalLink.svelte";
-import SEO from "$root/lib/components/SEO.svelte";
+// import SEO from "$root/lib/components/SEO.svelte";
 </script>
 
-<SEO title="Privacy Blog" />
+<!-- <SEO title="Privacy Blog" /> -->
 
 <div>
 	<h1>Privacy</h1>

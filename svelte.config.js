@@ -13,8 +13,11 @@ const config = {
 	extensions: ['.svelte', ...mdsvexConfig.extensions],
 	preprocess: [vitePreprocess(), mdsvex(mdsvexConfig), preprocessMeltUI()],
 	vitePlugin: {
-		inspector: true,
-		toggleKeyCombo: 'control-alt-shift'
+		inspector: {
+			toggleKeyCombo: 'control-alt-shift',
+			showToggleButton: 'always',
+			toggleButtonPos: 'bottom-right'
+		}
 	},
 	kit: {
 		adapter: adapter(),
