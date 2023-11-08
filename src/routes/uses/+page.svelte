@@ -9,7 +9,7 @@
 	import PrivacyHardwareSoftware from '$lib/content/uses/privacy-hardware-software.md';
 </script>
 
-<SEO title="Uses" />
+<!-- <SEO title="Uses" /> -->
 
 <div class="uses">
 	<div>

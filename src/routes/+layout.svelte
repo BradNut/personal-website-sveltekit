@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { MetaTags } from 'svelte-meta-tags';
+	import { MetaTags, type MetaTagsProps } from 'svelte-meta-tags';
 	import NProgress from "nprogress";
 	import 'iconify-icon';
 	import { browser } from "$app/environment";
@@ -28,14 +28,12 @@
 		}
 	}
 
-	$: metaTags = {
+	$: metaTags: MetaTagsProps = {
 		titleTemplate: '%s | Bradley Shellnut',
-		description: 'My name is Bradley Shellnut and I\'m a Full Stack Software Engineer.',
 		openGraph: {
 			type: 'website',
 			titleTemplate: '%s | Bradley Shellnut',
 			locale: 'en_US',
-			description: 'My name is Bradley Shellnut and I\'m a Full Stack Software Engineer.',
 		},
 		...$page.data.metaTagsChild
 	}
