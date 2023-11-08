@@ -12,10 +12,21 @@ export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
 			description: "My name is Bradley Shellnut and I'm a Full Stack Software Engineer.",
 			url: new URL(url.pathname, url.origin).href,
 			siteName: 'Bradley Shellnut Personal Website',
+			type: 'website',
+			locale: 'en_US',
+			images: [
+				{
+					url: `${baseUrl}b_shell_nut_favicon.gif`,
+					alt: 'Bradley Shellnut Website Logo'
+				}
+			]
 		},
 		twitter: {
 			title: 'Home',
 			description: 'Home page',
+			card: 'summary_large_image',
+			image: `${baseUrl}b_shell_nut_favicon.gif`,
+			imageAlt: 'Bradley Shellnut Website Logo'
 		},
 		url: new URL(url.pathname, url.origin).href
 	});

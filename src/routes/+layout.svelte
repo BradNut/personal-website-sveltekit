@@ -16,8 +16,6 @@
 			minimum: 0.16,
 	});
 
-	export let data;
-
 	const dev = process.env.NODE_ENV !== 'production';
 
 	$: {
