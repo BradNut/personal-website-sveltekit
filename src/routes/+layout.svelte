@@ -10,7 +10,6 @@
 	import Header from '$lib/components/header/index.svelte';
 	import Footer from '$lib/components/footer/index.svelte';
 	import Analytics from '$lib/components/analytics/index.svelte';
-	// import SEO from '$lib/components/SEO.svelte';
 
 	NProgress.configure({
 			// Full list: https://github.com/rstacruz/nprogress#configuration
@@ -45,8 +44,6 @@
 {/if}
 
 <MetaTags {...metaTags} />
-
-<!-- <SEO /> -->
 
 <div class="wrapper">
 	<Header />

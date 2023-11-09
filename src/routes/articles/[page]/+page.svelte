@@ -1,5 +1,4 @@
 <script lang="ts">
-	import SEO from "$lib/components/SEO.svelte";
 	import Pagination from "$lib/components/pagination/index.svelte";
 	import type { Article } from "$root/lib/types/article";
 	import type { PageData } from "./$types";
@@ -13,8 +12,6 @@
 	$: ({ articles, currentPage, totalPages, totalArticles, limit } = data);
 	$: seoTitle = `Tech Articles - Page ${currentPage} | Bradley Shellnut`;
 </script>
-
-<!-- <SEO title={seoTitle} /> -->
 
 <div class="pageStyles">
 	<h1 style="margin-bottom: 2rem">Favorite Tech Articles</h1>
