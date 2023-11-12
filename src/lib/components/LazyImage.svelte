@@ -23,3 +23,21 @@
 	<Img class={clazz} {style} {src} {alt} {loading} bind:ref on:load={() => (loaded = true)} />
 	<div class="blur" class:loaded />
 </div>
+
+<style lang="postcss">
+	.wrap {
+		position: relative;
+		overflow: hidden;
+	}
+
+	.blur {
+		position: absolute;
+		inset: 0;
+		backdrop-filter: blur(20px);
+		pointer-events: none;
+	}
+
+	.loaded {
+		display: none;
+	}
+</style>

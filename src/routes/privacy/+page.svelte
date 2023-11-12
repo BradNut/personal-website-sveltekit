@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ExternalLink from "$root/lib/components/ExternalLink.svelte";
+	import ExternalLink from "$lib/components/ExternalLink.svelte";
 </script>
 
 <div>

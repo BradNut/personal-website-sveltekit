@@ -10,11 +10,11 @@ import {
 	USE_REDIS_CACHE
 } from '$env/static/private';
 import intersect from 'just-intersect';
-import type { Article, WallabagArticle } from '$root/lib/types/article';
-import { ArticleTag } from '$root/lib/types/articleTag';
-import type { PageQuery } from '$root/lib/types/pageQuery';
+import type { Article, WallabagArticle } from '$lib/types/article';
+import { ArticleTag } from '$lib/types/articleTag';
+import type { PageQuery } from '$lib/types/pageQuery';
 import { URLSearchParams } from 'url';
-import { redis } from '$root/lib/server/redis';
+import { redis } from '$lib/server/redis';
 
 const base: string = WALLABAG_URL;
 

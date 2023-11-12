@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Pagination from "$lib/components/pagination/index.svelte";
-	import type { Article } from "$root/lib/types/article";
+	import type { Article } from "$lib/types/article";
+	import Articles from "$lib/components/Articles.svelte";
 	import type { PageData } from "./$types";
 
 	export let data: PageData;
@@ -23,7 +24,8 @@
 		skip={currentPage}
 		base="/articles"
 	/>
-	<div class="articlesStyles">
+	<Articles {articles} {totalArticles} classes={['columns']} />
+	<!-- <div class="articlesStyles">
 		{#each articles as article (article.hashed_url)}
 			<div class="articleStyles card">
 				<section>
@@ -49,7 +51,7 @@
 				</section>
 			</div>
 		{/each}
-	</div>
+	</div> -->
 	<Pagination
 		additionalClasses="bottom-pagination"
 		pageSize={limit}
