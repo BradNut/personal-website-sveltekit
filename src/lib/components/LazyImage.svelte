@@ -20,7 +20,6 @@
 </script>
 
 <div class="wrap">
-        <noscript><Img class={clazz} {style} {src} {alt} {loading} bind:ref on:load={() => (loaded = true)} /></noscript>
 	<Img class={clazz} {style} {src} {alt} {loading} bind:ref on:load={() => (loaded = true)} />
 	<div class="blur" class:loaded />
 </div>
