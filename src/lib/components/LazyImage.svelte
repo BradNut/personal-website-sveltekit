@@ -21,7 +21,7 @@
 
 <div class="wrap">
 	<Img class={clazz} {style} {src} {alt} {loading} bind:ref on:load={() => (loaded = true)} />
-	<div class="blur" class:loaded />
+	<div class:blur={loaded} class:loaded />
 </div>
 
 <style lang="postcss">
