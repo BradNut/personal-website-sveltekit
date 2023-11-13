@@ -1,8 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import Bandcamp from '$lib/components/bandcamp/index.svelte';
-	import Articles from '$lib/components/articles/index.svelte';
-	// import SEO from '$lib/components/SEO.svelte';
+	import Articles from '$lib/components/Articles.svelte';
 	import type { Album } from '$lib/types/album';
 	import type { Article } from '$lib/types/article';
 	import type { ArticlePageLoad } from './articles/[page]/+page.server';
@@ -21,8 +20,6 @@
     email: 'bradleyshellnut@pm.me',
   };
 </script>
-
-<!-- <SEO title="Home" /> -->
 
 <div class="home">
 	<div>
@@ -69,7 +66,7 @@
 		</p>
 	<div class="social-info">
 		<Bandcamp {albums} />
-		<Articles {articles} {totalArticles} compact={true} />
+		<Articles {articles} {totalArticles} compact />
 	</div>
 </div>
 

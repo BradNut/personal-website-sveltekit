@@ -1,6 +1,4 @@
 <script lang="ts">
-	import Img from '@zerodevx/svelte-img';
-	import SEO from "$lib/components/SEO.svelte";
 	import ExternalLink from '$lib/components/ExternalLink.svelte';
 	import LazyImage from '$lib/components/LazyImage.svelte';
 	import desktop from '$lib/assets/images/Desktop_so_clean.jpg?as=run';
@@ -8,8 +6,6 @@
 	import Development from '$lib/content/uses/development.md';
 	import PrivacyHardwareSoftware from '$lib/content/uses/privacy-hardware-software.md';
 </script>
-
-<!-- <SEO title="Uses" /> -->
 
 <div class="uses">
 	<div>

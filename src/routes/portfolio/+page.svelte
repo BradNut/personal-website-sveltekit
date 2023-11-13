@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { createTabs, melt } from '@melt-ui/svelte';
 	import GitHub from '@iconify-icons/simple-icons/github';
-	// import SEO from '$lib/components/SEO.svelte';
 	import Portfolio from '$lib/components/Portfolio.svelte';
 	import personalSite from "$lib/assets/images/Bradley_Shellnut_New_Site.png?as=run";
   import weddingWebsite from "$lib/assets/images/Wedding_Website.png?as=run";
@@ -24,8 +23,6 @@
 		{ id: 'professional', title: 'Professional Sites'}
 	];
 </script>
-
-<!-- <SEO title="Portfolio" /> -->
 
 <h1>Portfolio!</h1>
 <div use:melt={$root} class="root tab-group">

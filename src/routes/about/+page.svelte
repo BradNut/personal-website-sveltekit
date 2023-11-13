@@ -9,17 +9,14 @@
 	import Remix from '@iconify-icons/simple-icons/remix';
 	import Svelte from '@iconify-icons/simple-icons/svelte';
 	import TypeScript from '@iconify-icons/simple-icons/typescript';
-	import SEO from "$lib/components/SEO.svelte";
-	import LazyImage from '$root/lib/components/LazyImage.svelte';
+	import LazyImage from '$lib/components/LazyImage.svelte';
 	import adventure from '$lib/assets/images/adventure.png?as=run:0';
 	import tortie_derp from '$lib/assets/images/tortie_derp.jpg?as=run';
 	import orange_derp from '$lib/assets/images/orange_derp.jpg?as=run';
 	import turnip from '$lib/assets/images/turnip.svg';
-	import Tag from '$root/lib/components/Tag.svelte';
-	import ExternalLink from '$root/lib/components/ExternalLink.svelte';
+	import Tag from '$lib/components/Tag.svelte';
+	import ExternalLink from '$lib/components/ExternalLink.svelte';
 </script>
-
-<!-- <SEO title="About" /> -->
 
 <div class="about">
 	<div>

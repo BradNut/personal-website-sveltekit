@@ -9,14 +9,13 @@
 	export let icon: IconifyIcon = OpenInNew;
 </script>
 
-<span class:show-icon={showIcon}>
-	<a aria-label={`Open ${ariaLabel} externally`} title={`Open ${ariaLabel} externally`} {href} {rel} {target}>
-			<slot />
-	</a>
+
+<a class:show-icon={showIcon} aria-label={`Open ${ariaLabel} externally`} title={`Open ${ariaLabel} externally`} {href} {rel} {target}>
+	<slot />
 	{#if showIcon}
 		<iconify-icon {icon} width="24" height="24" role="img" title={`Open ${ariaLabel} Externally`} />
 	{/if}
-</span>
+</a>
 
 <style lang="postcss">
 	.show-icon {

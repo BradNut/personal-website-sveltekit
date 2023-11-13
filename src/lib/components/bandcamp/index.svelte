@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Img from '@zerodevx/svelte-img';
-	import type { Album } from "$root/lib/types/album";
+	import type { Album } from "$lib/types/album";
 	import LazyImage from '../LazyImage.svelte';
 
 
