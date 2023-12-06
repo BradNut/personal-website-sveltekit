@@ -27,10 +27,9 @@
 	:global(.portfolio) {
 		display: grid;
 		grid-template-columns: minmax(200px, 500px) auto;
-		/* width: 100%; */
 		margin: 1.5rem auto;
 
-		@media (max-width: 800px) {
+		@media (width <= 1200px) {
 			grid-template-columns: minmax(200px, 500px);
 			place-items: center;
 		}

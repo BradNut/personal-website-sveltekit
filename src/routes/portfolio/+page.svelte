@@ -8,7 +8,7 @@
 	import shellnutArchitectWebsite from "$lib/assets/images/Mark_Shellnut_Architect.png?as=run";
 	import PersonalWebsiteSvelteKit from "$lib/content/portfolio/personal/personal-website-sveltekit.md";
 	import WeddingWebsite from '$lib/content/portfolio/personal/wedding-website.md';
-	import MarkShellnutArchitect from '$lib/content/portfolio/professional/mark-shellnut-architect.md?as=run';
+	import MarkShellnutArchitect from '$lib/content/portfolio/professional/mark-shellnut-architect.md';
 	import OldWebsite from '$lib/content/portfolio/personal/old-website.md';
 	import ExternalLink from '$lib/components/ExternalLink.svelte';
 
@@ -35,7 +35,7 @@
 	</div>
 	<div use:melt={$content('personal')} class="content">
 		<Portfolio name="Personal Website"
-			style="max-height: 640px;"
+			style="max-height: 550px;"
 			src={personalSite}
 			loading="eager"
 			alt="Picture of Bradley Shellnut's Personal Website">
@@ -47,7 +47,7 @@
 			<PersonalWebsiteSvelteKit slot="portfolio-details" />
 		</Portfolio>
 		<Portfolio name="Wedding Website"
-			style="max-height: 640px;"
+			style="max-height: 550px;"
 			src={weddingWebsite}
 			alt="Picture of NextJS Wedding Website">
 			<span slot="portfolio-links">
@@ -74,7 +74,7 @@
 	</div>
 	<div use:melt={$content('professional')} class="content">
 		<Portfolio name="Mark Shellnut Architect"
-			style="max-height: 640px;"
+			style="max-height: 550px;"
 			src={shellnutArchitectWebsite}
 			alt="Picture of Mark Shellnut Architect's Website">
 			<span slot="portfolio-links">
