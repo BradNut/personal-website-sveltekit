@@ -1,1 +1,4 @@
 User-agent: *
+Allow: /
+Sitemap: https://bradleyshellnut.com/sitemap.xml
+Host: https://bradleyshellnut.com

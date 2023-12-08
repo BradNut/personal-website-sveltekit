@@ -1,7 +1,8 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import { PUBLIC_SITE_URL } from '$env/static/public';
+import { PUBLIC_URL } from '$env/static/public';
+import { WALLABAG_MAX_PAGES } from '$env/static/private';
 
-const site = `https://${PUBLIC_SITE_URL}`;
+const site = `https://${PUBLIC_URL}`;
 
 export const GET: RequestHandler = async function GET({ setHeaders }) {
 	const xml = `<?xml version="1.0" encoding="UTF-8" ?>
@@ -30,6 +31,17 @@ export const GET: RequestHandler = async function GET({ setHeaders }) {
         <changefreq>weekly</changefreq>
         <priority>1</priority>
       </url>
+
+      ${Array.from({ length: parseInt(WALLABAG_MAX_PAGES) }, (_, i) => {
+        return `
+          <url>
+            <loc>${site}/articles/${i + 1}</loc>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+          </url>
+        `;
+      })}
+
 			<url>
         <loc>${site}/portfolio</loc>
         <changefreq>monthly</changefreq>
