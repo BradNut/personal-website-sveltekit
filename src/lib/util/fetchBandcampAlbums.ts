@@ -1,7 +1,7 @@
 import { BANDCAMP_USERNAME, USE_REDIS_CACHE } from '$env/static/private';
 import scrapeIt from 'scrape-it';
 import type { ScrapeResult } from 'scrape-it';
-import { redis } from '../server/redis';
+import { redis } from '$lib/server/redis';
 import type { Album } from '../types/album';
 
 export async function fetchBandcampAlbums() {

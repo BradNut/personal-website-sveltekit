@@ -4,6 +4,8 @@ import { Resvg } from '@resvg/resvg-js';
 import { html as toReactNode } from 'satori-html';
 import FiraSansSemiBold from '$lib/fonts/FiraSans-SemiBold.ttf';
 import SocialImageCard from '$lib/components/socialImageCard.svelte';
+import { dev } from '$app/environment';
+import { componentToPng } from '$root/lib/renderImage';
 
 const height = 630;
 const width = 1200;
@@ -14,7 +16,8 @@ export const GET: RequestHandler = async ({ url }) => {
 		const header = url.searchParams.get('header') ?? undefined;
 		const page = url.searchParams.get('page') ?? undefined;
 		const content = url.searchParams.get('content') ?? '';
-		const result = SocialImageCard.render({
+
+		return componentToPng(SocialImageCard, {
 			header,
 			page,
 			content,
@@ -22,35 +25,7 @@ export const GET: RequestHandler = async ({ url }) => {
 			width,
 			height,
 			url: new URL(url.origin).href
-		});
-		console.log('result', result);
-		const element = toReactNode(`${result.html}<style>${result.css.code}</style>`);
-		const svg = await satori(element, {
-			fonts: [
-				{
-					name: 'Fira Sans',
-					data: Buffer.from(FiraSansSemiBold),
-					style: 'normal'
-				}
-			],
-			height,
-			width
-		});
-
-		const resvg = new Resvg(svg, {
-			fitTo: {
-				mode: 'width',
-				value: width
-			}
-		});
-
-		const image = resvg.render();
-
-		return new Response(image.asPng(), {
-			headers: {
-				'content-type': 'image/png'
-			}
-		});
+		}, height, width);
 	} catch (e) {
 		console.error(e);
 	}

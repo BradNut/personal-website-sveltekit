@@ -4,7 +4,12 @@ import type { PageServerLoad } from './$types';
 import { fetchBandcampAlbums } from '$lib/util/fetchBandcampAlbums';
 
 export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
-	const baseUrl = new URL(url.origin).href || PUBLIC_SITE_URL || 'https://bradleyshellnut.com';
+	let baseUrl = 'https://bradleyshellnut.com';
+	if (url.origin.includes('prerender')) {
+		baseUrl = PUBLIC_SITE_URL || 'https://bradleyshellnut.com';
+	} else {
+		baseUrl = new URL(url.origin).href || PUBLIC_SITE_URL || 'https://bradleyshellnut.com';
+	}
 	const currentPageUrl = new URL(url.pathname, url.origin).href;
 
 	const metaTags: MetaTagsProps = Object.freeze({
