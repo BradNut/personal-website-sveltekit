@@ -20,10 +20,10 @@ export const load: PageLoad = async ({ url }) => {
 			locale: 'en_US',
 			images: [
 				{
-					url: `${baseUrl}b_shell_nut_favicon.gif`,
-					alt: 'Bradley Shellnut Website Logo',
-					width: 512,
-					height: 512
+					url: `${baseUrl}?header=Privacy Blog | bradleyshellnut.com&page=My thoughts on personal internet privacy.`,
+					alt: 'Bradley Shellnut Privacy Blog',
+					width: 1200,
+					height: 630
 				}
 			]
 		},
@@ -31,7 +31,7 @@ export const load: PageLoad = async ({ url }) => {
 			title: 'Privacy Blog',
 			description: 'My thoughts on personal internet privacy.',
 			card: 'summary_large_image',
-			image: `${baseUrl}b_shell_nut_favicon.gif`,
+			image: `${baseUrl}?header=Privacy Blog | bradleyshellnut.com&page=My thoughts on personal internet privacy.`,
 			imageAlt: 'Bradley Shellnut Website Logo'
 		},
 		url: currentPageUrl

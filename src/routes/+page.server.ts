@@ -19,10 +19,10 @@ export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
 			locale: 'en_US',
 			images: [
 				{
-					url: `${baseUrl}b_shell_nut_favicon.gif`,
-					alt: 'Bradley Shellnut Website Logo',
-					width: 512,
-					height: 512
+					url: `${baseUrl}?header=Home | bradleyshellnut.com&page=Hi I'm Bradley Shellnut.&content=I'm a full stack software engineer currently working on Java Spring, PostgreSQL, and React / Angular JS.`,
+					alt: 'Bradley Shellnut Website Home Page',
+					width: 1200,
+					height: 630
 				}
 			]
 		},
@@ -30,7 +30,7 @@ export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
 			title: 'Home',
 			description: 'Home page',
 			card: 'summary_large_image',
-			image: `${baseUrl}b_shell_nut_favicon.gif`,
+			image: `${baseUrl}?header=Home | bradleyshellnut.com&page=Hi I'm Bradley Shellnut.&content=I'm a full stack software engineer currently working on Java Spring, PostgreSQL, and React / Angular JS.`,
 			imageAlt: 'Bradley Shellnut Website Logo'
 		},
 		url: currentPageUrl
