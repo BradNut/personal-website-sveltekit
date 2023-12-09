@@ -49,7 +49,7 @@ export const load: PageServerLoad = async ({ fetch, params, setHeaders, url }) =
 			locale: 'en_US',
 			images: [
 				{
-					url: `${baseUrl}?header=Articles Page ${page} | bradleyshellnut.com&page=My favorite articles`,
+					url: `${baseUrl}og?header=Articles Page ${page} | bradleyshellnut.com&page=My favorite articles`,
 					alt: `Bradley Shellnut Articles Page ${page}`,
 					width: 1200,
 					height: 630
@@ -60,7 +60,7 @@ export const load: PageServerLoad = async ({ fetch, params, setHeaders, url }) =
 			title: 'Favorite Articles',
 			description: 'My favorite articles',
 			card: 'summary_large_image',
-			image: `${baseUrl}?header=Articles Page ${page} | bradleyshellnut.com&page=My favorite articles`,
+			image: `${baseUrl}og?header=Articles Page ${page} | bradleyshellnut.com&page=My favorite articles`,
 			imageAlt: 'Bradley Shellnut Website Logo'
 		},
 		url: currentPageUrl

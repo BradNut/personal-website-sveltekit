@@ -20,7 +20,7 @@ export const load: PageLoad = async ({ url }) => {
 			locale: 'en_US',
 			images: [
 				{
-					url: `${baseUrl}?header=Uses | bradleyshellnut.com&page=What I use!`,
+					url: `${baseUrl}og?header=Uses | bradleyshellnut.com&page=What I use!`,
 					alt: 'Bradley Shellnut Uses Page',
 					width: 1200,
 					height: 630
@@ -31,7 +31,7 @@ export const load: PageLoad = async ({ url }) => {
 			title: '/Uses',
 			description: "What I use!",
 			card: 'summary_large_image',
-			image: `${baseUrl}?header=Uses | bradleyshellnut.com&page=What I use!`,
+			image: `${baseUrl}og?header=Uses | bradleyshellnut.com&page=What I use!`,
 			imageAlt: 'Bradley Shellnut Website Logo'
 		},
 		url: currentPageUrl

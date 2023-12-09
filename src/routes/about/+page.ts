@@ -19,7 +19,7 @@ export const load: PageLoad = async ({ url }) => {
 			locale: 'en_US',
 			images: [
 				{
-					url: `${baseUrl}?header=About | bradleyshellnut.com&page=Hey! My name is Bradley Shellnut.&content=I am a full stack software engineer who's interested in new tech and not afraid to discover new interests.`,
+					url: `${baseUrl}og?header=About | bradleyshellnut.com&page=Hey! My name is Bradley Shellnut.&content=I am a full stack software engineer who's interested in new tech and not afraid to discover new interests.`,
 					alt: 'About Bradley Shellnut',
 					width: 1200,
 					height: 630
@@ -30,7 +30,7 @@ export const load: PageLoad = async ({ url }) => {
 			title: 'About',
 			description: 'About page',
 			card: 'summary_large_image',
-			image: `${baseUrl}?header=About | bradleyshellnut.com&page=Hey! My name is Bradley Shellnut.&content=I am a full stack software engineer who's interested in new tech and not afraid to discover new interests.`,
+			image: `${baseUrl}og?header=About | bradleyshellnut.com&page=Hey! My name is Bradley Shellnut.&content=I am a full stack software engineer who's interested in new tech and not afraid to discover new interests.`,
 			imageAlt: 'Bradley Shellnut Website Logo'
 		},
 		url: currentPageUrl

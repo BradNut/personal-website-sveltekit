@@ -20,7 +20,7 @@ export const load: PageServerLoad = async ({ url }) => {
 			locale: 'en_US',
 			images: [
 				{
-					url: `${baseUrl}?header=Portfolio | bradleyshellnut.com&page=My portfolio of sites I have created.`,
+					url: `${baseUrl}og?header=Portfolio | bradleyshellnut.com&page=My portfolio of sites I have created.`,
 					alt: 'Bradley Shellnut Portfolio Page',
 					width: 1200,
 					height: 630
@@ -31,7 +31,7 @@ export const load: PageServerLoad = async ({ url }) => {
 			title: 'Portfolio',
 			description: "Bradley Shellnut's Portfolio",
 			card: 'summary_large_image',
-			image: `${baseUrl}?header=Portfolio | bradleyshellnut.com&page=My portfolio of sites I have created.`,
+			image: `${baseUrl}og?header=Portfolio | bradleyshellnut.com&page=My portfolio of sites I have created.`,
 			imageAlt: 'Bradley Shellnut Website Logo'
 		},
 		url: currentPageUrl
