@@ -2,10 +2,10 @@
 	import { createTabs, melt } from '@melt-ui/svelte';
 	import GitHub from '@iconify-icons/simple-icons/github';
 	import Portfolio from '$lib/components/Portfolio.svelte';
-	import personalSite from "$lib/assets/images/Bradley_Shellnut_New_Site.png?as=run";
-  import weddingWebsite from "$lib/assets/images/Wedding_Website.png?as=run";
-	import oldSite from '$lib/assets/images/Old_Website_Bradley_Shellnut.png?as=run';
-	import shellnutArchitectWebsite from "$lib/assets/images/Mark_Shellnut_Architect.png?as=run";
+	import personalSite from "$lib/assets/images/portfolio/Bradley_Shellnut_New_Site.png?as=run";
+  import weddingWebsite from "$lib/assets/images/portfolio/Wedding_Website.png?as=run";
+	import oldSite from '$lib/assets/images/portfolio/Old_Website_Bradley_Shellnut.png?as=run';
+	import shellnutArchitectWebsite from "$lib/assets/images/portfolio/Mark_Shellnut_Architect.png?as=run";
 	import PersonalWebsiteSvelteKit from "$lib/content/portfolio/personal/personal-website-sveltekit.md";
 	import WeddingWebsite from '$lib/content/portfolio/personal/wedding-website.md';
 	import MarkShellnutArchitect from '$lib/content/portfolio/professional/mark-shellnut-architect.md';

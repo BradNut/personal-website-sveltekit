@@ -1,6 +1,6 @@
-import meta from '$lib/assets/images/Bradley_Shellnut_New_Site.png?metadata';
-import formatMeta from '$lib/assets/images/Bradley_Shellnut_New_Site.png?format=webp;avif;png&metadata';
-import placeholder from '$lib/assets/images/Bradley_Shellnut_New_Site.png?w=100&png&blur=10';
+import meta from '$lib/assets/images/portfolio/Bradley_Shellnut_New_Site.png?metadata';
+import formatMeta from '$lib/assets/images/portfolio/Bradley_Shellnut_New_Site.png?format=webp;avif;png&metadata';
+import placeholder from '$lib/assets/images/portfolio/Bradley_Shellnut_New_Site.png?w=100&png&blur=10';
 
 type ImageMeta = {
 	format: string;
