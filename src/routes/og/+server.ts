@@ -1,10 +1,5 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import satori from 'satori';
-import { Resvg } from '@resvg/resvg-js';
-import { html as toReactNode } from 'satori-html';
-import FiraSansSemiBold from '$lib/fonts/FiraSans-SemiBold.ttf';
 import SocialImageCard from '$lib/components/socialImageCard.svelte';
-import { dev } from '$app/environment';
 import { componentToPng } from '$root/lib/renderImage';
 
 const height = 630;
