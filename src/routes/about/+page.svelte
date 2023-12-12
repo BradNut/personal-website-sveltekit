@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Img from '@zerodevx/svelte-img';
 	import Graphql from '@iconify-icons/simple-icons/graphql';
 	import Nextdotjs from '@iconify-icons/simple-icons/nextdotjs';
 	import Prisma from '@iconify-icons/simple-icons/prisma';
@@ -300,7 +299,6 @@
 
 		& p {
 			margin: 1rem;
-			/* padding: 0.2rem; */
 		}
 	}
 
@@ -319,7 +317,6 @@
 
 			font-weight: bold;
 			margin-right: 0;
-			padding: 0;
 			text-decoration: none;
 			padding: 0.3rem;
 			margin-left: 1rem;

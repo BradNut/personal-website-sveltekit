@@ -6,7 +6,9 @@ import { html as toReactNode } from 'satori-html';
 import firaSansSemiBold from '$lib/fonts/FiraSans-SemiBold.ttf';
 import { dev } from '$app/environment';
 
-export async function componentToPng(component, props, height, width) {
+export async function componentToPng(component,
+																		 props: Record<string, string | undefined>,
+																		 height: number, width: number) {
 	const result = component.render(props);
 	const markup = toReactNode(`${result.html}<style lang="css">${result.css.code}</style>`);
 

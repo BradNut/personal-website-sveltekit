@@ -2,7 +2,7 @@ import { BANDCAMP_USERNAME, USE_REDIS_CACHE } from '$env/static/private';
 import scrapeIt from 'scrape-it';
 import type { ScrapeResult } from 'scrape-it';
 import { redis } from '$lib/server/redis';
-import type { Album } from '../types/album';
+import type { Album, BandCampResults } from '../types/album';
 
 export async function fetchBandcampAlbums() {
 	try {
@@ -18,7 +18,7 @@ export async function fetchBandcampAlbums() {
 			}
 		}
 
-		const { data }: ScrapeResult<Album[]> = await scrapeIt(
+		const { data }: ScrapeResult<BandCampResults> = await scrapeIt(
 			`https://bandcamp.com/${BANDCAMP_USERNAME}`,
 			{
 				collectionItems: {
