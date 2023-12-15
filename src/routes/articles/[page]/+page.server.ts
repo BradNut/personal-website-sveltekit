@@ -2,23 +2,15 @@ import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { WALLABAG_MAX_PAGES } from '$env/static/private';
 import { PUBLIC_SITE_URL } from '$env/static/public';
-import type { Article } from '$lib/types/article';
-
-export type ArticlePageLoad = {
-	articles: Article[];
-	currentPage: number;
-	totalPages: number;
-	limit: number;
-	totalArticles: number;
-	cacheControl: string;
-};
+import type { ArticlePageLoad } from '$lib/types/article';
+import type { MetaTagsProps } from 'svelte-meta-tags';
 
 export const load: PageServerLoad = async ({ fetch, params, setHeaders, url }) => {
 	const { page } = params;
 	if (+page > +WALLABAG_MAX_PAGES) {
-		throw error(404, {
-			message: 'Not found'
-		});
+		error(404, {
+        			message: 'Not found'
+        		});
 	}
 	const resp = await fetch(`/api/articles?page=${page}`);
 	const { articles, currentPage, totalPages, limit, totalArticles, cacheControl }: ArticlePageLoad =

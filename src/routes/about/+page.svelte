@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Img from '@zerodevx/svelte-img';
 	import Graphql from '@iconify-icons/simple-icons/graphql';
 	import Nextdotjs from '@iconify-icons/simple-icons/nextdotjs';
 	import Prisma from '@iconify-icons/simple-icons/prisma';
@@ -10,12 +9,16 @@
 	import Svelte from '@iconify-icons/simple-icons/svelte';
 	import TypeScript from '@iconify-icons/simple-icons/typescript';
 	import LazyImage from '$lib/components/LazyImage.svelte';
-	import adventure from '$lib/assets/images/adventure.png?as=run:0';
+	import rural from '$lib/assets/images/rural.png?as=run:0';
 	import tortie_derp from '$lib/assets/images/tortie_derp.jpg?as=run';
 	import orange_derp from '$lib/assets/images/orange_derp.jpg?as=run';
 	import turnip from '$lib/assets/images/turnip.svg';
-	import Tag from '$lib/components/Tag.svelte';
-	import ExternalLink from '$lib/components/ExternalLink.svelte';
+	import CourseCard from './CourseCard.svelte';
+	import courseData from './course.json';
+	import type { Course } from '$root/lib/types/courses';
+	import TechListItem from './TechListItem.svelte';
+
+	const courses: Course[] = courseData.courses;
 </script>
 
 <div class="about">
@@ -45,99 +48,70 @@
 			At home I delve into other frameworks, languages, and platforms such
 			as:
 		</p>
-		<div
-			class="tech-list"
-		>
-			<a
-				target="_blank"
-				aria-label="React"
+		<div class="tech-list">
+			<TechListItem
+				itemText="React"
+				ariaLabel="React"
 				href="https://reactjs.org/"
-				class="center"
-				rel="noreferrer"
-			>
-				<iconify-icon icon={React} width="24" height="24" role="img" title="React" />
-				<p>React</p>
-			</a>
-			<a
-				target="_blank"
-				aria-label="TypeScript"
-				href="https://typescriptlang.org/"
-				class="center"
-				rel="noreferrer"
-			>
-				<iconify-icon icon={TypeScript} width="24" height="24" role="img" title="TypeScript" />
-				<p>TypeScript</p>
-			</a>
-			<a
-				target="_blank"
-				aria-label="Svelte"
+				clazz="center"
+				icon={React}
+			/>
+			<TechListItem
+				itemText="TypeScript"
+				ariaLabel="TypeScript"
+				href="https://www.typescriptlang.org/"
+				clazz="center"
+				icon={TypeScript}
+			/>
+			<TechListItem
+				itemText="Svelte"
+				ariaLabel="Svelte"
 				href="https://svelte.dev"
-				class="center"
-				rel="noreferrer"
-			>
-				<iconify-icon icon={Svelte} width="24" height="24" role="img" title="Svelte" />
-				<p>Svelte</p>
-			</a>
-			<a
-				target="_blank"
-				aria-label="NextJS"
+				clazz="center"
+				icon={Svelte}
+			/>
+			<TechListItem
+				itemText="NextJS"
+				ariaLabel="NextJS"
 				href="https://nextjs.org/"
-				class="center"
-				rel="noreferrer"
-			>
-				<iconify-icon icon={Nextdotjs} width="24" height="24" role="img" title="NextJS" />
-				<p>NextJS</p>
-			</a>
-			<a
-				target="_blank"
-				aria-label="Remix"
+				clazz="center"
+				icon={Nextdotjs}
+			/>
+			<TechListItem
+				itemText="Remix"
+				ariaLabel="Remix"
 				href="https://remix.run/"
-				class="center"
-				rel="noreferrer"
-			>
-				<iconify-icon icon={Remix} width="24" height="24" role="img" title="Remix" />
-				<p>Remix</p>
-			</a>
-			<a
-				target="_blank"
-				aria-label="GraphQL"
+				clazz="center"
+				icon={Remix}
+			/>
+			<TechListItem
+				itemText="GraphQL"
+				ariaLabel="GraphQL"
 				href="https://graphql.org/"
-				class="center"
-				rel="noreferrer"
-			>
-				<iconify-icon icon={Graphql} width="24" height="24" role="img" title="GraphQL" />
-				<p>GraphQL</p>
-			</a>
-			<a
-				target="_blank"
-				aria-label="Prisma"
+				clazz="center"
+				icon={Graphql}
+			/>
+			<TechListItem
+				itemText="Prisma"
+				ariaLabel="Prisma"
 				href="https://prisma.io/"
-				class="center"
-				rel="noreferrer"
-			>
-				<iconify-icon icon={Prisma} width="24" height="24" role="img" title="Prisma" />
-				<p>Prisma</p>
-			</a>
-			<a
-				target="_blank"
-				aria-label="GatsbyJS"
+				clazz="center"
+				icon={Prisma}
+			/>
+		  <TechListItem
+				itemText="GatsbyJS"
+				ariaLabel="GatsbyJS"
 				href="https://gatsbyjs.com/"
-				class="center"
-				rel="noreferrer"
-			>
-				<iconify-icon icon={Gatsby} width="24" height="24" role="img" title="Gatsby" />
-				<p>Gatsby</p>
-			</a>
-			<a
-				target="_blank"
-				aria-label="Docker"
+				clazz="center"
+				icon={Gatsby}
+			/>
+			<TechListItem
+				itemText="Docker"
+				ariaLabel="Docker"
 				href="https://docker.com/"
-				class="center"
-				rel="noreferrer"
-			>
-				<iconify-icon icon={Docker} width="24" height="24" role="img" title="Docker" />
-				<p>Docker</p>
-			</a>
+				clazz="center"
+				icon={Docker}
+			/>
 		</div>
 	</div>
 	<div>
@@ -147,113 +121,16 @@
 			those below:
 		</p>
 		<div class="extracurricular">
-			<div class="card">
-				<h3>
-					<ExternalLink
-						ariaLabel="Wes Bos Courses"
-						href="https://wesbos.com/courses"
-						showIcon
-					>
-						Wes Bos
-					</ExternalLink>
-				</h3>
-				<div class="tags">
-					<Tag name="React" />
-					<Tag name="GraphQL" />
-					<Tag name="Gatsby" />
-					<Tag name="JavaScript" />
-				</div>
-			</div>
-			<div class="card">
-				<h3>
-					<ExternalLink
-						ariaLabel="Scott Tolinski"
-						href="https://www.scotttolinski.com"
-						showIcon
-					>
-						Scott Tolinski
-					</ExternalLink>
-					<ExternalLink
-						ariaLabel="Levelup Tutorials"
-						href="https://levelup.video"
-						showIcon
-					>
-						Level Up Tutorials
-					</ExternalLink>
-				</h3>
-				<div class="tags">
-					<Tag name="React" />
-					<Tag name="TypeScript" />
-					<Tag name="Svelte Kit" />
-					<Tag name="Remix" />
-					<Tag name="Figma" />
-					<Tag name="Design Systems" />
-				</div>
-			</div>
-			<div class="card">
-				<h3>
-					<ExternalLink
-						ariaLabel="Amy Kapernick"
-						href="https://www.amyskapers.dev/"
-						showIcon
-					>
-						Amy Kapernick
-					</ExternalLink>
-					<ExternalLink
-						ariaLabel="Levelup Tutorials"
-						href="https://levelup.video"
-						showIcon
-					>
-						Level Up Tutorials
-					</ExternalLink>
-				</h3>
-				<div class="tags">
-					<Tag name="Accessibility for Everyone" />
-				</div>
-			</div>
-			<div class="card">
-				<h3>
-					<ExternalLink
-						ariaLabel="Andrew Mead on Udemy"
-						href="https://www.udemy.com/user/andrewmead/"
-						showIcon
-					>
-						Andrew Mead
-					</ExternalLink>
-				</h3>
-				<div class="tags">
-					<Tag name="GraphQL" />
-					<Tag name="Apollo" />
-					<Tag name="Prisma" />
-				</div>
-			</div>
-			<div class="card">
-				<h3>
-					<ExternalLink
-						ariaLabel="Steven Grider on Udemy"
-						href="https://www.udemy.com/user/sgslo/"
-						showIcon
-					>
-						Steven Grider
-					</ExternalLink>
-				</h3>
-				<div class="tags">
-					<Tag name="React" />
-					<Tag name="Redux" />
-					<Tag name="Docker" />
-					<Tag name="GraphQL" />
-					<Tag name="CSS" />
-					<Tag name="HTML" />
-					<Tag name="JavaScript" />
-				</div>
-			</div>
+			{#each courses as course}
+				<CourseCard {course} />
+			{/each}
 		</div>
 	</div>
 	<div>
 		<h2>Other fun things about me&hellip;</h2>
 		<div style="display: grid;">
 			<p>
-				Currently traveling around the world!
+				Living it up in Mountain View
 			</p>
 			<div
 				style="
@@ -263,16 +140,16 @@
 					justify-content: center;
 				"
 			>
-				<LazyImage src={adventure} alt="Clip art of the car traveling in the forest" />
-				<p class="center">Traveling around</p>
+				<LazyImage src={rural} alt="Clip art of house near trees" />
+				<p class="center">Mountain View</p>
 			</div>
 		</div>
 		<div>
-			<p>Bringing these two cats, Turnip and Taco, along for the ride.</p>
+			<p>Hanging out with these two cats, Turnip and Taco.</p>
 			<div class="cat-pics">
 				<figure>
 					<LazyImage src={tortie_derp} alt="Turnip Cat" />
-					<p class="center">Turnip <img class="icon" src={turnip} width="25px" height="25px" alt="Turnip" /></p>
+					<p class="center">Turnip <img class="icon" src={String(turnip)} width="25px" height="25px" alt="Turnip" /></p>
 				</figure>
 				<figure>
 					<LazyImage src={orange_derp} alt="Taco Cat" />
@@ -300,7 +177,6 @@
 
 		& p {
 			margin: 1rem;
-			/* padding: 0.2rem; */
 		}
 	}
 
@@ -312,32 +188,6 @@
 		gap: 1rem;
 		margin-top: 1rem;
 		font-size: 2rem;
-
-		& a {
-			display: grid;
-			justify-items: center;
-
-			font-weight: bold;
-			margin-right: 0;
-			padding: 0;
-			text-decoration: none;
-			padding: 0.3rem;
-			margin-left: 1rem;
-			color: var(--lightGrey);
-
-			& p {
-				font-size: 1.5rem;
-				padding-top: 0.3rem;
-				margin: 0;
-			}
-
-			&:hover {
-				color: var(--shellYellow);
-				& p {
-					color: var(--shellYellow);
-				}
-			}
-		}
 	}
 
 	.extracurricular {
@@ -345,10 +195,6 @@
 		flex-wrap: wrap;
 		place-content: center;
 		gap: 1.5rem;
-
-		.card {
-			max-width: 30rem;
-		}
 
 		@media (max-width: 1000px) {
 			grid-template-columns: repeat(2, auto);
@@ -359,13 +205,6 @@
 			--cardHeightMin: 10rem;
 			grid-template-columns: 1fr;
 		}
-	}
-
-	.tags {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: left;
-		align-items: center;
 	}
 
 	.cat-pics {

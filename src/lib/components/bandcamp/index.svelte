@@ -23,11 +23,6 @@
 				]
 			}
 		}
-		// [
-		// 	{ format: 'avif', src: `${album.artwork}`, width: 230, height: 230 },
-		// 	{ format: 'webp', src: `${album.artwork}`, width: 230, height: 230 },
-		// 	{ format: 'jpg', src: `${album.artwork}`, width: 230, height: 230 }
-		// ]
 	}
 </script>
 

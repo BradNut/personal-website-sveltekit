@@ -1,0 +1,88 @@
+{
+	"courses": [
+		{
+			"name": "Wes Bos",
+			"externalLinks": [
+				{
+					"ariaLabel": "Wes Bos Courses",
+					"href": "https://wesbos.com/courses",
+					"showIcon": true,
+					"text": "Wes Bos"
+				}
+			],
+			"tags": ["React", "GraphQL", "Gatsby", "JavaScript"]
+		},
+		{
+			"name": "Scott Tolinski",
+			"externalLinks": [
+				{
+					"ariaLabel": "Scott Tolinski",
+					"href": "https://www.scotttolinski.com",
+					"showIcon": true,
+					"text": "Scott Tolinski"
+				},
+				{
+					"ariaLabel": "Levelup Tutorials",
+					"href": "https://levelup.video",
+					"showIcon": true,
+					"text": "Levelup Tutorials"
+				}
+			],
+			"tags": ["React", "TypeScript", "Svelte Kit", "Remix", "Figma", "Design Systems"]
+		},
+		{
+			"name": "Josh Comeau",
+			"externalLinks": [
+				{
+					"ariaLabel": "Josh Comeau",
+					"href": "https://www.joshwcomeau.com",
+					"showIcon": true,
+					"text": "Josh Comeau"
+				},
+				{
+					"ariaLabel": "The Joy of React",
+					"href": "https://www.joyofreact.com/",
+					"showIcon": true,
+					"text": "The Joy of React"
+				}
+			],
+			"tags": ["Full Stack React", "NextJS"]
+		},
+		{
+			"name": "Amy Kapernick",
+			"externalLinks": [
+				{
+					"ariaLabel": "Amy Kapernick",
+					"href": "https://www.amyskapers.dev/",
+					"showIcon": true,
+					"text": "Amy Kapernick"
+				}
+			],
+			"tags": ["Accessibility for Everyone"]
+		},
+		{
+			"name": "Andrew Mead",
+			"externalLinks": [
+				{
+					"ariaLabel": "Andrew Mead on Udemy",
+					"href": "https://www.udemy.com/user/andrewmead/",
+					"showIcon": true,
+					"text": "Andrew Mead"
+				}
+			],
+			"tags": ["GraphQL", "Apollo", "Prisma"]
+		},
+		{
+			"name": "Steven Grider",
+			"externalLinks": [
+				{
+					"ariaLabel": "Steven Grider on Udemy",
+					"href": "https://www.udemy.com/user/sgslo/",
+					"showIcon": true,
+					"text": "Steven Grider"
+				}
+			],
+			"tags": ["React", "Redux", "Docker", "GraphQL", "CSS", "HTML", "JavaScript"]
+		}
+	]
+}

@@ -2,6 +2,8 @@ import type { MetaTagsProps } from 'svelte-meta-tags';
 import { PUBLIC_SITE_URL } from '$env/static/public';
 import type { PageServerLoad } from './$types';
 import { fetchBandcampAlbums } from '$lib/util/fetchBandcampAlbums';
+import type { Album } from '$lib/types/album';
+import type { ArticlePageLoad } from '$lib/types/article';
 
 export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
 	let baseUrl = 'https://bradleyshellnut.com';
@@ -41,8 +43,10 @@ export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
 		url: currentPageUrl
 	});
 
-	const albums = async () => await fetchBandcampAlbums();
-	const articles = async () => await fetch(`/api/articles?page=1&limit=3`);
+	const [albums, articles]: [Album[], ArticlePageLoad] = await Promise.all([
+		await fetchBandcampAlbums(),
+	  (await fetch(`/api/articles?page=1&limit=3`)).json()
+	]);
 
 	setHeaders({
 		'cache-control': 'max-age=43200'
@@ -50,7 +54,7 @@ export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
 	return {
 		baseUrl,
 		metaTagsChild: metaTags,
-		albums: albums(),
-		articlesData: (await articles()).json()
+		albums,
+		articlesData: articles
 	};
 };
