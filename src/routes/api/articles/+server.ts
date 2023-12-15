@@ -6,7 +6,7 @@ import { fetchArticlesApi } from '$root/routes/api';
 export const GET: RequestHandler = async ({ setHeaders, url }: RequestEvent) => {
 	const page = url?.searchParams?.get('page') || '1';
 	if (+page > +WALLABAG_MAX_PAGES) {
-		throw error(404, 'Page does not exist');
+		error(404, 'Page does not exist');
 	}
 
 	try {
@@ -32,6 +32,6 @@ export const GET: RequestHandler = async ({ setHeaders, url }: RequestEvent) => 
 		}
 	} catch (e) {
 		console.error(e);
-		throw error(404, 'Page does not exist');
+		error(404, 'Page does not exist');
 	}
 };
