@@ -130,9 +130,6 @@ devDependencies:
   svelte-check:
     specifier: ^3.6.2
     version: 3.6.2(postcss-load-config@4.0.2)(postcss@8.4.32)(sass@1.69.5)(svelte@4.2.8)
-  svelte-lazy-loader:
-    specifier: ^1.0.0
-    version: 1.0.0
   svelte-meta-tags:
     specifier: ^3.1.0
     version: 3.1.0(svelte@4.2.8)(typescript@5.3.3)
@@ -4701,10 +4698,6 @@ packages:
       svelte: ^3.19.0 || ^4.0.0
     dependencies:
       svelte: 4.2.8
-    dev: true
-
-  /svelte-lazy-loader@1.0.0:
-    resolution: {integrity: sha512-AZD6R60vksyojn21FgXLglmBiBB9K5Dkdu0hdGrLbCaRCYT68IsWkZfRUqKhMx1IfzqWcZQ8X9y/f+Ih0oNQkQ==}
     dev: true
 
   /svelte-meta-tags@3.1.0(svelte@4.2.8)(typescript@5.3.3):

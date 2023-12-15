@@ -52,7 +52,6 @@
 		"sharp": "^0.32.6",
 		"svelte": "^4.2.8",
 		"svelte-check": "^3.6.2",
-		"svelte-lazy-loader": "^1.0.0",
 		"svelte-meta-tags": "^3.1.0",
 		"svelte-preprocess": "^5.1.2",
 		"svelte-sequential-preprocessor": "^2.0.1",
