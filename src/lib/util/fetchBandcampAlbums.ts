@@ -55,5 +55,6 @@ export async function fetchBandcampAlbums() {
 		}
 	} catch (error) {
 		console.error(error);
+		return [];
 	}
 }

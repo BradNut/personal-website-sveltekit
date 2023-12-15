@@ -10,7 +10,7 @@ import {
 	USE_REDIS_CACHE
 } from '$env/static/private';
 import intersect from 'just-intersect';
-import type { Article, WallabagArticle } from '$lib/types/article';
+import type { Article, ArticlePageLoad, WallabagArticle } from '$lib/types/article';
 import { ArticleTag } from '$lib/types/articleTag';
 import type { PageQuery } from '$lib/types/pageQuery';
 import { URLSearchParams } from 'url';
@@ -77,7 +77,7 @@ export async function fetchArticlesApi(
 		throw new Error(pageResponse.statusText);
 	}
 
-	const cacheControl = pageResponse.headers.get('cache-control');
+	const cacheControl = pageResponse.headers.get('cache-control') || 'no-cache';
 
 	const { _embedded, page, pages, total, limit } = await pageResponse.json();
 	const articles: Article[] = [];
@@ -101,7 +101,7 @@ export async function fetchArticlesApi(
 		}
 	});
 
-	const responseData = {
+	const responseData: ArticlePageLoad = {
 		articles,
 		currentPage: page,
 		totalPages: pages > +WALLABAG_MAX_PAGES ? +WALLABAG_MAX_PAGES : pages,

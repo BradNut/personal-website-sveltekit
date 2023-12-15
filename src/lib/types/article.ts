@@ -29,3 +29,12 @@ export type WallabagTag = {
 	label: string;
 	slug: string;
 };
+
+export type ArticlePageLoad = {
+	articles: Article[];
+	currentPage: number;
+	totalPages: number;
+	limit: number;
+	totalArticles: number;
+	cacheControl: string;
+};

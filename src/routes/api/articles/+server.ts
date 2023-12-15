@@ -1,9 +1,8 @@
 import { json, error } from '@sveltejs/kit';
 import { WALLABAG_MAX_PAGES } from '$env/static/private';
-import type { RequestHandler, RequestEvent } from './$types';
 import { fetchArticlesApi } from '$root/routes/api';
 
-export const GET: RequestHandler = async ({ setHeaders, url }: RequestEvent) => {
+export async function GET({ setHeaders, url }) {
 	const page = url?.searchParams?.get('page') || '1';
 	if (+page > +WALLABAG_MAX_PAGES) {
 		error(404, 'Page does not exist');
