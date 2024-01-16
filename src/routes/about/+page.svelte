@@ -9,7 +9,7 @@
 	import Svelte from '@iconify-icons/simple-icons/svelte';
 	import TypeScript from '@iconify-icons/simple-icons/typescript';
 	import LazyImage from '$lib/components/LazyImage.svelte';
-	import rural from '$lib/assets/images/rural.png?as=run:0';
+	import antarctica from '$lib/assets/images/antarctica.png?as=run:0';
 	import tortie_derp from '$lib/assets/images/tortie_derp.jpg?as=run';
 	import orange_derp from '$lib/assets/images/orange_derp.jpg?as=run';
 	import turnip from '$lib/assets/images/turnip.svg';
@@ -130,7 +130,7 @@
 		<h2>Other fun things about me&hellip;</h2>
 		<div style="display: grid;">
 			<p>
-				Living it up in Mountain View
+				Recently visited Antarctica.
 			</p>
 			<div
 				style="
@@ -140,8 +140,8 @@
 					justify-content: center;
 				"
 			>
-				<LazyImage src={rural} alt="Clip art of house near trees" />
-				<p class="center">Mountain View</p>
+				<LazyImage src={antarctica} alt="Clip art of Antarctica" />
+				<p class="center">Antarctica</p>
 			</div>
 		</div>
 		<div>
