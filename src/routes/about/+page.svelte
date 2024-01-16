@@ -8,10 +8,9 @@
 	import Remix from '@iconify-icons/simple-icons/remix';
 	import Svelte from '@iconify-icons/simple-icons/svelte';
 	import TypeScript from '@iconify-icons/simple-icons/typescript';
-	import LazyImage from '$lib/components/LazyImage.svelte';
-	import antarctica from '$lib/assets/images/antarctica.png?as=run:0';
-	import tortie_derp from '$lib/assets/images/tortie_derp.jpg?as=run';
-	import orange_derp from '$lib/assets/images/orange_derp.jpg?as=run';
+	import antarctica from '$lib/assets/images/antarctica.png?enhanced';
+	import tortie_derp from '$lib/assets/images/tortie_derp.jpg?enhanced';
+	import orange_derp from '$lib/assets/images/orange_derp.jpg?enhanced';
 	import turnip from '$lib/assets/images/turnip.svg';
 	import CourseCard from './CourseCard.svelte';
 	import courseData from './course.json';
@@ -140,7 +139,8 @@
 					justify-content: center;
 				"
 			>
-				<LazyImage src={antarctica} alt="Clip art of Antarctica" />
+				<enhanced:img src={antarctica} alt="Clip art of Antarctica" />
+				<!-- <LazyImage src={antarctica} alt="Clip art of Antarctica" /> -->
 				<p class="center">Antarctica</p>
 			</div>
 		</div>
@@ -148,11 +148,13 @@
 			<p>Hanging out with these two cats, Turnip and Taco.</p>
 			<div class="cat-pics">
 				<figure>
-					<LazyImage src={tortie_derp} alt="Turnip Cat" />
+					<enhanced:img src={tortie_derp} alt="Turnip Cat" />
+					<!-- <LazyImage src={tortie_derp} alt="Turnip Cat" /> -->
 					<p class="center">Turnip <img class="icon" src={String(turnip)} width="25px" height="25px" alt="Turnip" /></p>
 				</figure>
 				<figure>
-					<LazyImage src={orange_derp} alt="Taco Cat" />
+					<enhanced:img src={orange_derp} alt="Taco Cat" />
+					<!-- <LazyImage src={orange_derp} alt="Taco Cat" /> -->
 					<p class="center">Taco 🌮</p>
 				</figure>
 			</div>
