@@ -7,11 +7,12 @@
 	import { PUBLIC_SITE_URL } from '$env/static/public';
 	import "nprogress/nprogress.css";
 	import '$root/styles/styles.pcss';
-	import { setLanguageTag, sourceLanguageTag, type AvailableLanguageTag, availableLanguageTags } from "$paraglide/runtime";
+	import { setLanguageTag, sourceLanguageTag, type AvailableLanguageTag } from "$paraglide/runtime";
 	import Header from '$lib/components/header/index.svelte';
 	import Footer from '$lib/components/footer/index.svelte';
 	import Analytics from '$lib/components/analytics/index.svelte';
-	import { getTextDirection, translatePath } from '$lib/i18n';
+	import { getTextDirection } from '$root/lib/i18n-routing';
+	import I18NHeader from '$root/lib/I18NHeader.svelte';
 
 	NProgress.configure({
 			// Full list: https://github.com/rstacruz/nprogress#configuration
@@ -67,11 +68,7 @@
 
 <MetaTags {...metaTags} />
 
-<svelte:head>
-	{#each availableLanguageTags as lang}
-		<link rel="alternate" hreflang={lang} href={translatePath($page.url.pathname, lang)} />
-	{/each}
-</svelte:head>
+<I18NHeader />
 
 <div class="wrapper">
 	{#key lang}

@@ -1,4 +1,4 @@
-import { getTextDirection } from "$lib/i18n"
+import { getTextDirection } from "$root/lib/i18n-routing"
 import { sourceLanguageTag, type AvailableLanguageTag } from "$paraglide/runtime"
 
 /*

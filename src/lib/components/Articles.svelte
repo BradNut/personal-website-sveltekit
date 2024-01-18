@@ -1,15 +1,19 @@
 <script lang="ts">
+  import * as m from "$paraglide/messages";
 	import type { Article } from "$lib/types/article";
 	import ExternalLink from './ExternalLink.svelte';
+  import { languageTag } from '$paraglide/runtime';
 
   export let articles: Article[];
 	export let totalArticles: number;
   export let compact: boolean = false;
   export let classes: string[] = [];
+
+  $: lang = languageTag();
 </script>
 
 <div>
-  <h2>Favorite Articles</h2>
+  <h2>{m.articles_favorite_articles()}</h2>
   <div class={classes.join(' ')}>
     {#each articles as article (article.hashed_url)}
       <article class='card'>
@@ -29,9 +33,9 @@
           </h3>
         </section>
         <section>
-          <p>Reading time: {article.reading_time} minutes</p>
+          <p>{m.articles_reading_time()}: {article.reading_time} {article.reading_time === 1 ? m.articles_minute() : m.articles_minutes()}</p>
           <div class="tagsStyles">
-            <p>Tags:</p>
+            <p>{m.articles_tags()}:</p>
             {#each article.tags as tag}
               <p>{tag}</p>
             {/each}
@@ -41,8 +45,10 @@
     {/each}
   </div>
   <div class="moreArticles">
-    <a href="/articles">{`${totalArticles} more articles`}</a>
-    <a href="/articles" aria-label={`${totalArticles} more articles`}>
+    <a href={`${lang}/${m.nav_articles_link()}`}>
+      {`${totalArticles} ${m.articles_more_articles()}`}
+    </a>
+    <a href={`${lang}/${m.nav_articles_link()}`}>
       <iconify-icon icon="material-symbols:arrow-right-alt-rounded"></iconify-icon>
     </a>
   </div>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
-	import { translatePath } from '$lib/i18n';
+	import { translatePath } from '$root/lib/i18n-routing';
 	import { availableLanguageTags, languageTag } from '$paraglide/runtime';
 	import * as m from "$paraglide/messages";
 

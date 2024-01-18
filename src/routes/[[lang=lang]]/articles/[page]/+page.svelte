@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Pagination from "$lib/components/pagination/index.svelte";
+	import * as m from "$paraglide/messages";
 	import type { Article } from "$lib/types/article";
 	import Articles from "$lib/components/Articles.svelte";
 	import type { PageData } from "./$types";
@@ -15,7 +16,7 @@
 </script>
 
 <div class="pageStyles">
-	<h1 style="margin-bottom: 2rem">Favorite Tech Articles</h1>
+	<h1 style="margin-bottom: 2rem">{m.articles_favorite_tech_articles()}</h1>
 	<Pagination
 		additionalClasses="top-pagination"
 		pageSize={limit}
@@ -25,33 +26,6 @@
 		base="/articles"
 	/>
 	<Articles {articles} {totalArticles} classes={['columns']} />
-	<!-- <div class="articlesStyles">
-		{#each articles as article (article.hashed_url)}
-			<div class="articleStyles card">
-				<section>
-					<h3>
-						<a
-							target="_blank"
-							aria-label={`Link to ${article.title}`}
-							href={article.url.toString()}
-							rel="noreferrer"
-						>
-							{article.title}
-						</a>
-					</h3>
-				</section>
-				<section>
-					<p>Reading time: {article.reading_time} minutes</p>
-					<div class="tagStyles">
-						<p>Tags:</p>
-						{#each article.tags as tag}
-							<p>{tag}</p>
-						{/each}
-					</div>
-				</section>
-			</div>
-		{/each}
-	</div> -->
 	<Pagination
 		additionalClasses="bottom-pagination"
 		pageSize={limit}

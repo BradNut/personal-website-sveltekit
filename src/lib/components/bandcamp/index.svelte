@@ -1,8 +1,7 @@
 <script lang="ts">
-	import Img from '@zerodevx/svelte-img';
+	import * as m from "$paraglide/messages";
 	import type { Album } from "$lib/types/album";
 	import LazyImage from '../LazyImage.svelte';
-
 
 	export let albums: Album[];
 	const displayAlbums =
@@ -27,18 +26,18 @@
 </script>
 
 <div>
-	<h2>Currently listening to:</h2>
+	<h2>{m.music_currently_listening()}:</h2>
 	<div class="albumsStyles">
 		{#each displayAlbums as album}
 			<div class="albumStyles">
 				<figure>
 					<a
-						title={`Link to ${album.title} by ${album.artist}`}
+						title={`${m.music_link_to()} ${album.title} ${m.music_by()} ${album.artist}`}
 						target="_blank"
 						href={album.url}
 						rel="noreferrer"
 					>
-						<LazyImage clazz="album-artwork" src={album.src} alt={`Album art for ${album.title}`} />
+						<LazyImage clazz="album-artwork" src={album.src} alt={`${m.music_album_art_alt()} ${album.title}`} />
 					</a>
 				</figure>
 				<a

@@ -5,6 +5,7 @@
 	import Articles from '$lib/components/Articles.svelte';
 	import type { Album } from '$lib/types/album';
 	import type { Article, ArticlePageLoad } from '$lib/types/article';
+	import { languageTag } from '$paraglide/runtime';
 
 	export let data: PageData;
 	let albums: Album[];
@@ -13,6 +14,7 @@
 	let totalArticles: number;
 	$: ({ albums, articlesData } = data);
 	$: ({ articles, totalArticles } = articlesData);
+	$: lang = languageTag();
 
   const userNames = {
     github: 'BradNut',
@@ -25,44 +27,47 @@
 	<div>
 		<h1>{m.home_title()}</h1>
 	</div>
-		<p>
-			{m.home_about()}
-		</p>
-		<p>
-			{m.home_learning()}
-		</p>
-		<p>
-			Or you may find me jamming out to music 🎶, hiking ⛰️, making{' '}
-			<a
-				target="_blank"
-				href="https://kindredcocktails.com"
-				rel="noreferrer"
-			>
-				cocktails
-			</a>
-			🍸, or having fun with my cats. 🐈
-		</p>
-		<p>
-			Check me out on
-			<a
-				href={`https://www.linkedin.com/in/${userNames.linkedIn}`}
-				target="_blank"
-				aria-label="Contact through LinkedIn"
-				rel="noreferrer"
-			>
-				LinkedIn
-			</a>
-			,
-			<a
-				href={`https://www.github.com/${userNames.github}`}
-				target="_blank"
-				aria-label="Contact through Github"
-				rel="noreferrer"
-			>
-				Github
-			</a>
-			, or read more <a href="/about">about me</a>.
-		</p>
+	<p>
+		{m.home_about()}
+	</p>
+	<p>
+		{m.home_learning()}
+	</p>
+	<p>
+		{m.home_other_about_me()}{' '}
+		<a
+			target="_blank"
+			href="https://kindredcocktails.com"
+			rel="noreferrer"
+		>
+			{m.cocktails()}
+		</a>
+		{m.home_fun_with_cats()}
+	</p>
+	<p>
+		{m.home_check_me_out()}
+		<a
+			href={`https://www.linkedin.com/in/${userNames.linkedIn}`}
+			target="_blank"
+			aria-label={`${m.contact_through()} LinkedIn`}
+			rel="noreferrer"
+		>
+			LinkedIn
+		</a>
+		,
+		<a
+			href={`https://www.github.com/${userNames.github}`}
+			target="_blank"
+			aria-label={`${m.contact_through()} Github`}
+			rel="noreferrer"
+		>
+			Github
+		</a>
+		, {m.read_more()}
+		<a href={`/${lang}/${m.nav_about_link()}`}>
+			{m.about_me()}
+		</a>.
+	</p>
 	<div class="social-info">
 		<Bandcamp {albums} />
 		<Articles {articles} {totalArticles} compact />
