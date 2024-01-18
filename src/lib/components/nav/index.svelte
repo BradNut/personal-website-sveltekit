@@ -6,7 +6,9 @@
 	import * as m from "$paraglide/messages";
 
 	$: pathname = $page.url.pathname;
+	$: console.log('pathname', pathname)
 	$: lang = languageTag();
+	$: console.log('lang', lang);
 </script>
 
 <header aria-label="header navigation">
@@ -14,23 +16,23 @@
 		<a href='/' class:active={pathname === '/'}>{m.nav_home()}</a>
 		<a
 			href={`/${lang}/${m.nav_about_link()}`}
-			class:active={pathname === `/${m.nav_about_link()}`}
+			class:active={pathname === `/${lang}/${m.nav_about_link()}`}
 		>
 			{m.nav_about()}
 		</a>
 		<a
 			href={`/${lang}/${m.nav_portfolio_link()}`}
-			class:active={pathname === `/${m.nav_portfolio_link()}`}
+			class:active={pathname === `/${lang}/${m.nav_portfolio_link()}`}
 		>
 			{m.nav_portfolio()}
 		</a>
 		<a
 			href={`/${lang}/${m.nav_uses_link()}`}
-			class:active={pathname === `/${m.nav_uses_link()}`}
+			class:active={pathname === `/${lang}/${m.nav_uses_link()}`}
 		>
 			{m.nav_uses()}
 		</a>
-		<select on:change={(e) => goto(translatePath(pathname, e?.target?.value)) }>
+		<select on:change={(e) => goto(translatePath(pathname, e?.target?.value))}>
 			{#each availableLanguageTags as lang}
 				<option value={lang} selected={lang === languageTag()}>{lang}</option>
 			{/each}

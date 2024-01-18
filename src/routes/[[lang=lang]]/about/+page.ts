@@ -1,4 +1,4 @@
-export const prerender = true;
+// export const prerender = true;
 
 import type { MetaTagsProps } from 'svelte-meta-tags';
 import { PUBLIC_SITE_URL } from '$env/static/public';
