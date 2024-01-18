@@ -8,6 +8,7 @@
 	import Remix from '@iconify-icons/simple-icons/remix';
 	import Svelte from '@iconify-icons/simple-icons/svelte';
 	import TypeScript from '@iconify-icons/simple-icons/typescript';
+	import * as m from "$paraglide/messages";
 	import LazyImage from '$lib/components/LazyImage.svelte';
 	import antarctica from '$lib/assets/images/antarctica.png?as=run:0';
 	import tortie_derp from '$lib/assets/images/tortie_derp.jpg?as=run';
@@ -24,7 +25,7 @@
 <div class="about">
 	<div>
 		<h1>About</h1>
-		<p>Hey! My name is Bradley Shellnut.</p>
+		<p>{m.about_whoami()}</p>
 		<p>
 			I'm {new Date().getFullYear() - 1991} years old and I am a full stack
 			software engineer who's interested in new tech and not afraid to

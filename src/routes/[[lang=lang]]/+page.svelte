@@ -1,5 +1,6 @@
 <script lang="ts">
-	import type { PageData } from './$types';
+	import type { PageData } from '../$types';
+	import * as m from "$paraglide/messages";
 	import Bandcamp from '$lib/components/bandcamp/index.svelte';
 	import Articles from '$lib/components/Articles.svelte';
 	import type { Album } from '$lib/types/album';
@@ -22,14 +23,13 @@
 
 <div class="home">
 	<div>
-		<h1>Hello! I'm Bradley Shellnut.</h1>
+		<h1>{m.home_title()}</h1>
 	</div>
 		<p>
-			I'm a full stack software engineer currently working on Java Spring, PostgreSQL, and React / Angular JS.
+			{m.home_about()}
 		</p>
 		<p>
-			At home you can usually find me learning new things and working with
-			SvelteKit, Next.js, and Gatsby.
+			{m.home_learning()}
 		</p>
 		<p>
 			Or you may find me jamming out to music 🎶, hiking ⛰️, making{' '}

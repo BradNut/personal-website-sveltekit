@@ -10,6 +10,8 @@
 		"test:ui": "svelte-kit sync && playwright test --ui",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"compile": "paraglide-js compile --project ./project.inlang",
+		"watch": "paraglide-js compile --project ./project.inlang --watch",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
 		"test:integration": "playwright test",

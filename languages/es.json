@@ -1,0 +1,18 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"home_title": "!Hola! Me llamo Bradley Shellnut.",
+	"home_about": "Soy un ingeniero de software de pila completa que actualmente trabaja en Java Spring, PostgreSQL y React / Angular JS.",
+	"home_learning": "En casa por lo general me puedes encontrar aprendiendo cosas nuevas y trabajando con SvelteKit, Next.js, y Gatsby.",
+	"nav_home": "Inicio",
+	"nav_about": "Acerca de",
+	"nav_about_link": "acerca-de",
+	"nav_uses": "Utiliza",
+	"nav_uses_link": "utiliza",
+	"nav_articles": "Artículos",
+	"nav_articles_link": "articulos",
+	"nav_portfolio": "Cartera",
+	"nav_portfolio_link": "cartera",
+	"nav_privacy": "Privacidad",
+	"nav_privacy_link": "privacidad",
+	"about_whoami": "¡Hola! Me llamo Bradley Shellnut."
+}

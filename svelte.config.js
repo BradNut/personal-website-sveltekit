@@ -23,8 +23,14 @@ const config = {
 		adapter: adapter(),
 		alias: {
 			$root: './src',
-			$paraglide: './src/paraglide'
-		}
+			$paraglide: './src/paraglide/'
+		},
+		// Need for crawling to work until
+		// https://github.com/sveltejs/kit/issues/11133
+		// is fixed
+		prerender: {
+			entries: ["/"],
+		},
 	}
 };
 

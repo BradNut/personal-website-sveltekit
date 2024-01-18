@@ -1,28 +1,40 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
+	import { translatePath } from '$lib/i18n';
+	import { availableLanguageTags, languageTag } from '$paraglide/runtime';
+	import * as m from "$paraglide/messages";
+
+	$: pathname = $page.url.pathname;
+	$: lang = languageTag();
 </script>
 
 <header aria-label="header navigation">
 	<nav>
-		<a href="/" class:active={$page.url.pathname === '/'}>Home</a>
+		<a href='/' class:active={pathname === '/'}>{m.nav_home()}</a>
 		<a
-			href="/about"
-			class:active={$page.url.pathname === '/about'}
+			href={`/${lang}/${m.nav_about_link()}`}
+			class:active={pathname === `/${m.nav_about_link()}`}
 		>
-			About
+			{m.nav_about()}
 		</a>
 		<a
-			href="/portfolio"
-			class:active={$page.url.pathname === '/portfolio'}
+			href={`/${lang}/${m.nav_portfolio_link()}`}
+			class:active={pathname === `/${m.nav_portfolio_link()}`}
 		>
-			Portfolio
+			{m.nav_portfolio()}
 		</a>
 		<a
-			href="/uses"
-			class:active={$page.url.pathname === '/uses'}
+			href={`/${lang}/${m.nav_uses_link()}`}
+			class:active={pathname === `/${m.nav_uses_link()}`}
 		>
-			Uses
+			{m.nav_uses()}
 		</a>
+		<select on:change={(e) => goto(translatePath(pathname, e?.target?.value)) }>
+			{#each availableLanguageTags as lang}
+				<option value={lang} selected={lang === languageTag()}>{lang}</option>
+			{/each}
+		</select>
 	</nav>
 </header>
 

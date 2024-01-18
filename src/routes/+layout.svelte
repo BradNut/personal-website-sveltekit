@@ -7,9 +7,11 @@
 	import { PUBLIC_SITE_URL } from '$env/static/public';
 	import "nprogress/nprogress.css";
 	import '$root/styles/styles.pcss';
+	import { setLanguageTag, sourceLanguageTag, type AvailableLanguageTag, availableLanguageTags } from "$paraglide/runtime";
 	import Header from '$lib/components/header/index.svelte';
 	import Footer from '$lib/components/footer/index.svelte';
 	import Analytics from '$lib/components/analytics/index.svelte';
+	import { getTextDirection, translatePath } from '$lib/i18n';
 
 	NProgress.configure({
 			// Full list: https://github.com/rstacruz/nprogress#configuration
@@ -37,6 +39,26 @@
 		],
 		...$page.data.metaTagsChild
 	}
+
+	// Determine the current language from the URL. Fall back to the source language if none is specified.
+	$: lang = $page.params.lang as AvailableLanguageTag ?? sourceLanguageTag
+
+	console.log('lang', lang)
+
+	// Set the language tag in the Paraglide runtime.
+	// This determines which language the strings are translated to.
+	// You should only do this in the template, to avoid concurrent requests interfering with each other.
+	$: setLanguageTag(lang)
+
+
+	// Determine the text direction of the current language
+	$: textDirection = getTextDirection(lang)
+
+	// Keep the <html> lang and dir attributes in sync with the current language
+	$: if (browser) {
+		document.documentElement.dir = textDirection
+		document.documentElement.lang = lang
+	}
 </script>
 
 {#if !dev}
@@ -45,12 +67,20 @@
 
 <MetaTags {...metaTags} />
 
+<svelte:head>
+	{#each availableLanguageTags as lang}
+		<link rel="alternate" hreflang={lang} href={translatePath($page.url.pathname, lang)} />
+	{/each}
+</svelte:head>
+
 <div class="wrapper">
-	<Header />
-	<main>
-		<slot />
-	</main>
-	<Footer />
+	{#key lang}
+		<Header />
+		<main>
+			<slot />
+		</main>
+		<Footer />
+	{/key}
 </div>
 
 <style lang="postcss">
