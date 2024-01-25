@@ -17,7 +17,7 @@ Tech Stack:
 - <ExternalLink showIcon href="https://www.melt-ui.com/">Melt UI</ExternalLink> for the headless-ui components.
 - TypeScript
 - Deployed on Vercel
-- Bee, Shell, Nut, and Seattle Icons made by <ExternalLink showIcon href="https://www.flaticon.com/authors/freepik" ariaLabel="Freepik">"Freepik"</ExternalLink> from <ExternalLink showIcon href="https://www.flaticon.com" ariaLabel="Flaticon">flaticon.com</ExternalLink>
+- Icons in the [/about](/about) page and the Bee, Shell, and Nut icons are all made by <ExternalLink showIcon href="https://www.flaticon.com/authors/freepik" ariaLabel="Freepik">"Freepik"</ExternalLink> from <ExternalLink showIcon href="https://www.flaticon.com" ariaLabel="Flaticon">flaticon.com</ExternalLink>
 
 Previous version of my website was written using React and Gatsby which you can view <ExternalLink href="https://wonderful-austin-9f17d2.netlify.app/" ariaLabel="React and Gatsby Personal Site version" showIcon>here</ExternalLink>.
 
