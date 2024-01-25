@@ -17,11 +17,10 @@ type Sources = {
 	height: string;
 };
 
-const { height, src, width }: ImageMeta = meta;
+const { height, src, width } = meta as ImageMeta;
 
 const sources: Sources[] = [];
-const imageFormatsMetadata: ImageMeta[] = JSON.parse(formatMeta);
-console.log(`Image format metadata: ${JSON.parse(imageFormatsMetadata)}`);
+const imageFormatsMetadata: ImageMeta[] = JSON.parse(`${formatMeta}`);
 for (const metadata of imageFormatsMetadata) {
 	sources.push({
 		srcset: new URL(metadata.src),

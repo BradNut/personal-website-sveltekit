@@ -39,29 +39,12 @@
 		}
 	}
 
-  hr {
-    display: block;
-    max-width: 100%;
-    height: 0;
-    max-height: 0;
-    border: solid;
-    width: 100%;
-    border-width: thin 0 0 0;
-    transition: inherit;
-    border-color: var(--lightShade);
-    color: var(--lightShade);
-  }
-
   p {
     margin: 0;
     padding: 0.2rem;
     font-weight: 600;
 		text-align: center;
     color: var(--lightShade);
-  }
-
-  ul {
-    margin: 0.5rem;
   }
 
 	.footer-list {

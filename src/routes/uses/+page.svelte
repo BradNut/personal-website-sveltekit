@@ -2,8 +2,11 @@
 	import ExternalLink from '$lib/components/ExternalLink.svelte';
 	import LazyImage from '$lib/components/LazyImage.svelte';
 	import desktop from '$lib/assets/images/Desktop_so_clean.jpg?as=run';
+	// @ts-expect-error: Cannot find module '$lib/content/uses/development.md' or its corresponding type declarations.ts(2307)
 	import HardwareAccessories from '$lib/content/uses/hardware-accessories.md';
+	// @ts-expect-error: Cannot find module '$lib/content/uses/development.md' or its corresponding type declarations.ts(2307)
 	import Development from '$lib/content/uses/development.md';
+	// @ts-expect-error: Cannot find module '$lib/content/uses/development.md' or its corresponding type declarations.ts(2307)
 	import PrivacyHardwareSoftware from '$lib/content/uses/privacy-hardware-software.md';
 </script>
 

@@ -3,7 +3,6 @@
   export let pageSize: number;
   export let totalCount: number;
   export let currentPage: number;
-  export let skip: number;
   export let base: string;
 
   // make some variables

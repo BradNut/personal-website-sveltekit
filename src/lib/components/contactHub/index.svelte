@@ -4,6 +4,7 @@
 	import linkedin from '@iconify-icons/radix-icons/linkedin-logo';
 	import twitter from '@iconify-icons/radix-icons/twitter-logo';
 
+	export let showGithub: boolean = false;
 	export let showTwitter: boolean = false;
 	export let showLinkedIn: boolean = false;
 	export let showEmail: boolean = false;
@@ -42,7 +43,7 @@
 			</a>
 		</span>
   {/if}
-	{#if github && userNames?.github}
+	{#if showGithub && userNames?.github}
 		<span>
 			<a
 				href={`https://www.github.com/${userNames.github}`}

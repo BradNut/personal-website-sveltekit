@@ -103,10 +103,6 @@
       font-size: 2rem;
     }
 
-    & a + svg {
-      text-decoration: none;
-    }
-
     @media (max-width: 1000px) {
       font-size: 1.5rem;
     }

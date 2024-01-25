@@ -1,0 +1,47 @@
+name: Run_Svelte_Check_on_PRs
+
+on:
+  pull_request:
+
+env:
+  WALLABAG_MAX_ARTICLES: ${{ secrets.WALLABAG_MAX_ARTICLES }}
+  WALLABAG_MAX_PAGES: ${{ secrets.WALLABAG_MAX_PAGES }}
+  WALLABAG_CLIENT_ID: ${{ secrets.WALLABAG_CLIENT_ID }}
+  WALLABAG_CLIENT_SECRET: ${{ secrets.WALLABAG_CLIENT_SECRET }}
+  WALLABAG_USERNAME: ${{ secrets.WALLABAG_USERNAME }}
+  WALLABAG_PASSWORD: ${{ secrets.WALLABAG_PASSWORD }}
+  WALLABAG_URL: ${{ secrets.WALLABAG_URL }}
+  BANDCAMP_USERNAME: ${{ secrets.BANDCAMP_USERNAME }}
+  PUBLIC_SITE_URL: ${{ secrets.PUBLIC_SITE_URL }}
+  PUBLIC_URL: ${{ secrets.PUBLIC_URL }}
+  PUBLIC_UMAMI_DO_NOT_TRACK: ${{ secrets.PUBLIC_UMAMI_DO_NOT_TRACK }}
+  PUBLIC_UMAMI_URL: ${{ secrets.PUBLIC_UMAMI_URL }}
+  PUBLIC_UMAMI_ID: ${{ secrets.PUBLIC_UMAMI_ID }}
+  PAGE_SIZE: ${{ secrets.PAGE_SIZE }}
+  USE_REDIS_CACHE: ${{ secrets.USE_REDIS_CACHE }}
+  REDIS_URI: ${{ secrets.REDIS_URI }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: pnpm-setup
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.18.2
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run Svelte Check
+        run: pnpm check

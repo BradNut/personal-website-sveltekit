@@ -1,12 +1,16 @@
 import satori from 'satori';
 import { Resvg } from '@resvg/resvg-js';
 import { html as toReactNode } from 'satori-html';
+import { dev } from '$app/environment';
+import { read } from '$app/server';
 
 // we use a Vite plugin to turn this import into the result of fs.readFileSync during build
 import firaSansSemiBold from '$lib/fonts/FiraSans-SemiBold.ttf';
-import { dev } from '$app/environment';
+import type { SvelteComponent } from 'svelte';
 
-export async function componentToPng(component,
+const fontData = read(firaSansSemiBold).arrayBuffer();
+
+export async function componentToPng(component: SvelteComponent,
 																		 props: Record<string, string | undefined>,
 																		 height: number, width: number) {
 	const result = component.render(props);
@@ -16,7 +20,7 @@ export async function componentToPng(component,
 		fonts: [
 			{
 				name: 'Fira Sans',
-				data: Buffer.from(firaSansSemiBold),
+				data: await fontData,
 				style: 'normal'
 			}
 		],
@@ -31,9 +35,9 @@ export async function componentToPng(component,
 		}
 	});
 
-	const png = resvg.render();
+	const image = resvg.render();
 
-	return new Response(png.asPng(), {
+	return new Response(image.asPng(), {
 		headers: {
 			'content-type': 'image/png',
 			'cache-control': dev ? 'no-cache, no-store' : 'public, immutable, no-transform, max-age=86400'
