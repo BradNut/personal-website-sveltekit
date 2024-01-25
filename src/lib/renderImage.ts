@@ -6,10 +6,11 @@ import { read } from '$app/server';
 
 // we use a Vite plugin to turn this import into the result of fs.readFileSync during build
 import firaSansSemiBold from '$lib/fonts/FiraSans-SemiBold.ttf';
+import type { SvelteComponent } from 'svelte';
 
 const fontData = read(firaSansSemiBold).arrayBuffer();
 
-export async function componentToPng(component,
+export async function componentToPng(component: SvelteComponent,
 																		 props: Record<string, string | undefined>,
 																		 height: number, width: number) {
 	const result = component.render(props);
