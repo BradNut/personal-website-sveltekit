@@ -12,6 +12,8 @@ export async function GET({ url }) {
 		const header = url.searchParams.get('header') ?? undefined;
 		const page = url.searchParams.get('page') ?? undefined;
 		const content = url.searchParams.get('content') ?? '';
+		const css = (await import('../../styles/socialImageCard.pcss')).default;
+		console.log('css', css);
 
 		// @ts-expect-error: Argument of type 'typeof SocialImageCard__SvelteComponent_' is not assignable to parameter of type 'SvelteComponent<any, any, any>'
 		return componentToPng(SocialImageCard, {
@@ -22,7 +24,7 @@ export async function GET({ url }) {
 			width: `${width}`,
 			height: `${height}`,
 			url: new URL(url.origin).href
-		}, height, width);
+		}, height, width, css);
 	} catch (e) {
 		console.error(e);
 	}

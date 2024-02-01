@@ -1,11 +1,13 @@
 <script lang="ts">
 	import type { IconifyIcon } from "iconify-icon/dist/iconify-icon.js";
 
-	export let ariaLabel: string;
-	export let href: string;
-	export let clazz = "";
-	export let itemText: string;
-	export let icon: IconifyIcon;
+	const { ariaLabel, href, clazz = "", itemText, icon } = $props<{
+		ariaLabel: string;
+		href: string;
+		clazz?: string;
+		itemText: string;
+		icon: IconifyIcon
+	}>();
 </script>
 
 <a

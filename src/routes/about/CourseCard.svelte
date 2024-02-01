@@ -3,7 +3,7 @@
 	import Tag from "$lib/components/Tag.svelte";
 	import type { Course } from "$lib/types/courses";
 
-	export let course: Course;
+	const { course } = $props<{ course: Course }>();
 	const { externalLinks, tags } = course;
 </script>
 

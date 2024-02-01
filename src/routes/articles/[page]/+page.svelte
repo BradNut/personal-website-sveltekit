@@ -4,12 +4,8 @@
 	import Articles from "$lib/components/Articles.svelte";
 	import type { PageData } from "./$types";
 
-	export let data: PageData;
-	let articles: Article[];
-	let currentPage: number;
-	let totalArticles: number;
-	let limit: number;
-	$: ({ articles, currentPage, totalPages, totalArticles, limit } = data);
+	const { data } = $props();
+	const { articles, currentPage, totalArticles, limit } = $state(data);
 </script>
 
 <div>

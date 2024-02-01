@@ -1,17 +1,12 @@
 <script lang="ts">
-	import type { PageData } from './$types';
 	import Bandcamp from '$lib/components/bandcamp/index.svelte';
 	import Articles from '$lib/components/Articles.svelte';
 	import type { Album } from '$lib/types/album';
 	import type { Article, ArticlePageLoad } from '$lib/types/article';
 
-	export let data: PageData;
-	let albums: Album[];
-	let articlesData: ArticlePageLoad;
-	let articles: Article[];
-	let totalArticles: number;
-	$: ({ albums, articlesData } = data);
-	$: ({ articles, totalArticles } = articlesData);
+	const { data } = $props();
+	const { albums, articlesData } = $state(data);
+	const { articles, totalArticles } = $state(articlesData);
 
   const userNames = {
     github: 'BradNut',

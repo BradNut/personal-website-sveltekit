@@ -1,13 +1,16 @@
 <script lang="ts">
 	import OpenInNew from '@iconify-icons/mdi/open-in-new';
 	import type { IconifyIcon } from 'iconify-icon';
-	export let rel = 'noreferrer';
-	export let target = '_blank';
-	export let href: string;
-	export let ariaLabel: string;
-	export let showIcon: boolean = false;
-	export let clazz = "";
-	export let icon: IconifyIcon = OpenInNew;
+
+	const { rel = 'noreferrer', target = '_blank', href, ariaLabel, showIcon = false, clazz = "", icon = OpenInNew } = $props<{
+		rel?: string;
+		target?: string;
+		href: string;
+		ariaLabel: string;
+		showIcon?: boolean;
+		clazz?: string;
+		icon?: IconifyIcon;
+	}>();
 </script>
 
 

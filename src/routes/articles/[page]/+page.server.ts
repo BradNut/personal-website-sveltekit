@@ -8,9 +8,7 @@ import type { MetaTagsProps } from 'svelte-meta-tags';
 export const load: PageServerLoad = async ({ fetch, params, setHeaders, url }) => {
 	const { page } = params;
 	if (+page > +WALLABAG_MAX_PAGES) {
-		error(404, {
-        			message: 'Not found'
-        		});
+		error(404, { message: 'Not found'	});
 	}
 	const resp = await fetch(`/api/articles?page=${page}`);
 	const { articles, currentPage, totalPages, limit, totalArticles, cacheControl }: ArticlePageLoad =

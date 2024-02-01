@@ -1,5 +1,7 @@
 <script lang="ts">
-	export let name: string;
+	const { name } = $props<{
+		name: string;
+	}>();
 </script>
 
 <span>{name}</span>

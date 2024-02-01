@@ -1,11 +1,13 @@
 <script lang="ts">
 	import LazyImage from './LazyImage.svelte';
 
-	export let name: string;
-	export let src: Record<string, any>;
-	export let alt: string;
-	export let style = "";
-	export let loading: "lazy" | "eager" = "lazy";
+	const { name, src, alt, style = "", loading = "lazy" } = $props<{
+		name: string;
+		src: Record<string, any>;
+		alt: string;
+		style: string;
+		loading: "lazy" | "eager";
+	}>();
 </script>
 
 <div class="portfolio">

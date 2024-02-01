@@ -2,10 +2,12 @@
 	import type { Article } from "$lib/types/article";
 	import ExternalLink from './ExternalLink.svelte';
 
-  export let articles: Article[];
-	export let totalArticles: number;
-  export let compact: boolean = false;
-  export let classes: string[] = [];
+  const { articles, totalArticles, compact = false, classes = [] } = $props<{
+    articles: Article[];
+    totalArticles: number;
+    compact?: boolean;
+    classes?: string[]
+  }>();
 </script>
 
 <div>
