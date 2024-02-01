@@ -1,11 +1,12 @@
 <script lang="ts">
 	import Pagination from "$lib/components/pagination/index.svelte";
-	import type { Article } from "$lib/types/article";
 	import Articles from "$lib/components/Articles.svelte";
-	import type { PageData } from "./$types";
 
 	const { data } = $props();
-	const { articles, currentPage, totalArticles, limit } = $state(data);
+	const articles = $derived(data.articles);
+	const currentPage = $derived(data.currentPage);
+	const totalArticles = $derived(data.totalArticles);
+	const limit = $derived(data.limit);
 </script>
 
 <div>

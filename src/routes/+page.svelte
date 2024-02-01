@@ -1,12 +1,12 @@
 <script lang="ts">
 	import Bandcamp from '$lib/components/bandcamp/index.svelte';
 	import Articles from '$lib/components/Articles.svelte';
-	import type { Album } from '$lib/types/album';
-	import type { Article, ArticlePageLoad } from '$lib/types/article';
 
 	const { data } = $props();
-	const { albums, articlesData } = $state(data);
-	const { articles, totalArticles } = $state(articlesData);
+	const albums = $derived(data.albums);
+	const articlesData = $derived(data.articlesData);
+	const articles = $derived(articlesData.articles);
+	const totalArticles = $derived(articlesData.totalArticles);
 
   const userNames = {
     github: 'BradNut',
@@ -60,7 +60,7 @@
 		</p>
 	<div class="social-info">
 		<Bandcamp {albums} />
-		<Articles {articles} {totalArticles} compact />
+		<Articles {articles} {totalArticles} compact showMoreArticles />
 	</div>
 </div>
 

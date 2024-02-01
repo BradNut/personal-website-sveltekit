@@ -2,16 +2,19 @@
 	import type { Article } from "$lib/types/article";
 	import ExternalLink from './ExternalLink.svelte';
 
-  const { articles, totalArticles, compact = false, classes = [] } = $props<{
+  const { articles, totalArticles, compact = false, showMoreArticles = false, classes = [] } = $props<{
     articles: Article[];
     totalArticles: number;
     compact?: boolean;
+    showMoreArticles?: boolean;
     classes?: string[]
   }>();
 </script>
 
 <div>
-  <h2>Favorite Articles</h2>
+  {#if showMoreArticles}
+    <h2>Favorite Articles</h2>
+  {/if}
   <div class={classes.join(' ')}>
     {#each articles as article (article.hashed_url)}
       <article class='card'>
@@ -42,12 +45,14 @@
       </article>
     {/each}
   </div>
-  <div class="moreArticles">
-    <a href="/articles">{`${totalArticles} more articles`}</a>
-    <a href="/articles" aria-label={`${totalArticles} more articles`}>
-      <iconify-icon icon="material-symbols:arrow-right-alt-rounded"></iconify-icon>
-    </a>
-  </div>
+  {#if showMoreArticles}
+    <div class="moreArticles">
+      <a href="/articles">{`${totalArticles} more articles`}</a>
+      <a href="/articles" aria-label={`${totalArticles} more articles`}>
+        <iconify-icon icon="material-symbols:arrow-right-alt-rounded"></iconify-icon>
+      </a>
+    </div>
+  {/if}
 </div>
 
 
