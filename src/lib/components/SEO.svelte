@@ -9,17 +9,24 @@
     siteUrl,
   };
 
-	export let title = defaultMetadata.defaultTitle;
-	export let description = defaultMetadata.defaultDescription;
-	export let image = defaultMetadata.defaultImage;
-	export let location: string = '';
+	const {
+		title = defaultMetadata.defaultTitle,
+		description = defaultMetadata.defaultDescription,
+		image = defaultMetadata.defaultImage,
+		location = ''
+	} = $props<{
+		title?: string;
+		description?: string;
+		image?: string;
+		location?: string
+	}>();
 
-  $: seo = {
+  let seo = $derived({
     title,
     description,
     image: `${siteUrl}${image}`,
-    url: `${siteUrl}${location || ``}`,
-  };
+    url: `${siteUrl}${location || ''}`,
+  });
 </script>
 
 <svelte:head>

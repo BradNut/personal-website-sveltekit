@@ -1,3 +1,4 @@
+import { render } from 'svelte/server';
 import satori from 'satori';
 import { Resvg } from '@resvg/resvg-js';
 import { html as toReactNode } from 'satori-html';
@@ -6,15 +7,13 @@ import { read } from '$app/server';
 
 // we use a Vite plugin to turn this import into the result of fs.readFileSync during build
 import firaSansSemiBold from '$lib/fonts/FiraSans-SemiBold.ttf';
-import type { SvelteComponent } from 'svelte';
 
 const fontData = read(firaSansSemiBold).arrayBuffer();
 
-export async function componentToPng(component: SvelteComponent,
-																		 props: Record<string, string | undefined>,
-																		 height: number, width: number) {
-	const result = component.render(props);
-	const markup = toReactNode(`${result.html}<style lang="css">${result.css.code}</style>`);
+export async function componentToPng(component: (...args: any[]) => void, props: Record<string, string | undefined>, height: number, width: number, css: string) {
+	const result = render(component, { props });
+	// const result = component.render(props);
+	const markup = toReactNode(`${result.html}<style lang="css">${css}</style>`);
 
 	const svg = await satori(markup, {
 		fonts: [

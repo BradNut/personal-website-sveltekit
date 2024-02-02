@@ -1,16 +1,18 @@
 <script lang="ts">
-  export let additionalClasses: string;
-  export let pageSize: number;
-  export let totalCount: number;
-  export let currentPage: number;
-  export let base: string;
+  const { additionalClasses, pageSize, totalCount, currentPage, base } = $props<{
+    additionalClasses: string;
+    pageSize: number;
+    totalCount: number;
+    currentPage: number;
+    base: string
+  }>();
 
   // make some variables
-  $: totalPages = Math.ceil(totalCount / pageSize);
-  $: prevPage = currentPage - 1;
-  $: nextPage = currentPage + 1;
-  $: hasNextPage = nextPage <= totalPages;
-  $: hasPrevPage = prevPage >= 1;
+  let totalPages = $derived(Math.ceil(totalCount / pageSize));
+  let prevPage = $derived(currentPage - 1);
+  let nextPage = $derived(currentPage + 1);
+  let hasNextPage = $derived(nextPage <= totalPages);
+  let hasPrevPage = $derived(prevPage >= 1);
 </script>
 
 <div class={`paginationStyles ${additionalClasses}`}>

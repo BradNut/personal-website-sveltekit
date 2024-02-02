@@ -4,13 +4,15 @@
 	import linkedin from '@iconify-icons/radix-icons/linkedin-logo';
 	import twitter from '@iconify-icons/radix-icons/twitter-logo';
 
-	export let showGithub: boolean = false;
-	export let showTwitter: boolean = false;
-	export let showLinkedIn: boolean = false;
-	export let showEmail: boolean = false;
-	export let userNames: Record<string, string>;
-	export let showText: boolean = false;
-	export let justify: boolean = false;
+	const { showGithub = false, showTwitter = false, showLinkedIn = false, showEmail = false, userNames, showText = false, justify = false } = $props<{
+		showGithub?: boolean;
+		showTwitter?: boolean;
+		showLinkedIn?: boolean;
+		showEmail?: boolean;
+		userNames: Record<string, string>;
+		showText?: boolean;
+		justify?: boolean
+	}>();
 </script>
 
 {#if showText}

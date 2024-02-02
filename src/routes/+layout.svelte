@@ -19,15 +19,15 @@
 	const dev = process.env.NODE_ENV !== 'production';
 	const siteUrl = PUBLIC_SITE_URL || 'https://bradleyshellnut.com/';
 
-	$: {
+	$effect(() => {
 		if (browser && $navigating) {
 			NProgress.start();
 		} else {
 			NProgress.done();
 		}
-	}
+	});
 
-	$: metaTags = {
+	const metaTags = $derived({
 		titleTemplate: '%s | Bradley Shellnut',
 		additionalMetaTags: [
 			{
@@ -36,7 +36,7 @@
 			}
 		],
 		...$page.data.metaTagsChild
-	}
+	});
 </script>
 
 {#if !dev}
