@@ -6,7 +6,7 @@
 		src: Record<string, any>;
 		alt: string;
 		style: string;
-		loading: "lazy" | "eager";
+		loading?: "lazy" | "eager";
 	}>();
 </script>
 
