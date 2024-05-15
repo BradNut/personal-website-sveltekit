@@ -19,6 +19,12 @@
 </a>
 
 <style lang="postcss">
+	a {
+		margin: 1rem 0;
+		padding: 0;
+		font-size: var(--bodyTextSize);
+	}
+
 	.show-icon {
 		display: inline-flex;
 		align-items: center;

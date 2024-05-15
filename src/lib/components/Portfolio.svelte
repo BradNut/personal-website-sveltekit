@@ -35,11 +35,6 @@
 		}
 	}
 
-	:global(.portfolio p) {
-		margin: 1rem 0;
-		padding: 0;
-	}
-
 	:global(.portfolio-details) {
 		margin: 0 1.5rem;
 

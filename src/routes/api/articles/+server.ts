@@ -1,6 +1,6 @@
 import { json, error } from '@sveltejs/kit';
 import { WALLABAG_MAX_PAGES } from '$env/static/private';
-import { fetchArticlesApi } from '$root/routes/api';
+import { fetchArticlesApi } from '$lib/api';
 
 export async function GET({ setHeaders, url }) {
 	const page = url?.searchParams?.get('page') || '1';

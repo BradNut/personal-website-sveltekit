@@ -1,4 +1,8 @@
 <script lang="ts">
+  import { goto } from '$app/navigation';
+  import { Pagination } from "bits-ui";
+  import { ChevronLeft, ChevronRight } from 'lucide-svelte';
+
   export let additionalClasses: string;
   export let pageSize: number;
   export let totalCount: number;
@@ -11,47 +15,80 @@
   $: nextPage = currentPage + 1;
   $: hasNextPage = nextPage <= totalPages;
   $: hasPrevPage = prevPage >= 1;
+
+  $: console.log(hasPrevPage, hasNextPage, prevPage, nextPage, currentPage, totalPages, pageSize);
 </script>
 
-<div class={`paginationStyles ${additionalClasses}`}>
-  <a
-    title={`${!hasPrevPage ? 'No ' : ''}Prev Page`}
-    aria-disabled={!hasPrevPage}
-    href={`${base}/${prevPage}`}
-  >
-    &#8592; <span class="word">Prev</span>
-  </a>
-  {#each { length: totalPages } as _, i}
-    <a
-      aria-current={currentPage === i + 1}
-      href={`${base}/${i + 1}`}
-    >
-      {i + 1}
-    </a>
+<Pagination.Root let:pages count={totalCount} perPage={pageSize} page={currentPage || 1} class={`${additionalClasses}`}
+  onPageChange={(page) => goto(`${base}/${page}`)}>
+  <Pagination.PrevButton>
+    <ChevronLeft />
+  </Pagination.PrevButton>
+  {#each pages as page (page.key)}
+    {#if page.type === "ellipsis"}
+      <div class="text-[15px] font-medium text-foreground-alt">...</div>
+    {:else}
+      <Pagination.Page {page}>
+        <a href={`${base}/${page.value}`}>
+          {page.value}
+        </a>
+      </Pagination.Page>
+    {/if}
   {/each}
-  <a
-    title={`${!hasNextPage ? 'No ' : ''}Next Page`}
-    aria-disabled={!hasNextPage}
-    href={`${base}/${nextPage}`}
-  >
-    <span class="word">Next</span> &#8594;
-  </a>
-</div>
+  <Pagination.NextButton>
+    <ChevronRight />
+  </Pagination.NextButton>
+</Pagination.Root>
 
 <style lang="postcss">
-  a {
-    &[aria-current="true"] {
-      color: var(--shellYellow)
+  :global([data-pagination-prev-button]) {
+    &:hover {
+      color: var(--shellYellow);
     }
 
-    &[aria-disabled="true"] {
-      pointer-events: none;
-      color: var(--lightGrey);
-      text-decoration: line-through;
+    &:active {
+      transform: scale(0.98); /* Equivalent to active:scale-98 in Tailwind */
+    }
+
+    &:disabled {
+      cursor: not-allowed; /* Equivalent to disabled:cursor-not-allowed in Tailwind */
+      color: #6b7280; /* Equivalent to disabled:text-muted-foreground in Tailwind */
+    }
+
+    &:hover:disabled {
+      background-color: transparent; /* Equivalent to hover:disabled:bg-transparent in Tailwind */
+    }
+
+    border-right: 1px solid var(--grey);
+    padding: 1rem;
+  }
+
+  :global([data-pagination-next-button]) {
+    &:hover {
+      color: var(--shellYellow);
+    }
+
+    &:active {
+      transform: scale(0.98); /* Equivalent to active:scale-98 in Tailwind */
+    }
+
+    &:disabled {
+      cursor: not-allowed; /* Equivalent to disabled:cursor-not-allowed in Tailwind */
+      color: #6b7280; /* Equivalent to disabled:text-muted-foreground in Tailwind */
+    }
+
+    &:hover:disabled {
+      background-color: transparent; /* Equivalent to hover:disabled:bg-transparent in Tailwind */
     }
   }
 
-	.paginationStyles {
+  :global([data-selected]) {
+    a {
+      color: var(--shellYellow);
+    }
+  }
+
+	:global([data-pagination-root]) {
 		display: flex;
 		align-content: center;
 		align-items: center;
@@ -61,17 +98,16 @@
 		border-radius: 5px;
 		text-align: center;
 		font-size: 1.5rem;
-
-		& > * {
-			padding: 1rem;
-			flex: 1;
-			border-right: 1px solid var(--grey);
-			text-decoration: none;
-		}
-		@media (max-width: 800px) {
-			.word {
-				display: none;
-			}
-		}
 	}
+
+  :global([data-pagination-page]) {
+    padding: 1rem;
+    flex: 1;
+    border-right: 1px solid var(--grey);
+    text-decoration: none;
+
+    a {
+      text-decoration: none;
+    }
+  }
 </style>
