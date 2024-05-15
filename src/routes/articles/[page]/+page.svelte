@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Pagination from "$lib/components/pagination/index.svelte";
-	import type { Article } from "$lib/types/article";
-	import Articles from "$lib/components/Articles.svelte";
-	import type { PageData } from "./$types";
+	import Pagination from '$lib/components/pagination/index.svelte';
+	import type { Article } from '$lib/types/article';
+	import Articles from '$lib/components/Articles.svelte';
+	import type { PageData } from './$types';
 
 	export let data: PageData;
 	let articles: Article[];
@@ -10,11 +10,13 @@
 	let totalArticles: number;
 	let limit: number;
 	$: ({ articles, currentPage, totalPages, totalArticles, limit } = data);
+
+	$: console.log(currentPage, totalPages, totalArticles, limit);
 </script>
 
 <div>
 	<h1 style="margin-bottom: 2rem">Favorite Tech Articles</h1>
-	<Pagination
+		<Pagination
 		additionalClasses="top-pagination"
 		pageSize={limit}
 		totalCount={totalArticles}

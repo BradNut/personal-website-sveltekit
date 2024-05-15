@@ -24,6 +24,9 @@ const config = {
 		alias: {
 			$root: './src'
 		}
+	},
+	compilerOptions: {
+		enableSourcemap: process.env.NODE_ENV === 'development',
 	}
 };
 
