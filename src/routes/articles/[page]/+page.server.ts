@@ -5,11 +5,6 @@ import type { ArticlePageLoad } from '$lib/types/article';
 
 export const load: PageServerLoad = async ({ fetch, params, setHeaders, url }) => {
 	const { page } = params;
-	// if (+page > +WALLABAG_MAX_PAGES) {
-	// 	error(404, {
-	// 		message: 'Not found',
-	// 	});
-	// }
 	const resp = await fetch(`/api/articles?page=${page}`);
 	const {
 		articles,
