@@ -4,7 +4,7 @@ import type { ArticlePageLoad } from '$lib/types/article';
 
 const site = `https://${PUBLIC_URL}`;
 
-export const GET: RequestHandler = async function GET({ setHeaders }) {
+export const GET: RequestHandler = async function GET({ fetch, setHeaders }) {
 	const resp = await fetch(`/api/articles`);
 	const { totalPages }: ArticlePageLoad = await resp.json();
 
