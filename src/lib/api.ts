@@ -4,9 +4,7 @@ import {
 	WALLABAG_USERNAME,
 	WALLABAG_PASSWORD,
 	WALLABAG_URL,
-	WALLABAG_MAX_PAGES,
 	PAGE_SIZE,
-	WALLABAG_MAX_ARTICLES,
 	USE_REDIS_CACHE
 } from '$env/static/private';
 import intersect from 'just-intersect';
@@ -24,11 +22,18 @@ export async function fetchArticlesApi(
 	queryParams: Record<string, string>,
 	data?: Record<string, unknown>
 ) {
+	let perPage = Number(queryParams?.limit);
+	if (perPage > 30) {
+		perPage = Number(PAGE_SIZE);
+	} else {
+		perPage = Number(queryParams?.limit);
+	}
+
 	const pageQuery: PageQuery = {
 		sort: 'updated',
-		perPage: +queryParams?.limit || +PAGE_SIZE,
+		perPage,
 		since: 0,
-		page: +queryParams?.page || 1,
+		page: Number(queryParams?.page) || 1,
 		tags: 'programming',
 		content: 'metadata'
 	};
@@ -79,18 +84,18 @@ export async function fetchArticlesApi(
 
 	const cacheControl = pageResponse.headers.get('cache-control') || 'no-cache';
 
-	const { _embedded, page, pages, total, limit } = await pageResponse.json();
+	const { _embedded: favoriteArticles, page, pages, total, limit } = await pageResponse.json();
 	const articles: Article[] = [];
 
-	_embedded.items.forEach((article: WallabagArticle) => {
+	favoriteArticles.items.forEach((article: WallabagArticle) => {
 		const rawTags = article?.tags?.map((tag) => tag.slug);
 		if (intersect(rawTags, Object.values(ArticleTag))?.length > 0) {
 			const tags = rawTags.map((rawTag) => rawTag as unknown as ArticleTag);
-
 			articles.push({
 				tags,
 				title: article.title,
 				url: new URL(article.url),
+				domain_name: article.domain_name?.replace('www.', '') ?? '',
 				hashed_url: article.hashed_url,
 				reading_time: article.reading_time,
 				preview_picture: article.preview_picture,
@@ -104,9 +109,9 @@ export async function fetchArticlesApi(
 	const responseData: ArticlePageLoad = {
 		articles,
 		currentPage: page,
-		totalPages: pages > +WALLABAG_MAX_PAGES ? +WALLABAG_MAX_PAGES : pages,
+		totalPages: pages,
 		limit,
-		totalArticles: total > +WALLABAG_MAX_ARTICLES ? +WALLABAG_MAX_ARTICLES : total,
+		totalArticles: total,
 		cacheControl
 	};
 

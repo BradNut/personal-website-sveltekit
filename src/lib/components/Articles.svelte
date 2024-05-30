@@ -12,7 +12,7 @@
   <h2>Favorite Articles</h2>
   <div class={classes.join(' ')}>
     {#each articles as article (article.hashed_url)}
-      <article class='card'>
+      <article class="card">
         <section>
           <h3>
             <ExternalLink
@@ -27,6 +27,7 @@
               {/if}
             </ExternalLink>
           </h3>
+          <p>{article.domain_name}</p>
         </section>
         <section>
           <p>Reading time: {article.reading_time} minutes</p>

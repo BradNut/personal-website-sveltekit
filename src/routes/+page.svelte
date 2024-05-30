@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import Bandcamp from '$lib/components/bandcamp/index.svelte';
+	import Bandcamp from '$lib/components/Bandcamp.svelte';
 	import Articles from '$lib/components/Articles.svelte';
 	import type { Album } from '$lib/types/album';
 	import type { Article, ArticlePageLoad } from '$lib/types/article';
@@ -10,8 +10,16 @@
 	let articlesData: ArticlePageLoad;
 	let articles: Article[];
 	let totalArticles: number;
-	$: ({ albums, articlesData } = data);
-	$: ({ articles, totalArticles } = articlesData);
+
+	$: if (data) {
+		albums = data.albums;
+		articlesData = data.articlesData;
+	}
+
+	$: if (articlesData) {
+		articles = articlesData.articles;
+		totalArticles = articlesData.totalArticles;
+	}
 
   const userNames = {
     github: 'BradNut',

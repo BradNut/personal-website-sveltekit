@@ -8,15 +8,6 @@
   export let totalCount: number;
   export let currentPage: number;
   export let base: string;
-
-  // make some variables
-  $: totalPages = Math.ceil(totalCount / pageSize);
-  $: prevPage = currentPage - 1;
-  $: nextPage = currentPage + 1;
-  $: hasNextPage = nextPage <= totalPages;
-  $: hasPrevPage = prevPage >= 1;
-
-  $: console.log(hasPrevPage, hasNextPage, prevPage, nextPage, currentPage, totalPages, pageSize);
 </script>
 
 <Pagination.Root let:pages count={totalCount} perPage={pageSize} page={currentPage || 1} class={`${additionalClasses}`}
@@ -26,7 +17,7 @@
   </Pagination.PrevButton>
   {#each pages as page (page.key)}
     {#if page.type === "ellipsis"}
-      <div class="text-[15px] font-medium text-foreground-alt">...</div>
+      <div class="ellipsis text-[15px] font-medium text-foreground-alt">...</div>
     {:else}
       <Pagination.Page {page}>
         <a href={`${base}/${page.value}`}>
@@ -61,6 +52,11 @@
 
     border-right: 1px solid var(--grey);
     padding: 1rem;
+  }
+
+  :global(.ellipsis) {
+    padding: 1rem;
+    border-right: 1px solid var(--grey);
   }
 
   :global([data-pagination-next-button]) {
