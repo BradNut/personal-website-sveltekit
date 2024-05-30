@@ -1,10 +1,13 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import { PUBLIC_URL } from '$env/static/public';
-import { WALLABAG_MAX_PAGES } from '$env/static/private';
+import type { ArticlePageLoad } from '$lib/types/article';
 
 const site = `https://${PUBLIC_URL}`;
 
 export const GET: RequestHandler = async function GET({ setHeaders }) {
+	const resp = await fetch(`/api/articles`);
+	const { totalPages }: ArticlePageLoad = await resp.json();
+
 	const xml = `<?xml version="1.0" encoding="UTF-8" ?>
     <urlset
       xmlns="https://www.sitemaps.org/schemas/sitemap/0.9"
@@ -32,7 +35,7 @@ export const GET: RequestHandler = async function GET({ setHeaders }) {
         <priority>1</priority>
       </url>
 
-      ${Array.from({ length: parseInt(WALLABAG_MAX_PAGES) }, (_, i) => {
+      ${Array.from({ length: totalPages }, (_, i) => {
         return `
           <url>
             <loc>${site}/articles/${i + 1}</loc>

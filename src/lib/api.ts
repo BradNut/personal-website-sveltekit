@@ -19,8 +19,7 @@ const base: string = WALLABAG_URL;
 export async function fetchArticlesApi(
 	method: string,
 	resource: string,
-	queryParams: Record<string, string>,
-	data?: Record<string, unknown>
+	queryParams: Record<string, string>
 ) {
 	let perPage = Number(queryParams?.limit);
 	if (perPage > 30) {
