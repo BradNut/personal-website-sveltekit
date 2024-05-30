@@ -4,6 +4,7 @@ export type Article = {
 	tags: ArticleTag[];
 	title: string;
 	url: URL;
+	domain_name: string;
 	hashed_url: string;
 	reading_time: number;
 	preview_picture: string;
@@ -16,6 +17,7 @@ export type WallabagArticle = {
 	tags: WallabagTag[];
 	title: string;
 	url: URL;
+	domain_name: string;
 	hashed_url: string;
 	reading_time: number;
 	preview_picture: string;
