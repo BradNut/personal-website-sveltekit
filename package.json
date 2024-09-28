@@ -22,7 +22,6 @@
 		"@iconify-icons/simple-icons": "^1.2.74",
 		"@melt-ui/pp": "^0.3.2",
 		"@playwright/test": "^1.47.2",
-		"@resvg/resvg-js": "^2.6.2",
 		"@sveltejs/adapter-auto": "^3.2.5",
 		"@sveltejs/adapter-node": "^5.2.5",
 		"@sveltejs/adapter-static": "^3.0.5",
@@ -66,6 +65,7 @@
 	"type": "module",
 	"dependencies": {
 		"@melt-ui/svelte": "^0.76.3",
+		"@resvg/resvg-js": "^2.6.2",
 		"@sveltejs/adapter-vercel": "^5.4.4",
 		"@types/nprogress": "^0.2.3",
 		"@vercel/og": "^0.6.3",
@@ -74,7 +74,6 @@
 		"ioredis": "^5.4.1",
 		"lucide-svelte": "^0.378.0",
 		"nprogress": "^0.2.0",
-		"personal-website-sveltekit": "link:",
 		"svelte-local-storage-store": "^0.6.4"
 	}
 }

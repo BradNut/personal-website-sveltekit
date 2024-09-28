@@ -11,6 +11,9 @@ importers:
       '@melt-ui/svelte':
         specifier: ^0.76.3
         version: 0.76.3(svelte@4.2.19)
+      '@resvg/resvg-js':
+        specifier: ^2.6.2
+        version: 2.6.2
       '@sveltejs/adapter-vercel':
         specifier: ^5.4.4
         version: 5.4.4(@sveltejs/kit@2.6.1(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.8(@types/node@20.7.0)(sass@1.79.4)))(svelte@4.2.19)(vite@5.4.8(@types/node@20.7.0)(sass@1.79.4)))
@@ -60,9 +63,6 @@ importers:
       '@playwright/test':
         specifier: ^1.47.2
         version: 1.47.2
-      '@resvg/resvg-js':
-        specifier: ^2.6.2
-        version: 2.6.2
       '@sveltejs/adapter-auto':
         specifier: ^3.2.5
         version: 3.2.5(@sveltejs/kit@2.6.1(@sveltejs/vite-plugin-svelte@3.1.2(svelte@4.2.19)(vite@5.4.8(@types/node@20.7.0)(sass@1.79.4)))(svelte@4.2.19)(vite@5.4.8(@types/node@20.7.0)(sass@1.79.4)))
