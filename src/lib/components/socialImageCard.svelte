@@ -31,7 +31,7 @@
 <style>
 	@font-face {
 		font-family: 'Fira Sans';
-		src: url('/src/lib/FiraSans-Bold.ttf');
+		src: url('/src/lib/fonts/FiraSans-Bold.ttf');
 	}
 
 	.social-card {
