@@ -15,6 +15,7 @@
 		"test:integration": "playwright test",
 		"test:unit": "vitest"
 	},
+	"packageManager": "pnpm@9.11.0",
 	"devDependencies": {
 		"@iconify-icons/material-symbols": "^1.2.58",
 		"@iconify-icons/mdi": "^1.2.48",
