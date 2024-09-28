@@ -38,9 +38,6 @@ importers:
       nprogress:
         specifier: ^0.2.0
         version: 0.2.0
-      personal-website-sveltekit:
-        specifier: 'link:'
-        version: 'link:'
       svelte-local-storage-store:
         specifier: ^0.6.4
         version: 0.6.4(svelte@4.2.19)
