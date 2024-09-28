@@ -12,9 +12,7 @@
 	header {
 		display: flex;
 		justify-content: space-between;
-		//height: var(--headerHeight);
 		align-items: center;
-		/* color: black; */
 		background-color: var(--darkGrey);
 		background: var(--headerBackground);
 		box-shadow: var(--level-2);
@@ -23,7 +21,7 @@
 	}
 
 	@media (max-width: 1000px) {
-		header {	
+		header {
 			padding-top: 1.25rem;
 		}
 	}
