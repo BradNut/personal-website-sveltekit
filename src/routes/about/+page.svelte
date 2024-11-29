@@ -9,7 +9,7 @@
 	import Svelte from '@iconify-icons/simple-icons/svelte';
 	import TypeScript from '@iconify-icons/simple-icons/typescript';
 	import LazyImage from '$lib/components/LazyImage.svelte';
-	import antarctica from '$lib/assets/images/antarctica.png?as=run:0';
+	import cruise from '$lib/assets/images/cruise.png?as=run:0';
 	import tortie_derp from '$lib/assets/images/tortie_derp.jpg?as=run';
 	import orange_derp from '$lib/assets/images/orange_derp.jpg?as=run';
 	import turnip from '$lib/assets/images/turnip.svg';
@@ -130,7 +130,7 @@
 		<h2>Other fun things about me&hellip;</h2>
 		<div style="display: grid;">
 			<p>
-				Recently visited Antarctica.
+				Recently cruised the Mediterranean.
 			</p>
 			<div
 				style="
@@ -140,8 +140,8 @@
 					justify-content: center;
 				"
 			>
-				<LazyImage src={antarctica} alt="Clip art of Antarctica" />
-				<p class="center">Antarctica</p>
+				<LazyImage src={cruise} alt="Clip art of a cruise ship. Cruise icons created by C-mo Box - Flaticon" />
+				<p class="center">Crusin'</p>
 			</div>
 		</div>
 		<div>
