@@ -1,8 +1,6 @@
 <script lang="ts">
-	import Img from '@zerodevx/svelte-img';
 	import type { Album } from "$lib/types/album";
-	import LazyImage from '../LazyImage.svelte';
-
+	import LazyImage from './LazyImage.svelte';
 
 	export let albums: Album[];
 	const displayAlbums =

@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-vercel';
+import adapter from '@sveltejs/adapter-node';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import { preprocessMeltUI } from '@melt-ui/pp';
 import { mdsvex } from 'mdsvex';
@@ -24,6 +24,9 @@ const config = {
 		alias: {
 			$root: './src'
 		}
+	},
+	compilerOptions: {
+		enableSourcemap: process.env.NODE_ENV === 'development',
 	}
 };
 

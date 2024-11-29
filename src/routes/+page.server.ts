@@ -6,7 +6,7 @@ import type { Album } from '$lib/types/album';
 import type { ArticlePageLoad } from '$lib/types/article';
 
 export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
-	let baseUrl = 'https://bradleyshellnut.com';
+	let baseUrl;
 	if (url.origin.includes('prerender')) {
 		baseUrl = PUBLIC_SITE_URL || 'https://bradleyshellnut.com';
 	} else {

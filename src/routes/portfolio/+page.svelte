@@ -44,9 +44,7 @@
 			loading="eager"
 			alt="Picture of Bradley Shellnut's Personal Website">
 			<span slot="portfolio-links">
-				<p>
-					<ExternalLink ariaLabel="View GitHub repository for my personal website" href="https://github.com/BradNut/personal-website-sveltekit" icon={GitHub} showIcon>GitHub repository</ExternalLink>
-				</p>
+				<ExternalLink ariaLabel="View GitHub repository for my personal website" href="https://github.com/BradNut/personal-website-sveltekit" icon={GitHub} showIcon>GitHub repository</ExternalLink>
 			</span>
 			<PersonalWebsiteSvelteKit slot="portfolio-details" />
 		</Portfolio>
@@ -55,12 +53,8 @@
 			src={weddingWebsite}
 			alt="Picture of NextJS Wedding Website">
 			<span slot="portfolio-links">
-				<p>
-					<ExternalLink ariaLabel="View Wedding Website" href="https://weddingsite-six.vercel.app/" showIcon>View Site</ExternalLink>
-				</p>
-				<p>
-					<ExternalLink ariaLabel="View GitHub repository for the wedding site" href="https://github.com/BradNut/weddingsite" icon={GitHub} showIcon>GitHub repository</ExternalLink>
-				</p>
+				<ExternalLink ariaLabel="View Wedding Website" href="https://weddingsite-six.vercel.app/" showIcon>View Site</ExternalLink>
+				<ExternalLink ariaLabel="View GitHub repository for the wedding site" href="https://github.com/BradNut/weddingsite" icon={GitHub} showIcon>GitHub repository</ExternalLink>
 			</span>
 			<WeddingWebsite slot="portfolio-details" />
 		</Portfolio>
@@ -69,9 +63,7 @@
 			src={oldSite}
 			alt="Home Page of the old bradleyshellnut.com website">
 			<span slot="portfolio-links">
-				<p>
-					<ExternalLink ariaLabel="Archive of bradleyshellnut.com" href="https://web.archive.org/web/20201205233507/https://bradleyshellnut.com/about" showIcon>Link to an archive snapshot</ExternalLink>
-				</p>
+				<ExternalLink ariaLabel="Archive of bradleyshellnut.com" href="https://web.archive.org/web/20201205233507/https://bradleyshellnut.com/about" showIcon>Link to an archive snapshot</ExternalLink>
 			</span>
 			<OldWebsite slot="portfolio-details" />
 		</Portfolio>
@@ -82,9 +74,7 @@
 			src={shellnutArchitectWebsite}
 			alt="Picture of Mark Shellnut Architect's Website">
 			<span slot="portfolio-links">
-				<p>
-					<ExternalLink ariaLabel="View markshellnutarchitect.com" href="https://markshellnutarchitect.com" showIcon>Link to Mark Shellnut's Website</ExternalLink>
-				</p>
+				<ExternalLink ariaLabel="View markshellnutarchitect.com" href="https://markshellnutarchitect.com" showIcon>Link to Mark Shellnut's Website</ExternalLink>
 			</span>
 			<MarkShellnutArchitect slot="portfolio-details" />
 		</Portfolio>
