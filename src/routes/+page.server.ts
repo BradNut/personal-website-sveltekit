@@ -1,9 +1,9 @@
-import type { MetaTagsProps } from 'svelte-meta-tags';
 import { PUBLIC_SITE_URL } from '$env/static/public';
-import type { PageServerLoad } from './$types';
-import { fetchBandcampAlbums } from '$lib/util/fetchBandcampAlbums';
 import type { Album } from '$lib/types/album';
 import type { ArticlePageLoad } from '$lib/types/article';
+import { fetchBandcampAlbums } from '$lib/util/fetchBandcampAlbums';
+import type { MetaTagsProps } from 'svelte-meta-tags';
+import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
 	let baseUrl;
@@ -45,7 +45,7 @@ export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
 
 	const [albums, articles]: [Album[], ArticlePageLoad] = await Promise.all([
 		await fetchBandcampAlbums(),
-	  (await fetch(`/api/articles?page=1&limit=3`)).json()
+	  (await fetch('/api/articles?page=1&limit=3')).json()
 	]);
 
 	setHeaders({

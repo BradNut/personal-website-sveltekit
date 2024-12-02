@@ -1,11 +1,15 @@
 <script lang="ts">
-	import type { Article } from "$lib/types/article";
-	import ExternalLink from './ExternalLink.svelte';
+import type { Article } from '$lib/types/article';
+import ExternalLink from './ExternalLink.svelte';
 
-  export let articles: Article[];
-	export let totalArticles: number;
-  export let compact: boolean = false;
-  export let classes: string[] = [];
+const {
+  articles,
+  totalArticles,
+  compact = false,
+  classes = [],
+}: { articles: Article[]; totalArticles: number; compact: boolean; classes: string[] } = $props();
+
+console.log('articles', articles);
 </script>
 
 <div>

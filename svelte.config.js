@@ -3,8 +3,6 @@ import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import { preprocessMeltUI } from '@melt-ui/pp';
 import { mdsvex } from 'mdsvex';
 import mdsvexConfig from './mdsvex.config.js';
-import relativeImages from 'mdsvex-relative-images';
-
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {

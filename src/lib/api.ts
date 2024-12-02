@@ -5,14 +5,18 @@ import {
 	WALLABAG_PASSWORD,
 	WALLABAG_URL,
 	PAGE_SIZE,
-	USE_REDIS_CACHE
-} from '$env/static/private';
-import intersect from 'just-intersect';
-import type { Article, ArticlePageLoad, WallabagArticle } from '$lib/types/article';
-import { ArticleTag } from '$lib/types/articleTag';
-import type { PageQuery } from '$lib/types/pageQuery';
-import { URLSearchParams } from 'url';
-import { redis } from '$lib/server/redis';
+	USE_REDIS_CACHE,
+} from "$env/static/private";
+import intersect from "just-intersect";
+import type {
+	Article,
+	ArticlePageLoad,
+	WallabagArticle,
+} from "$lib/types/article";
+import { ArticleTag } from "$lib/types/articleTag";
+import type { PageQuery } from "$lib/types/pageQuery";
+import { URLSearchParams } from "url";
+import { redis } from "$lib/server/redis";
 
 const base: string = WALLABAG_URL;
 
@@ -29,18 +33,18 @@ export async function fetchArticlesApi(
 	}
 
 	const pageQuery: PageQuery = {
-		sort: 'updated',
+		sort: "updated",
 		perPage,
 		since: 0,
 		page: Number(queryParams?.page) || 1,
-		tags: 'programming',
-		content: 'metadata'
+		tags: "programming",
+		content: "metadata",
 	};
 	const entriesQueryParams = new URLSearchParams({
 		...pageQuery,
 		perPage: `${pageQuery.perPage}`,
 		since: `${pageQuery.since}`,
-		page: `${pageQuery.page}`
+		page: `${pageQuery.page}`,
 	});
 
 	if (USE_REDIS_CACHE) {
@@ -55,35 +59,44 @@ export async function fetchArticlesApi(
 	}
 
 	const authBody = {
-		grant_type: 'password',
+		grant_type: "password",
 		client_id: WALLABAG_CLIENT_ID,
 		client_secret: WALLABAG_CLIENT_SECRET,
 		username: WALLABAG_USERNAME,
-		password: WALLABAG_PASSWORD
+		password: WALLABAG_PASSWORD,
 	};
 
 	const authResponse = await fetch(`${base}/oauth/v2/token`, {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-		body: new URLSearchParams(authBody)
+		method: "POST",
+		headers: { "Content-Type": "application/x-www-form-urlencoded" },
+		body: new URLSearchParams(authBody),
 	});
 
 	const auth = await authResponse.json();
 
-	const pageResponse = await fetch(`${WALLABAG_URL}/api/entries.json?${entriesQueryParams}`, {
-		method: 'GET',
-		headers: {
-			Authorization: `Bearer ${auth.access_token}`
+	const pageResponse = await fetch(
+		`${WALLABAG_URL}/api/entries.json?${entriesQueryParams}`,
+		{
+			method: "GET",
+			headers: {
+				Authorization: `Bearer ${auth.access_token}`,
+			},
 		}
-	});
+	);
 
 	if (!pageResponse.ok) {
 		throw new Error(pageResponse.statusText);
 	}
 
-	const cacheControl = pageResponse.headers.get('cache-control') || 'no-cache';
+	const cacheControl = pageResponse.headers.get("cache-control") || "no-cache";
 
-	const { _embedded: favoriteArticles, page, pages, total, limit } = await pageResponse.json();
+	const {
+		_embedded: favoriteArticles,
+		page,
+		pages,
+		total,
+		limit,
+	} = await pageResponse.json();
 	const articles: Article[] = [];
 
 	favoriteArticles.items.forEach((article: WallabagArticle) => {
@@ -94,13 +107,13 @@ export async function fetchArticlesApi(
 				tags,
 				title: article.title,
 				url: new URL(article.url),
-				domain_name: article.domain_name?.replace('www.', '') ?? '',
+				domain_name: article.domain_name?.replace("www.", "") ?? "",
 				hashed_url: article.hashed_url,
 				reading_time: article.reading_time,
 				preview_picture: article.preview_picture,
 				created_at: new Date(article.created_at),
 				updated_at: new Date(article.updated_at),
-				archived_at: article.archived_at ? new Date(article.archived_at) : null
+				archived_at: article.archived_at ? new Date(article.archived_at) : null,
 			});
 		}
 	});
@@ -111,11 +124,16 @@ export async function fetchArticlesApi(
 		totalPages: pages,
 		limit,
 		totalArticles: total,
-		cacheControl
+		cacheControl,
 	};
 
 	if (USE_REDIS_CACHE) {
-		redis.set(entriesQueryParams.toString(), JSON.stringify(responseData), 'EX', 43200);
+		redis.set(
+			entriesQueryParams.toString(),
+			JSON.stringify(responseData),
+			"EX",
+			43200
+		);
 	}
 
 	return responseData;
