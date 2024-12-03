@@ -1,32 +1,52 @@
 <script lang="ts">
-	import { createTabs, melt } from '@melt-ui/svelte';
-	import GitHub from '@iconify-icons/simple-icons/github';
-	import Portfolio from '$lib/components/Portfolio.svelte';
-	import personalSite from "$lib/assets/images/portfolio/Bradley_Shellnut_New_Site.png?as=run";
-  import weddingWebsite from "$lib/assets/images/portfolio/Wedding_Website.png?as=run";
-	import oldSite from '$lib/assets/images/portfolio/Old_Website_Bradley_Shellnut.png?as=run';
-	import shellnutArchitectWebsite from "$lib/assets/images/portfolio/Mark_Shellnut_Architect.png?as=run";
-	// @ts-expect-error: Cannot find module '$lib/content/uses/development.md' or its corresponding type declarations.ts(2307)
-	import PersonalWebsiteSvelteKit from "$lib/content/portfolio/personal/personal-website-sveltekit.md";
-	// @ts-expect-error: Cannot find module '$lib/content/uses/development.md' or its corresponding type declarations.ts(2307)
-	import WeddingWebsite from '$lib/content/portfolio/personal/wedding-website.md';
-	// @ts-expect-error: Cannot find module '$lib/content/uses/development.md' or its corresponding type declarations.ts(2307)
-	import MarkShellnutArchitect from '$lib/content/portfolio/professional/mark-shellnut-architect.md';
-	// @ts-expect-error: Cannot find module '$lib/content/uses/development.md' or its corresponding type declarations.ts(2307)
-	import OldWebsite from '$lib/content/portfolio/personal/old-website.md';
-	import ExternalLink from '$lib/components/ExternalLink.svelte';
+import ExternalLink from '$lib/components/ExternalLink.svelte';
+import Portfolio from '$lib/components/Portfolio.svelte';
+// @ts-expect-error: Cannot find module '$lib/content/uses/development.md' or its corresponding type declarations.ts(2307)
+import OldWebsite from '$lib/content/portfolio/personal/old-website.md';
+// @ts-expect-error: Cannot find module '$lib/content/uses/development.md' or its corresponding type declarations.ts(2307)
+import PersonalWebsiteSvelteKit from '$lib/content/portfolio/personal/personal-website-sveltekit.md';
+// @ts-expect-error: Cannot find module '$lib/content/uses/development.md' or its corresponding type declarations.ts(2307)
+import WeddingWebsite from '$lib/content/portfolio/personal/wedding-website.md';
+// @ts-expect-error: Cannot find module '$lib/content/uses/development.md' or its corresponding type declarations.ts(2307)
+import MarkShellnutArchitect from '$lib/content/portfolio/professional/mark-shellnut-architect.md';
+import type { ExternalLinkType } from '$lib/types/externalLinkType';
+import GitHub from '@iconify-icons/simple-icons/github';
+import { createTabs, melt } from '@melt-ui/svelte';
+import personalSite from '../../lib/assets/images/portfolio/Bradley_Shellnut_New_Site.png?enhanced';
+import shellnutArchitectWebsite from '../../lib/assets/images/portfolio/Mark_Shellnut_Architect.png?enhanced';
+import oldSite from '../../lib/assets/images/portfolio/Old_Website_Bradley_Shellnut.png?enhanced';
+import weddingWebsite from '../../lib/assets/images/portfolio/Wedding_Website.png?enhanced';
 
-	const {
-		elements: { root, list, content, trigger }
-	} = createTabs({
-		defaultValue: 'personal'
-	});
+const {
+  elements: { root, list, content, trigger },
+} = createTabs({
+  defaultValue: 'personal',
+});
 
-	const triggers = [
-		{ id: 'personal', title: 'Personal Sites' },
-		{ id: 'professional', title: 'Professional Sites'}
-	];
+const triggers = [
+  { id: 'personal', title: 'Personal Sites' },
+  { id: 'professional', title: 'Professional Sites' },
+];
 </script>
+
+{#snippet links(externalLinks: ExternalLinkType[])}
+	<span>
+		{#each externalLinks as link}
+			<ExternalLink
+				ariaLabel={link.ariaLabel}
+				href={link.href}
+				icon={link.icon}
+				showIcon={link.showIcon}
+			>
+				{link.text}
+			</ExternalLink>
+		{/each}
+	</span>
+{/snippet}
+
+{#snippet details(portfolioDetails: string)}
+	{portfolioDetails}
+{/snippet}
 
 <h1>Portfolio!</h1>
 <div use:melt={$root} class="root tab-group">
@@ -42,42 +62,38 @@
 			style="max-height: 550px;"
 			src={personalSite}
 			loading="eager"
-			alt="Picture of Bradley Shellnut's Personal Website">
-			<span slot="portfolio-links">
-				<ExternalLink ariaLabel="View GitHub repository for my personal website" href="https://github.com/BradNut/personal-website-sveltekit" icon={GitHub} showIcon>GitHub repository</ExternalLink>
-			</span>
-			<PersonalWebsiteSvelteKit slot="portfolio-details" />
+			alt="Picture of Bradley Shellnut's Personal Website"
+			{links}
+			{details}
+			portfolioDetails={PersonalWebsiteSvelteKit}
+			externalLinks={[{ ariaLabel: 'View GitHub repository for my personal website', href: 'https://github.com/BradNut/personal-website-sveltekit', icon: GitHub, showIcon: true, text: 'GitHub repository'}]}>
 		</Portfolio>
 		<Portfolio name="Wedding Website"
 			style="max-height: 550px;"
 			src={weddingWebsite}
-			alt="Picture of NextJS Wedding Website">
-			<span slot="portfolio-links">
-				<ExternalLink ariaLabel="View Wedding Website" href="https://weddingsite-six.vercel.app/" showIcon>View Site</ExternalLink>
-				<ExternalLink ariaLabel="View GitHub repository for the wedding site" href="https://github.com/BradNut/weddingsite" icon={GitHub} showIcon>GitHub repository</ExternalLink>
-			</span>
-			<WeddingWebsite slot="portfolio-details" />
-		</Portfolio>
-		<Portfolio name="Old Personal Website"
+			alt="Picture of NextJS Wedding Website"
+			{links}
+			{details}
+			portfolioDetails={WeddingWebsite}
+			externalLinks={[{ ariaLabel: 'View GitHub repository for the wedding site', href: 'https://github.com/BradNut/weddingsite', icon: GitHub, showIcon: true, text: 'GitHub repository'}]}/>
+			<Portfolio name="Old Personal Website"
 			style="max-height: 320px;"
 			src={oldSite}
-			alt="Home Page of the old bradleyshellnut.com website">
-			<span slot="portfolio-links">
-				<ExternalLink ariaLabel="Archive of bradleyshellnut.com" href="https://web.archive.org/web/20201205233507/https://bradleyshellnut.com/about" showIcon>Link to an archive snapshot</ExternalLink>
-			</span>
-			<OldWebsite slot="portfolio-details" />
-		</Portfolio>
+			alt="Home Page of the old bradleyshellnut.com website"
+			{links}
+			{details}
+			portfolioDetails={OldWebsite}
+			externalLinks={[{ ariaLabel: 'Archive of bradleyshellnut.com', href: 'https://web.archive.org/web/20201205233507/https://bradleyshellnut.com/about', icon: GitHub, showIcon: true, text: 'Link to an archive snapshot'}]}/>
 	</div>
 	<div use:melt={$content('professional')} class="content">
 		<Portfolio name="Mark Shellnut Architect"
 			style="max-height: 550px;"
 			src={shellnutArchitectWebsite}
-			alt="Picture of Mark Shellnut Architect's Website">
-			<span slot="portfolio-links">
-				<ExternalLink ariaLabel="View markshellnutarchitect.com" href="https://markshellnutarchitect.com" showIcon>Link to Mark Shellnut's Website</ExternalLink>
-			</span>
-			<MarkShellnutArchitect slot="portfolio-details" />
-		</Portfolio>
+			alt="Picture of Mark Shellnut Architect's Website"
+			{links}
+			{details}
+			portfolioDetails={MarkShellnutArchitect}
+			externalLinks={[{ ariaLabel: 'View Mark Shellnut Architect', href: 'https://markshellnutarchitect.com', showIcon: false, text: 'Link to Mark Shellnut Architect'}]} />
 	</div>
 </div>
 

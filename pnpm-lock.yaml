@@ -17,6 +17,9 @@ importers:
       '@types/nprogress':
         specifier: ^0.2.3
         version: 0.2.3
+      '@unpic/svelte':
+        specifier: ^0.0.56
+        version: 0.0.56(svelte@5.3.1)
       '@vercel/og':
         specifier: ^0.6.4
         version: 0.6.4
@@ -1395,6 +1398,14 @@ packages:
   '@types/unist@2.0.6':
     resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
 
+  '@unpic/core@0.0.52':
+    resolution: {integrity: sha512-XRX0ePG0nH/K9x/coCQwFzSzg66INBNgPZR2FeSis6BHyxw3sBjL4KDzYse6d/Zx0F3APWsWkK2htaGRznjHMw==}
+
+  '@unpic/svelte@0.0.56':
+    resolution: {integrity: sha512-YkZaHLYEQycs4MoBH0YXt29hdSaS6RoUOpSf1IaZ4MnfJOrRcjpAxIsN8uMaLu8g7IyxO9dWHmPmmECpKluA5g==}
+    peerDependencies:
+      svelte: '*'
+
   '@vercel/nft@0.27.1':
     resolution: {integrity: sha512-K6upzYHCV1cq2gP83r1o8uNV1vwvAlozvMqp7CEjYWxo0CMI8/4jKcDkVjlypVhrfZ54SXwh9QbH0ZIk/vQCsw==}
     engines: {node: '>=16'}
@@ -2634,6 +2645,9 @@ packages:
   strip-literal@2.1.0:
     resolution: {integrity: sha512-Op+UycaUt/8FbN/Z2TWPBLge3jWrP3xj10f3fnYxf052bKuS3EKs1ZQcVGjnEMdsNVAM+plXRdmjrZ/KgG3Skw==}
 
+  style-object-to-css-string@1.1.3:
+    resolution: {integrity: sha512-bISQoUsir/qGfo7vY8rw00ia9nnyE1jvYt3zZ2jhdkcXZ6dAEi74inMzQ6On57vFI+I4Fck6wOv5UI9BEwJDgw==}
+
   supports-preserve-symlinks-flag@1.0.0:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
@@ -2788,6 +2802,9 @@ packages:
 
   unist-util-visit@3.1.0:
     resolution: {integrity: sha512-Szoh+R/Ll68QWAyQyZZpQzZQm2UPbxibDvaY8Xc9SUtYgPsDzx5AWSk++UUt2hJuow8mvwR+rG+LQLw+KsuAKA==}
+
+  unpic@3.20.0:
+    resolution: {integrity: sha512-reWY4Ez9FCjw8J7fGByyyi1Z1fv20xjkFgDa9xI7vqdg89fcLzUYkROKo7yZ5WHRelq6x+pL4ohPRzEdU020aQ==}
 
   update-browserslist-db@1.1.0:
     resolution: {integrity: sha512-EdRAaAyk2cUE1wOf2DkEhzxqOQvFOoRJFNS6NeyJ01Gp2beMRpBAINjM2iDXE3KCuKhwnvHIQCJm6ThL2Z+HzQ==}
@@ -3943,6 +3960,17 @@ snapshots:
   '@types/resolve@1.20.2': {}
 
   '@types/unist@2.0.6': {}
+
+  '@unpic/core@0.0.52':
+    dependencies:
+      unpic: 3.20.0
+
+  '@unpic/svelte@0.0.56(svelte@5.3.1)':
+    dependencies:
+      '@unpic/core': 0.0.52
+      style-object-to-css-string: 1.1.3
+      svelte: 5.3.1
+      unpic: 3.20.0
 
   '@vercel/nft@0.27.1':
     dependencies:
@@ -5335,6 +5363,8 @@ snapshots:
     dependencies:
       js-tokens: 9.0.0
 
+  style-object-to-css-string@1.1.3: {}
+
   supports-preserve-symlinks-flag@1.0.0: {}
 
   svelte-check@4.1.0(picomatch@4.0.2)(svelte@5.3.1)(typescript@5.7.2):
@@ -5482,6 +5512,8 @@ snapshots:
       '@types/unist': 2.0.6
       unist-util-is: 5.2.0
       unist-util-visit-parents: 4.1.1
+
+  unpic@3.20.0: {}
 
   update-browserslist-db@1.1.0(browserslist@4.23.3):
     dependencies:

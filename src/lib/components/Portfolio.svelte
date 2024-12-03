@@ -1,21 +1,30 @@
 <script lang="ts">
-	import LazyImage from './LazyImage.svelte';
+import type { Picture } from 'vite-imagetools';
+	import type { Snippet } from 'svelte';
+	import { ExternalLinkType } from '../types/externalLinkType';
 
-	export let name: string;
-	export let src: Record<string, any>;
-	export let alt: string;
-	export let style = "";
-	export let loading: "lazy" | "eager" = "lazy";
+const {
+	links,
+	details,
+	portfolioDetails,
+	externalLinks,
+  name,
+  src,
+  alt,
+  style,
+  fetchpriority = 'auto',
+  loading = 'lazy',
+}: { links: Snippet<ExternalLinkType[]>, details: Snippet<string>, portfolioDetails: string, externalLinks: ExternalLinkType[], name: string; src: string | Picture; alt: string; style: string; fetchpriority?: 'high' | 'low' | 'auto'; loading?: 'lazy' | 'eager' } = $props();
 </script>
 
 <div class="portfolio">
 	<div class="portfolio-picture">
 		<h2>{name}</h2>
-		<LazyImage {style} {src} {alt} {loading} />
-		<slot name="portfolio-links" />
+		<enhanced:img {src} {style} {alt} {fetchpriority} {loading} />
+		{@render links(externalLinks)}
 	</div>
 	<div class="portfolio-details">
-		<slot name="portfolio-details" />
+		{@render details()}
 	</div>
 </div>
 

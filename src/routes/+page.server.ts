@@ -43,10 +43,10 @@ export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
 		url: currentPageUrl
 	});
 
-	const [albums, articles]: [Album[], ArticlePageLoad] = await Promise.all([
-		await fetchBandcampAlbums(),
-	  (await fetch('/api/articles?page=1&limit=3')).json()
-	]);
+	// const [albums, articles]: [Album[], ArticlePageLoad] = await Promise.all([
+	// 	await fetchBandcampAlbums(),
+	//   (await fetch('/api/articles?page=1&limit=3')).json()
+	// ]);
 
 	setHeaders({
 		'cache-control': 'max-age=43200'
@@ -54,7 +54,7 @@ export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
 	return {
 		baseUrl,
 		metaTagsChild: metaTags,
-		albums,
-		articlesData: articles
+		albums: await fetchBandcampAlbums(),
+		articlesData: await (await fetch('/api/articles?page=1&limit=3')).json()
 	};
 };

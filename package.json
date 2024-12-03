@@ -63,6 +63,7 @@
 		"@resvg/resvg-js": "^2.6.2",
 		"@sveltejs/adapter-vercel": "^5.5.0",
 		"@types/nprogress": "^0.2.3",
+		"@unpic/svelte": "^0.0.56",
 		"@vercel/og": "^0.6.4",
 		"bits-ui": "^0.21.16",
 		"flexsearch": "^0.7.43",
