@@ -1,20 +1,22 @@
 <script lang="ts">
-import type { Picture } from 'vite-imagetools';
+	import type { Picture } from 'vite-imagetools';
 	import type { Snippet } from 'svelte';
-	import { ExternalLinkType } from '../types/externalLinkType';
+	import type { ExternalLinkType } from '../types/externalLinkType';
 
-const {
-	links,
-	details,
-	portfolioDetails,
-	externalLinks,
-  name,
-  src,
-  alt,
-  style,
-  fetchpriority = 'auto',
-  loading = 'lazy',
-}: { links: Snippet<ExternalLinkType[]>, details: Snippet<string>, portfolioDetails: string, externalLinks: ExternalLinkType[], name: string; src: string | Picture; alt: string; style: string; fetchpriority?: 'high' | 'low' | 'auto'; loading?: 'lazy' | 'eager' } = $props();
+	const {
+		links,
+		details,
+		portfolioDetails,
+		externalLinks,
+		name,
+		src,
+		alt,
+		style,
+		fetchpriority = 'auto',
+		loading = 'lazy',
+	}: { links: Snippet<ExternalLinkType[]>, details: Snippet<string>, portfolioDetails: string,
+		externalLinks: ExternalLinkType[], name: string; src: string | Picture; alt: string;
+		style: string; fetchpriority?: 'high' | 'low' | 'auto'; loading?: 'lazy' | 'eager' } = $props();
 </script>
 
 <div class="portfolio">
@@ -24,7 +26,7 @@ const {
 		{@render links(externalLinks)}
 	</div>
 	<div class="portfolio-details">
-		{@render details()}
+		{@render details(portfolioDetails)}
 	</div>
 </div>
 

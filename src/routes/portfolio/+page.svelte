@@ -44,8 +44,9 @@ const triggers = [
 	</span>
 {/snippet}
 
-{#snippet details(portfolioDetails: string)}
-	{portfolioDetails}
+{#snippet details(portfolioDetails)}
+	{@const PortfolioDetails = portfolioDetails}
+	<PortfolioDetails />
 {/snippet}
 
 <h1>Portfolio!</h1>
@@ -53,7 +54,7 @@ const triggers = [
 	<div use:melt={$list} aria-label="tabs portfolios" class="list tab-list">
 		{#each triggers as triggerItem}
 			<button use:melt={$trigger(triggerItem.id)} class="trigger" type="button">
-				<h2>{triggerItem.title}</h2>
+				<span>{triggerItem.title}</span>
 			</button>
 		{/each}
 	</div>
@@ -125,14 +126,16 @@ const triggers = [
 	}
 
 	.trigger {
+		font-size: var(--h2);
+
 		&[data-state='active'] {
-			h2 {
+			span {
 				border-bottom: 2px solid var(--shellYellow);
 			}
 		}
 
 	 	&[data-state='inactive'] {
-			h2 {
+			span {
 				border-bottom: 2px solid var(--white);
 			}
 		}
