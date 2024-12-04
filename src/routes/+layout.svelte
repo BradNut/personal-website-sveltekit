@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
 
 	import { MetaTags } from 'svelte-meta-tags';
 	import NProgress from "nprogress";
@@ -26,13 +25,13 @@
 	const dev = process.env.NODE_ENV !== 'production';
 	const siteUrl = PUBLIC_SITE_URL || 'https://bradleyshellnut.com/';
 
-
-	if (browser && $navigating) {
+	$effect(() => {
+		if (browser && $navigating) {
 			NProgress.start();
 		} else {
 			NProgress.done();
 		}
-	}
+	});
 
 	let metaTags = $derived({
 		titleTemplate: '%s | Bradley Shellnut',

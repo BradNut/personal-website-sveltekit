@@ -48,9 +48,11 @@ export async function fetchArticlesApi(
 	});
 
 	if (USE_REDIS_CACHE) {
+		console.log('Using redis cache');
 		const cached = await redis.get(entriesQueryParams.toString());
 
 		if (cached) {
+			console.log(`Cache hit for ${entriesQueryParams.toString()}!`);
 			const response = JSON.parse(cached);
 			const ttl = await redis.ttl(entriesQueryParams.toString());
 

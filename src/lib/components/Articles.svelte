@@ -8,8 +8,6 @@ const {
   compact = false,
   classes = [],
 }: { articles: Article[]; totalArticles: number; compact: boolean; classes: string[] } = $props();
-
-console.log('articles', articles);
 </script>
 
 <div>
