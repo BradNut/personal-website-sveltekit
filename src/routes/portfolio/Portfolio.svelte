@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Picture } from 'vite-imagetools';
 	import type { Snippet } from 'svelte';
-	import type { ExternalLinkType } from '../types/externalLinkType';
+	import type { ExternalLinkType } from '$lib/types/externalLinkType';
 
 	const {
 		links,
@@ -12,17 +12,17 @@
 		src,
 		alt,
 		style,
-		fetchpriority = 'auto',
+		fetchPriority = 'auto',
 		loading = 'lazy',
 	}: { links: Snippet<ExternalLinkType[]>, details: Snippet<string>, portfolioDetails: string,
 		externalLinks: ExternalLinkType[], name: string; src: string | Picture; alt: string;
-		style: string; fetchpriority?: 'high' | 'low' | 'auto'; loading?: 'lazy' | 'eager' } = $props();
+		style: string; fetchPriority?: 'high' | 'low' | 'auto'; loading?: 'lazy' | 'eager' } = $props();
 </script>
 
 <div class="portfolio">
 	<div class="portfolio-picture">
 		<h2>{name}</h2>
-		<enhanced:img {src} {style} {alt} {fetchpriority} {loading} />
+		<enhanced:img {src} {style} {alt} fetchpriority={fetchPriority} {loading} />
 		{@render links(externalLinks)}
 	</div>
 	<div class="portfolio-details">

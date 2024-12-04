@@ -1,6 +1,6 @@
 <script lang="ts">
 import ExternalLink from '$lib/components/ExternalLink.svelte';
-import Portfolio from '$lib/components/Portfolio.svelte';
+import Portfolio from '$root/routes/portfolio/Portfolio.svelte';
 // @ts-expect-error: Cannot find module '$lib/content/uses/development.md' or its corresponding type declarations.ts(2307)
 import OldWebsite from '$lib/content/portfolio/personal/old-website.md';
 // @ts-expect-error: Cannot find module '$lib/content/uses/development.md' or its corresponding type declarations.ts(2307)
