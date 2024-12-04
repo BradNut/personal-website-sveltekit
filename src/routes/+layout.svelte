@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { MetaTags } from 'svelte-meta-tags';
 	import NProgress from "nprogress";
 	import 'iconify-icon';
@@ -10,6 +12,11 @@
 	import Header from '$lib/components/header/index.svelte';
 	import Footer from '$lib/components/footer/index.svelte';
 	import Analytics from '$lib/components/analytics/index.svelte';
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
 
 	NProgress.configure({
 			// Full list: https://github.com/rstacruz/nprogress#configuration
@@ -19,15 +26,15 @@
 	const dev = process.env.NODE_ENV !== 'production';
 	const siteUrl = PUBLIC_SITE_URL || 'https://bradleyshellnut.com/';
 
-	$: {
-		if (browser && $navigating) {
+
+	if (browser && $navigating) {
 			NProgress.start();
 		} else {
 			NProgress.done();
 		}
 	}
 
-	$: metaTags = {
+	let metaTags = $derived({
 		titleTemplate: '%s | Bradley Shellnut',
 		additionalMetaTags: [
 			{
@@ -36,7 +43,7 @@
 			}
 		],
 		...$page.data.metaTagsChild
-	}
+	})
 </script>
 
 {#if !dev}
@@ -48,7 +55,7 @@
 <div class="wrapper">
 	<Header />
 	<main>
-		<slot />
+		{@render children?.()}
 	</main>
 	<Footer />
 </div>

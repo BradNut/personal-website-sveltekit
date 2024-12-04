@@ -1,11 +1,23 @@
 <script lang="ts">
-	export let header: string;
-	export let page: string;
-	export let image: string;
-	export let content: string;
-	export let width = 1200;
-	export let height = 630;
-	export let url: string;
+	interface Props {
+		header: string;
+		page: string;
+		image: string;
+		content: string;
+		width?: number;
+		height?: number;
+		url: string;
+	}
+
+	let {
+		header,
+		page,
+		image,
+		content,
+		width = 1200,
+		height = 630,
+		url
+	}: Props = $props();
 </script>
 
 <div class="social-card" style={`width: ${width}px; height: ${height}px;`}>

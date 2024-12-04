@@ -4,13 +4,25 @@
 	import linkedin from '@iconify-icons/radix-icons/linkedin-logo';
 	import twitter from '@iconify-icons/radix-icons/twitter-logo';
 
-	export let showGithub: boolean = false;
-	export let showTwitter: boolean = false;
-	export let showLinkedIn: boolean = false;
-	export let showEmail: boolean = false;
-	export let userNames: Record<string, string>;
-	export let showText: boolean = false;
-	export let justify: boolean = false;
+	interface Props {
+		showGithub?: boolean;
+		showTwitter?: boolean;
+		showLinkedIn?: boolean;
+		showEmail?: boolean;
+		userNames: Record<string, string>;
+		showText?: boolean;
+		justify?: boolean;
+	}
+
+	let {
+		showGithub = false,
+		showTwitter = false,
+		showLinkedIn = false,
+		showEmail = false,
+		userNames,
+		showText = false,
+		justify = false
+	}: Props = $props();
 </script>
 
 {#if showText}
@@ -26,7 +38,7 @@
 				aria-label="Contact through Twitter"
 				rel="noreferrer"
 			>
-				<iconify-icon icon={twitter} class="twitter-contact" width="24" height="24" />
+				<iconify-icon icon={twitter} class="twitter-contact" width="24" height="24"></iconify-icon>
 			</a>
 		</span>
 	{/if}
@@ -39,7 +51,7 @@
 				aria-label="Contact through LinkedIn"
 				rel="noreferrer"
 			>
-				<iconify-icon icon={linkedin} class="linkedin-contact" width="24" height="24" />
+				<iconify-icon icon={linkedin} class="linkedin-contact" width="24" height="24"></iconify-icon>
 			</a>
 		</span>
   {/if}
@@ -52,7 +64,7 @@
 				aria-label="View Github"
 				rel="noreferrer"
 			>
-			<iconify-icon icon={github} class="github-contact" width="24" height="24" />
+			<iconify-icon icon={github} class="github-contact" width="24" height="24"></iconify-icon>
 			</a>
 		</span>
   {/if}
@@ -65,7 +77,7 @@
 				aria-label="Contact by email"
 				rel="noreferrer"
 			>
-				<iconify-icon icon={email} class="email-contact" width="24" height="24" />
+				<iconify-icon icon={email} class="email-contact" width="24" height="24"></iconify-icon>
 			</a>
 		</span>
   {/if}

@@ -1,11 +1,21 @@
 <script lang="ts">
 	import type { IconifyIcon } from "iconify-icon/dist/iconify-icon.js";
 
-	export let ariaLabel: string;
-	export let href: string;
-	export let clazz = "";
-	export let itemText: string;
-	export let icon: IconifyIcon;
+	interface Props {
+		ariaLabel: string;
+		href: string;
+		clazz?: string;
+		itemText: string;
+		icon: IconifyIcon;
+	}
+
+	let {
+		ariaLabel,
+		href,
+		clazz = "",
+		itemText,
+		icon
+	}: Props = $props();
 </script>
 
 <a
@@ -15,7 +25,7 @@
 	{href}
 	class={clazz}
 >
-	<iconify-icon {icon} width="24" height="24" role="img" title={itemText} />
+	<iconify-icon {icon} width="24" height="24" role="img" title={itemText}></iconify-icon>
 	<p>{itemText}</p>
 </a>
 

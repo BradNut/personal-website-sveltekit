@@ -3,14 +3,24 @@
 	import Img from '@zerodevx/svelte-img';
 	import type { ExternalImageSource } from '../types/album';
 
-	export let clazz = "";
-	export let src: Record<string, any> | ExternalImageSource[] | undefined;
-	export let alt: string;
-	export let style = "";
-	export let loading: "lazy" | "eager" = "lazy";
+	interface Props {
+		clazz?: string;
+		src: Record<string, any> | ExternalImageSource[] | undefined;
+		alt: string;
+		style?: string;
+		loading?: "lazy" | "eager";
+	}
 
-	let ref: any;
-	let loaded: boolean;
+	let {
+		clazz = "",
+		src,
+		alt,
+		style = "",
+		loading = "lazy"
+	}: Props = $props();
+
+	let ref: any = $state();
+	let loaded: boolean = $state();
 
 	onMount(() => {
 		if (ref.complete)	{
@@ -21,7 +31,7 @@
 
 <div class="wrap">
 	<Img class={clazz} {style} {src} {alt} {loading} bind:ref on:load={() => (loaded = true)} />
-	<div class:blur={loaded} class:loaded />
+	<div class:blur={loaded} class:loaded></div>
 </div>
 
 <style lang="postcss">
