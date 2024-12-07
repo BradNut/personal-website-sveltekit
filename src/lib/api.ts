@@ -15,7 +15,7 @@ import type {
 } from "$lib/types/article";
 import { ArticleTag } from "$lib/types/articleTag";
 import type { PageQuery } from "$lib/types/pageQuery";
-import { URLSearchParams } from "url";
+import { URLSearchParams } from "node:url";
 import { redis } from "$lib/server/redis";
 
 const base: string = WALLABAG_URL;
@@ -48,11 +48,9 @@ export async function fetchArticlesApi(
 	});
 
 	if (USE_REDIS_CACHE) {
-		console.log('Using redis cache');
 		const cached = await redis.get(entriesQueryParams.toString());
 
 		if (cached) {
-			console.log(`Cache hit for ${entriesQueryParams.toString()}!`);
 			const response = JSON.parse(cached);
 			const ttl = await redis.ttl(entriesQueryParams.toString());
 
@@ -101,7 +99,7 @@ export async function fetchArticlesApi(
 	} = await pageResponse.json();
 	const articles: Article[] = [];
 
-	favoriteArticles.items.forEach((article: WallabagArticle) => {
+	for (const article of favoriteArticles.items as WallabagArticle[]) {
 		const rawTags = article?.tags?.map((tag) => tag.slug);
 		if (intersect(rawTags, Object.values(ArticleTag))?.length > 0) {
 			const tags = rawTags.map((rawTag) => rawTag as unknown as ArticleTag);
@@ -118,7 +116,7 @@ export async function fetchArticlesApi(
 				archived_at: article.archived_at ? new Date(article.archived_at) : null,
 			});
 		}
-	});
+	}
 
 	const responseData: ArticlePageLoad = {
 		articles,
