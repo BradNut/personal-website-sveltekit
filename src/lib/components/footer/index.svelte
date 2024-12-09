@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import ContactHub from '$lib/components/contactHub/index.svelte';
+	import ContactHub from '$lib/components/ContactHub.svelte';
 	const userNames = {
     github: 'BradNut',
     linkedIn: 'bradley-shellnut',
-    email: 'bradleyshellnut@pm.me',
+    email: 'bradleyshellnut[at]pm.me',
   };
 </script>
 

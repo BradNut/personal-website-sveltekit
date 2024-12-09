@@ -1,24 +1,15 @@
 <script lang="ts">
-	import Graphql from '@iconify-icons/simple-icons/graphql';
-	import Nextdotjs from '@iconify-icons/simple-icons/nextdotjs';
-	import Prisma from '@iconify-icons/simple-icons/prisma';
-	import Gatsby from '@iconify-icons/simple-icons/gatsby';
-	import Docker from '@iconify-icons/simple-icons/docker';
-	import React from '@iconify-icons/simple-icons/react';
-	import Remix from '@iconify-icons/simple-icons/remix';
-	import Svelte from '@iconify-icons/simple-icons/svelte';
-	import TypeScript from '@iconify-icons/simple-icons/typescript';
-	import LazyImage from '$lib/components/LazyImage.svelte';
-	import cruise from '$lib/assets/images/cruise.png?enhanced';
-	import tortie_derp from '$lib/assets/images/tortie_derp.jpg?enhanced';
-	import orange_derp from '$lib/assets/images/orange_derp.jpg?enhanced';
-	import turnip from '$lib/assets/images/turnip.svg';
-	import CourseCard from './CourseCard.svelte';
-	import courseData from './course.json';
-	import type { Course } from '$root/lib/types/courses';
-	import TechListItem from './TechListItem.svelte';
+import cruise from '$lib/assets/images/cruise.png?enhanced';
+import orange_derp from '$lib/assets/images/orange_derp.jpg?enhanced';
+import tortie_derp from '$lib/assets/images/tortie_derp.jpg?enhanced';
+import turnip from '$lib/assets/images/turnip.svg';
+import type { Course } from '$lib/types/courses';
+import { dockerIcon, drizzleIcon, nextDotJsIcon, reactIcon, svelteIcon, typescriptIcon } from '$lib/util/logoIcons.svelte';
+import CourseCard from './CourseCard.svelte';
+import TechListItem from './TechListItem.svelte';
+import courseData from './course.json';
 
-	const courses: Course[] = courseData.courses;
+const courses: Course[] = courseData.courses;
 </script>
 
 <div class="about">
@@ -50,67 +41,46 @@
 		</p>
 		<div class="tech-list">
 			<TechListItem
-				itemText="React"
-				ariaLabel="React"
-				href="https://reactjs.org/"
+				itemText="Svelte"
+				ariaLabel="Svelte"
+				href="https://svelte.dev"
 				clazz="center"
-				icon={React}
+				icon={svelteIcon}
 			/>
 			<TechListItem
 				itemText="TypeScript"
 				ariaLabel="TypeScript"
 				href="https://www.typescriptlang.org/"
 				clazz="center"
-				icon={TypeScript}
+				icon={typescriptIcon}
 			/>
 			<TechListItem
-				itemText="Svelte"
-				ariaLabel="Svelte"
-				href="https://svelte.dev"
+				itemText="Drizzle ORM"
+				ariaLabel="Prisma ORM"
+				href="https://orm.drizzle.team/"
 				clazz="center"
-				icon={Svelte}
+				icon={drizzleIcon}
+			/>
+		  <TechListItem
+				itemText="React"
+				ariaLabel="React"
+				href="https://reactjs.org/"
+				clazz="center"
+				icon={reactIcon}
 			/>
 			<TechListItem
 				itemText="NextJS"
 				ariaLabel="NextJS"
 				href="https://nextjs.org/"
 				clazz="center"
-				icon={Nextdotjs}
-			/>
-			<TechListItem
-				itemText="Remix"
-				ariaLabel="Remix"
-				href="https://remix.run/"
-				clazz="center"
-				icon={Remix}
-			/>
-			<TechListItem
-				itemText="GraphQL"
-				ariaLabel="GraphQL"
-				href="https://graphql.org/"
-				clazz="center"
-				icon={Graphql}
-			/>
-			<TechListItem
-				itemText="Prisma"
-				ariaLabel="Prisma"
-				href="https://prisma.io/"
-				clazz="center"
-				icon={Prisma}
-			/>
-		  <TechListItem
-				itemText="GatsbyJS"
-				ariaLabel="GatsbyJS"
-				href="https://gatsbyjs.com/"
-				clazz="center"
-				icon={Gatsby}
+				icon={nextDotJsIcon}
 			/>
 			<TechListItem
 				itemText="Docker"
 				ariaLabel="Docker"
 				href="https://docker.com/"
 				clazz="center"
-				icon={Docker}
+				icon={dockerIcon}
 			/>
 		</div>
 	</div>
@@ -141,7 +111,6 @@
 				"
 			>
 				<enhanced:img src={cruise} alt="Clip art of a cruise ship. Cruise icons created by C-mo Box - Flaticon" />
-				<!-- <LazyImage src={cruise} alt="Clip art of a cruise ship. Cruise icons created by C-mo Box - Flaticon" /> -->
 				<p class="center">Crusin'</p>
 			</div>
 		</div>
@@ -150,12 +119,10 @@
 			<div class="cat-pics">
 				<figure>
 					<enhanced:img src={tortie_derp} alt="Tortie Cat" />
-					<!-- <LazyImage src={tortie_derp} alt="Turnip Cat" /> -->
 					<p class="center">Turnip <img class="icon" src={String(turnip)} width="25px" height="25px" alt="Turnip" /></p>
 				</figure>
 				<figure>
 					<enhanced:img src={orange_derp} alt="Tortie Cat" />
-					<!-- <LazyImage src={orange_derp} alt="Taco Cat" /> -->
 					<p class="center">Taco 🌮</p>
 				</figure>
 			</div>

@@ -2,7 +2,6 @@
 
 	import { MetaTags } from 'svelte-meta-tags';
 	import NProgress from "nprogress";
-	import 'iconify-icon';
 	import { browser } from "$app/environment";
 	import { navigating, page } from "$app/stores";
 	import { PUBLIC_SITE_URL } from '$env/static/public';

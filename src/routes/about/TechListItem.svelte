@@ -1,21 +1,16 @@
 <script lang="ts">
-	import type { IconifyIcon } from "iconify-icon/dist/iconify-icon.js";
+	import type { Snippet } from "svelte";
 
 	interface Props {
 		ariaLabel: string;
 		href: string;
 		clazz?: string;
 		itemText: string;
-		icon: IconifyIcon;
+		icon?: Snippet;
+		children?: any;
 	}
 
-	let {
-		ariaLabel,
-		href,
-		clazz = "",
-		itemText,
-		icon
-	}: Props = $props();
+	let { ariaLabel, href, clazz = '', itemText, icon, children }: Props = $props();
 </script>
 
 <a
@@ -25,7 +20,10 @@
 	{href}
 	class={clazz}
 >
-	<iconify-icon {icon} width="24" height="24" role="img" title={itemText}></iconify-icon>
+	{#if icon}
+		{@render icon?.()}
+	{/if}
+	{@render children?.()}
 	<p>{itemText}</p>
 </a>
 
@@ -53,5 +51,9 @@
 				color: var(--shellYellow);
 			}
 		}
+	}
+
+	svg {
+		color: white;
 	}
 </style>

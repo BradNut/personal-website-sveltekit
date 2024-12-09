@@ -1,6 +1,6 @@
 <script lang="ts">
-	import OpenInNew from '@iconify-icons/mdi/open-in-new';
-	import type { IconifyIcon } from 'iconify-icon';
+	import { ExternalLink,type Icon as IconType } from 'lucide-svelte';
+
 	interface Props {
 		rel?: string;
 		target?: string;
@@ -8,27 +8,23 @@
 		ariaLabel: string;
 		showIcon?: boolean;
 		clazz?: string;
-		icon?: IconifyIcon;
+		icon?: typeof IconType | string;
 		children?: import('svelte').Snippet;
 	}
 
-	let {
-		rel = 'noreferrer',
-		target = '_blank',
-		href,
-		ariaLabel,
-		showIcon = false,
-		clazz = "",
-		icon = OpenInNew,
-		children
-	}: Props = $props();
+	let { rel = 'noreferrer', target = '_blank', href, ariaLabel, showIcon = false, clazz = '', icon = ExternalLink, children }: Props = $props();
 </script>
 
 
 <a class:show-icon={showIcon} class={clazz} aria-label={`Open ${ariaLabel} externally`} title={`Open ${ariaLabel} externally`} {href} {rel} {target}>
 	{@render children?.()}
 	{#if showIcon}
-		<iconify-icon {icon} width="24" height="24" role="img" title={`Open ${ariaLabel} Externally`}></iconify-icon>
+		{#if typeof icon === 'string'}
+			{@html icon}
+		{:else}
+			{@const Icon = icon}
+			<Icon />
+		{/if}
 	{/if}
 </a>
 
