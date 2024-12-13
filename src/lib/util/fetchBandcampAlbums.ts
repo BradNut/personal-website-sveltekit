@@ -11,10 +11,10 @@ export async function fetchBandcampAlbums() {
 
 			if (cached) {
 				const response: Album[] = JSON.parse(cached);
-				console.log(`Cache hit!`);
+				console.log('Albums cache hit!');
 				const ttl = await redis.ttl('bandcampAlbums');
 
-				return response;
+				return { ...response, cacheControl: `max-age=${ttl}` };
 			}
 		}
 
