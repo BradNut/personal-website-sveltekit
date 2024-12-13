@@ -1,5 +1,4 @@
 <script lang="ts">
-
 	import { MetaTags } from 'svelte-meta-tags';
 	import NProgress from "nprogress";
 	import { browser } from "$app/environment";
@@ -22,7 +21,6 @@
 	});
 
 	const dev = process.env.NODE_ENV !== 'production';
-	const siteUrl = PUBLIC_SITE_URL || 'https://bradleyshellnut.com/';
 
 	$effect(() => {
 		if (browser && $navigating) {

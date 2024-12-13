@@ -16,7 +16,7 @@
 		{#each externalLinks as link}
 			<ExternalLink
 				linkData={{ href: link.href, ariaLabel: link.ariaLabel, title: link.ariaLabel, target: '_blank', clazz: "tech-list-item" }}
-				textData={{ text: link.text, showIcon: link.showIcon, location: 'bottom' }}
+				textData={{ text: link.text, showIcon: link.showIcon, location: 'left' }}
 			/>
 		{/each}
 	</h3>

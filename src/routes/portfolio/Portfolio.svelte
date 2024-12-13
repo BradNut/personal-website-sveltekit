@@ -5,8 +5,6 @@
 
 	const {
 		links,
-		details,
-		portfolioDetails,
 		externalLinks,
 		name,
 		src,
@@ -14,9 +12,9 @@
 		style,
 		fetchPriority = 'auto',
 		loading = 'lazy',
-	}: { links: Snippet<ExternalLinkType[]>, details: Snippet<string>, portfolioDetails: string,
-		externalLinks: ExternalLinkType[], name: string; src: string | Picture; alt: string;
-		style: string; fetchPriority?: 'high' | 'low' | 'auto'; loading?: 'lazy' | 'eager' } = $props();
+		children
+	}: { links: Snippet<ExternalLinkType[]>, externalLinks: ExternalLinkType[], name: string; src: string | Picture; alt: string;
+		style: string; fetchPriority?: 'high' | 'low' | 'auto'; loading?: 'lazy' | 'eager', children?: Snippet } = $props();
 </script>
 
 <div class="portfolio">
@@ -26,7 +24,7 @@
 		{@render links(externalLinks)}
 	</div>
 	<div class="portfolio-details">
-		{@render details(portfolioDetails)}
+		{@render children?.()}
 	</div>
 </div>
 
