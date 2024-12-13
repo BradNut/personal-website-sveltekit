@@ -1,31 +1,28 @@
 <script lang="ts">
+	import ExternalLink from '$lib/components/ExternalLink.svelte';
+	import { lucideIcon } from '$lib/util/logoIcons.svelte';
 	import type { Snippet } from "svelte";
+	import type { LinkTextType } from '$lib/types/externalLinkTypes';
 
 	interface Props {
+		linkData: LinkTextType;
 		ariaLabel: string;
 		href: string;
 		clazz?: string;
-		itemText: string;
-		icon?: Snippet;
-		children?: any;
+		textData?: LinkTextType;
+		icon: Snippet;
 	}
 
-	let { ariaLabel, href, clazz = '', itemText, icon, children }: Props = $props();
+	let { ariaLabel, href, clazz = '', textData, icon }: Props = $props();
 </script>
 
-<a
-	target="_blank"
-	rel="noreferrer"
-	aria-label={ariaLabel}
-	{href}
-	class={clazz}
->
-	{#if icon}
-		{@render icon?.()}
-	{/if}
-	{@render children?.()}
-	<p>{itemText}</p>
-</a>
+<ExternalLink
+	ariaLabel={ariaLabel}
+	href={href}
+	linkClass={clazz}
+	icon={lucideIcon}
+	textData={textData}
+/>
 
 <style lang="postcss">
 	a {

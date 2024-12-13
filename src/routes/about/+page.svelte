@@ -8,6 +8,7 @@ import { dockerIcon, drizzleIcon, nextDotJsIcon, reactIcon, svelteIcon, typescri
 import CourseCard from './CourseCard.svelte';
 import TechListItem from './TechListItem.svelte';
 import courseData from './course.json';
+import ExternalLink from '$lib/components/ExternalLink.svelte';
 
 const courses: Course[] = courseData.courses;
 </script>
@@ -40,47 +41,35 @@ const courses: Course[] = courseData.courses;
 			as:
 		</p>
 		<div class="tech-list">
-			<TechListItem
-				itemText="Svelte"
-				ariaLabel="Svelte"
-				href="https://svelte.dev"
-				clazz="center"
-				icon={svelteIcon}
+			<ExternalLink
+			  iconData={{ type: 'svg', icon: svelteIcon, iconClass: 'center' }}
+				linkData={{ href: 'https://svelte.dev', ariaLabel: 'Svelte', title: 'Svelte', target: '_blank', clazz: "tech-list-item", textDecoration: 'none' }}
+				textData={{ text: "Svelte", showIcon: true, location: 'bottom' }}
 			/>
-			<TechListItem
-				itemText="TypeScript"
-				ariaLabel="TypeScript"
-				href="https://www.typescriptlang.org/"
-				clazz="center"
-				icon={typescriptIcon}
+			<ExternalLink
+			  iconData={{ type: 'svg', icon: typescriptIcon, iconClass: 'center' }}
+				linkData={{ href: 'https://www.typescriptlang.org/', ariaLabel: 'TypeScript', title: 'TypeScript', target: '_blank', clazz: "tech-list-item", textDecoration: 'none' }}
+				textData={{ text: "TypeScript", showIcon: true, location: 'bottom' }}
 			/>
-			<TechListItem
-				itemText="Drizzle ORM"
-				ariaLabel="Prisma ORM"
-				href="https://orm.drizzle.team/"
-				clazz="center"
-				icon={drizzleIcon}
+			<ExternalLink
+			  iconData={{ type: 'svg', icon: drizzleIcon, iconClass: 'center' }}
+				linkData={{ href: 'https://orm.drizzle.team/', ariaLabel: 'Drizzle ORM', title: 'Drizzle ORM', target: '_blank', clazz: "tech-list-item", textDecoration: 'none' }}
+				textData={{ text: "Drizzle ORM", showIcon: true, location: 'bottom' }}
 			/>
-		  <TechListItem
-				itemText="React"
-				ariaLabel="React"
-				href="https://reactjs.org/"
-				clazz="center"
-				icon={reactIcon}
+			<ExternalLink
+			  iconData={{ type: 'svg', icon: reactIcon, iconClass: 'center' }}
+				linkData={{ href: 'https://reactjs.org/', ariaLabel: 'React', title: 'React', target: '_blank', clazz: "tech-list-item", textDecoration: 'none' }}
+				textData={{ text: "React", showIcon: true, location: 'bottom' }}
 			/>
-			<TechListItem
-				itemText="NextJS"
-				ariaLabel="NextJS"
-				href="https://nextjs.org/"
-				clazz="center"
-				icon={nextDotJsIcon}
+			<ExternalLink
+			  iconData={{ type: 'svg', icon: nextDotJsIcon, iconClass: 'center' }}
+				linkData={{ href: 'https://nextjs.org/', ariaLabel: 'Next.js', title: 'Next.js', target: '_blank', clazz: "tech-list-item", textDecoration: 'none' }}
+				textData={{ text: "Next.js", showIcon: true, location: 'bottom' }}
 			/>
-			<TechListItem
-				itemText="Docker"
-				ariaLabel="Docker"
-				href="https://docker.com/"
-				clazz="center"
-				icon={dockerIcon}
+			<ExternalLink
+			  iconData={{ type: 'svg', icon: dockerIcon, iconClass: 'center' }}
+				linkData={{ href: 'https://www.docker.com/', ariaLabel: 'Docker', title: 'Docker', target: '_blank', clazz: "tech-list-item", textDecoration: 'none' }}
+				textData={{ text: "Docker", showIcon: true, location: 'bottom' }}
 			/>
 		</div>
 	</div>
@@ -155,7 +144,7 @@ const courses: Course[] = courseData.courses;
 		flex-wrap: wrap;
 		flex-direction: row;
 		place-content: center;
-		gap: 1rem;
+		gap: 2rem;
 		margin-top: 1rem;
 		font-size: 2rem;
 	}

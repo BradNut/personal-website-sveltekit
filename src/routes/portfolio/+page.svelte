@@ -10,7 +10,6 @@
 	// @ts-expect-error: Cannot find module '$lib/content/uses/development.md' or its corresponding type declarations.ts(2307)
 	import MarkShellnutArchitect from "$lib/content/portfolio/professional/mark-shellnut-architect.md";
 	import type { ExternalLinkType } from "$lib/types/externalLinkType";
-	import GitHub from "@iconify-icons/simple-icons/github";
 	import { Tabs } from "bits-ui";
 	import personalSite from "../../lib/assets/images/portfolio/Bradley_Shellnut_New_Site.png?enhanced";
 	import shellnutArchitectWebsite from "../../lib/assets/images/portfolio/Mark_Shellnut_Architect.png?enhanced";

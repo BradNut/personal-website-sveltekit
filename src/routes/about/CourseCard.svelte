@@ -15,12 +15,9 @@
 	<h3>
 		{#each externalLinks as link}
 			<ExternalLink
-				ariaLabel={link.ariaLabel}
-				href={link.href}
-				showIcon={link.showIcon}
-			>
-				{link.text}
-			</ExternalLink>
+				linkData={{ href: link.href, ariaLabel: link.ariaLabel, title: link.ariaLabel, target: '_blank', clazz: "tech-list-item" }}
+				textData={{ text: link.text, showIcon: link.showIcon, location: 'bottom' }}
+			/>
 		{/each}
 	</h3>
 	<div class="tags">

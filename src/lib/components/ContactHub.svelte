@@ -1,28 +1,34 @@
 <script lang="ts">
-	import { Mail } from 'lucide-svelte';
-	import { blueSkyIcon, gitHubIcon, linkedInIcon, xIcon } from '../util/logoIcons.svelte';
+	import { Mail } from "lucide-svelte";
+	import {
+		blueSkyIcon,
+		gitHubIcon,
+		linkedInIcon,
+		xIcon,
+	} from "../util/logoIcons.svelte";
+	import ExternalLink from '$lib/components/ExternalLink.svelte';
 
 	interface Props {
-  showBlueSky?: boolean;
-  showEmail?: boolean;
-  showGithub?: boolean;
-  showLinkedIn?: boolean;
-  showX?: boolean;
-  userNames: Record<string, string>;
-  showText?: boolean;
-  justify?: boolean;
-}
+		showBlueSky?: boolean;
+		showEmail?: boolean;
+		showGithub?: boolean;
+		showLinkedIn?: boolean;
+		showX?: boolean;
+		userNames: Record<string, string>;
+		showText?: boolean;
+		justify?: boolean;
+	}
 
 	let {
-  showBlueSky = false,
-  showEmail = false,
-  showGithub = false,
-  showLinkedIn = false,
-  showX = false,
-  userNames,
-  showText = false,
-  justify = false,
-}: Props = $props();
+		showBlueSky = false,
+		showEmail = false,
+		showGithub = false,
+		showLinkedIn = false,
+		showX = false,
+		userNames,
+		showText = false,
+		justify = false,
+	}: Props = $props();
 </script>
 
 {#if showText}
@@ -30,129 +36,94 @@
 {/if}
 <div class:justifyCenter={justify}>
 	{#if showX && userNames?.x}
-		<a
-			href={`https://www.x.com/${userNames.x}`}
-			target="_blank"
-			title="Contact through X"
-			aria-label="Contact through X"
-			rel="noreferrer"
-			class="hub-icon"
-		>
-			{@render xIcon('x-contact')}
-		</a>
+		<ExternalLink
+			linkData={{ href: `https://www.x.com/${userNames.x}`, ariaLabel: 'Contact through X', title: 'Contact through X', target: '_blank', clazz: "hub-icon x-contact" }}
+			iconData={{ type: 'svg', icon: xIcon, iconClass: 'center' }}
+			textData={{ showIcon: true }}
+		/>
 	{/if}
 	{#if showBlueSky && userNames?.blueSky}
-		<a
-			href={`https://bsky.app/profile/${userNames.blueSky}`}
-			target="_blank"
-			title="Contact through Bluesky"
-			aria-label="Contact through Bluesky"
-			rel="noreferrer"
-			class="hub-icon"
-		>
-			{@render blueSkyIcon('bluesky-contact')}
-		</a>
+		<ExternalLink
+			linkData={{ href: `https://bsky.app/profile/${userNames.blueSky}`, ariaLabel: 'Contact through Bluesky', title: 'Contact through Bluesky', target: '_blank', clazz: "hub-icon bluesky-contact" }}
+			iconData={{ type: 'svg', icon: blueSkyIcon, iconClass: 'center' }}
+			textData={{ showIcon: true }}
+		/>
 	{/if}
 	{#if showLinkedIn && userNames?.linkedIn}
-		<a
-			href={`https://www.linkedin.com/in/${userNames.linkedIn}`}
-			target="_blank"
-			title="Contact through LinkedIn"
-			aria-label="Contact through LinkedIn"
-			rel="noreferrer"
-			class="hub-icon"
-		>
-			{@render linkedInIcon('linkedIn-contact')}
-		</a>
-  {/if}
+		<ExternalLink
+			linkData={{ href: `https://www.linkedin.com/in/${userNames.linkedIn}`, ariaLabel: 'Contact through LinkedIn', title: 'Contact through LinkedIn', target: '_blank', clazz: "hub-icon linkedIn-contact" }}
+			iconData={{ type: 'svg', icon: linkedInIcon, iconClass: 'center' }}
+			textData={{ showIcon: true }}
+		/>
+	{/if}
 	{#if showGithub && userNames?.github}
-		<a
-			href={`https://www.github.com/${userNames.github}`}
-			target="_blank"
-			title="View Github"
-			aria-label="View Github"
-			rel="noreferrer"
-			class="hub-icon github-contact"
-		>
-			{@render gitHubIcon('github-contact')}
-		</a>
-  {/if}
+	<ExternalLink
+		linkData={{ href: `https://www.github.com/${userNames.github}`, ariaLabel: 'Contact through Github', title: 'Contact through Github', target: '_blank', clazz: "hub-icon github-contact" }}
+		iconData={{ type: 'svg', icon: gitHubIcon, iconClass: 'center' }}
+		textData={{ showIcon: true }}
+	/>
+	{/if}
 	{#if showEmail && userNames?.email}
-		<a
-			href={`mailto:${userNames.email}`}
-			target="_blank"
-			title="Contact by email"
-			aria-label="Contact by email"
-			rel="noreferrer"
-			class="email-contact hub-icon"
-		>
-			<Mail size="25" />
-		</a>
-  {/if}
+	  <ExternalLink
+			linkData={{ href: `mailto:${userNames.email}`, ariaLabel: 'Contact by email', title: 'Contact by email', target: '_blank', clazz: "hub-icon email-contact" }}
+			iconData={{ type: 'icon', icon: Mail, iconClass: 'center' }}
+			textData={{ showIcon: true }}
+		/>
+	{/if}
 </div>
 
 <style lang="postcss">
 	div {
 		display: flex;
 		flex-wrap: wrap;
+		gap: 2rem;
 		align-items: center;
 
 		&.justifyCenter {
 			justify-content: center;
 		}
-
-		--xColor: #000000;
-		--linkedInColor: #0077B5;
-		--githubColor: #000000;
-		--blueskyColor: #0085FF;
-		--emailColor: var(--linkHover);
 	}
 
-  .hub-icon {
-    transition: transform 0.2s cubic-bezier(0.65, 0, 0.35, 1);
-    &:hover {
-      transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
-      transform: translateY(-4px);
-    }
-  }
-
-  a {
-    font-size: 4rem;
-    margin: 1.5rem;
-
-    @media (max-width: 550px) {
-      font-size: 3.55rem;
-    }
-  }
-
-  .x-contact {
-    color: var(--textColor);
-    &:hover {
-      color: var(--twitterColor);
-    }
-  }
-  .linkedIn-contact {
-    color: var(--textColor);
-    &:hover {
-      color: var(--linkedInColor);
-    }
-  }
-  .github-contact {
-    color: var(--textColor);
-    &:hover {
-      color: var(--githubColor);
-    }
+	:global(.hub-icon) {
+		transition: transform 0.2s cubic-bezier(0.65, 0, 0.35, 1);
+		&:hover {
+			transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+			transform: translateY(-4px);
+		}
 	}
-	.bluesky-contact {
+
+	:global(.x-contact) {
+		color: var(--textColor);
+		&:hover {
+			color: var(--xColor);
+		}
+	}
+
+	:global(.linkedIn-contact) {
+		color: var(--textColor);
+		&:hover {
+			color: var(--linkedInColor);
+		}
+	}
+
+	:global(.github-contact) {
+		color: var(--textColor);
+		&:hover {
+			color: var(--githubColor);
+		}
+	}
+
+	:global(.bluesky-contact) {
 		color: var(--textColor);
 		&:hover {
 			color: var(--blueskyColor);
 		}
-  }
-  .email-contact {
-    color: var(--textColor);
-    &:hover {
-      color: var(--linkHover);
-    }
-  }
+	}
+
+	:global(.email-contact) {
+		color: var(--textColor);
+		&:hover {
+			color: var(--linkHover);
+		}
+	}
 </style>

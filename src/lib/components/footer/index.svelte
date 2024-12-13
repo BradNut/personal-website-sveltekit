@@ -27,6 +27,7 @@
 <style lang="postcss">
 	footer {
 		display: grid;
+		gap: 2rem;
 		grid-template-rows: repeat(3, 1fr);
 		background: var(--footerBackground);
 		place-content: center;
