@@ -48,6 +48,8 @@ export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
 		url: currentPageUrl,
 	});
 
+	const articles = await fetch("/api/articles?page=1&limit=3");
+
 	setHeaders({
 		"cache-control": "max-age=43200",
 	});
@@ -55,6 +57,6 @@ export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
 		baseUrl,
 		metaTagsChild: metaTags,
 		albums: await fetchBandcampAlbums(),
-		articlesData: await (await fetch("/api/articles?page=1&limit=3")).json(),
+		articlesData: await articles.json(),
 	};
 };
