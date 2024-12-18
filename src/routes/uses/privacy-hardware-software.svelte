@@ -25,7 +25,7 @@
 					href: "https://www.yubico.com/product/yubikey-5c/",
 					ariaLabel: "YubiKey 5C",
 				}}
-				textData={{ text: "YubiKey 5C", showIcon: true }}
+				textData={{ text: "YubiKey 5C", showIcon: true, location: "left" }}
 			/>
 		</li>
 	</ul>
@@ -36,8 +36,15 @@
 		<li>
 			<ExternalLink
 				linkData={{ href: "https://synology.com/", ariaLabel: "Synology NAS" }}
-				textData={{ text: "Synology DS918+", showIcon: true }}
+				textData={{ text: "Synology DS918+", showIcon: true, location: "left" }}
 			/>
 		</li>
 	</ul>
 </section>
+
+<style lang="postcss">
+  ul {
+    list-style-type: square;
+    padding-inline-start: 4rem;
+  }
+</style>

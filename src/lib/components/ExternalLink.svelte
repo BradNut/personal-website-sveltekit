@@ -16,6 +16,8 @@
 		textLocationClass = "text-left";
 	} else if (textData?.location === "right") {
 		textLocationClass = "text-right";
+	} else {
+		textLocationClass = "text-left";
 	}
 
 	const linkDecoration =
@@ -36,13 +38,13 @@
 		target={linkData?.target ?? "_blank"}
 	>
 		{#if textData?.location === "top" || (textData?.location === "left" && textData?.text)}
-			<span class="link-text">{textData?.text}</span>
+			{textData?.text}
 		{/if}
 		{#if textData?.showIcon}
 			{@render linkIcon?.(iconData ?? {})}
 		{/if}
 		{#if textData?.location === "bottom" || (textData?.location === "right" && textData?.text)}
-			<span class="link-text">{textData?.text}</span>
+			{textData?.text}
 		{/if}
 	</a>
 {/snippet}
@@ -100,6 +102,7 @@
 
 	.text-decoration-underline {
 		text-decoration: underline;
+		text-decoration-color: var(--shellYellow);
 	}
 
 	.show-icon {

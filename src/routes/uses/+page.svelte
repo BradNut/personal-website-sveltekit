@@ -58,19 +58,4 @@
 	p {
 		margin: 1rem;
 	}
-
-	/* :global(.uses-image) {
-		margin-left: auto;
-		margin-right: auto;
-		aspect-ratio: 4 / 3;
-		max-height: 480px;
-
-		@media (max-width: 800px) {
-			max-height: 350px;
-		}
-
-		@media (max-width: 500px) {
-			max-height: 300px;
-		}
-	} */
 </style>

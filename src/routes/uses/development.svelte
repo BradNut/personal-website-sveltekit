@@ -7,14 +7,26 @@
 
 	<p>
 		My development setup has been documented here: <ExternalLink
-			linkData={{ href: "https://github.com/BradNut/computer-setup-info/blob/master/linux/Environment-Setup.md", ariaLabel: "Bradley Shellnut Computer Setup" }}
-			textData={{ text: "Computer Setup Info", showIcon: true, location: "left" }} />.
+			linkData={{
+				href: "https://github.com/BradNut/computer-setup-info/blob/master/linux/Environment-Setup.md",
+				ariaLabel: "Bradley Shellnut Computer Setup",
+			}}
+			textData={{
+				text: "Computer Setup Info",
+				showIcon: true,
+				location: "left",
+			}}
+		/>.
 	</p>
 
 	<p>
 		And documentation for my terminal and coding setup can be found here: <ExternalLink
-			linkData="https://github.com/BradNut/dotfiles"
-			textData="Dotfiles">Dotfiles</ExternalLink
+			linkData={{
+				href: "https://github.com/BradNut/dotfiles",
+				ariaLabel: "Dotfiles",
+			}}
+			textData={{ text: "Dotfiles", showIcon: true, location: "left" }}
+		/>
 		>.
 	</p>
 
@@ -22,39 +34,25 @@
 
 	<ul>
 		<li>
-			Linux default terminal running ZSH and <ExternalLink
+			Linux: <ExternalLink
+				linkData={{ href: "https://tabby.sh/", ariaLabel: "Tabby" }}
+				textData={{ text: "Tabby terminal", showIcon: true, location: "left" }}
+			/> running ZSH and <ExternalLink
 				linkData={{ href: "https://starship.rs/", ariaLabel: "Starship" }}
-				textData={{ text: "Starship", showIcon: true, location: "left" }} />
-			>.
+				textData={{ text: "Starship", showIcon: true, location: "left" }}
+			/> as my prompt >.
 		</li>
 		<li>
-			Mac: <ExternalLink linkData={{ href: "https://iterm2.com/", ariaLabel: "iTerm2" }} textData={{ text: "iTerm2", showIcon: true, location: "left" }} />
+			Mac: <ExternalLink
+				linkData={{ href: "https://iterm2.com/", ariaLabel: "iTerm2" }}
+				textData={{ text: "iTerm2", showIcon: true, location: "left" }}
+			/>
 		</li>
 		<li>
 			<ExternalLink
-				linkData="https://github.com/robbyrussell/oh-my-zsh"
-				textData="Oh My Zsh">Oh My Zsh</ExternalLink
-			>
-			<ul>
-				<li>
-					<ExternalLink linkData="https://github.com/agkozak/zsh-z" textData="Z"
-						>Z</ExternalLink
-					>
-				</li>
-				<li>
-					<ExternalLink
-						linkData="https://github.com/zsh-users/zsh-autosuggestions"
-						textData="zsh-autosuggestions">zsh-autosuggestions</ExternalLink
-					>
-				</li>
-				<li>
-					<ExternalLink
-						linkData="https://github.com/zsh-users/zsh-syntax-highlighting"
-						textData="zsh-syntax-highlighting"
-						>zsh-syntax-highlighting</ExternalLink
-					>
-				</li>
-			</ul>
+				linkData={{ href: "https://zimfw.sh/", ariaLabel: "ZimFW" }}
+				textData={{ text: "ZimFW", showIcon: true, location: "left" }}
+			/> as my Zsh framework.
 		</li>
 	</ul>
 
@@ -63,25 +61,33 @@
 	<ul>
 		<li>
 			<ExternalLink
-				linkData="https://docs.brew.sh/Homebrew-on-Linux"
-				textData="Linux Brew">Linux Brew</ExternalLink
-			>
-		</li>
-		<li>
-			<ExternalLink linkData="https://brew.sh/" textData="Homebrew"
-				>Homebrew</ExternalLink
-			>
-		</li>
-		<li>
-			<ExternalLink linkData="https://tldr.sh/" textData="TLDR Man Pages"
-				>TLDR Man Pages</ExternalLink
-			>
+				linkData={{
+					href: "https://docs.brew.sh/Homebrew-on-Linux",
+					ariaLabel: "Linux Brew",
+				}}
+				textData={{ text: "Linux Brew", showIcon: true, location: "left" }}
+			/>
 		</li>
 		<li>
 			<ExternalLink
-				linkData="https://www.npmjs.com/package/trash-cli"
-				textData="Trash-CLI">Trash-CLI</ExternalLink
-			>
+				linkData={{ href: "https://brew.sh/", ariaLabel: "Homebrew" }}
+				textData={{ text: "Homebrew", showIcon: true, location: "left" }}
+			/>
+		</li>
+		<li>
+			<ExternalLink
+				linkData={{ href: "https://tldr.sh/", ariaLabel: "TLDR Man Pages" }}
+				textData={{ text: "TLDR Man Pages", showIcon: true, location: "left" }}
+			/>
+		</li>
+		<li>
+			<ExternalLink
+				linkData={{
+					href: "https://www.npmjs.com/package/trash-cli",
+					ariaLabel: "Trash-CLI",
+				}}
+				textData={{ text: "Trash-CLI", showIcon: true, location: "left" }}
+			/>
 		</li>
 	</ul>
 
@@ -89,45 +95,71 @@
 
 	<ul>
 		<li>
-			<ExternalLink linkData="https://vscodium.com/" textData="VSCodium"
-				>VSCodium</ExternalLink
-			>
+			<ExternalLink
+				linkData={{ href: "https://vscodium.com/", ariaLabel: "VSCodium" }}
+				textData={{ text: "VSCodium", showIcon: true, location: "left" }}
+			/>
 			<ul>
 				<li>
 					My extensions list: <ExternalLink
-						linkData="https://github.com/BradNut/dotfiles/blob/master/vs-code-extensions-i-use.md"
-						textData="VSCode Extensions List"
-						>VSCode Extensions List</ExternalLink
-					>
+						linkData={{
+							href: "https://github.com/BradNut/dotfiles/blob/master/vs-code-extensions-i-use.md",
+							ariaLabel: "VSCode Extensions List",
+						}}
+						textData={{
+							text: "VSCode Extensions List",
+							showIcon: true,
+							location: "left",
+						}}
+					/>
 				</li>
 			</ul>
 		</li>
 		<li>
 			<ExternalLink
-				linkData="https://www.sublimetext.com/3"
-				textData="Sublime Text 3">Sublime Text 3</ExternalLink
-			>
+				linkData={{
+					href: "https://www.sublimetext.com/3",
+					ariaLabel: "Sublime Text 3",
+				}}
+				textData={{ text: "Sublime Text 3", showIcon: true, location: "left" }}
+			/>
 			<ul>
 				<li>
 					My Packages List: <ExternalLink
-						linkData="https://github.com/BradNut/dotfiles/blob/master/sublime-text-extensions-i-use.md"
-						textData="Sublime Text Packages List"
-						>Sublime Text Packages List</ExternalLink
-					>
+						linkData={{
+							href: "https://github.com/BradNut/dotfiles/blob/master/sublime-text-extensions-i-use.md",
+							ariaLabel: "Sublime Text Packages List",
+						}}
+						textData={{
+							text: "Sublime Text Packages List",
+							showIcon: true,
+							location: "left",
+						}}
+					/>
 				</li>
 			</ul>
 		</li>
 		<li>
 			<ExternalLink
-				linkData="https://jetbrains.com/idea/"
-				textData="IntelliJ Ultimate">IntelliJ Ultimate</ExternalLink
-			>
+				linkData={{
+					href: "https://jetbrains.com/idea/",
+					ariaLabel: "IntelliJ IDEA",
+				}}
+				textData={{ text: "IntelliJ IDEA", showIcon: true, location: "left" }}
+			/>
 			<ul>
 				<li>
 					My Plugins List: <ExternalLink
-						linkData="https://github.com/BradNut/dotfiles/blob/master/intellij-plugins.md"
-						textData="IntelliJ Plugins">IntelliJ Plugins</ExternalLink
-					>
+						linkData={{
+							href: "https://github.com/BradNut/dotfiles/blob/master/intellij-plugins.md",
+							ariaLabel: "IntelliJ Plugins",
+						}}
+						textData={{
+							text: "IntelliJ Plugins",
+							showIcon: true,
+							location: "left",
+						}}
+					/>
 				</li>
 			</ul>
 		</li>
@@ -137,9 +169,10 @@
 
 	<ul>
 		<li>
-			<ExternalLink linkData="https://postman.com/" textData="Postman"
-				>Postman</ExternalLink
-			>
+			<ExternalLink
+				linkData={{ href: "https://www.usebruno.com/", ariaLabel: "Bruno" }}
+				textData={{ text: "Bruno", showIcon: true, location: "left" }}
+			/>
 		</li>
 	</ul>
 
@@ -147,15 +180,26 @@
 
 	<ul>
 		<li>
-			<ExternalLink linkData="https://brave.com/" textData="Brave Browser"
-				>Brave Browser</ExternalLink
-			>
+			<ExternalLink
+				linkData={{ href: "https://brave.com/", ariaLabel: "Brave Browser" }}
+				textData={{ text: "Brave Browser", showIcon: true, location: "left" }}
+			/>
 		</li>
 		<li>
 			<ExternalLink
-				linkData="https://www.mozilla.org/en-US/firefox/new/"
-				textData="Firefox">Firefox</ExternalLink
-			>
+				linkData={{
+					href: "https://www.mozilla.org/en-US/firefox/new/",
+					ariaLabel: "Firefox",
+				}}
+				textData={{ text: "Firefox", showIcon: true, location: "left" }}
+			/>
 		</li>
 	</ul>
 </section>
+
+<style land="postcss">
+	ul {
+    list-style-type: square;
+    padding-inline-start: 4rem;
+  }
+</style>
