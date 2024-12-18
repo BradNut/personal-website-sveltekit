@@ -8,7 +8,7 @@ const {
   totalArticles,
   compact = false,
   classes = [],
-}: { articles: Article[]; totalArticles: number; compact: boolean; classes: string[] } = $props();
+}: { articles: Article[]; totalArticles: number; compact: boolean; classes?: string[] } = $props();
 </script>
 
 <section class="articles">
