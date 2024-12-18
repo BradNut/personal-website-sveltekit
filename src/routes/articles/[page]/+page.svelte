@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
 	import Pagination from '$lib/components/Pagination.svelte';
 	import type { Article } from '$lib/types/article';
 	import Articles from '$lib/components/Articles.svelte';
@@ -11,16 +9,10 @@
 	}
 
 	let { data }: Props = $props();
-	let articles: Article[] = $state();
-	let currentPage: number = $state();
-	let totalArticles: number = $state();
-	let limit: number = $state();
-
-	run(() => {
-		if (data) {
-			({ articles, currentPage, totalArticles, limit } = data);
-		}
-	});
+	let articles: Article[] = $state(data?.articles);
+	let currentPage: number = $state(data?.currentPage);
+	let totalArticles: number = $state(data?.totalArticles);
+	let limit: number = $state(data?.limit);
 </script>
 
 <h1 style:margin-bottom={"2rem"}>Favorite Tech Articles</h1>

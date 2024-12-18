@@ -114,9 +114,9 @@
 							href: "https://www.flaticon.com/authors/freepik",
 							ariaLabel: "Freepik",
 						}}
-						textData={{ text: "Freepik", showIcon: true, location: "right" }}
+						textData={{ text: "Freepik", showIcon: true, location: "left" }}
 					/> from <ExternalLink
-						textData={{ text: "Flaticon", showIcon: true, location: "right" }}
+						textData={{ text: "Flaticon", showIcon: true, location: "left" }}
 						linkData={{
 							href: "https://www.flaticon.com/",
 							ariaLabel: "Flaticon",
@@ -124,41 +124,41 @@
 					/>
 				</li>
 			</ul>
-
-			Previous version of my website was written using React and Gatsby which
+			<p>The previous version of my website was written using React and Gatsby which
 			you can view <ExternalLink
 				linkData={{
-					href: "https://bradleyshellnut.com",
+					href: "https://wonderful-austin-9f17d2.netlify.app/",
 					ariaLabel: "React and Gatsby Personal Site version",
 				}}
-				textData={{ text: "here", showIcon: true, location: "right" }}
-			/>. Each iteration brings better code and my previous React version was
+				textData={{ text: "here.", showIcon: true, location: "left" }}
+			/></p>
+			<p>
+				Each iteration brings better code and my previous React version was
 			improved after the suggestions on <ExternalLink
 				linkData={{
 					href: "https://syntax.fm/show/444/syntax-highlight#t=33:19",
 					ariaLabel: "Syntax.fm Podcast Number 444",
 				}}
-				textData={{ text: "Show 444", showIcon: true, location: "right" }}
+				textData={{ text: "Show 444", showIcon: true, location: "left" }}
 			/> of the <ExternalLink
 				linkData={{ href: "https://syntax.fm/", ariaLabel: "Syntax.fm" }}
-				textData={{ text: "Syntax Pocast", showIcon: true, location: "right" }}
-			/>. You can view the previous archived version of the site before those
+				textData={{ text: "Syntax Pocast.", showIcon: true, location: "left" }}
+			/></p>
+			<p>You can view the previous archived version of the site before those
 			changes <ExternalLink
-				textData={{ text: "here", showIcon: true, location: "right" }}
+				textData={{ text: "here.", showIcon: true, location: "left" }}
 				linkData={{
 					href: "https://web.archive.org/web/20210224002046/https://bradleyshellnut.com/",
 					ariaLabel: "Archive before Syntax Podcast",
 				}}
-			/>.
+			/></p>
 		</Portfolio>
-		<!-- <Portfolio
+		<Portfolio
 			name="Wedding Website"
 			style="max-height: 550px;"
 			src={weddingWebsite}
 			alt="Picture of NextJS Wedding Website"
 			{links}
-			{details}
-			portfolioDetails={WeddingWebsite}
 			externalLinks={[
 				{
 					ariaLabel: "View GitHub repository for the wedding site",
@@ -168,15 +168,28 @@
 					text: "GitHub repository",
 				},
 			]}
-		/>
+		>
+			<p>The app was initially created for my wedding but what is linked here is a public demo of the application.</p>
+			<p>An application that allows viewing of wedding details and provides the ability to RSVP to the wedding.</p>
+			<p>Tech stack:</p>
+			<ul>
+				<li>Next.js 13</li>
+				<li>React 18</li>
+				<li><ExternalLink
+					linkData={{ href: "https://radix-ui.com/", ariaLabel: "Radix UI" }}
+					textData={{ text: "Radix UI", showIcon: true, location: "left" }}
+				/></li>
+				<li>MongoDB</li>
+				<li>Styled Components</li>
+				<li>Next Iron Session</li>
+			</ul>
+		</Portfolio>
 		<Portfolio
 			name="Old Personal Website"
 			style="max-height: 320px;"
 			src={oldSite}
 			alt="Home Page of the old bradleyshellnut.com website"
 			{links}
-			{details}
-			portfolioDetails={OldWebsite}
 			externalLinks={[
 				{
 					ariaLabel: "Archive of bradleyshellnut.com",
@@ -186,17 +199,25 @@
 					text: "Link to an archive snapshot",
 				},
 			]}
-		/> -->
+		>
+			<p>My first personal website</p>
+			<p>This was my first real personal website hosted on DigitalOcean.</p>
+			<p>Tech stack:</p>
+			<ul>
+				<li>React</li>
+				<li>Redux</li>
+				<li>ReactStrap for CSS grid management</li>
+				<li>React Router for routing links in the page</li>
+			</ul>
+		</Portfolio>
 	</Tabs.Content>
 	<Tabs.Content value="professional">
-		<!-- <Portfolio
+		<Portfolio
 			name="Mark Shellnut Architect"
 			style="max-height: 550px;"
 			src={shellnutArchitectWebsite}
 			alt="Picture of Mark Shellnut Architect's Website"
 			{links}
-			{details}
-			portfolioDetails={MarkShellnutArchitect}
 			externalLinks={[
 				{
 					ariaLabel: "View Mark Shellnut Architect",
@@ -205,7 +226,23 @@
 					text: "Link to Mark Shellnut Architect",
 				},
 			]}
-		/> -->
+		>
+			<p>Company website for Mark Shellnut Architect.</p>
+			<p>Tech stack:</p>
+			<ul>
+				<li>React 18</li>
+				<li>Gatsby 5</li>
+				<li>
+					<ExternalLink
+						linkData={{ href: "https://radix-ui.com/", ariaLabel: "Radix UI" }}
+						textData={{ text: "Radix UI", showIcon: true, location: "left" }}
+					/>
+				</li>
+				<li>Styled Components</li>
+				<li>GraphQL</li>
+				<li>Lambda Functions</li>
+			</ul>
+		</Portfolio>
 	</Tabs.Content>
 </Tabs.Root>
 

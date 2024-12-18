@@ -18,7 +18,7 @@ And documentation for my terminal and coding setup can be found here: <ExternalL
     Mac: <ExternalLink ariaLabel="iTerm 2 Terminal" href="https://iterm2.com/" showIcon>iTerm2</ExternalLink>
   </li>
   <li>
-    <ExternalLink ariaLable="Oh My Zsh" href="https://github.com/robbyrussell/oh-my-zsh" showIcon>Oh My Zsh</ExternalLink>
+    <ExternalLink ariaLabel="Oh My Zsh" href="https://github.com/robbyrussell/oh-my-zsh" showIcon>Oh My Zsh</ExternalLink>
     <ul>
       <li>
         <ExternalLink ariaLael="Z plugin" href="https://github.com/agkozak/zsh-z" showIcon>Z</ExternalLink>
@@ -51,7 +51,7 @@ And documentation for my terminal and coding setup can be found here: <ExternalL
       </li>
     </ul>
   <li>
-    <ExternalLink ariaLabel="Sublime Text 3 Website" href="https://www.sublimetext.com/3" 
+    <ExternalLink ariaLabel="Sublime Text 3 Website" href="https://www.sublimetext.com/3"
     showIcon>Sublime Text 3</ExternalLink>
     <ul>
       <li>My Packages List: <ExternalLink ariaLabel="VS Code Extensions" href="https://github.com/BradNut/dotfiles/blob/master/sublime-text-extensions-i-use.md" showIcon>Sublime Text Packages List</ExternalLink>

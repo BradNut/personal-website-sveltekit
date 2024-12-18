@@ -1,7 +1,7 @@
 <script lang="ts">
-import type { Article } from '$lib/types/article';
+  import type { Article } from '$lib/types/article';
 	import { ArrowRight } from 'lucide-svelte';
-import ExternalLink from './ExternalLink.svelte';
+  import ExternalLink from './ExternalLink.svelte';
 
 const {
   articles,

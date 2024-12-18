@@ -87,8 +87,10 @@
 
 	.text-left,
 	.text-right {
-		display: flex;
+		display: inline-flex;
 		flex-direction: row;
+		place-items: baseline;
+		place-content: center;
 		gap: 0.5rem;
 	}
 
@@ -101,10 +103,6 @@
 	}
 
 	.show-icon {
-		/* display: inline-flex;
-		align-items: center;
-		gap: 0.5rem; */
-
 		&:hover {
 			color: var(--shellYellow);
 		}
