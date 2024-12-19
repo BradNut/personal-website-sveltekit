@@ -48,12 +48,16 @@ export async function fetchArticlesApi(
 	});
 
 	if (USE_REDIS_CACHE) {
+		console.log('Using redis cache');
 		const cached = await redis.get(entriesQueryParams.toString());
 
 		if (cached) {
+			console.log("Cache hit!");
 			const response = JSON.parse(cached);
 			const ttl = await redis.ttl(entriesQueryParams.toString());
 
+			console.log(`Response ${JSON.stringify(response)}`);
+			console.log(`Returning cached response with ttl of ${ttl} seconds`);
 			return { ...response, cacheControl: `max-age=${ttl}` };
 		}
 	}
