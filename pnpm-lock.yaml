@@ -32,6 +32,9 @@ importers:
       '@vercel/og':
         specifier: ^0.6.4
         version: 0.6.4
+      '@zerodevx/svelte-img':
+        specifier: ^2.1.2
+        version: 2.1.2(rollup@4.28.1)(svelte@5.14.5)
       bits-ui:
         specifier: 1.0.0-next.66
         version: 1.0.0-next.66(svelte@5.14.5)
@@ -60,9 +63,6 @@ importers:
       '@playwright/test':
         specifier: ^1.49.1
         version: 1.49.1
-      '@zerodevx/svelte-img':
-        specifier: ^2.1.2
-        version: 2.1.2(rollup@4.28.1)(svelte@5.14.5)
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.49)

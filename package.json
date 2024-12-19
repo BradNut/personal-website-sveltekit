@@ -2,6 +2,7 @@
 	"name": "personal-website-sveltekit",
 	"version": "1.0.0",
 	"private": true,
+	"type": "module",
 	"scripts": {
 		"dev": "NODE_OPTIONS=\"--inspect\" vite dev --host",
 		"build": "vite build",
@@ -15,11 +16,10 @@
 		"test:integration": "playwright test",
 		"test:unit": "vitest"
 	},
-	"packageManager": "pnpm@9.11.0",
+	"packageManager": "pnpm@9.15.0",
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
 		"@playwright/test": "^1.49.1",
-		"@zerodevx/svelte-img": "^2.1.2",
 		"autoprefixer": "^10.4.20",
 		"just-intersect": "^4.3.0",
 		"postcss": "^8.4.49",
@@ -41,7 +41,6 @@
 		"vite-imagetools": "^7.0.5",
 		"vitest": "^2.1.8"
 	},
-	"type": "module",
 	"dependencies": {
 		"@resvg/resvg-js": "^2.6.2",
 		"@sveltejs/adapter-node": "^5.2.11",
@@ -51,6 +50,7 @@
 		"@types/nprogress": "^0.2.3",
 		"@unpic/svelte": "^0.0.57",
 		"@vercel/og": "^0.6.4",
+		"@zerodevx/svelte-img": "^2.1.2",
 		"bits-ui": "1.0.0-next.66",
 		"flexsearch": "^0.7.43",
 		"ioredis": "^5.4.1",
