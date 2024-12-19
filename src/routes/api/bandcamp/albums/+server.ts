@@ -11,11 +11,19 @@ export async function GET({ setHeaders, url }) {
       const cached: string | null = await redis.get('bandcampAlbums');
 
       if (cached) {
-        const response: Album[] = JSON.parse(cached);
-        const ttl = await redis.ttl('bandcampAlbums');
-
-        return response;
-      }
+				const response: Album[] = JSON.parse(cached);
+				const ttl = await redis.ttl("bandcampAlbums");
+        if (ttl) {
+          setHeaders({
+            "cache-control": `max-age=${ttl}`,
+          });
+        } else {
+          setHeaders({
+            "cache-control": "max-age=43200",
+          });
+        }
+        return json(response);
+			}
     }
 
     const { data }: ScrapeResult<BandCampResults> = await scrapeIt(`https://bandcamp.com/${BANDCAMP_USERNAME}`, {
@@ -46,6 +54,9 @@ export async function GET({ setHeaders, url }) {
       if (USE_REDIS_CACHE) {
         redis.set('bandcampAlbums', JSON.stringify(albums), 'EX', 43200);
       }
+      setHeaders({
+        "cache-control": "max-age=43200",
+      });
       return json(albums);
     }
 		return json([]);

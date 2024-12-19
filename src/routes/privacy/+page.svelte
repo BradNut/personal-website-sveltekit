@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ExternalLink from "$lib/components/ExternalLink.svelte";
+import ExternalLink from '$lib/components/ExternalLink.svelte';
 </script>
 
 <div>
@@ -30,7 +30,7 @@
 			<ExternalLink linkData={{ href: "https://privacyguides.org/", ariaLabel: "Privacy Guides" }} textData={{ text: "Privacy Guides", showIcon: true, location: "left" }} />
 		</li>
 		<li>
-			<ExternalLink linkData={{{ href: "https://ethical.net/resources/" ariaLabel: "Ethical Alternatives" }} textData={{ text: "Ethical Alternatives", showIcon: true, location: "left" }} />
+			<ExternalLink linkData={{ href: "https://ethical.net/resources/", ariaLabel: "Ethical Alternatives" }} textData={{ text: "Ethical Alternatives", showIcon: true, location: "left" }} />
 		</li>
 	</ul>
 </div>
