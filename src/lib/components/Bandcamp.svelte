@@ -2,7 +2,7 @@
 	import type { Album } from "$lib/types/album";
 	import LazyImage from './LazyImage.svelte';
 
-	export let albums: Album[];
+	const { albums }: { albums: Album[] } = $props();
 	const displayAlbums =
 		albums?.length > 6 ? albums.slice(0, 6) : albums;
 
@@ -10,15 +10,9 @@
 		album.src = {
 			img: { src: `${album.artwork}`, w: 230, h: 230 },
 			sources: {
-				avif: [
-					{ src: `${album.artwork}`, w: 230, h: 230 },
-				],
-				webp: [
-					{ src: `${album.artwork}`, w: 230, h: 230 },
-				],
-				jpg: [
-					{ src: `${album.artwork}`, w: 230, h: 230 },
-				]
+				avif: `${album.artwork}`,
+				webp: `${album.artwork}`,
+				jpg: `${album.artwork}`
 			}
 		}
 	}

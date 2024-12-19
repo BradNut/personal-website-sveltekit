@@ -1,14 +1,17 @@
 <script lang="ts">
-	import type { Article } from "$lib/types/article";
-	import ExternalLink from './ExternalLink.svelte';
+  import type { Article } from '$lib/types/article';
+	import { ArrowRight } from 'lucide-svelte';
+  import ExternalLink from './ExternalLink.svelte';
 
-  export let articles: Article[];
-	export let totalArticles: number;
-  export let compact: boolean = false;
-  export let classes: string[] = [];
+const {
+  articles,
+  totalArticles,
+  compact = false,
+  classes = [],
+}: { articles: Article[]; totalArticles: number; compact: boolean; classes?: string[] } = $props();
 </script>
 
-<div>
+<section class="articles">
   <h2>Favorite Articles</h2>
   <div class={classes.join(' ')}>
     {#each articles as article (article.hashed_url)}
@@ -16,16 +19,19 @@
         <section>
           <h3>
             <ExternalLink
-              ariaLabel={`Link to ${article.title}`}
-              href={article.url.toString()}
-              showIcon
-            >
-              {#if compact}
-                {article.title.substring(0, 50).trim()}
-              {:else}
-                {article.title}
-              {/if}
-            </ExternalLink>
+              textData={{
+                text: compact ? article.title.substring(0, 50).trim() : article.title,
+                location: 'left',
+                showIcon: true,
+              }}
+              linkData={{
+                href: article.url.toString(),
+                ariaLabel: `Link to ${article.title}`,
+                title: `Link to ${article.title}`,
+                target: '_blank',
+              }}
+              iconData={{ iconClass: 'center' }}
+            />
           </h3>
           <p>{article.domain_name}</p>
         </section>
@@ -41,13 +47,8 @@
       </article>
     {/each}
   </div>
-  <div class="moreArticles">
-    <a href="/articles">{`${totalArticles} more articles`}</a>
-    <a href="/articles" aria-label={`${totalArticles} more articles`}>
-      <iconify-icon icon="material-symbols:arrow-right-alt-rounded"></iconify-icon>
-    </a>
-  </div>
-</div>
+  <a class="moreArticles" href="/articles">{`${totalArticles} more articles`} <ArrowRight /></a>
+</section>
 
 
 <style lang="postcss">
@@ -58,6 +59,11 @@
       margin: 0.25rem 0rem;
     }
 	}
+
+  .articles {
+    display: grid;
+    place-content: center;
+  }
 
   .columns {
     display: grid;
@@ -93,19 +99,15 @@
   }
 
   .moreArticles {
-    margin: 1.7rem;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
+    place-items: center;
+    place-content: center;
     gap: 1rem;
-
-    & a {
-      font-size: 2rem;
-    }
+    font-size: var(--h2);
 
     @media (max-width: 1000px) {
-      font-size: 1.5rem;
+      font-size: var(--h3);
     }
   }
 </style>

@@ -10,10 +10,12 @@ export async function GET({ setHeaders, url }) {
 	}
 
 	try {
-		const response = await fetchArticlesApi('get', `fetchArticles`, {
+		const response = await fetchArticlesApi('get', 'fetchArticles', {
 			page,
 			limit
 		});
+
+		console.log(`JSON articles response: ${JSON.stringify(response)}`);
 
 		if (response?.articles) {
 			if (response?.cacheControl) {

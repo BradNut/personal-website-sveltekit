@@ -1,23 +1,28 @@
 <script lang="ts">
-	import type { IconifyIcon } from "iconify-icon/dist/iconify-icon.js";
+	import ExternalLink from '$lib/components/ExternalLink.svelte';
+	import { lucideIcon } from '$lib/util/logoIcons.svelte';
+	import type { Snippet } from "svelte";
+	import type { LinkTextType } from '$lib/types/externalLinkTypes';
 
-	export let ariaLabel: string;
-	export let href: string;
-	export let clazz = "";
-	export let itemText: string;
-	export let icon: IconifyIcon;
+	interface Props {
+		linkData: LinkTextType;
+		ariaLabel: string;
+		href: string;
+		clazz?: string;
+		textData?: LinkTextType;
+		icon: Snippet;
+	}
+
+	let { ariaLabel, href, clazz = '', textData, icon }: Props = $props();
 </script>
 
-<a
-	target="_blank"
-	rel="noreferrer"
-	aria-label={ariaLabel}
-	{href}
-	class={clazz}
->
-	<iconify-icon {icon} width="24" height="24" role="img" title={itemText} />
-	<p>{itemText}</p>
-</a>
+<ExternalLink
+	ariaLabel={ariaLabel}
+	href={href}
+	linkClass={clazz}
+	icon={lucideIcon}
+	textData={textData}
+/>
 
 <style lang="postcss">
 	a {
@@ -43,5 +48,9 @@
 				color: var(--shellYellow);
 			}
 		}
+	}
+
+	svg {
+		color: white;
 	}
 </style>

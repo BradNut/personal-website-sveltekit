@@ -1,35 +1,111 @@
 <script lang="ts">
-	import OpenInNew from '@iconify-icons/mdi/open-in-new';
-	import type { IconifyIcon } from 'iconify-icon';
-	export let rel = 'noreferrer';
-	export let target = '_blank';
-	export let href: string;
-	export let ariaLabel: string;
-	export let showIcon: boolean = false;
-	export let clazz = "";
-	export let icon: IconifyIcon = OpenInNew;
+	import { ExternalLink } from "lucide-svelte";
+	import type {
+		ExternalLinkType,
+		LinkIconType,
+	} from "$lib/types/externalLinkTypes";
+
+	const { iconData, linkData, textData }: ExternalLinkType = $props();
+
+	let textLocationClass = "";
+	if (textData?.location === "top") {
+		textLocationClass = "text-top";
+	} else if (textData?.location === "bottom") {
+		textLocationClass = "text-bottom";
+	} else if (textData?.location === "left") {
+		textLocationClass = "text-left";
+	} else if (textData?.location === "right") {
+		textLocationClass = "text-right";
+	} else {
+		textLocationClass = "text-left";
+	}
+
+	const linkDecoration =
+		linkData?.textDecoration && linkData?.textDecoration === "none"
+			? `text-decoration-${linkData?.textDecoration}`
+			: "text-decoration-underline";
+	const linkClass =
+		`${linkData?.clazz} ${textLocationClass} ${linkDecoration}`.trim();
 </script>
 
+{#snippet externalLink({ iconData, linkData, textData }: ExternalLinkType)}
+	<a
+		class={linkClass}
+		aria-label={`Open ${linkData?.ariaLabel ?? linkData?.title ?? linkData?.href} externally`}
+		title={linkData?.title ?? `Open ${linkData?.ariaLabel} externally`}
+		href={linkData.href}
+		rel={linkData?.rel ?? "noreferrer"}
+		target={linkData?.target ?? "_blank"}
+	>
+		{#if textData?.location === "top" || (textData?.location === "left" && textData?.text)}
+			{textData?.text}
+		{/if}
+		{#if textData?.showIcon}
+			{@render linkIcon?.(iconData ?? {})}
+		{/if}
+		{#if textData?.location === "bottom" || (textData?.location === "right" && textData?.text)}
+			{textData?.text}
+		{/if}
+	</a>
+{/snippet}
 
-<a class:show-icon={showIcon} class={clazz} aria-label={`Open ${ariaLabel} externally`} title={`Open ${ariaLabel} externally`} {href} {rel} {target}>
-	<slot />
-	{#if showIcon}
-		<iconify-icon {icon} width="24" height="24" role="img" title={`Open ${ariaLabel} Externally`} />
+{#snippet linkIcon({ type, icon, iconClass }: LinkIconType)}
+	{#if type === "svg" && icon}
+		<svg
+			style="width: 2.5rem; height: 2.5rem;"
+			class={iconClass ?? ""}
+			role="img"
+			viewBox="0 0 24 24"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			{@render icon?.()}
+		</svg>
+	{:else if type === "icon" && icon}
+		{@const Icon = icon}
+		<Icon />
+	{:else}
+		{@const Icon = ExternalLink}
+		<Icon />
 	{/if}
-</a>
+{/snippet}
+
+{@render externalLink({ iconData, linkData, textData })}
 
 <style lang="postcss">
 	a {
-		margin: 1rem 0;
+		display: grid;
+		place-items: center;
 		padding: 0;
 		font-size: var(--bodyTextSize);
 	}
 
-	.show-icon {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.5rem;
+	.text-top {
+		padding-bottom: 0.3rem;
+	}
 
+	.text-bottom {
+		padding-top: 0.3rem;
+	}
+
+	.text-left,
+	.text-right {
+		display: inline-flex;
+		flex-direction: row;
+		place-items: baseline;
+		place-content: center;
+		gap: 0.5rem;
+	}
+
+	.text-decoration-none {
+		text-decoration: none;
+	}
+
+	.text-decoration-underline {
+		text-decoration: underline;
+		text-decoration-color: var(--shellYellow);
+	}
+
+	.show-icon {
 		&:hover {
 			color: var(--shellYellow);
 		}

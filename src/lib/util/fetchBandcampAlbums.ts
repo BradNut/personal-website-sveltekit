@@ -14,7 +14,7 @@ export async function fetchBandcampAlbums() {
 				console.log(`Cache hit!`);
 				const ttl = await redis.ttl('bandcampAlbums');
 
-				return response;
+				return { ...response, cacheControl: `max-age=${ttl}` };
 			}
 		}
 

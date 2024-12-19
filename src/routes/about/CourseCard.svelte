@@ -3,7 +3,11 @@
 	import Tag from "$lib/components/Tag.svelte";
 	import type { Course } from "$lib/types/courses";
 
-	export let course: Course;
+	interface Props {
+		course: Course;
+	}
+
+	let { course }: Props = $props();
 	const { externalLinks, tags } = course;
 </script>
 
@@ -11,12 +15,9 @@
 	<h3>
 		{#each externalLinks as link}
 			<ExternalLink
-				ariaLabel={link.ariaLabel}
-				href={link.href}
-				showIcon={link.showIcon}
-			>
-				{link.text}
-			</ExternalLink>
+				linkData={{ href: link.href, ariaLabel: link.ariaLabel, title: link.ariaLabel, target: '_blank', clazz: "tech-list-item" }}
+				textData={{ text: link.text, showIcon: link.showIcon, location: 'left' }}
+			/>
 		{/each}
 	</h3>
 	<div class="tags">

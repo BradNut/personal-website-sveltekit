@@ -10,6 +10,7 @@ import type { SvelteComponent } from 'svelte';
 
 const fontData = read(firaSansSemiBold).arrayBuffer();
 
+
 export async function componentToPng(component: SvelteComponent,
 																		 props: Record<string, string | undefined>,
 																		 height: number, width: number) {
