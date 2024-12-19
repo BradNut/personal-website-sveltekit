@@ -3,32 +3,44 @@
   import { Pagination } from "bits-ui";
   import { ChevronLeft, ChevronRight } from 'lucide-svelte';
 
-  export let additionalClasses: string;
-  export let pageSize: number;
-  export let totalCount: number;
-  export let currentPage: number;
-  export let base: string;
+  interface Props {
+    additionalClasses: string;
+    pageSize: number;
+    totalCount: number;
+    currentPage: number;
+    base: string;
+  }
+
+  let {
+    additionalClasses,
+    pageSize,
+    totalCount,
+    currentPage,
+    base
+  }: Props = $props();
 </script>
 
-<Pagination.Root let:pages count={totalCount} perPage={pageSize} page={currentPage || 1} class={`${additionalClasses}`}
+<Pagination.Root  count={totalCount} perPage={pageSize} page={currentPage || 1} class={`${additionalClasses}`}
   onPageChange={(page) => goto(`${base}/${page}`)}>
-  <Pagination.PrevButton>
-    <ChevronLeft />
-  </Pagination.PrevButton>
-  {#each pages as page (page.key)}
-    {#if page.type === "ellipsis"}
-      <div class="ellipsis text-[15px] font-medium text-foreground-alt">...</div>
-    {:else}
-      <Pagination.Page {page}>
-        <a href={`${base}/${page.value}`}>
-          {page.value}
-        </a>
-      </Pagination.Page>
-    {/if}
-  {/each}
-  <Pagination.NextButton>
-    <ChevronRight />
-  </Pagination.NextButton>
+  {#snippet children({ pages })}
+    <Pagination.PrevButton>
+      <ChevronLeft />
+    </Pagination.PrevButton>
+    {#each pages as page (page.key)}
+      {#if page.type === "ellipsis"}
+        <div class="ellipsis text-[15px] font-medium text-foreground-alt">...</div>
+      {:else}
+        <Pagination.Page {page}>
+          <a href={`${base}/${page.value}`}>
+            {page.value}
+          </a>
+        </Pagination.Page>
+      {/if}
+    {/each}
+    <Pagination.NextButton>
+      <ChevronRight />
+    </Pagination.NextButton>
+  {/snippet}
 </Pagination.Root>
 
 <style lang="postcss">

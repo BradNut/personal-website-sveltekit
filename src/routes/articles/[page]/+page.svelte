@@ -4,15 +4,15 @@
 	import Articles from '$lib/components/Articles.svelte';
 	import type { PageData } from './$types';
 
-	export let data: PageData;
-	let articles: Article[];
-	let currentPage: number;
-	let totalArticles: number;
-	let limit: number;
-
-	$: if (data) {
-		({ articles, currentPage, totalArticles, limit } = data);
+	interface Props {
+		data: PageData;
 	}
+
+	let { data }: Props = $props();
+	let articles: Article[] = $state(data?.articles);
+	let currentPage: number = $state(data?.currentPage);
+	let totalArticles: number = $state(data?.totalArticles);
+	let limit: number = $state(data?.limit);
 </script>
 
 <h1 style:margin-bottom={"2rem"}>Favorite Tech Articles</h1>

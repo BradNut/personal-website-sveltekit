@@ -1,31 +1,21 @@
 <script lang="ts">
-	import type { PageData } from './$types';
-	import Bandcamp from '$lib/components/Bandcamp.svelte';
-	import Articles from '$lib/components/Articles.svelte';
-	import type { Album } from '$lib/types/album';
-	import type { Article, ArticlePageLoad } from '$lib/types/article';
+import Articles from '$lib/components/Articles.svelte';
+import Bandcamp from '$lib/components/Bandcamp.svelte';
+import type { Album } from '$lib/types/album';
+import type { Article, ArticlePageLoad } from '$lib/types/article';
+import type { PageData } from './$types';
 
-	export let data: PageData;
-	let albums: Album[];
-	let articlesData: ArticlePageLoad;
-	let articles: Article[];
-	let totalArticles: number;
+const { data } = $props();
+let albums: Album[] = $derived(data.albums);
+let articlesData: ArticlePageLoad = $derived(data.articlesData);
+let articles: Article[] = $derived(articlesData.articles);
+let totalArticles: number = $derived(articlesData.totalArticles);
 
-	$: if (data) {
-		albums = data.albums;
-		articlesData = data.articlesData;
-	}
-
-	$: if (articlesData) {
-		articles = articlesData.articles;
-		totalArticles = articlesData.totalArticles;
-	}
-
-  const userNames = {
-    github: 'BradNut',
-    linkedIn: 'bradley-shellnut',
-    email: 'bradleyshellnut@pm.me',
-  };
+const userNames = {
+  github: 'BradNut',
+  linkedIn: 'bradley-shellnut',
+  email: 'bradleyshellnut@pm.me',
+};
 </script>
 
 <div class="home">

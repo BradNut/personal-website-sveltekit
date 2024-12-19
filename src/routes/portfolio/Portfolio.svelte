@@ -1,41 +1,30 @@
 <script lang="ts">
-import type { Snippet } from 'svelte';
-import type { Picture } from 'vite-imagetools';
-import { ExternalLinkType } from '../types/externalLinkType';
+	import type { Picture } from 'vite-imagetools';
+	import type { Snippet } from 'svelte';
+	import type { ExternalLinkType } from '$lib/types/externalLinkType';
 
-const {
-  links,
-  details,
-  portfolioDetails,
-  externalLinks,
-  name,
-  src,
-  alt,
-  style,
-  fetchpriority = 'auto',
-  loading = 'lazy',
-}: {
-  links: Snippet<ExternalLinkType[]>;
-  details: Snippet<string>;
-  portfolioDetails: string;
-  externalLinks: ExternalLinkType[];
-  name: string;
-  src: string | Picture;
-  alt: string;
-  style: string;
-  fetchpriority?: 'high' | 'low' | 'auto';
-  loading?: 'lazy' | 'eager';
-} = $props();
+	const {
+		links,
+		externalLinks,
+		name,
+		src,
+		alt,
+		style,
+		fetchPriority = 'auto',
+		loading = 'lazy',
+		children
+	}: { links: Snippet<ExternalLinkType[]>, externalLinks: ExternalLinkType[], name: string; src: string | Picture; alt: string;
+		style: string; fetchPriority?: 'high' | 'low' | 'auto'; loading?: 'lazy' | 'eager', children?: Snippet } = $props();
 </script>
 
 <div class="portfolio">
 	<div class="portfolio-picture">
 		<h2>{name}</h2>
-		<enhanced:img {src} {style} {alt} {fetchpriority} {loading} />
+		<enhanced:img {src} {style} {alt} fetchpriority={fetchPriority} {loading} />
 		{@render links(externalLinks)}
 	</div>
 	<div class="portfolio-details">
-		{@render details()}
+		{@render children?.()}
 	</div>
 </div>
 
