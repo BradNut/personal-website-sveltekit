@@ -32,7 +32,6 @@
 			alt="Clean desk with Samsung monitor and Ducky Keyboard"
 			fetchpriority="high"
 			loading="eager"
-			sizes="(max-height: 480px) 480px, 500px"
 		/>
 	</div>
 	<div>
@@ -49,7 +48,6 @@
 	}
 
 	.uses-image img {
-		max-width: 640px;
 		height: auto;
 		margin-left: auto;
 		margin-right: auto;
