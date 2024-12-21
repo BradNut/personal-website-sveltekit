@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import Img from '@zerodevx/svelte-img';
 	import type { ExternalImageSource } from '../types/album';
 
@@ -19,18 +18,15 @@
 		loading = "lazy"
 	}: Props = $props();
 
-	let ref: any = $state();
-	let loaded: boolean = $state();
-
-	onMount(() => {
-		if (ref.complete)	{
-			loaded = true;
-		}
-	})
+	let ref: HTMLImageElement | null | undefined = $state();
+	let loaded: boolean = $derived.by(() => {
+		if (ref?.complete) return true;
+		return false;
+	});
 </script>
 
 <div class="wrap">
-	<Img class={clazz} {style} {src} {alt} {loading} bind:ref on:load={() => (loaded = true)} />
+	<Img class={clazz} {style} {src} {alt} {loading} bind:ref />
 	<div class:blur={loaded} class:loaded></div>
 </div>
 
