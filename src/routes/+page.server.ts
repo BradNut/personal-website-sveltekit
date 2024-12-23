@@ -36,7 +36,7 @@ export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
       title: 'Home',
       description: 'Home page',
       card: 'summary_large_image',
-      image: `${baseUrl}og?header=Home | bradleyshellnut.com&page=Hi I'm Bradley Shellnut.&content=I'm a full stack software engineer currently working on Java Spring, PostgreSQL, and React / Angular JS.`,
+      image: `${baseUrl}og?header=Home | bradleyshellnut.com&page=Hi I'm Bradley Shellnut.&content=I'm a full stack software engineer currently working on Java Spring, PostgreSQL, and SvelteKit.`,
       imageAlt: 'Bradley Shellnut Website Logo',
     },
     url: currentPageUrl,
