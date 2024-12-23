@@ -1,5 +1,5 @@
 import SocialImageCard from "$lib/components/socialImageCard.svelte";
-import { componentToPng } from "$root/lib/renderImage";
+import { componentToPng } from "$lib/renderImage";
 
 const height = 630;
 const width = 1200;
