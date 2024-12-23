@@ -1,12 +1,11 @@
 import { PUBLIC_SITE_URL } from '$env/static/public';
 import type { Album } from '$lib/types/album';
 import type { ArticlePageLoad } from '$lib/types/article';
-import { fetchBandcampAlbums } from '$lib/util/fetchBandcampAlbums';
 import type { MetaTagsProps } from 'svelte-meta-tags';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
-  let baseUrl;
+  let baseUrl: string;
   if (url.origin.includes('prerender')) {
     baseUrl = PUBLIC_SITE_URL || 'https://bradleyshellnut.com';
   } else {

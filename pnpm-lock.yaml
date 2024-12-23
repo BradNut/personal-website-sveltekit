@@ -13,7 +13,7 @@ importers:
         version: 2.6.2
       '@sveltejs/adapter-node':
         specifier: ^5.2.11
-        version: 5.2.11(@sveltejs/kit@2.13.0(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.15.0)(vite@6.0.5(yaml@2.6.1)))(svelte@5.15.0)(vite@6.0.5(yaml@2.6.1)))
+        version: 5.2.11(@sveltejs/kit@2.15.0(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.15.0)(vite@6.0.5(yaml@2.6.1)))(svelte@5.15.0)(vite@6.0.5(yaml@2.6.1)))
       '@vercel/og':
         specifier: ^0.6.4
         version: 0.6.4
@@ -27,8 +27,8 @@ importers:
         specifier: ^5.4.2
         version: 5.4.2
       lucide-svelte:
-        specifier: ^0.468.0
-        version: 0.468.0(svelte@5.15.0)
+        specifier: ^0.469.0
+        version: 0.469.0(svelte@5.15.0)
       nprogress:
         specifier: ^0.2.0
         version: 0.2.0
@@ -52,8 +52,8 @@ importers:
         specifier: ^0.4.4
         version: 0.4.4(rollup@4.28.1)(svelte@5.15.0)(vite@6.0.5(yaml@2.6.1))
       '@sveltejs/kit':
-        specifier: ^2.13.0
-        version: 2.13.0(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.15.0)(vite@6.0.5(yaml@2.6.1)))(svelte@5.15.0)(vite@6.0.5(yaml@2.6.1))
+        specifier: ^2.15.0
+        version: 2.15.0(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.15.0)(vite@6.0.5(yaml@2.6.1)))(svelte@5.15.0)(vite@6.0.5(yaml@2.6.1))
       '@sveltejs/vite-plugin-svelte':
         specifier: ^5.0.3
         version: 5.0.3(svelte@5.15.0)(vite@6.0.5(yaml@2.6.1))
@@ -85,8 +85,8 @@ importers:
         specifier: ^9.6.0
         version: 9.6.0(postcss@8.4.49)
       satori:
-        specifier: ^0.10.14
-        version: 0.10.14
+        specifier: ^0.12.0
+        version: 0.12.0
       satori-html:
         specifier: ^0.3.2
         version: 0.3.2
@@ -1176,8 +1176,8 @@ packages:
       svelte: ^5.0.0
       vite: '>= 5.0.0'
 
-  '@sveltejs/kit@2.13.0':
-    resolution: {integrity: sha512-6t6ne00vZx/TjD6s0Jvwt8wRLKBwbSAN1nhlOzcLUSTYX1hTp4eCBaTPB5Yz/lu+tYcvz4YPEEuPv3yfsNp2gw==}
+  '@sveltejs/kit@2.15.0':
+    resolution: {integrity: sha512-FI1bhfhFNGI2sKg+BhiRyM4eaOvX+KZqRYSQqL5PK3ZZREX2xufZ6MzZAw79N846OnIxYNqcz/3VOUq+FPDd3w==}
     engines: {node: '>=18.13'}
     hasBin: true
     peerDependencies:
@@ -1675,8 +1675,8 @@ packages:
   loupe@3.1.2:
     resolution: {integrity: sha512-23I4pFZHmAemUnz8WZXbYRSKYj801VDaNv9ETuMh7IrMc7VuVVSo+Z9iLE3ni30+U48iDWfi30d3twAXBYmnCg==}
 
-  lucide-svelte@0.468.0:
-    resolution: {integrity: sha512-n0ecAFtCY5LEeL+PJ1Xj4n3c2gzj8tMpak0KMGnvoSJEjCsCnRB0mekBtJZAo7beyynW9Qj5Um1KfMBAeTNplw==}
+  lucide-svelte@0.469.0:
+    resolution: {integrity: sha512-PMIJ8jrFqVUsXJz4d1yfAQplaGhNOahwwkzbunha8DhpiD73xqX24n8dE1dPpUk3vcrdWVsHc1y/liHHotOnGQ==}
     peerDependencies:
       svelte: ^3 || ^4 || ^5.0.0-next.42
 
@@ -2013,10 +2013,6 @@ packages:
 
   satori-html@0.3.2:
     resolution: {integrity: sha512-wjTh14iqADFKDK80e51/98MplTGfxz2RmIzh0GqShlf4a67+BooLywF17TvJPD6phO0Hxm7Mf1N5LtRYvdkYRA==}
-
-  satori@0.10.14:
-    resolution: {integrity: sha512-abovcqmwl97WKioxpkfuMeZmndB1TuDFY/R+FymrZyiGP+pMYomvgSzVPnbNMWHHESOPosVHGL352oFbdAnJcA==}
-    engines: {node: '>=16'}
 
   satori@0.12.0:
     resolution: {integrity: sha512-e0e+qQyeFwEszujN7SpWpRtZgww7Nh8lSO3bUn2spHZ5JpqEl3zJ3P14/JlWruxEwdgREs35ZnavrPrWaRVFDg==}
@@ -3120,12 +3116,12 @@ snapshots:
       fflate: 0.7.4
       string.prototype.codepointat: 0.2.1
 
-  '@sveltejs/adapter-node@5.2.11(@sveltejs/kit@2.13.0(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.15.0)(vite@6.0.5(yaml@2.6.1)))(svelte@5.15.0)(vite@6.0.5(yaml@2.6.1)))':
+  '@sveltejs/adapter-node@5.2.11(@sveltejs/kit@2.15.0(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.15.0)(vite@6.0.5(yaml@2.6.1)))(svelte@5.15.0)(vite@6.0.5(yaml@2.6.1)))':
     dependencies:
       '@rollup/plugin-commonjs': 28.0.2(rollup@4.28.1)
       '@rollup/plugin-json': 6.1.0(rollup@4.28.1)
       '@rollup/plugin-node-resolve': 16.0.0(rollup@4.28.1)
-      '@sveltejs/kit': 2.13.0(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.15.0)(vite@6.0.5(yaml@2.6.1)))(svelte@5.15.0)(vite@6.0.5(yaml@2.6.1))
+      '@sveltejs/kit': 2.15.0(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.15.0)(vite@6.0.5(yaml@2.6.1)))(svelte@5.15.0)(vite@6.0.5(yaml@2.6.1))
       rollup: 4.28.1
 
   '@sveltejs/enhanced-img@0.4.4(rollup@4.28.1)(svelte@5.15.0)(vite@6.0.5(yaml@2.6.1))':
@@ -3140,7 +3136,7 @@ snapshots:
     transitivePeerDependencies:
       - rollup
 
-  '@sveltejs/kit@2.13.0(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.15.0)(vite@6.0.5(yaml@2.6.1)))(svelte@5.15.0)(vite@6.0.5(yaml@2.6.1))':
+  '@sveltejs/kit@2.15.0(@sveltejs/vite-plugin-svelte@5.0.3(svelte@5.15.0)(vite@6.0.5(yaml@2.6.1)))(svelte@5.15.0)(vite@6.0.5(yaml@2.6.1))':
     dependencies:
       '@sveltejs/vite-plugin-svelte': 5.0.3(svelte@5.15.0)(vite@6.0.5(yaml@2.6.1))
       '@types/cookie': 0.6.0
@@ -3697,7 +3693,7 @@ snapshots:
 
   loupe@3.1.2: {}
 
-  lucide-svelte@0.468.0(svelte@5.15.0):
+  lucide-svelte@0.469.0(svelte@5.15.0):
     dependencies:
       svelte: 5.15.0
 
@@ -4106,19 +4102,6 @@ snapshots:
   satori-html@0.3.2:
     dependencies:
       ultrahtml: 1.5.3
-
-  satori@0.10.14:
-    dependencies:
-      '@shuding/opentype.js': 1.4.0-beta.0
-      css-background-parser: 0.1.0
-      css-box-shadow: 1.0.0-3
-      css-to-react-native: 3.2.0
-      emoji-regex: 10.4.0
-      escape-html: 1.0.3
-      linebreak: 1.1.0
-      parse-css-color: 0.2.1
-      postcss-value-parser: 4.2.0
-      yoga-wasm-web: 0.3.3
 
   satori@0.12.0:
     dependencies:
