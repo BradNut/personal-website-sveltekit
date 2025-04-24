@@ -15,7 +15,7 @@
 	import shellnutArchitectWebsite from "../../lib/assets/images/portfolio/Mark_Shellnut_Architect.png?enhanced";
 	import oldSite from "../../lib/assets/images/portfolio/Old_Website_Bradley_Shellnut.png?enhanced";
 	import weddingWebsite from "../../lib/assets/images/portfolio/Wedding_Website.png?enhanced";
-	import { gitHubIcon } from "$root/lib/util/logoIcons.svelte";
+	import { gitHubIcon } from "$lib/util/logoIcons.svelte";
 </script>
 
 {#snippet links(externalLinks: ExternalLinkType[])}
@@ -124,34 +124,43 @@
 					/>
 				</li>
 			</ul>
-			<p>The previous version of my website was written using React and Gatsby which
-			you can view <ExternalLink
-				linkData={{
-					href: "https://wonderful-austin-9f17d2.netlify.app/",
-					ariaLabel: "React and Gatsby Personal Site version",
-				}}
-				textData={{ text: "here.", showIcon: true, location: "left" }}
-			/></p>
+			<p>
+				The previous version of my website was written using React and Gatsby
+				which you can view <ExternalLink
+					linkData={{
+						href: "https://wonderful-austin-9f17d2.netlify.app/",
+						ariaLabel: "React and Gatsby Personal Site version",
+					}}
+					textData={{ text: "here.", showIcon: true, location: "left" }}
+				/>
+			</p>
 			<p>
 				Each iteration brings better code and my previous React version was
-			improved after the suggestions on <ExternalLink
-				linkData={{
-					href: "https://syntax.fm/show/444/syntax-highlight#t=33:19",
-					ariaLabel: "Syntax.fm Podcast Number 444",
-				}}
-				textData={{ text: "Show 444", showIcon: true, location: "left" }}
-			/> of the <ExternalLink
-				linkData={{ href: "https://syntax.fm/", ariaLabel: "Syntax.fm" }}
-				textData={{ text: "Syntax Pocast.", showIcon: true, location: "left" }}
-			/></p>
-			<p>You can view the previous archived version of the site before those
-			changes <ExternalLink
-				textData={{ text: "here.", showIcon: true, location: "left" }}
-				linkData={{
-					href: "https://web.archive.org/web/20210224002046/https://bradleyshellnut.com/",
-					ariaLabel: "Archive before Syntax Podcast",
-				}}
-			/></p>
+				improved after the suggestions on <ExternalLink
+					linkData={{
+						href: "https://syntax.fm/show/444/syntax-highlight#t=33:19",
+						ariaLabel: "Syntax.fm Podcast Number 444",
+					}}
+					textData={{ text: "Show 444", showIcon: true, location: "left" }}
+				/> of the <ExternalLink
+					linkData={{ href: "https://syntax.fm/", ariaLabel: "Syntax.fm" }}
+					textData={{
+						text: "Syntax Pocast.",
+						showIcon: true,
+						location: "left",
+					}}
+				/>
+			</p>
+			<p>
+				You can view the previous archived version of the site before those
+				changes <ExternalLink
+					textData={{ text: "here.", showIcon: true, location: "left" }}
+					linkData={{
+						href: "https://web.archive.org/web/20210224002046/https://bradleyshellnut.com/",
+						ariaLabel: "Archive before Syntax Podcast",
+					}}
+				/>
+			</p>
 		</Portfolio>
 		<Portfolio
 			name="Wedding Website"
@@ -169,16 +178,24 @@
 				},
 			]}
 		>
-			<p>The app was initially created for my wedding but what is linked here is a public demo of the application.</p>
-			<p>An application that allows viewing of wedding details and provides the ability to RSVP to the wedding.</p>
+			<p>
+				The app was initially created for my wedding but what is linked here is
+				a public demo of the application.
+			</p>
+			<p>
+				An application that allows viewing of wedding details and provides the
+				ability to RSVP to the wedding.
+			</p>
 			<p>Tech stack:</p>
 			<ul>
 				<li>Next.js 13</li>
 				<li>React 18</li>
-				<li><ExternalLink
-					linkData={{ href: "https://radix-ui.com/", ariaLabel: "Radix UI" }}
-					textData={{ text: "Radix UI", showIcon: true, location: "left" }}
-				/></li>
+				<li>
+					<ExternalLink
+						linkData={{ href: "https://radix-ui.com/", ariaLabel: "Radix UI" }}
+						textData={{ text: "Radix UI", showIcon: true, location: "left" }}
+					/>
+				</li>
 				<li>MongoDB</li>
 				<li>Styled Components</li>
 				<li>Next Iron Session</li>
