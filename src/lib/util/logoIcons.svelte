@@ -1,5 +1,4 @@
 <script module>
-	import { ExternalLink } from 'lucide-svelte';
 	export { blueSkyIcon, dockerIcon, drizzleIcon, honoIcon, gitHubIcon, linkedInIcon, lucideIcon, nextDotJsIcon, reactIcon, svelteIcon, typescriptIcon, xIcon };
 </script>
 

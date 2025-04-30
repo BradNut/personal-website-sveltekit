@@ -14,7 +14,7 @@ import type {
 	WallabagArticle,
 } from "$lib/types/article";
 import { ArticleTag } from "$lib/types/articleTag";
-import type { PageQuery } from "$lib/types/pageQuery";
+import type { PageQuery } from "./types/pageQuery";
 import { URLSearchParams } from "node:url";
 import { redis } from "$lib/server/redis";
 

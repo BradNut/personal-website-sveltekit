@@ -4,7 +4,7 @@
 	const userNames = {
     github: 'BradNut',
     linkedIn: 'bradley-shellnut',
-    email: 'bradleyshellnut[at]pm.me',
+    email: 'website[at]bradleyshellnut.com',
   };
 </script>
 

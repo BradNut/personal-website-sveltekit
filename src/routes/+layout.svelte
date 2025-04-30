@@ -1,51 +1,50 @@
 <script lang="ts">
-	import { MetaTags } from 'svelte-meta-tags';
-	import NProgress from "nprogress";
-	import { browser } from "$app/environment";
-	import { navigating, page } from "$app/stores";
-	import { PUBLIC_SITE_URL } from '$env/static/public';
-	import "nprogress/nprogress.css";
-	import '$root/styles/styles.pcss';
-	import Header from '$lib/components/header/index.svelte';
-	import Footer from '$lib/components/footer/index.svelte';
-	import Analytics from '$lib/components/analytics/index.svelte';
+	import "../styles/styles.pcss";
+	import { MetaTags } from "svelte-meta-tags";
+	import { dev } from "$app/environment";
+	import { page } from "$app/state";
+	import Header from "../lib/components/header/index.svelte";
+	import Footer from "../lib/components/footer/index.svelte";
+	import Analytics from "../lib/components/analytics/index.svelte";
+	import { onNavigate } from "$app/navigation";
+	import PageLoadingIndicator from "../lib/util/page_loading_indicator.svelte";
+
 	interface Props {
-		children?: import('svelte').Snippet;
+		children?: import("svelte").Snippet;
 	}
 
 	let { children }: Props = $props();
 
-	NProgress.configure({
-			// Full list: https://github.com/rstacruz/nprogress#configuration
-			minimum: 0.16,
-	});
+	const production = !dev || import.meta.env.NODE_ENV !== "production";
 
-	const dev = process.env.NODE_ENV !== 'production';
+	onNavigate(async (navigation) => {
+		if (!document.startViewTransition) return;
 
-	$effect(() => {
-		if (browser && $navigating) {
-			NProgress.start();
-		} else {
-			NProgress.done();
-		}
+		return new Promise((oldStateCaptureResolve) => {
+			document.startViewTransition(async () => {
+				oldStateCaptureResolve();
+				await navigation.complete;
+			});
+		});
 	});
 
 	let metaTags = $derived({
-		titleTemplate: '%s | Bradley Shellnut',
+		titleTemplate: "%s | Bradley Shellnut",
 		additionalMetaTags: [
 			{
-				property: 'theme-color',
-				content: '#272727'
-			}
+				property: "theme-color",
+				content: "#272727",
+			},
 		],
-		...$page.data.metaTagsChild
-	})
+		...page.data.metaTagsChild,
+	});
 </script>
 
-{#if !dev}
+{#if production}
 	<Analytics />
 {/if}
 
+<PageLoadingIndicator />
 <MetaTags {...metaTags} />
 
 <div class="wrapper">
@@ -77,24 +76,15 @@
 		box-sizing: border-box;
 	}
 
-	:global(#nprogress .bar) {
-		background: var(--lightGrey);
+	:global(p) {
+		word-wrap: normal;
+		font-size: var(--bodyTextSize);
+		color: var(--lightShade);
 	}
-
-	:global(#nprogress .spinner-icon) {
-		border-top-color: var(--lightGrey);
-		border-left-color: var(--lightGrey);
-	}
-
-  :global(p) {
-    word-wrap: normal;
-    font-size: var(--bodyTextSize);
-    color: var(--lightShade);
-  }
 
 	:global(li) {
-    word-wrap: normal;
-    font-size: var(--bodyTextSize);
-    color: var(--lightShade);
+		word-wrap: normal;
+		font-size: var(--bodyTextSize);
+		color: var(--lightShade);
 	}
 </style>

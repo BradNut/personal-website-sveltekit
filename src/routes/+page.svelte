@@ -14,7 +14,7 @@ let totalArticles: number = $derived(articlesData.totalArticles);
 const userNames = {
   github: 'BradNut',
   linkedIn: 'bradley-shellnut',
-  email: 'bradleyshellnut@pm.me',
+  email: 'website@bradleyshellnut.com',
 };
 </script>
 
