@@ -29,9 +29,6 @@ importers:
       lucide-svelte:
         specifier: ^0.503.0
         version: 0.503.0(svelte@5.28.2)
-      nprogress:
-        specifier: ^0.2.0
-        version: 0.2.0
       scrape-it:
         specifier: ^6.1.5
         version: 6.1.5
@@ -57,9 +54,6 @@ importers:
       '@sveltejs/vite-plugin-svelte':
         specifier: ^5.0.3
         version: 5.0.3(svelte@5.28.2)(vite@6.3.3(yaml@2.7.0))
-      '@types/nprogress':
-        specifier: ^0.2.3
-        version: 0.2.3
       '@unpic/svelte':
         specifier: ^1.0.0
         version: 1.0.0(svelte@5.28.2)
@@ -75,6 +69,9 @@ importers:
       postcss:
         specifier: ^8.5.3
         version: 8.5.3
+      postcss-custom-media:
+        specifier: ^11.0.5
+        version: 11.0.5(postcss@8.5.3)
       postcss-import:
         specifier: ^16.1.0
         version: 16.1.0(postcss@8.5.3)
@@ -1215,9 +1212,6 @@ packages:
   '@types/estree@1.0.7':
     resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
 
-  '@types/nprogress@0.2.3':
-    resolution: {integrity: sha512-k7kRA033QNtC+gLc4VPlfnue58CM1iQLgn1IMAU8VPHGOj7oIHPp9UlhedEnD/Gl8evoCjwkZjlBORtZ3JByUA==}
-
   '@types/resolve@1.20.2':
     resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
 
@@ -1778,9 +1772,6 @@ packages:
   normalize-range@0.1.2:
     resolution: {integrity: sha512-bdok/XvKII3nUpklnV6P2hxtMNrCboOjAcyBuQnWEhO665FwrSNRxU+AqpsyvO6LgGYPspN+lu5CLtw4jPRKNA==}
     engines: {node: '>=0.10.0'}
-
-  nprogress@0.2.0:
-    resolution: {integrity: sha512-I19aIingLgR1fmhftnbWWO3dXc0hSxqHQHQb3H8m+K3TnEn/iSeTZZOyvKXWqQESMwuUVnatlCnZdLBZZt2VSA==}
 
   nth-check@2.1.1:
     resolution: {integrity: sha512-lqjrjmaOoAnWfMmBPL+XNnynZh2+swxiX3WUE0s4yEHI6m+AwrK2UZOimIRl3X/4QctVqS8AiZjFqyOGrMXb/w==}
@@ -3263,8 +3254,6 @@ snapshots:
 
   '@types/estree@1.0.7': {}
 
-  '@types/nprogress@0.2.3': {}
-
   '@types/resolve@1.20.2': {}
 
   '@unpic/core@1.0.1':
@@ -3833,8 +3822,6 @@ snapshots:
   noop6@1.0.10: {}
 
   normalize-range@0.1.2: {}
-
-  nprogress@0.2.0: {}
 
   nth-check@2.1.1:
     dependencies:

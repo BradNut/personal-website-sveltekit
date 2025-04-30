@@ -14,8 +14,7 @@ const config = {
 	kit: {
 		adapter: adapter(),
 		alias: {
-			$lib: './src/lib',
-			$root: './src'
+			$: './src',
 		}
 	},
 	compilerOptions: {

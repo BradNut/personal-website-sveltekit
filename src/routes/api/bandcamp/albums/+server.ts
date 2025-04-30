@@ -1,7 +1,7 @@
 import { json, error } from '@sveltejs/kit';
 import { BANDCAMP_USERNAME, PAGE_SIZE, USE_REDIS_CACHE } from '$env/static/private';
 import { fetchArticlesApi } from '$lib/api';
-import { redis } from '$root/lib/server/redis';
+import { redis } from '$lib/server/redis';
 import type { Album, BandCampResults } from '$lib/types/album';
 import scrapeIt, { type ScrapeResult } from 'scrape-it';
 
