@@ -29,9 +29,6 @@ importers:
       lucide-svelte:
         specifier: ^0.509.0
         version: 0.509.0(svelte@5.37.0)
-      personal-website-sveltekit:
-        specifier: 'link:'
-        version: 'link:'
       scrape-it:
         specifier: ^6.1.11
         version: 6.1.11
