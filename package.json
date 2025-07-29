@@ -19,7 +19,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
 		"@playwright/test": "^1.54.1",
-		"@sveltejs/enhanced-img": "^0.7.0",
+		"@sveltejs/enhanced-img": "^0.5.1",
 		"@sveltejs/kit": "^2.26.1",
 		"@sveltejs/vite-plugin-svelte": "^5.1.1",
 		"@unpic/svelte": "^1.0.0",
