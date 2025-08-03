@@ -19,9 +19,9 @@
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
 		"@playwright/test": "^1.54.1",
-		"@sveltejs/enhanced-img": "^0.7.0",
+		"@sveltejs/enhanced-img": "^0.5.1",
 		"@sveltejs/kit": "^2.26.1",
-		"@sveltejs/vite-plugin-svelte": "^6.1.0",
+		"@sveltejs/vite-plugin-svelte": "^5.1.1",
 		"@unpic/svelte": "^1.0.0",
 		"@zerodevx/svelte-img": "^2.1.2",
 		"autoprefixer": "^10.4.21",
