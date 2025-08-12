@@ -63,7 +63,7 @@ const userNames = {
 		</p>
 	<div class="social-info">
 		<Bandcamp {albums} />
-		<Articles {articles} {totalArticles} compact />
+		<Articles data={{ articles, totalArticles, compact: true }} />
 	</div>
 </div>
 

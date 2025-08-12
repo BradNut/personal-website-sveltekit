@@ -1,51 +1,78 @@
 <script lang="ts">
   import type { Article } from '$lib/types/article';
-	import { ArrowRight } from 'lucide-svelte';
+  import { ArrowRight } from 'lucide-svelte';
   import ExternalLink from './ExternalLink.svelte';
 
-const {
-  articles,
-  totalArticles,
-  compact = false,
-  classes = [],
-}: { articles: Article[]; totalArticles: number; compact: boolean; classes?: string[] } = $props();
+  type LoadData = {
+    articles: Article[];
+    totalArticles: number;
+    classes?: string[];
+    compact?: boolean;
+  };
+
+  const { data }: { data: LoadData } = $props();
+  
+  // Use $derived to maintain reactivity when data prop changes
+  const articles = $derived(data.articles || []);
+  const totalArticles = $derived(data.totalArticles || 0);
+  const compact = $derived(data.compact);
+  const classes = $derived(data.classes || []);
+  
+  const articlesData = $derived(articles);
 </script>
 
 <section class="articles">
   <h2>Favorite Articles</h2>
   <div class={classes.join(' ')}>
-    {#each articles as article (article.hashed_url)}
-      <article class="card">
-        <section>
-          <h3>
-            <ExternalLink
-              textData={{
-                text: compact ? article.title.substring(0, 50).trim() : article.title,
-                location: 'left',
-                showIcon: true,
-              }}
-              linkData={{
-                href: article.url.toString(),
-                ariaLabel: `Link to ${article.title}`,
-                title: `Link to ${article.title}`,
-                target: '_blank',
-              }}
-              iconData={{ iconClass: 'center' }}
-            />
-          </h3>
-          <p>{article.domain_name}</p>
-        </section>
-        <section>
-          <p>Reading time: {article.reading_time} minutes</p>
-          <div class="tagsStyles">
-            <p>Tags:</p>
-            {#each article.tags as tag}
-              <p>{tag}</p>
-            {/each}
-          </div>
-        </section>
-      </article>
-    {/each}
+    <!-- {#await data.articles}
+      {#each Array(6) as _, i (i)}
+        <article class="card skeleton">
+          <section>
+            <h3><span class="skeleton-text skeleton-title" aria-hidden="true">Loading article title...</span></h3>
+            <span class="skeleton-text skeleton-domain" aria-hidden="true">Loading domain...</span>
+          </section>
+          <section>
+            <span class="skeleton-text skeleton-reading" aria-hidden="true">Loading reading time...</span>
+            <span class="skeleton-text skeleton-tags" aria-hidden="true">Loading tags...</span>
+          </section>
+        </article>
+      {/each}
+    {:then articles} -->
+      {#each articlesData as article (article.hashed_url)}
+        <article class="card">
+          <section>
+            <h3>
+              <ExternalLink
+                textData={{
+                  text: compact ? article.title.substring(0, 50).trim() : article.title,
+                  location: 'left',
+                  showIcon: true,
+                }}
+                linkData={{
+                  href: article.url.toString(),
+                  ariaLabel: `Link to ${article.title}`,
+                  title: `Link to ${article.title}`,
+                  target: '_blank',
+                }}
+                iconData={{ iconClass: 'center' }}
+              />
+            </h3>
+            <p>{article.domain_name}</p>
+          </section>
+          <section>
+            <p>Reading time: {article.reading_time} minutes</p>
+            <div class="tagsStyles">
+              <p>Tags:</p>
+              {#each article.tags as tag}
+                <p>{tag}</p>
+              {/each}
+            </div>
+          </section>
+        </article>
+      {/each}
+    <!-- {:catch error}
+      <p>There was an error loading the articles.</p>
+    {/await} -->
   </div>
   <a class="moreArticles" href="/articles">{`${totalArticles} more articles`} <ArrowRight /></a>
 </section>

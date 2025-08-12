@@ -1,19 +1,11 @@
-import type { MetaTagsProps } from 'svelte-meta-tags';
-import type { PageServerLoad } from './$types';
 import { PUBLIC_SITE_URL } from '$env/static/public';
 import type { ArticlePageLoad } from '$lib/types/article';
+import type { MetaTagsProps } from 'svelte-meta-tags';
+import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ fetch, params, setHeaders, url }) => {
+export const load: PageServerLoad = async ({ fetch, params, setHeaders, url, parent }) => {
 	const { page } = params;
-	const resp = await fetch(`/api/articles?page=${page}`);
-	const {
-		articles,
-		currentPage,
-		totalPages,
-		limit,
-		totalArticles,
-		cacheControl,
-	}: ArticlePageLoad = await resp.json();
+	const { cacheControl } = await parent();
 
 	if (cacheControl?.includes('no-cache')) {
 		setHeaders({
@@ -57,12 +49,12 @@ export const load: PageServerLoad = async ({ fetch, params, setHeaders, url }) =
 		url: currentPageUrl,
 	});
 
+	const articlesData = await fetch(`/api/articles?page=${page}`);
+	const { articles, currentPage } = await articlesData.json();
+	
 	return {
 		articles,
 		currentPage,
-		totalPages,
-		limit,
-		totalArticles,
 		metaTagsChild: metaTags,
 	};
 };
