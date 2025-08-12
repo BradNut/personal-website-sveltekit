@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onNavigate } from "$app/navigation";
+	import { onNavigate, beforeNavigate } from "$app/navigation";
 
 	let visible = $state(false);
 	let progress = $state(0);
@@ -9,22 +9,40 @@
 	);
 
 	const increment = 1;
+	let interval: number | null = null;
 
-	onNavigate((navigation) => {
-		const typical_load_time = average_load || 200; //ms
-		const frequency = typical_load_time / 100;
-		let start = performance.now();
-		// Start the progress bar
+	beforeNavigate(() => {
+		// Start the progress bar immediately when navigation begins
 		visible = true;
 		progress = 0;
-		const interval = setInterval(() => {
-			// Increment the progress bar
-			progress += increment;
+		
+		// Clear any existing interval
+		if (interval) {
+			clearInterval(interval);
+		}
+		
+		const typical_load_time = average_load || 200; // ms
+		const frequency = typical_load_time / 100;
+		
+		interval = setInterval(() => {
+			// Increment the progress bar but cap at 20% during beforeNavigate
+			if (progress < 20) {
+				progress += increment;
+			}
 		}, frequency);
+	});
+
+	onNavigate((navigation) => {
+		console.log("Navigating to", navigation?.to);
+		let start = performance.now();
+		
 		// Resolve the promise when the page is done loading
 		navigation?.complete.then(() => {
 			progress = 100; // Fill out the progress bar
-			clearInterval(interval);
+			if (interval) {
+				clearInterval(interval);
+				interval = null;
+			}
 			// after 100 ms hide the progress bar
 			setTimeout(() => {
 				visible = false;
