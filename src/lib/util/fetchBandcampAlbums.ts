@@ -6,12 +6,12 @@ import type { Album, BandCampResults } from '../types/album';
 
 export async function fetchBandcampAlbums() {
 	try {
-		if (USE_REDIS_CACHE) {
+		if (USE_REDIS_CACHE === 'true') {
 			const cached: string | null = await redis.get('bandcampAlbums');
 
 			if (cached) {
 				const response: Album[] = JSON.parse(cached);
-				console.log(`Cache hit!`);
+				console.log('Cache hit!');
 				const ttl = await redis.ttl('bandcampAlbums');
 
 				return { ...response, cacheControl: `max-age=${ttl}` };
@@ -46,7 +46,7 @@ export async function fetchBandcampAlbums() {
 		const albums: Album[] = data?.collectionItems || [];
 
 		if (albums && albums?.length > 0) {
-			if (USE_REDIS_CACHE) {
+			if (USE_REDIS_CACHE === 'true') {
 				redis.set('bandcampAlbums', JSON.stringify(albums), 'EX', 43200);
 			}
 			return albums;

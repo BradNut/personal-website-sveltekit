@@ -1,31 +1,25 @@
 <script lang="ts">
-	import { ExternalLink } from "lucide-svelte";
-	import type {
-		ExternalLinkType,
-		LinkIconType,
-	} from "$lib/types/externalLinkTypes";
+	import type { ExternalLinkType, LinkIconType } from '$lib/types/externalLinkTypes';
+	import { ExternalLink } from 'lucide-svelte';
 
 	const { iconData, linkData, textData }: ExternalLinkType = $props();
 
-	let textLocationClass = "";
-	if (textData?.location === "top") {
-		textLocationClass = "text-top";
-	} else if (textData?.location === "bottom") {
-		textLocationClass = "text-bottom";
-	} else if (textData?.location === "left") {
-		textLocationClass = "text-left";
-	} else if (textData?.location === "right") {
-		textLocationClass = "text-right";
+	let textLocationClass = '';
+	if (textData?.location === 'top') {
+		textLocationClass = 'text-top';
+	} else if (textData?.location === 'bottom') {
+		textLocationClass = 'text-bottom';
+	} else if (textData?.location === 'left') {
+		textLocationClass = 'text-left';
+	} else if (textData?.location === 'right') {
+		textLocationClass = 'text-right';
 	} else {
-		textLocationClass = "text-left";
+		textLocationClass = 'text-left';
 	}
 
 	const linkDecoration =
-		linkData?.textDecoration && linkData?.textDecoration === "none"
-			? `text-decoration-${linkData?.textDecoration}`
-			: "text-decoration-underline";
-	const linkClass =
-		`${linkData?.clazz} ${textLocationClass} ${linkDecoration}`.trim();
+		linkData?.textDecoration && linkData?.textDecoration === 'none' ? `text-decoration-${linkData?.textDecoration}` : 'text-decoration-underline';
+	const linkClass = `${linkData?.clazz || ''} ${textLocationClass} ${linkDecoration}`.trim();
 </script>
 
 {#snippet externalLink({ iconData, linkData, textData }: ExternalLinkType)}

@@ -1,6 +1,7 @@
 import { json, error } from '@sveltejs/kit';
 import { PAGE_SIZE } from '$env/static/private';
 import { fetchArticlesApi } from '$lib/api';
+import type { ArticlePageLoad } from '@/lib/types/article.js';
 
 export async function GET({ setHeaders, url }) {
 	const page = url?.searchParams?.get('page') || '1';
@@ -10,12 +11,10 @@ export async function GET({ setHeaders, url }) {
 	}
 
 	try {
-		const response = await fetchArticlesApi('get', 'fetchArticles', {
+		const response: ArticlePageLoad = await fetchArticlesApi('get', 'fetchArticles', {
 			page,
 			limit
 		});
-
-		console.log(`JSON articles response: ${JSON.stringify(response)}`);
 
 		if (response?.articles) {
 			if (response?.cacheControl) {

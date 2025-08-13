@@ -12,10 +12,7 @@
     "strict": true,
     "moduleResolution": "bundler",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    "emitDecoratorMetadata": true
   }
   // Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
   //
