@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onNavigate, beforeNavigate } from "$app/navigation";
+	import { LoaderCircle } from "lucide-svelte";
 
 	let visible = $state(false);
 	let progress = $state(0);
@@ -57,6 +58,9 @@
 
 {#if visible}
 	<div class="progress" style="width: {progress}%;"></div>
+	<div class="loader-container">
+		<LoaderCircle class="loader-icon" size={20} />
+	</div>
 {/if}
 
 <style lang="postcss">
@@ -69,5 +73,30 @@
 		height: 0.25rem;
 		z-index: 50;
 		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+	
+	.loader-container {
+		position: fixed;
+		top: 1rem;
+		right: 1rem;
+		z-index: 50;
+		pointer-events: none;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	
+	:global(.loader-icon) {
+		animation: spin 1s linear infinite;
+		color: var(--lightGrey);
+	}
+	
+	@keyframes spin {
+		from {
+			transform: rotate(0deg);
+		}
+		to {
+			transform: rotate(360deg);
+		}
 	}
 </style>

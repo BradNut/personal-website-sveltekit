@@ -21,7 +21,7 @@
 		"@internationalized/date": "^3.8.2",
 		"@playwright/test": "^1.54.2",
 		"@sveltejs/enhanced-img": "^0.5.1",
-		"@sveltejs/kit": "^2.28.0",
+		"@sveltejs/kit": "^2.29.0",
 		"@sveltejs/vite-plugin-svelte": "^5.1.1",
 		"@unpic/svelte": "^1.0.0",
 		"@zerodevx/svelte-img": "^2.1.2",

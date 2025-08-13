@@ -1,7 +1,10 @@
 <script lang="ts">
-  import type { Article } from '$lib/types/article';
-  import { ArrowRight } from 'lucide-svelte';
-  import ExternalLink from './ExternalLink.svelte';
+  import { ArrowRight } from "lucide-svelte";
+  import { beforeNavigate, onNavigate } from "$app/navigation";
+  import { page } from "$app/state";
+  import ArticlesSkeleton from "$lib/components/ArticlesSkeleton.svelte";
+  import type { Article } from "$lib/types/article";
+  import ExternalLink from "./ExternalLink.svelte";
 
   type LoadData = {
     articles: Article[];
@@ -11,50 +14,55 @@
   };
 
   const { data }: { data: LoadData } = $props();
-  
+
   // Use $derived to maintain reactivity when data prop changes
   const articles = $derived(data.articles || []);
   const totalArticles = $derived(data.totalArticles || 0);
   const compact = $derived(data.compact);
   const classes = $derived(data.classes || []);
-  
+
   const articlesData = $derived(articles);
+  let loadingArticles = $state(false);
+
+  beforeNavigate(() => {
+    loadingArticles = true;
+  });
+
+  onNavigate((navigation) => {
+    loadingArticles = true;
+
+    // Resolve the promise when the page is done loading
+    navigation?.complete.then(() => {
+      loadingArticles = false;
+    });
+  });
 </script>
 
 <section class="articles">
   <h2>Favorite Articles</h2>
-  <div class={classes.join(' ')}>
-    <!-- {#await data.articles}
-      {#each Array(6) as _, i (i)}
-        <article class="card skeleton">
-          <section>
-            <h3><span class="skeleton-text skeleton-title" aria-hidden="true">Loading article title...</span></h3>
-            <span class="skeleton-text skeleton-domain" aria-hidden="true">Loading domain...</span>
-          </section>
-          <section>
-            <span class="skeleton-text skeleton-reading" aria-hidden="true">Loading reading time...</span>
-            <span class="skeleton-text skeleton-tags" aria-hidden="true">Loading tags...</span>
-          </section>
-        </article>
-      {/each}
-    {:then articles} -->
+  <div class={classes.join(" ")}>
+    {#if loadingArticles}
+      <ArticlesSkeleton count={6} />
+    {:else}
       {#each articlesData as article (article.hashed_url)}
         <article class="card">
           <section>
             <h3>
               <ExternalLink
                 textData={{
-                  text: compact ? article.title.substring(0, 50).trim() : article.title,
-                  location: 'left',
+                  text: compact
+                    ? article.title.substring(0, 50).trim()
+                    : article.title,
+                  location: "left",
                   showIcon: true,
                 }}
                 linkData={{
                   href: article.url.toString(),
                   ariaLabel: `Link to ${article.title}`,
                   title: `Link to ${article.title}`,
-                  target: '_blank',
+                  target: "_blank",
                 }}
-                iconData={{ iconClass: 'center' }}
+                iconData={{ iconClass: "center" }}
               />
             </h3>
             <p>{article.domain_name}</p>
@@ -70,22 +78,23 @@
           </section>
         </article>
       {/each}
-    <!-- {:catch error}
-      <p>There was an error loading the articles.</p>
-    {/await} -->
+    {/if}
   </div>
-  <a class="moreArticles" href="/articles">{`${totalArticles} more articles`} <ArrowRight /></a>
+  {#if page.url.pathname === "/"}
+    <a class="moreArticles" href="/articles"
+      >{`${totalArticles} more articles`} <ArrowRight /></a
+    >
+  {/if}
 </section>
 
-
 <style lang="postcss">
-	article {
+  article {
     margin: 1.5rem 0;
 
     & p {
       margin: 0.25rem 0rem;
     }
-	}
+  }
 
   .articles {
     display: grid;
@@ -95,17 +104,17 @@
   .columns {
     display: grid;
     grid-template-columns: repeat(2, minmax(250px, 1fr));
-		min-height: 800px;
+    min-height: 800px;
 
-		@media (max-width: 1000px) {
-			grid-template-columns: repeat(2, minmax(250px, 1fr));
-		}
+    @media (max-width: 1000px) {
+      grid-template-columns: repeat(2, minmax(250px, 1fr));
+    }
 
-		@media (max-width: 650px) {
-			grid-template-columns: minmax(250px, 1fr);
-		}
+    @media (max-width: 650px) {
+      grid-template-columns: minmax(250px, 1fr);
+    }
 
-		gap: 2.5rem;
+    gap: 2.5rem;
   }
 
   .tagsStyles {
