@@ -1,13 +1,12 @@
 import { json, error } from '@sveltejs/kit';
-import { BANDCAMP_USERNAME, PAGE_SIZE, USE_REDIS_CACHE } from '$env/static/private';
-import { fetchArticlesApi } from '$lib/api';
+import { BANDCAMP_USERNAME, USE_REDIS_CACHE } from '$env/static/private';
 import { redis } from '$lib/server/redis';
 import type { Album, BandCampResults } from '$lib/types/album';
 import scrapeIt, { type ScrapeResult } from 'scrape-it';
 
 export async function GET({ setHeaders, url }) {
   try {
-    if (USE_REDIS_CACHE) {
+    if (USE_REDIS_CACHE === 'true') {
       const cached: string | null = await redis.get('bandcampAlbums');
 
       if (cached) {
@@ -51,7 +50,7 @@ export async function GET({ setHeaders, url }) {
     const albums: Album[] = data?.collectionItems || [];
 
     if (albums && albums?.length > 0) {
-      if (USE_REDIS_CACHE) {
+      if (USE_REDIS_CACHE === 'true') {
         redis.set('bandcampAlbums', JSON.stringify(albums), 'EX', 43200);
       }
       setHeaders({

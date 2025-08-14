@@ -8,6 +8,7 @@
     pageSize: number;
     totalCount: number;
     currentPage: number;
+    totalPages: number;
     base: string;
   }
 
@@ -20,7 +21,7 @@
   }: Props = $props();
 </script>
 
-<Pagination.Root  count={totalCount} perPage={pageSize} page={currentPage || 1} class={`${additionalClasses}`}
+<Pagination.Root count={totalCount} perPage={pageSize} page={currentPage || 1} class={`${additionalClasses}`}
   onPageChange={(page) => goto(`${base}/${page}`)}>
   {#snippet children({ pages })}
     <Pagination.PrevButton>
@@ -31,7 +32,7 @@
         <div class="ellipsis text-[15px] font-medium text-foreground-alt">...</div>
       {:else}
         <Pagination.Page {page}>
-          <a href={`${base}/${page.value}`}>
+          <a href={`${base}/${page.value}`} data-sveltekit-preload-data="hover">
             {page.value}
           </a>
         </Pagination.Page>

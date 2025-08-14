@@ -14,7 +14,7 @@
 		loading = "lazy",
 		children,
 	}: {
-		links: Snippet<ExternalLinkType[]>;
+		links: Snippet<[ExternalLinkType[]]>;
 		externalLinks: ExternalLinkType[];
 		name: string;
 		src: string | Picture;

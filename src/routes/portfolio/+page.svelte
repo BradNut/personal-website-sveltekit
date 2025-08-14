@@ -1,13 +1,9 @@
 <script lang="ts">
 	import ExternalLink from "$lib/components/ExternalLink.svelte";
 	import Portfolio from "./Portfolio.svelte";
-	// @ts-expect-error: Cannot find module '$lib/content/uses/development.md' or its corresponding type declarations.ts(2307)
 	// import OldWebsite from "$lib/content/portfolio/personal/old-website.md";
-	// @ts-expect-error: Cannot find module '$lib/content/uses/development.md' or its corresponding type declarations.ts(2307)
 	// import PersonalWebsiteSvelteKit from "$lib/content/portfolio/personal/personal-website-sveltekit.md";
-	// @ts-expect-error: Cannot find module '$lib/content/uses/development.md' or its corresponding type declarations.ts(2307)
 	// import WeddingWebsite from "$lib/content/portfolio/personal/wedding-website.md";
-	// @ts-expect-error: Cannot find module '$lib/content/uses/development.md' or its corresponding type declarations.ts(2307)
 	// import MarkShellnutArchitect from "$lib/content/portfolio/professional/mark-shellnut-architect.md";
 	import type { ExternalLinkType } from "$lib/types/externalLinkType";
 	import { Tabs } from "bits-ui";
