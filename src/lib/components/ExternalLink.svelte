@@ -35,7 +35,7 @@
 			{textData?.text}
 		{/if}
 		{#if textData?.showIcon}
-			{@render linkIcon?.(iconData ?? {})}
+			{@render linkIcon(iconData ?? {})}
 		{/if}
 		{#if textData?.location === "bottom" || (textData?.location === "right" && textData?.text)}
 			{textData?.text}
@@ -44,7 +44,7 @@
 {/snippet}
 
 {#snippet linkIcon({ type, icon, iconClass }: LinkIconType)}
-	{#if type === "svg" && icon}
+	{#if type === "svg" && icon && typeof icon === 'function' && icon.length !== undefined}
 		<svg
 			style="width: 2.5rem; height: 2.5rem;"
 			class={iconClass ?? ""}
@@ -52,7 +52,7 @@
 			viewBox="0 0 24 24"
 			xmlns="http://www.w3.org/2000/svg"
 		>
-			{@render icon?.()}
+			{@render (icon as any)()}
 		</svg>
 	{:else if type === "icon" && icon}
 		{@const Icon = icon}

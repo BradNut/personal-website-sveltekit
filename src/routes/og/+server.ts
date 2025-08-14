@@ -13,9 +13,8 @@ export async function GET({ url }) {
     const page = url.searchParams.get('page') ?? undefined;
     const content = url.searchParams.get('content') ?? '';
 
-    // @ts-expect-error: Argument of type 'typeof SocialImageCard__SvelteComponent_' is not assignable to parameter of type 'SvelteComponent<any, any, any>'
     return componentToPng(
-      SocialImageCard,
+      SocialImageCard as any,
       {
         header,
         page,

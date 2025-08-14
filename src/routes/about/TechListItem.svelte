@@ -17,11 +17,9 @@
 </script>
 
 <ExternalLink
-	ariaLabel={ariaLabel}
-	href={href}
-	linkClass={clazz}
-	icon={lucideIcon}
+	linkData={{ href, ariaLabel, clazz }}
 	textData={textData}
+	iconData={{ type: 'icon', icon }}
 />
 
 <style lang="postcss">
