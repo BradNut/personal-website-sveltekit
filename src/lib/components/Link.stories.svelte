@@ -1,11 +1,11 @@
 <script module lang="ts">
-  import { defineMeta } from '@storybook/addon-svelte-csf';
-  import Link from './Link.svelte';
+  import { defineMeta } from "@storybook/addon-svelte-csf";
+  import Link from "./Link.svelte";
 
   const { Story } = defineMeta({
-    title: 'Components/Link',
+    title: "Components/Link",
     component: Link,
-    tags: ['autodocs']
+    tags: ["autodocs"],
   });
 </script>
 

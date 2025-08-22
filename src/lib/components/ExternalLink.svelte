@@ -1,25 +1,34 @@
 <script lang="ts">
-	import type { ExternalLinkType, LinkIconType } from '$lib/types/externalLinkTypes';
-	import { ExternalLink } from 'lucide-svelte';
+	import { ExternalLink } from "lucide-svelte";
+	import type {
+		ExternalLinkType,
+		LinkIconType,
+	} from "$lib/types/externalLinkTypes";
 
 	const { iconData, linkData, textData }: ExternalLinkType = $props();
 
-	let textLocationClass = '';
-	if (textData?.location === 'top') {
-		textLocationClass = 'text-top';
-	} else if (textData?.location === 'bottom') {
-		textLocationClass = 'text-bottom';
-	} else if (textData?.location === 'left') {
-		textLocationClass = 'text-left';
-	} else if (textData?.location === 'right') {
-		textLocationClass = 'text-right';
+	let textLocationClass = "";
+	if (textData?.location === "top") {
+		textLocationClass = "text-top";
+	} else if (textData?.location === "bottom") {
+		textLocationClass = "text-bottom";
+	} else if (textData?.location === "left") {
+		textLocationClass = "text-left";
+	} else if (textData?.location === "right") {
+		textLocationClass = "text-right";
 	} else {
-		textLocationClass = 'text-left';
+		textLocationClass = "text-left";
 	}
 
 	const linkDecoration =
-		linkData?.textDecoration && linkData?.textDecoration === 'none' ? `text-decoration-${linkData?.textDecoration}` : 'text-decoration-underline';
-	const linkClass = `${linkData?.clazz || ''} ${textLocationClass} ${linkDecoration}`.trim();
+		linkData?.textDecoration && linkData?.textDecoration === "none"
+			? `text-decoration-${linkData?.textDecoration}`
+			: "text-decoration-underline";
+	const linkClass =
+		`${linkData?.clazz || ""} ${textLocationClass} ${linkDecoration}`.trim();
+
+	// Default icon config to satisfy typings when no iconData is provided
+	const defaultIconData: LinkIconType = { type: "icon", icon: ExternalLink };
 </script>
 
 {#snippet externalLink({ iconData, linkData, textData }: ExternalLinkType)}
@@ -35,7 +44,7 @@
 			{textData?.text}
 		{/if}
 		{#if textData?.showIcon}
-			{@render linkIcon(iconData ?? {})}
+			{@render linkIcon(iconData ?? defaultIconData)}
 		{/if}
 		{#if textData?.location === "bottom" || (textData?.location === "right" && textData?.text)}
 			{textData?.text}
@@ -44,7 +53,7 @@
 {/snippet}
 
 {#snippet linkIcon({ type, icon, iconClass }: LinkIconType)}
-	{#if type === "svg" && icon && typeof icon === 'function' && icon.length !== undefined}
+	{#if type === "svg" && icon && typeof icon === "function" && icon.length !== undefined}
 		<svg
 			style="width: 2.5rem; height: 2.5rem;"
 			class={iconClass ?? ""}
@@ -52,7 +61,9 @@
 			viewBox="0 0 24 24"
 			xmlns="http://www.w3.org/2000/svg"
 		>
-		  <title>{linkData?.title ?? `Open ${linkData?.ariaLabel} externally`}</title>
+			<title>
+				{linkData?.title ?? `Open ${linkData?.ariaLabel} externally`}
+			</title>
 			{@render (icon as any)()}
 		</svg>
 	{:else if type === "icon" && icon}

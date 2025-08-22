@@ -1,7 +1,7 @@
 <script lang="ts">
-	import beeIcon from '$lib/assets/images/bee.svg';
-	import shellIcon from '$lib/assets/images/shell.svg';
-	import nutIcon from '$lib/assets/images/hazelnut.svg';
+	import beeIcon from "$lib/assets/images/bee.svg";
+	import nutIcon from "$lib/assets/images/hazelnut.svg";
+	import shellIcon from "$lib/assets/images/shell.svg";
 
 	// @ts-expect-error: Type 'Record<string, any>' is not assignable to type 'string'.ts(2322)
 	const bee: string = beeIcon;
@@ -13,15 +13,15 @@
 
 <div>
 	<a href="/" class="center">
-		<img src={bee} alt="Bee Icon" width="30" height="30"/>
+		<img src={bee} alt="Bee Icon" width="30" height="30" />
 		<p>Bradley</p>
 	</a>
 	<a href="/" class="center">
-		<img src={shell} alt="Shell Icon" width="30" height="30"/>
+		<img src={shell} alt="Shell Icon" width="30" height="30" />
 		<p>Shell</p>
 	</a>
 	<a href="/" class="center">
-		<img src={nut} alt="Nut Icon" width="30" height="30"/>
+		<img src={nut} alt="Nut Icon" width="30" height="30" />
 		<p>Nut</p>
 	</a>
 </div>
@@ -39,7 +39,7 @@
 		--scale: 0;
 
 		& p::after {
-			content: '';
+			content: "";
 			position: absolute;
 			width: 100%;
 			height: 2px;

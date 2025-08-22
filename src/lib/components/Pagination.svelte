@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { goto } from '$app/navigation';
   import { Pagination } from "bits-ui";
-  import { ChevronLeft, ChevronRight } from 'lucide-svelte';
+  import { ChevronLeft, ChevronRight } from "lucide-svelte";
+  import { goto } from "$app/navigation";
 
   interface Props {
     additionalClasses: string;
@@ -12,33 +12,41 @@
     base: string;
   }
 
-  let {
-    additionalClasses,
-    pageSize,
-    totalCount,
-    currentPage,
-    base
-  }: Props = $props();
+  let { additionalClasses, pageSize, totalCount, currentPage, base }: Props = $props();
 </script>
 
-<Pagination.Root count={totalCount} perPage={pageSize} page={currentPage || 1} class={`${additionalClasses}`}
-  onPageChange={(page) => goto(`${base}/${page}`)}>
+<Pagination.Root
+  count={totalCount}
+  perPage={pageSize}
+  page={currentPage || 1}
+  class={`${additionalClasses}`}
+  aria-label="Pagination"
+  onPageChange={(page) => goto(`${base}/${page}`)}
+>
   {#snippet children({ pages })}
-    <Pagination.PrevButton>
+    <Pagination.PrevButton aria-label="Previous page">
       <ChevronLeft />
     </Pagination.PrevButton>
     {#each pages as page (page.key)}
       {#if page.type === "ellipsis"}
-        <div class="ellipsis text-[15px] font-medium text-foreground-alt">...</div>
+        <div class="ellipsis text-[15px] font-medium text-foreground-alt">
+          ...
+        </div>
       {:else}
         <Pagination.Page {page}>
-          <a href={`${base}/${page.value}`} data-sveltekit-preload-data="hover">
-            {page.value}
-          </a>
+          {#snippet child({ props })}
+            <button
+              {...props}
+              type="button"
+              aria-label={`Go to page ${page.value}`}
+            >
+              {page.value}
+            </button>
+          {/snippet}
         </Pagination.Page>
       {/if}
     {/each}
-    <Pagination.NextButton>
+    <Pagination.NextButton aria-label="Next page">
       <ChevronRight />
     </Pagination.NextButton>
   {/snippet}
@@ -92,31 +100,28 @@
   }
 
   :global([data-selected]) {
-    a {
-      color: var(--shellYellow);
-    }
+    color: var(--shellYellow);
   }
 
-	:global([data-pagination-root]) {
-		display: flex;
-		align-content: center;
-		align-items: center;
-		justify-items: center;
-		border: 1px solid var(--grey);
-		margin: 3rem 0;
-		border-radius: 5px;
-		text-align: center;
-		font-size: 1.5rem;
-	}
+  :global([data-pagination-root]) {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-items: center;
+    border: 1px solid var(--grey);
+    margin: 3rem 0;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1.5rem;
+  }
 
   :global([data-pagination-page]) {
     padding: 1rem;
     flex: 1;
+    border: 0;
     border-right: 1px solid var(--grey);
+    background: transparent;
     text-decoration: none;
-
-    a {
-      text-decoration: none;
-    }
+    cursor: pointer;
   }
 </style>

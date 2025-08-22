@@ -17,9 +17,7 @@
         >
       </h3>
       <p>
-        <span class="skeleton-text skeleton-domain"
-          >Loading domain...</span
-        >
+        <span class="skeleton-text skeleton-domain">Loading domain...</span>
       </p>
     </section>
     <section>
@@ -29,9 +27,7 @@
         >
       </p>
       <p>
-        <span class="skeleton-text skeleton-tags"
-          >Loading tags...</span
-        >
+        <span class="skeleton-text skeleton-tags">Loading tags...</span>
       </p>
     </section>
   </article>

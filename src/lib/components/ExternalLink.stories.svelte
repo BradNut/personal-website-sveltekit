@@ -1,7 +1,7 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import ExternalLink from "./ExternalLink.svelte";
   import { blueSkyIcon } from "../util/logoIcons.svelte";
+  import ExternalLink from "./ExternalLink.svelte";
 
   const { Story } = defineMeta({
     title: "Components/ExternalLink",
