@@ -52,14 +52,15 @@
 			viewBox="0 0 24 24"
 			xmlns="http://www.w3.org/2000/svg"
 		>
+		  <title>{linkData?.title ?? `Open ${linkData?.ariaLabel} externally`}</title>
 			{@render (icon as any)()}
 		</svg>
 	{:else if type === "icon" && icon}
 		{@const Icon = icon}
-		<Icon />
+		<Icon><title>{linkData?.title ?? `Open ${linkData?.ariaLabel} externally`}</title></Icon>
 	{:else}
 		{@const Icon = ExternalLink}
-		<Icon />
+		<Icon><title>{linkData?.title ?? `Open ${linkData?.ariaLabel} externally`}</title></Icon>
 	{/if}
 {/snippet}
 
