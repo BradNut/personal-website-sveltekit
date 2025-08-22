@@ -1,6 +1,6 @@
 import { json, error } from '@sveltejs/kit';
 import { PAGE_SIZE } from '$env/static/private';
-import { fetchArticlesApi } from '$lib/api';
+import { fetchArticlesApi } from '$lib/services/articlesApi';
 import type { ArticlePageLoad } from '@/lib/types/article.js';
 
 export async function GET({ setHeaders, url }) {
