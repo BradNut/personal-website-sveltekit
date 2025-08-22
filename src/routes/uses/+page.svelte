@@ -1,9 +1,9 @@
 <script lang="ts">
-	import desktop from '$lib/assets/images/Desktop_so_clean.jpg?enhanced';
-	import ExternalLink from '$lib/components/ExternalLink.svelte';
-	import Development from './development.svelte';
-	import HardwareAccessories from './hardware-accessories.svelte';
-	import PrivacyHardwareSoftware from './privacy-hardware-software.svelte';
+	import desktop from "$lib/assets/images/Desktop_so_clean.jpg?enhanced";
+	import ExternalLink from "$lib/components/ExternalLink.svelte";
+	import Development from "./development.svelte";
+	import HardwareAccessories from "./hardware-accessories.svelte";
+	import PrivacyHardwareSoftware from "./privacy-hardware-software.svelte";
 </script>
 
 <div class="uses">

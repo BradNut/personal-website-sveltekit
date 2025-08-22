@@ -16,7 +16,8 @@ export async function componentToPng(component: Component, props: Record<string,
   console.log('result', result);
   const markup = toReactNode(`${result.body}${result.head}`);
 
-  const svg = await satori(markup, {
+  // Cast markup to any to satisfy satori's ReactNode expectation
+  const svg = await satori(markup as any, {
     fonts: [
       {
         name: 'Fira Sans',
