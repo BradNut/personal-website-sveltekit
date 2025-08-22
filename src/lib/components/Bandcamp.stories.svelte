@@ -1,29 +1,13 @@
 <script context="module" lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
   import Bandcamp from "./Bandcamp.svelte";
+  import type { Album } from "$lib/types/album";
+  import { sampleAlbum as baseAlbum } from "./BandcampAlbum.stories.svelte";
 
-  const sampleAlbums = [
-    {
-      title: "Album One",
-      artist: "Artist A",
-      url: "https://example.com",
-      artwork: "https://picsum.photos/230?1",
-      src: undefined,
-    },
-    {
-      title: "Album Two",
-      artist: "Artist B",
-      url: "https://example.com",
-      artwork: "https://picsum.photos/230?2",
-      src: undefined,
-    },
-    {
-      title: "Album Three",
-      artist: "Artist C",
-      url: "https://example.com",
-      artwork: "https://picsum.photos/230?3",
-      src: undefined,
-    },
+  const sampleAlbums: Album[] = [
+    { ...baseAlbum, title: "Album One", artwork: "https://picsum.photos/230?1" },
+    { ...baseAlbum, title: "Album Two", artwork: "https://picsum.photos/230?2" },
+    { ...baseAlbum, title: "Album Three", artwork: "https://picsum.photos/230?3" },
   ];
 
   const { Story } = defineMeta({

@@ -12,24 +12,24 @@
   <article class={`card skeleton ${classes.join(" ")}`}>
     <section>
       <h3>
-        <span class="skeleton-text skeleton-title" aria-hidden="true"
+        <span class="skeleton-text skeleton-title"
           >Loading article title...</span
         >
       </h3>
       <p>
-        <span class="skeleton-text skeleton-domain" aria-hidden="true"
+        <span class="skeleton-text skeleton-domain"
           >Loading domain...</span
         >
       </p>
     </section>
     <section>
       <p>
-        <span class="skeleton-text skeleton-reading" aria-hidden="true"
+        <span class="skeleton-text skeleton-reading"
           >Loading reading time...</span
         >
       </p>
       <p>
-        <span class="skeleton-text skeleton-tags" aria-hidden="true"
+        <span class="skeleton-text skeleton-tags"
           >Loading tags...</span
         >
       </p>
