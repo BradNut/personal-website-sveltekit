@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { page } from "$app/state";
-	import ContactHub from "$lib/components/ContactHub.svelte";
+import { page } from '$app/state';
+import ContactHub from '$lib/components/ContactHub.svelte';
 
-	const userNames = {
-		github: "BradNut",
-		linkedIn: "bradley-shellnut",
-		email: "website[at]bradleyshellnut.com",
-	};
+const userNames = {
+  github: 'BradNut',
+  linkedIn: 'bradley-shellnut',
+  email: 'website[at]bradleyshellnut.com',
+};
 </script>
 
 <footer>

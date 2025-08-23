@@ -1,7 +1,7 @@
-name: Run_Svelte_Check_on_PRs
+name: Run_Svelte_Integration_on_PRs
 
 on:
-  pull_request:
+  push:
     branches:
       - master
       - main
@@ -28,17 +28,15 @@ env:
   REDIS_URI: ${{ secrets.REDIS_URI }}
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  e2e-tests:
+    runs-on: ubuntu-latest # or macos-latest, windows-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: pnpm-setup
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
+      - uses: actions/setup-node@v4
+
+      - uses: microsoft/playwright-github-action@v2
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -46,8 +44,5 @@ jobs:
           node-version: 22.x
           cache: 'pnpm'
 
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Run Svelte Check
-        run: pnpm check
+      - name: Install dependencies and run tests
+        run: pnpm install && pnpm test:integration

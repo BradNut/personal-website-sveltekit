@@ -1,34 +1,28 @@
 <script lang="ts">
-	import { ExternalLink } from "lucide-svelte";
-	import type {
-		ExternalLinkType,
-		LinkIconType,
-	} from "$lib/types/externalLinkTypes";
+import { ExternalLink } from 'lucide-svelte';
+import type { ExternalLinkType, LinkIconType } from '$lib/types/externalLinkTypes';
 
-	const { iconData, linkData, textData }: ExternalLinkType = $props();
+const { iconData, linkData, textData }: ExternalLinkType = $props();
 
-	let textLocationClass = "";
-	if (textData?.location === "top") {
-		textLocationClass = "text-top";
-	} else if (textData?.location === "bottom") {
-		textLocationClass = "text-bottom";
-	} else if (textData?.location === "left") {
-		textLocationClass = "text-left";
-	} else if (textData?.location === "right") {
-		textLocationClass = "text-right";
-	} else {
-		textLocationClass = "text-left";
-	}
+let textLocationClass = '';
+if (textData?.location === 'top') {
+  textLocationClass = 'text-top';
+} else if (textData?.location === 'bottom') {
+  textLocationClass = 'text-bottom';
+} else if (textData?.location === 'left') {
+  textLocationClass = 'text-left';
+} else if (textData?.location === 'right') {
+  textLocationClass = 'text-right';
+} else {
+  textLocationClass = 'text-left';
+}
 
-	const linkDecoration =
-		linkData?.textDecoration && linkData?.textDecoration === "none"
-			? `text-decoration-${linkData?.textDecoration}`
-			: "text-decoration-underline";
-	const linkClass =
-		`${linkData?.clazz || ""} ${textLocationClass} ${linkDecoration}`.trim();
+const linkDecoration =
+  linkData?.textDecoration && linkData?.textDecoration === 'none' ? `text-decoration-${linkData?.textDecoration}` : 'text-decoration-underline';
+const linkClass = `${linkData?.clazz || ''} ${textLocationClass} ${linkDecoration}`.trim();
 
-	// Default icon config to satisfy typings when no iconData is provided
-	const defaultIconData: LinkIconType = { type: "icon", icon: ExternalLink };
+// Default icon config to satisfy typings when no iconData is provided
+const defaultIconData: LinkIconType = { type: 'icon', icon: ExternalLink };
 </script>
 
 {#snippet externalLink({ iconData, linkData, textData }: ExternalLinkType)}
