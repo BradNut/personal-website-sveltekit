@@ -29,20 +29,23 @@ env:
 
 jobs:
   e2e-tests:
-    runs-on: ubuntu-latest # or macos-latest, windows-latest
-
+    name: Run end-to-end tests
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-
-      - uses: microsoft/playwright-github-action@v2
-
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: pnpm-setup
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22.x
           cache: 'pnpm'
-
-      - name: Install dependencies and run tests
-        run: pnpm install && pnpm test:integration
+      - name: Install dependencies
+        run: pnpm install
+      - name: Install playwright browsers
+        run: pnpx playwright install --with-deps
+      - name: Run tests
+        run: pnpm test:integration
