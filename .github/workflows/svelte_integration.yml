@@ -26,6 +26,10 @@ env:
   PAGE_SIZE: ${{ secrets.PAGE_SIZE }}
   USE_REDIS_CACHE: ${{ secrets.USE_REDIS_CACHE }}
   REDIS_URI: ${{ secrets.REDIS_URI }}
+  # Disable Redis during E2E to avoid network/DNS failures in CI preview server
+  # This overrides secrets above for this workflow job context
+  # (If you later need Redis in E2E, remove this override.)
+  E2E_USE_REDIS_CACHE: 'false'
 
 jobs:
   e2e-tests:
@@ -47,9 +51,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Install playwright browsers
-        run: pnpx playwright install --with-deps
+        run: pnpm exec playwright install --with-deps
       - name: Run tests
-        run: pnpx playwright test
+        env:
+          # Force Redis off during E2E regardless of repo secrets
+          USE_REDIS_CACHE: ${{ env.E2E_USE_REDIS_CACHE }}
+        run: pnpm test:integration
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:

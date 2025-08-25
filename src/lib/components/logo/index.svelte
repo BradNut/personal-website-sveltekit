@@ -1,13 +1,10 @@
 <script lang="ts">
-	import beeIcon from "$lib/assets/images/bee.svg";
-	import nutIcon from "$lib/assets/images/hazelnut.svg";
-	import shellIcon from "$lib/assets/images/shell.svg";
+	import beeIcon from '$lib/assets/images/bee.svg';
+	import nutIcon from '$lib/assets/images/hazelnut.svg';
+	import shellIcon from '$lib/assets/images/shell.svg';
 
-	// @ts-expect-error: Type 'Record<string, any>' is not assignable to type 'string'.ts(2322)
 	const bee: string = beeIcon;
-	// @ts-expect-error: Type 'Record<string, any>' is not assignable to type 'string'.ts(2322)
 	const shell: string = shellIcon;
-	// @ts-expect-error: Type 'Record<string, any>' is not assignable to type 'string'.ts(2322)
 	const nut: string = nutIcon;
 </script>
 

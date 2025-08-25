@@ -21,7 +21,7 @@ const userNames = {
 		<a class:active={page.url.pathname === "/privacy"} href="/privacy"
 			>Privacy</a
 		>
-		<a class:active={page.url.pathname === "/articles/1"} href="/articles"
+		<a class:active={page.url.pathname === "/articles/1"} href="/articles/1"
 			>Favorite Articles</a
 		>
 	</nav>

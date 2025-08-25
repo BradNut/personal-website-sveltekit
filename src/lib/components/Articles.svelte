@@ -62,7 +62,6 @@
                   title: `Link to ${article.title}`,
                   target: "_blank",
                 }}
-                iconData={{ iconClass: "center" }}
               />
             </h3>
             <p>{article.domain_name}</p>
@@ -81,7 +80,7 @@
     {/if}
   </div>
   {#if page.url.pathname === "/"}
-    <a class="moreArticles" href="/articles"
+    <a class="moreArticles" href="/articles/1"
       >{`${totalArticles} more articles`} <ArrowRight /></a
     >
   {/if}

@@ -5,8 +5,6 @@ export const load: LayoutServerLoad = async ({ fetch }) => {
 	const resp = await fetch('/api/articles?page=1');
 	const data = await resp.json();
 
-	console.log('Data: ', JSON.stringify(data));
-
 	return {
 		// Common metadata available to all child routes
 		totalArticles: data.totalArticles,

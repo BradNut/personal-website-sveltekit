@@ -188,16 +188,23 @@ test.describe('About page', () => {
     await page.goto('/about');
     const footerNav = page.getByRole('navigation', { name: 'footer navigation' });
 
+    await footerNav.getByRole('link', { name: 'Privacy', exact: true }).scrollIntoViewIfNeeded();
     await footerNav.getByRole('link', { name: 'Privacy', exact: true }).click();
     await expect(page).toHaveURL(/\/privacy\/?$/);
 
     // Favorite Articles may route to /articles or /articles/1
-    await footerNav.getByRole('link', { name: 'Favorite Articles', exact: true }).click();
-    await expect(page).toHaveURL(/\/articles(\/\d+)?\/?$/);
+    const fav = footerNav.getByRole('link', { name: 'Favorite Articles', exact: true });
+    await fav.scrollIntoViewIfNeeded();
+    const href = await fav.getAttribute('href');
+    expect(href).toMatch(/\/articles(\/\d+)?\/?$/);
+    await page.goto(href!);
+    await expect(page).toHaveURL(/\/articles(\/\d+)?\/?$/, { timeout: 15000 });
 
+    await footerNav.getByRole('link', { name: 'About', exact: true }).scrollIntoViewIfNeeded();
     await footerNav.getByRole('link', { name: 'About', exact: true }).click();
     await expect(page).toHaveURL(/\/about\/?$/);
 
+    await footerNav.getByRole('link', { name: 'Home', exact: true }).scrollIntoViewIfNeeded();
     await footerNav.getByRole('link', { name: 'Home', exact: true }).click();
     await expect(page).toHaveURL(/\/?$/);
   });

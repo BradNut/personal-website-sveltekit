@@ -2,7 +2,9 @@
 import { ExternalLink } from 'lucide-svelte';
 import type { ExternalLinkType, LinkIconType } from '$lib/types/externalLinkTypes';
 
-const { iconData, linkData, textData }: ExternalLinkType = $props();
+const { iconData = { type: 'icon', icon: ExternalLink }, linkData, textData }: ExternalLinkType = $props();
+// Guarantee non-optional icon data for linkIcon()
+const safeIconData: LinkIconType = iconData ?? { type: 'icon', icon: ExternalLink };
 
 let textLocationClass = '';
 if (textData?.location === 'top') {
@@ -21,11 +23,9 @@ const linkDecoration =
   linkData?.textDecoration && linkData?.textDecoration === 'none' ? `text-decoration-${linkData?.textDecoration}` : 'text-decoration-underline';
 const linkClass = `${linkData?.clazz || ''} ${textLocationClass} ${linkDecoration}`.trim();
 
-// Default icon config to satisfy typings when no iconData is provided
-const defaultIconData: LinkIconType = { type: 'icon', icon: ExternalLink };
 </script>
 
-{#snippet externalLink({ iconData, linkData, textData }: ExternalLinkType)}
+{#snippet externalLink({ iconData = { type: 'icon', icon: ExternalLink }, linkData, textData }: ExternalLinkType)}
 	<a
 		class={linkClass}
 		aria-label={`Open ${linkData?.ariaLabel ?? linkData?.title ?? linkData?.href} externally`}
@@ -38,7 +38,7 @@ const defaultIconData: LinkIconType = { type: 'icon', icon: ExternalLink };
 			{textData?.text}
 		{/if}
 		{#if textData?.showIcon}
-			{@render linkIcon(iconData ?? defaultIconData)}
+			{@render linkIcon(safeIconData)}
 		{/if}
 		{#if textData?.location === "bottom" || (textData?.location === "right" && textData?.text)}
 			{textData?.text}

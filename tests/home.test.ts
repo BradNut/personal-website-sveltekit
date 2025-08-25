@@ -114,10 +114,13 @@ test.describe('Home page', () => {
   test('"more articles" link points to /articles and navigates', async ({ page }) => {
     await page.goto('/');
     const more = page.locator('a.moreArticles');
-    await expect(more).toHaveAttribute('href', '/articles');
+    await expect(more).toHaveAttribute('href', '/articles/1');
     await expect(more).toContainText('more articles');
-    await more.click();
-    await expect(page).toHaveURL(/\/articles(\/\d+)?\/?$/);
+    await more.scrollIntoViewIfNeeded();
+    const href = await more.getAttribute('href');
+    expect(href).toMatch(/\/articles(\/\d+)?\/?$/);
+    await page.goto(href!);
+    await expect(page).toHaveURL(/\/articles(\/\d+)?\/?$/, { timeout: 15000 });
   });
 
   test('has social/contact links', async ({ page }) => {

@@ -20,7 +20,6 @@ const config = {
 		}
 	},
 	compilerOptions: {
-		enableSourcemap: process.env.NODE_ENV === 'development',
 		css: 'injected'
 	}
 };

@@ -91,7 +91,7 @@ describe('fetchArticlesApi', () => {
     expect(result).toBeTruthy();
     expect(result.cacheControl).toBe('max-age=60');
     expect(redisGet).toHaveBeenCalledTimes(1);
-    expect(global.fetch).not.toHaveBeenCalled();
+    expect(globalThis.fetch).not.toHaveBeenCalled();
   });
 
   it('fetches from API and stores in cache on cache miss', async () => {
