@@ -1,8 +1,8 @@
+import { Resvg } from '@resvg/resvg-js';
 import satori from 'satori';
+import { html as toReactNode } from 'satori-html';
 import type { Component } from 'svelte';
 import { render } from 'svelte/server';
-import { Resvg } from '@resvg/resvg-js';
-import { html as toReactNode } from 'satori-html';
 import { dev } from '$app/environment';
 import { read } from '$app/server';
 
@@ -16,7 +16,8 @@ export async function componentToPng(component: Component, props: Record<string,
   console.log('result', result);
   const markup = toReactNode(`${result.body}${result.head}`);
 
-  const svg = await satori(markup, {
+  // Cast markup to any to satisfy satori's ReactNode expectation
+  const svg = await satori(markup as any, {
     fonts: [
       {
         name: 'Fira Sans',

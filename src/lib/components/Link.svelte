@@ -4,16 +4,10 @@
 		target?: string;
 		href: string;
 		ariaLabel: string;
-		children?: import('svelte').Snippet;
+		children?: import("svelte").Snippet;
 	}
 
-	let {
-		rel = '',
-		target = '',
-		href,
-		ariaLabel,
-		children
-	}: Props = $props();
+	let { rel = "", target = "", href, ariaLabel, children }: Props = $props();
 </script>
 
 <a aria-label={ariaLabel} {href} {rel} {target}>

@@ -47,7 +47,7 @@
 		gap: 2rem;
 	}
 
-	.uses-image img {
+	:global(.uses-image img) {
 		height: auto;
 		margin-left: auto;
 		margin-right: auto;

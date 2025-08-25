@@ -1,6 +1,11 @@
-name: Run_Svelte_Check_on_PRs
+name: Run_Svelte_Unit_on_PRs
 
 on:
+  push:
+    branches:
+      - master
+      - main
+      - development
   pull_request:
     branches:
       - master
@@ -49,5 +54,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Run Svelte Check
-        run: pnpm check
+      - name: Execute unit tests
+        run: pnpm test:unit

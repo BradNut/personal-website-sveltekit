@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { Mail } from "lucide-svelte";
+	import ExternalLink from "$lib/components/ExternalLink.svelte";
 	import {
 		blueSkyIcon,
 		gitHubIcon,
 		linkedInIcon,
 		xIcon,
 	} from "../util/logoIcons.svelte";
-	import ExternalLink from '$lib/components/ExternalLink.svelte';
 
 	interface Props {
 		showBlueSky?: boolean;
@@ -37,36 +37,66 @@
 <div class:justifyCenter={justify}>
 	{#if showX && userNames?.x}
 		<ExternalLink
-			linkData={{ href: `https://www.x.com/${userNames.x}`, ariaLabel: 'Contact through X', title: 'Contact through X', target: '_blank', clazz: "hub-icon x-contact" }}
-			iconData={{ type: 'svg', icon: xIcon, iconClass: 'center' }}
+			linkData={{
+				href: `https://www.x.com/${userNames.x}`,
+				ariaLabel: "Contact through X",
+				title: "Contact through X",
+				target: "_blank",
+				clazz: "hub-icon x-contact",
+			}}
+			iconData={{ type: "svg", icon: xIcon, iconClass: "center" }}
 			textData={{ showIcon: true }}
 		/>
 	{/if}
 	{#if showBlueSky && userNames?.blueSky}
 		<ExternalLink
-			linkData={{ href: `https://bsky.app/profile/${userNames.blueSky}`, ariaLabel: 'Contact through Bluesky', title: 'Contact through Bluesky', target: '_blank', clazz: "hub-icon bluesky-contact" }}
-			iconData={{ type: 'svg', icon: blueSkyIcon, iconClass: 'center' }}
+			linkData={{
+				href: `https://bsky.app/profile/${userNames.blueSky}`,
+				ariaLabel: "Contact through Bluesky",
+				title: "Contact through Bluesky",
+				target: "_blank",
+				clazz: "hub-icon bluesky-contact",
+			}}
+			iconData={{ type: "svg", icon: blueSkyIcon, iconClass: "center" }}
 			textData={{ showIcon: true }}
 		/>
 	{/if}
 	{#if showLinkedIn && userNames?.linkedIn}
 		<ExternalLink
-			linkData={{ href: `https://www.linkedin.com/in/${userNames.linkedIn}`, ariaLabel: 'Contact through LinkedIn', title: 'Contact through LinkedIn', target: '_blank', clazz: "hub-icon linkedIn-contact" }}
-			iconData={{ type: 'svg', icon: linkedInIcon, iconClass: 'center' }}
+			linkData={{
+				href: `https://www.linkedin.com/in/${userNames.linkedIn}`,
+				ariaLabel: "Contact through LinkedIn",
+				title: "Contact through LinkedIn",
+				target: "_blank",
+				clazz: "hub-icon linkedIn-contact",
+			}}
+			iconData={{ type: "svg", icon: linkedInIcon, iconClass: "center" }}
 			textData={{ showIcon: true }}
 		/>
 	{/if}
 	{#if showGithub && userNames?.github}
-	<ExternalLink
-		linkData={{ href: `https://www.github.com/${userNames.github}`, ariaLabel: 'Contact through Github', title: 'Contact through Github', target: '_blank', clazz: "hub-icon github-contact" }}
-		iconData={{ type: 'svg', icon: gitHubIcon, iconClass: 'center' }}
-		textData={{ showIcon: true }}
-	/>
+		<ExternalLink
+			linkData={{
+				href: `https://www.github.com/${userNames.github}`,
+				ariaLabel: "Contact through Github",
+				title: "Contact through Github",
+				target: "_blank",
+				clazz: "hub-icon github-contact",
+			}}
+			iconData={{ type: "svg", icon: gitHubIcon, iconClass: "center" }}
+			textData={{ showIcon: true }}
+		/>
 	{/if}
 	{#if showEmail && userNames?.email}
-	  <ExternalLink
-			linkData={{ href: `mailto:${userNames.email}`, ariaLabel: 'Contact by email', title: 'Contact by email', target: '_blank', clazz: "hub-icon email-contact" }}
-			iconData={{ type: 'icon', icon: Mail, iconClass: 'center' }}
+		<ExternalLink
+			linkData={{
+				href: `mailto:${userNames.email}`,
+				ariaLabel: "Contact by email",
+				title: "Contact by email",
+				target: "_blank",
+				clazz: "hub-icon email-contact",
+			}}
+			iconData={{ type: "icon", icon: Mail, iconClass: "center" }}
 			textData={{ showIcon: true }}
 		/>
 	{/if}
