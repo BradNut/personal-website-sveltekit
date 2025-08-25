@@ -2,7 +2,7 @@ import type { PlaywrightTestConfig } from '@playwright/test';
 
 const config: PlaywrightTestConfig = {
   webServer: {
-    command: 'pnpm run build && pnpm run preview',
+    command: 'pnpm -s exec svelte-kit sync && pnpm run build && pnpm run preview',
     port: 4173,
     timeout: 180_000,
     reuseExistingServer: true
