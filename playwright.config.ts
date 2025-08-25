@@ -11,7 +11,22 @@ const config: PlaywrightTestConfig = {
   testMatch: /(.+\.)?(test|spec)\.[jt]s/,
   use: {
     baseURL: 'http://localhost:4173'
-  }
+  },
+  // Run on main browsers: Chromium (Chrome), Firefox, WebKit (Safari)
+  projects: [
+    {
+      name: 'chromium',
+      use: { browserName: 'chromium' }
+    },
+    {
+      name: 'firefox',
+      use: { browserName: 'firefox' }
+    },
+    {
+      name: 'webkit',
+      use: { browserName: 'webkit' }
+    }
+  ]
 };
 
 export default config;
