@@ -31,12 +31,12 @@ test.describe('Home page', () => {
       await expect(link).toBeVisible();
 
       const before = await link.evaluate((el) => {
-        const cs = getComputedStyle(el as Element) as CSSStyleDeclaration;
+        const cs = getComputedStyle(el);
         return { color: cs.color };
       });
       await link.hover();
       const after = await link.evaluate((el) => {
-        const cs = getComputedStyle(el as Element) as CSSStyleDeclaration;
+        const cs = getComputedStyle(el);
         return { color: cs.color };
       });
 
@@ -55,7 +55,7 @@ test.describe('Home page', () => {
       const nav = page.locator(area);
       const link = nav.getByRole('link', { name: 'Home', exact: true });
       await expect(link).toBeVisible();
-      const isActive = await link.evaluate((el) => (el as Element).classList.contains('active'));
+      const isActive = await link.evaluate((el) => el.classList.contains('active'));
       expect(isActive).toBeTruthy();
     }
   });
@@ -193,9 +193,9 @@ test.describe('Home page', () => {
 
     // Layout: single column and scrollable vertically
     const scrollInfo = await albumsGrid.evaluate((el) => ({
-      overflowY: getComputedStyle(el as HTMLElement).overflowY,
-      scrollHeight: (el as HTMLElement).scrollHeight,
-      clientHeight: (el as HTMLElement).clientHeight,
+      overflowY: getComputedStyle(el).overflowY,
+      scrollHeight: el.scrollHeight,
+      clientHeight: el.clientHeight,
     }));
     expect(scrollInfo.clientHeight).toBeLessThan(scrollInfo.scrollHeight);
     expect(['auto', 'scroll']).toContain(scrollInfo.overflowY);
@@ -216,7 +216,7 @@ test.describe('Home page', () => {
 
     // Articles are a vertical list (same x, increasing y)
     const boxes = await page.locator('section.articles article.card').evaluateAll((els) =>
-      (els as HTMLElement[]).slice(0, Math.min(4, els.length)).map((el) => el.getBoundingClientRect())
+      els.slice(0, Math.min(4, els.length)).map((el) => el.getBoundingClientRect())
     );
     expect(boxes.length).toBeGreaterThan(0);
     const x0 = boxes[0].left;

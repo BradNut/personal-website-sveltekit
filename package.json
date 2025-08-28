@@ -60,7 +60,7 @@
     "bits-ui": "2.9.4",
     "flexsearch": "^0.8.205",
     "ioredis": "^5.7.0",
-    "lucide-svelte": "^0.541.0",
+    "lucide-svelte": "^0.542.0",
     "scrape-it": "^6.1.11",
     "sharp": "^0.34.3",
     "svelte-local-storage-store": "^0.6.4"
