@@ -46,7 +46,7 @@ jobs:
           PUBLIC_UMAMI_URL: ${{ secrets.PUBLIC_UMAMI_URL }}
           PUBLIC_UMAMI_ID: ${{ secrets.PUBLIC_UMAMI_ID }}
           PAGE_SIZE: ${{ secrets.PAGE_SIZE }}
-          USE_REDIS_CACHE: ${{ secrets.USE_REDIS_CACHE }}
+          USE_REDIS_CACHE: 'false'
           REDIS_URI: ${{ secrets.REDIS_URI }}
         run: pnpm test:integration
       - uses: actions/upload-artifact@v4

@@ -13,7 +13,10 @@ import type { Article, ArticlePageLoad, WallabagArticle } from '$lib/types/artic
 import { ArticleTag } from '$lib/types/articleTag';
 import type { PageQuery } from '../types/pageQuery';
 
-const base: string = WALLABAG_URL;
+// Normalize Wallabag base URL and derive endpoints robustly
+const wallabagBase = new URL(WALLABAG_URL);
+const tokenUrl = new URL('/oauth/v2/token', wallabagBase).toString();
+const entriesUrl = new URL('/api/entries.json', wallabagBase).toString();
 
 // Retry helper with exponential backoff
 async function retryWithBackoff<T>(fn: () => Promise<T>, maxRetries = 3, baseDelay = 500): Promise<T> {
@@ -66,21 +69,15 @@ export async function fetchArticlesApi(_method: string, _resource: string, query
     });
 
     if (USE_REDIS_CACHE === 'true') {
-      console.log('Using redis cache');
       const cacheKey = entriesQueryParams.toString();
-      console.log(`Cache key: ${cacheKey}`);
       const cached = await redis.get(cacheKey);
 
       if (cached) {
-        console.log('Cache hit!');
+        // Cache hit, return cached payload with TTL-derived cache-control
         const response = JSON.parse(cached);
         const ttl = await redis.ttl(cacheKey);
-
-        console.log(`Returning cached response for page ${pageQuery.page} with ttl of ${ttl} seconds`);
-        console.log(`Response: ${JSON.stringify(response)}`);
         return { ...response, cacheControl: `max-age=${ttl}` };
       }
-      console.log(`Cache miss for page ${pageQuery.page}, fetching from API`);
     }
 
     const authBody = {
@@ -91,10 +88,9 @@ export async function fetchArticlesApi(_method: string, _resource: string, query
       password: WALLABAG_PASSWORD,
     };
 
-    console.log(`Auth body: ${JSON.stringify(authBody)}`);
-
     const auth = await retryWithBackoff(async () => {
-      const authResponse = await fetch(`${base}/oauth/v2/token`, {
+      // Authenticate to Wallabag
+      const authResponse = await fetch(tokenUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams(authBody),
@@ -108,21 +104,21 @@ export async function fetchArticlesApi(_method: string, _resource: string, query
       return await authResponse.json();
     });
 
-    console.log(`Got auth response: ${JSON.stringify(auth)}`);
-
     const { wallabagResponse, cacheControl } = await retryWithBackoff(async () => {
-      const pageResponse = await fetch(`${WALLABAG_URL}/api/entries.json?${entriesQueryParams}`, {
+      const requestUrl = `${entriesUrl}?${entriesQueryParams}`;
+      // console.debug(`Fetching Wallabag entries: ${requestUrl}`);
+      const pageResponse = await fetch(requestUrl, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${auth.access_token}`,
+          Accept: 'application/json',
         },
         signal: AbortSignal.timeout(15000), // 15 second timeout
       });
 
-      console.log('pageResponse', pageResponse);
-
       if (!pageResponse.ok) {
-        console.log('pageResponse not ok', pageResponse);
+        // Log status only to avoid leaking headers/body
+        console.warn(`Wallabag entries request failed: ${pageResponse.status} ${pageResponse.statusText}`);
         throw new Error(`API request failed: ${pageResponse.status} ${pageResponse.statusText}`);
       }
 
@@ -131,15 +127,11 @@ export async function fetchArticlesApi(_method: string, _resource: string, query
 
       return { wallabagResponse, cacheControl };
     });
-    console.log('wallabagResponse', JSON.stringify(wallabagResponse));
     const { _embedded: favoriteArticles, page, pages, total, limit } = wallabagResponse;
     const articles: Article[] = [];
 
-    console.log('favoriteArticles', JSON.stringify(favoriteArticles));
-    console.log('pages', pages);
-    console.log('page', page);
-    console.log('total', total);
-    console.log('limit', limit);
+    // Minimal, non-sensitive diagnostics
+    console.info(`Wallabag entries: page=${page} pages=${pages} total=${total} limit=${limit}`);
 
     for (const article of favoriteArticles.items as WallabagArticle[]) {
       const rawTags = article?.tags?.map((tag) => tag.slug);
@@ -168,8 +160,6 @@ export async function fetchArticlesApi(_method: string, _resource: string, query
       totalArticles: total,
       cacheControl,
     };
-
-    console.log('Response data from API: ', JSON.stringify(responseData));
 
     if (USE_REDIS_CACHE === 'true' && responseData?.articles?.length > 0) {
       const cacheKey = entriesQueryParams.toString();
