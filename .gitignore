@@ -18,5 +18,5 @@ vite.config.ts.timestamp-*
 .sentryclirc
 
 # Test Results
-.test-results
-.test-results/*
+test-results
+test-results/*
