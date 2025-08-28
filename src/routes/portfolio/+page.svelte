@@ -1,37 +1,52 @@
 <script lang="ts">
-	import ExternalLink from "$lib/components/ExternalLink.svelte";
-	import Portfolio from "./Portfolio.svelte";
-	// import OldWebsite from "$lib/content/portfolio/personal/old-website.md";
-	// import PersonalWebsiteSvelteKit from "$lib/content/portfolio/personal/personal-website-sveltekit.md";
-	// import WeddingWebsite from "$lib/content/portfolio/personal/wedding-website.md";
-	// import MarkShellnutArchitect from "$lib/content/portfolio/professional/mark-shellnut-architect.md";
-	import type { ExternalLinkType } from "$lib/types/externalLinkType";
-	import { Tabs } from "bits-ui";
-	import personalSite from "../../lib/assets/images/portfolio/Bradley_Shellnut_New_Site.png?enhanced";
-	import shellnutArchitectWebsite from "../../lib/assets/images/portfolio/Mark_Shellnut_Architect.png?enhanced";
-	import oldSite from "../../lib/assets/images/portfolio/Old_Website_Bradley_Shellnut.png?enhanced";
-	import weddingWebsite from "../../lib/assets/images/portfolio/Wedding_Website.png?enhanced";
-	import { gitHubIcon } from "$lib/util/logoIcons.svelte";
+	import { Tabs } from 'bits-ui';
+	import ExternalLink from '$lib/components/ExternalLink.svelte';
+	import type { ExternalLinkType } from '$lib/types/externalLinkType';
+	import { gitHubIcon } from '$lib/util/logoIcons.svelte';
+	import personalSite from '../../lib/assets/images/portfolio/Bradley_Shellnut_New_Site.png?enhanced';
+	import shellnutArchitectWebsite from '../../lib/assets/images/portfolio/Mark_Shellnut_Architect.png?enhanced';
+	import oldSite from '../../lib/assets/images/portfolio/Old_Website_Bradley_Shellnut.png?enhanced';
+	import weddingWebsite from '../../lib/assets/images/portfolio/Wedding_Website.png?enhanced';
+	import Portfolio from './Portfolio.svelte';
 </script>
 
 {#snippet links(externalLinks: ExternalLinkType[])}
 	<span>
 		{#each externalLinks as link}
 			{#if link.icon && link.showIcon}
-				<ExternalLink
-					linkData={{
-						href: link.href,
-						ariaLabel: link.ariaLabel,
-						title: link.ariaLabel,
-						target: "_blank",
-					}}
-					textData={{
-						text: link.text,
-						showIcon: link.showIcon,
-						location: "left",
-					}}
-					iconData={{ type: "svg", icon: link.icon }}
-				/>
+				{#if typeof link.icon === 'function' && 'length' in link.icon}
+					<!-- Snippet icon: pass snippet directly for LinkIconType 'svg' -->
+					<ExternalLink
+						linkData={{
+							href: link.href,
+							ariaLabel: link.ariaLabel,
+							title: link.ariaLabel,
+							target: "_blank",
+						}}
+						textData={{
+							text: link.text,
+							showIcon: link.showIcon,
+							location: "left",
+						}}
+						iconData={{ type: 'svg', icon: link.icon as any }}
+					/>
+				{:else}
+					<!-- Component icon (e.g., lucide-svelte) -->
+					<ExternalLink
+						linkData={{
+							href: link.href,
+							ariaLabel: link.ariaLabel,
+							title: link.ariaLabel,
+							target: "_blank",
+						}}
+						textData={{
+							text: link.text,
+							showIcon: link.showIcon,
+							location: "left",
+						}}
+						iconData={{ type: 'icon', icon: link.icon as any }}
+					/>
+				{/if}
 			{:else}
 				<ExternalLink
 					linkData={{
@@ -260,18 +275,18 @@
 </Tabs.Root>
 
 <style lang="postcss">
-	:global([data-tabs-root]) {
-		display: flex;
-		flex-direction: column;
+  :global([data-tabs-root]) {
+    display: flex;
+    flex-direction: column;
 
-		&[data-orientation="vertical"] {
-			flex-direction: row;
-		}
+    @media (min-width: 1000px) {
+      max-width: 50vw;
+    }
+  }
 
-		@media (min-width: 1000px) {
-			max-width: 50vw;
-		}
-	}
+  :global([data-tabs-root][data-orientation="vertical"]) {
+    flex-direction: row;
+  }
 
 	:global([data-tabs-list]) {
 		display: grid;

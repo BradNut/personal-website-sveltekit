@@ -1,24 +1,30 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import ContactHub from '$lib/components/ContactHub.svelte';
-	const userNames = {
-    github: 'BradNut',
-    linkedIn: 'bradley-shellnut',
-    email: 'website[at]bradleyshellnut.com',
-  };
+import { page } from '$app/state';
+import ContactHub from '$lib/components/ContactHub.svelte';
+
+const userNames = {
+  github: 'BradNut',
+  linkedIn: 'bradley-shellnut',
+  email: 'website[at]bradleyshellnut.com',
+};
 </script>
 
 <footer>
 	<ContactHub showGithub showLinkedIn showEmail justify {userNames} />
 	<nav class="footer-list" aria-label="footer navigation">
-		<a class:active={$page.url.pathname === '/'} href="/">Home</a>
-		<a class:active={$page.url.pathname === '/about'} href="/about">About</a>
-		<a class:active={$page.url.pathname === '/portfolio'} href="/portfolio">Portfolio</a>
-		<a class:active={$page.url.pathname === '/uses'} href="/uses">Uses</a>
-		<a class:active={$page.url.pathname === '/privacy'} href="/privacy">Privacy</a>
-		<a class:active={$page.url.pathname === '/articles/1'} href="/articles">Favorite Articles</a>
+		<a class:active={page.url.pathname === "/"} href="/">Home</a>
+		<a class:active={page.url.pathname === "/about"} href="/about">About</a>
+		<a class:active={page.url.pathname === "/portfolio"} href="/portfolio"
+			>Portfolio</a
+		>
+		<a class:active={page.url.pathname === "/uses"} href="/uses">Uses</a>
+		<a class:active={page.url.pathname === "/privacy"} href="/privacy"
+			>Privacy</a
+		>
+		<a class:active={page.url.pathname === "/articles/1"} href="/articles/1"
+			>Favorite Articles</a
+		>
 	</nav>
-	<!-- <p className="center"> -->
 	<p>
 		Bradley Shellnut &copy; 2012 - {new Date().getFullYear()}
 	</p>
@@ -40,13 +46,13 @@
 		}
 	}
 
-  p {
-    margin: 0;
-    padding: 0.2rem;
-    font-weight: 600;
+	p {
+		margin: 0;
+		padding: 0.2rem;
+		font-weight: 600;
 		text-align: center;
-    color: var(--lightShade);
-  }
+		color: var(--lightShade);
+	}
 
 	.footer-list {
 		display: flex;
