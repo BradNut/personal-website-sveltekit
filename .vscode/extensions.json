@@ -1,11 +1,11 @@
 {
-"recommendations": [
-	"inlang.vs-code-extension",
-	"svelte.svelte-vscode",
-	"yoavbls.pretty-ts-errors",
-	"mikestead.dotenv",
-	"ms-azuretools.vscode-docker",
-	"fronterior.biome-monorepo",
-	"vitest.explorer"
-]
+	"recommendations": [
+		"inlang.vs-code-extension",
+		"svelte.svelte-vscode",
+		"yoavbls.pretty-ts-errors",
+		"mikestead.dotenv",
+		"ms-azuretools.vscode-docker",
+		"fronterior.biome-monorepo",
+		"vitest.explorer"
+	]
 }
