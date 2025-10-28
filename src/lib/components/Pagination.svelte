@@ -1,18 +1,18 @@
 <script lang="ts">
-  import { Pagination } from "bits-ui";
-  import { ChevronLeft, ChevronRight } from "lucide-svelte";
-  import { goto } from "$app/navigation";
+import { Pagination } from 'bits-ui';
+import { ChevronLeft, ChevronRight } from 'lucide-svelte';
+import { goto } from '$app/navigation';
 
-  interface Props {
-    additionalClasses: string;
-    pageSize: number;
-    totalCount: number;
-    currentPage: number;
-    totalPages: number;
-    base: string;
-  }
+interface Props {
+  additionalClasses: string;
+  pageSize: number;
+  totalCount: number;
+  currentPage: number;
+  totalPages: number;
+  base: string;
+}
 
-  let { additionalClasses, pageSize, totalCount, currentPage, base }: Props = $props();
+let { additionalClasses, pageSize, totalCount, currentPage, base }: Props = $props();
 </script>
 
 <Pagination.Root

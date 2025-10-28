@@ -1,14 +1,14 @@
 <script lang="ts">
-	import ExternalLink from "$lib/components/ExternalLink.svelte";
-	import Tag from "$lib/components/Tag.svelte";
-	import type { Course } from "$lib/types/courses";
+import ExternalLink from '$lib/components/ExternalLink.svelte';
+import Tag from '$lib/components/Tag.svelte';
+import type { Course } from '$lib/types/courses';
 
-	interface Props {
-		course: Course;
-	}
+interface Props {
+  course: Course;
+}
 
-	let { course }: Props = $props();
-	const { externalLinks, tags } = course;
+let { course }: Props = $props();
+const { externalLinks, tags } = course;
 </script>
 
 <div class="card">

@@ -1,28 +1,22 @@
 <script lang="ts">
-	import Img from '@zerodevx/svelte-img';
-	import type { ExternalImageSource } from '../types/album';
+import Img from '@zerodevx/svelte-img';
+import type { ExternalImageSource } from '../types/album';
 
-	interface Props {
-		clazz?: string;
-		src: Record<string, any> | ExternalImageSource[] | undefined;
-		alt: string;
-		style?: string;
-		loading?: "lazy" | "eager";
-	}
+interface Props {
+  clazz?: string;
+  src: Record<string, any> | ExternalImageSource[] | undefined;
+  alt: string;
+  style?: string;
+  loading?: 'lazy' | 'eager';
+}
 
-	let {
-		clazz = "",
-		src,
-		alt,
-		style = "",
-		loading = "lazy"
-	}: Props = $props();
+let { clazz = '', src, alt, style = '', loading = 'lazy' }: Props = $props();
 
-	let ref: HTMLImageElement | null | undefined = $state();
-	let loaded: boolean = $derived.by(() => {
-		if (ref?.complete) return true;
-		return false;
-	});
+let ref: HTMLImageElement | null | undefined = $state();
+let loaded: boolean = $derived.by(() => {
+  if (ref?.complete) return true;
+  return false;
+});
 </script>
 
 <div class="wrap">

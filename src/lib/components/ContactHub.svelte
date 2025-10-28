@@ -1,34 +1,29 @@
 <script lang="ts">
-	import { Mail } from "lucide-svelte";
-	import ExternalLink from "$lib/components/ExternalLink.svelte";
-	import {
-		blueSkyIcon,
-		gitHubIcon,
-		linkedInIcon,
-		xIcon,
-	} from "../util/logoIcons.svelte";
+import { Mail } from 'lucide-svelte';
+import ExternalLink from '$lib/components/ExternalLink.svelte';
+import { blueSkyIcon, gitHubIcon, linkedInIcon, xIcon } from '../util/logoIcons.svelte';
 
-	interface Props {
-		showBlueSky?: boolean;
-		showEmail?: boolean;
-		showGithub?: boolean;
-		showLinkedIn?: boolean;
-		showX?: boolean;
-		userNames: Record<string, string>;
-		showText?: boolean;
-		justify?: boolean;
-	}
+interface Props {
+  showBlueSky?: boolean;
+  showEmail?: boolean;
+  showGithub?: boolean;
+  showLinkedIn?: boolean;
+  showX?: boolean;
+  userNames: Record<string, string>;
+  showText?: boolean;
+  justify?: boolean;
+}
 
-	let {
-		showBlueSky = false,
-		showEmail = false,
-		showGithub = false,
-		showLinkedIn = false,
-		showX = false,
-		userNames,
-		showText = false,
-		justify = false,
-	}: Props = $props();
+let {
+  showBlueSky = false,
+  showEmail = false,
+  showGithub = false,
+  showLinkedIn = false,
+  showX = false,
+  userNames,
+  showText = false,
+  justify = false,
+}: Props = $props();
 </script>
 
 {#if showText}

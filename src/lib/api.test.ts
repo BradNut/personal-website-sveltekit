@@ -108,8 +108,7 @@ describe('fetchArticlesApi (unit, mocked)', () => {
 
     // Stored in Redis with EX for 12 hours
     expect(hoisted.redisMock.set).toHaveBeenCalled();
-    const setArgs = (hoisted.redisMock.set as unknown as { mock: { calls: unknown[][] } }).mock
-      .calls[0] as [string, string, 'EX', number];
+    const setArgs = (hoisted.redisMock.set as unknown as { mock: { calls: unknown[][] } }).mock.calls[0] as [string, string, 'EX', number];
     expect(setArgs[0]).toContain('perPage=10');
     expect(setArgs[0]).toContain('page=1');
     expect(setArgs[2]).toBe('EX');

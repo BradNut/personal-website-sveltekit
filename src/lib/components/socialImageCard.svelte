@@ -1,23 +1,15 @@
 <script lang="ts">
-	interface Props {
-		header: string;
-		page: string;
-		image: string;
-		content: string;
-		width?: number;
-		height?: number;
-		url: string;
-	}
+interface Props {
+  header: string;
+  page: string;
+  image: string;
+  content: string;
+  width?: number;
+  height?: number;
+  url: string;
+}
 
-	let {
-		header,
-		page,
-		image,
-		content,
-		width = 1200,
-		height = 630,
-		url
-	}: Props = $props();
+let { header, page, image, content, width = 1200, height = 630, url }: Props = $props();
 </script>
 
 <div class="social-card" style={`width: ${width}px; height: ${height}px;`}>

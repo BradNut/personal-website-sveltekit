@@ -1,22 +1,20 @@
 <script lang="ts">
-  import Articles from "$lib/components/Articles.svelte";
-  import Pagination from "$lib/components/Pagination.svelte";
-  import type { PageData } from "./$types";
+import Articles from '$lib/components/Articles.svelte';
+import Pagination from '$lib/components/Pagination.svelte';
+import type { PageData } from './$types';
 
-  interface Props {
-    data: PageData;
-  }
+interface Props {
+  data: PageData;
+}
 
-  let { data }: Props = $props();
+let { data }: Props = $props();
 
-  // Use the data directly - it will be reactive when navigating between pages
-  let articles = $derived(data?.articles || []);
-  let currentPage: number = $derived(data?.currentPage || 1);
-  let totalArticles: number = $derived(data?.totalArticles || 0);
-  let limit: number = $derived(data?.limit || 10);
-  let totalPages: number = $derived(data?.totalPages || 1);
-
-  
+// Use the data directly - it will be reactive when navigating between pages
+let articles = $derived(data?.articles || []);
+let currentPage: number = $derived(data?.currentPage || 1);
+let totalArticles: number = $derived(data?.totalArticles || 0);
+let limit: number = $derived(data?.limit || 10);
+let totalPages: number = $derived(data?.totalPages || 1);
 </script>
 
 <div class="articles-content">

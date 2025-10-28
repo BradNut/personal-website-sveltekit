@@ -1,19 +1,19 @@
 <script lang="ts">
-	import ExternalLink from '$lib/components/ExternalLink.svelte';
-	import type { Snippet } from "svelte";
-	import type { LinkTextType } from '$lib/types/externalLinkTypes';
+import ExternalLink from '$lib/components/ExternalLink.svelte';
+import type { Snippet } from 'svelte';
+import type { LinkTextType } from '$lib/types/externalLinkTypes';
 
-	interface Props {
-		ariaLabel: string;
-		href: string;
-		clazz?: string;
-		textData?: LinkTextType;
-		icon: Snippet;
-	}
+interface Props {
+  ariaLabel: string;
+  href: string;
+  clazz?: string;
+  textData?: LinkTextType;
+  icon: Snippet;
+}
 
-	let { ariaLabel, href, clazz = '', textData, icon }: Props = $props();
-  // Ensure a stable class for styling
-  const mergedClazz = `${clazz} tech-list-item`.trim();
+let { ariaLabel, href, clazz = '', textData, icon }: Props = $props();
+// Ensure a stable class for styling
+const mergedClazz = `${clazz} tech-list-item`.trim();
 </script>
 
 <ExternalLink

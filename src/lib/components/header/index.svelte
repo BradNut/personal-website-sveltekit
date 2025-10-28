@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Logo from '$lib/components/logo/index.svelte';
-	import Nav from '$lib/components/nav/index.svelte';
+import Logo from '$lib/components/logo/index.svelte';
+import Nav from '$lib/components/nav/index.svelte';
 </script>
 
 <header>

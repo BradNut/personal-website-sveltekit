@@ -22,7 +22,6 @@ if (textData?.location === 'top') {
 const linkDecoration =
   linkData?.textDecoration && linkData?.textDecoration === 'none' ? `text-decoration-${linkData?.textDecoration}` : 'text-decoration-underline';
 const linkClass = `${linkData?.clazz || ''} ${textLocationClass} ${linkDecoration}`.trim();
-
 </script>
 
 {#snippet externalLink({ iconData = { type: 'icon', icon: ExternalLink }, linkData, textData }: ExternalLinkType)}

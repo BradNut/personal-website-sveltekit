@@ -8,7 +8,7 @@ import {
   WALLABAG_URL,
   WALLABAG_USERNAME,
 } from '$env/static/private';
-import { redis } from '$lib/server/redis';
+import { REDIS_PREFIXES, redisService } from '$lib/server/redis';
 import type { Article, ArticlePageLoad, WallabagArticle } from '$lib/types/article';
 import { ArticleTag } from '$lib/types/articleTag';
 import type { PageQuery } from '../types/pageQuery';
@@ -70,12 +70,12 @@ export async function fetchArticlesApi(_method: string, _resource: string, query
 
     if (USE_REDIS_CACHE === 'true') {
       const cacheKey = entriesQueryParams.toString();
-      const cached = await redis.get(cacheKey);
+      const cached = await redisService.get({ prefix: REDIS_PREFIXES.ARTICLES, key: cacheKey });
 
       if (cached) {
         // Cache hit, return cached payload with TTL-derived cache-control
         const response = JSON.parse(cached);
-        const ttl = await redis.ttl(cacheKey);
+        const ttl = await redisService.ttl({ prefix: REDIS_PREFIXES.ARTICLES, key: cacheKey });
         return { ...response, cacheControl: `max-age=${ttl}` };
       }
     }
@@ -164,7 +164,7 @@ export async function fetchArticlesApi(_method: string, _resource: string, query
     if (USE_REDIS_CACHE === 'true' && responseData?.articles?.length > 0) {
       const cacheKey = entriesQueryParams.toString();
       console.log(`Storing in cache with key: ${cacheKey} for page ${page}`);
-      redis.set(cacheKey, JSON.stringify(responseData), 'EX', 43200);
+      await redisService.setWithExpiry({ prefix: REDIS_PREFIXES.ARTICLES, key: cacheKey, value: JSON.stringify(responseData), expiry: 43200 });
     }
 
     return responseData;

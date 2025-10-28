@@ -18,10 +18,7 @@ test.describe('Portfolio page', () => {
       return color;
     });
 
-    const areas = [
-      'header[aria-label="header navigation"]',
-      'footer nav[aria-label="footer navigation"]',
-    ];
+    const areas = ['header[aria-label="header navigation"]', 'footer nav[aria-label="footer navigation"]'];
 
     for (const area of areas) {
       const nav = page.locator(area);
@@ -41,10 +38,7 @@ test.describe('Portfolio page', () => {
 
   test('current page (Portfolio) link is active in header and footer', async ({ page }) => {
     await page.goto('/portfolio');
-    const areas = [
-      'header[aria-label="header navigation"]',
-      'footer nav[aria-label="footer navigation"]',
-    ];
+    const areas = ['header[aria-label="header navigation"]', 'footer nav[aria-label="footer navigation"]'];
     for (const area of areas) {
       const nav = page.locator(area);
       const portfolioLink = nav.getByRole('link', { name: 'Portfolio', exact: true });
@@ -110,9 +104,7 @@ test.describe('Portfolio page', () => {
 
     await expect(professionalCard).toBeVisible();
     // Accessible name derived from aria-label in ExternalLink.svelte
-    await expect(
-      professionalCard.getByRole('link', { name: /Open\s+View Mark Shellnut Architect\s+externally/i })
-    ).toBeVisible();
+    await expect(professionalCard.getByRole('link', { name: /Open\s+View Mark Shellnut Architect\s+externally/i })).toBeVisible();
   });
 
   // Mirror header link presence from other pages

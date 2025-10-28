@@ -1,41 +1,41 @@
 <script lang="ts">
-  import { ArrowRight } from "lucide-svelte";
-  import { beforeNavigate, onNavigate } from "$app/navigation";
-  import { page } from "$app/state";
-  import ArticlesSkeleton from "$lib/components/ArticlesSkeleton.svelte";
-  import type { Article } from "$lib/types/article";
-  import ExternalLink from "./ExternalLink.svelte";
+import { ArrowRight } from 'lucide-svelte';
+import { beforeNavigate, onNavigate } from '$app/navigation';
+import { page } from '$app/state';
+import ArticlesSkeleton from '$lib/components/ArticlesSkeleton.svelte';
+import type { Article } from '$lib/types/article';
+import ExternalLink from './ExternalLink.svelte';
 
-  type LoadData = {
-    articles: Article[];
-    totalArticles: number;
-    classes?: string[];
-    compact?: boolean;
-  };
+type LoadData = {
+  articles: Article[];
+  totalArticles: number;
+  classes?: string[];
+  compact?: boolean;
+};
 
-  const { data }: { data: LoadData } = $props();
+const { data }: { data: LoadData } = $props();
 
-  // Use $derived to maintain reactivity when data prop changes
-  const articles = $derived(data.articles || []);
-  const totalArticles = $derived(data.totalArticles || 0);
-  const compact = $derived(data.compact);
-  const classes = $derived(data.classes || []);
+// Use $derived to maintain reactivity when data prop changes
+const articles = $derived(data.articles || []);
+const totalArticles = $derived(data.totalArticles || 0);
+const compact = $derived(data.compact);
+const classes = $derived(data.classes || []);
 
-  const articlesData = $derived(articles);
-  let loadingArticles = $state(false);
+const articlesData = $derived(articles);
+let loadingArticles = $state(false);
 
-  beforeNavigate(() => {
-    loadingArticles = true;
+beforeNavigate(() => {
+  loadingArticles = true;
+});
+
+onNavigate((navigation) => {
+  loadingArticles = true;
+
+  // Resolve the promise when the page is done loading
+  navigation?.complete.then(() => {
+    loadingArticles = false;
   });
-
-  onNavigate((navigation) => {
-    loadingArticles = true;
-
-    // Resolve the promise when the page is done loading
-    navigation?.complete.then(() => {
-      loadingArticles = false;
-    });
-  });
+});
 </script>
 
 <section class="articles">

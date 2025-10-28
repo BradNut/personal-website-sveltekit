@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { Tabs } from 'bits-ui';
-	import ExternalLink from '$lib/components/ExternalLink.svelte';
-	import type { ExternalLinkType } from '$lib/types/externalLinkType';
-	import { gitHubIcon } from '$lib/util/logoIcons.svelte';
-	import personalSite from '../../lib/assets/images/portfolio/Bradley_Shellnut_New_Site.png?enhanced';
-	import shellnutArchitectWebsite from '../../lib/assets/images/portfolio/Mark_Shellnut_Architect.png?enhanced';
-	import oldSite from '../../lib/assets/images/portfolio/Old_Website_Bradley_Shellnut.png?enhanced';
-	import weddingWebsite from '../../lib/assets/images/portfolio/Wedding_Website.png?enhanced';
-	import Portfolio from './Portfolio.svelte';
+import { Tabs } from 'bits-ui';
+import ExternalLink from '$lib/components/ExternalLink.svelte';
+import type { ExternalLinkType } from '$lib/types/externalLinkType';
+import { gitHubIcon } from '$lib/util/logoIcons.svelte';
+import personalSite from '../../lib/assets/images/portfolio/Bradley_Shellnut_New_Site.png?enhanced';
+import shellnutArchitectWebsite from '../../lib/assets/images/portfolio/Mark_Shellnut_Architect.png?enhanced';
+import oldSite from '../../lib/assets/images/portfolio/Old_Website_Bradley_Shellnut.png?enhanced';
+import weddingWebsite from '../../lib/assets/images/portfolio/Wedding_Website.png?enhanced';
+import Portfolio from './Portfolio.svelte';
 </script>
 
 {#snippet links(externalLinks: ExternalLinkType[])}

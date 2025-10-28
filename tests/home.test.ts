@@ -18,10 +18,7 @@ test.describe('Home page', () => {
       return color;
     });
 
-    const areas = [
-      'header[aria-label="header navigation"]',
-      'footer nav[aria-label="footer navigation"]',
-    ];
+    const areas = ['header[aria-label="header navigation"]', 'footer nav[aria-label="footer navigation"]'];
 
     for (const area of areas) {
       const nav = page.locator(area);
@@ -47,10 +44,7 @@ test.describe('Home page', () => {
 
   test('current page (Home) link is active in header and footer', async ({ page }) => {
     await page.goto('/');
-    const areas = [
-      'header[aria-label="header navigation"]',
-      'footer nav[aria-label="footer navigation"]',
-    ];
+    const areas = ['header[aria-label="header navigation"]', 'footer nav[aria-label="footer navigation"]'];
     for (const area of areas) {
       const nav = page.locator(area);
       const link = nav.getByRole('link', { name: 'Home', exact: true });
@@ -162,11 +156,7 @@ test.describe('Home page', () => {
     const albumItems = page.locator('.albumsStyles .album-artwork');
     const n = await albumItems.count();
     expect(n).toBeGreaterThanOrEqual(3);
-    const [b0, b1, b2] = await Promise.all([
-      albumItems.nth(0).boundingBox(),
-      albumItems.nth(1).boundingBox(),
-      albumItems.nth(2).boundingBox(),
-    ]);
+    const [b0, b1, b2] = await Promise.all([albumItems.nth(0).boundingBox(), albumItems.nth(1).boundingBox(), albumItems.nth(2).boundingBox()]);
     expect(b0 && b1 && b2).toBeTruthy();
     if (b0 && b1 && b2) {
       expect(Math.abs(b0.y - b1.y)).toBeLessThan(6); // same row
@@ -204,10 +194,7 @@ test.describe('Home page', () => {
     const albumItems = page.locator('.albumsStyles .album-artwork');
     const m = await albumItems.count();
     expect(m).toBeGreaterThanOrEqual(2);
-    const [a0, a1] = await Promise.all([
-      albumItems.nth(0).boundingBox(),
-      albumItems.nth(1).boundingBox(),
-    ]);
+    const [a0, a1] = await Promise.all([albumItems.nth(0).boundingBox(), albumItems.nth(1).boundingBox()]);
     expect(a0 && a1).toBeTruthy();
     if (a0 && a1) {
       expect(a1.y).toBeGreaterThan(a0.y + 10);
@@ -215,9 +202,9 @@ test.describe('Home page', () => {
     }
 
     // Articles are a vertical list (same x, increasing y)
-    const boxes = await page.locator('section.articles article.card').evaluateAll((els) =>
-      els.slice(0, Math.min(4, els.length)).map((el) => el.getBoundingClientRect())
-    );
+    const boxes = await page
+      .locator('section.articles article.card')
+      .evaluateAll((els) => els.slice(0, Math.min(4, els.length)).map((el) => el.getBoundingClientRect()));
     expect(boxes.length).toBeGreaterThan(0);
     const x0 = boxes[0].left;
     for (let i = 1; i < boxes.length; i++) {

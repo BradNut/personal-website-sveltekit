@@ -18,10 +18,7 @@ test.describe('Uses page', () => {
       return color;
     });
 
-    const areas = [
-      'header[aria-label="header navigation"]',
-      'footer nav[aria-label="footer navigation"]',
-    ];
+    const areas = ['header[aria-label="header navigation"]', 'footer nav[aria-label="footer navigation"]'];
 
     for (const area of areas) {
       const nav = page.locator(area);
@@ -41,10 +38,7 @@ test.describe('Uses page', () => {
 
   test('current page (Uses) link is active in header and footer', async ({ page }) => {
     await page.goto('/uses');
-    const areas = [
-      'header[aria-label="header navigation"]',
-      'footer nav[aria-label="footer navigation"]',
-    ];
+    const areas = ['header[aria-label="header navigation"]', 'footer nav[aria-label="footer navigation"]'];
     for (const area of areas) {
       const nav = page.locator(area);
       const usesLink = nav.getByRole('link', { name: 'Uses', exact: true });
@@ -74,13 +68,7 @@ test.describe('Uses page', () => {
     await expect(page.getByRole('heading', { level: 2, name: 'Development' })).toBeVisible();
 
     // h3 subsections in development.svelte
-    const subsections = [
-      'Terminal & Shell Setup',
-      'Useful System Packages',
-      'Software',
-      'Useful Applications',
-      'Browsers',
-    ];
+    const subsections = ['Terminal & Shell Setup', 'Useful System Packages', 'Software', 'Useful Applications', 'Browsers'];
     for (const name of subsections) {
       await expect(page.getByRole('heading', { level: 3, name })).toBeVisible();
     }

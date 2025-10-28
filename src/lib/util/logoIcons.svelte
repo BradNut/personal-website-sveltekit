@@ -1,18 +1,18 @@
 <script module lang="ts">
-	export {
-		blueSkyIcon,
-		dockerIcon,
-		drizzleIcon,
-		honoIcon,
-		gitHubIcon,
-		linkedInIcon,
-		lucideIcon,
-		nextDotJsIcon,
-		reactIcon,
-		svelteIcon,
-		typescriptIcon,
-		xIcon,
-	};
+export {
+  blueSkyIcon,
+  dockerIcon,
+  drizzleIcon,
+  honoIcon,
+  gitHubIcon,
+  linkedInIcon,
+  lucideIcon,
+  nextDotJsIcon,
+  reactIcon,
+  svelteIcon,
+  typescriptIcon,
+  xIcon,
+};
 </script>
 
 {#snippet gitHubIcon()}

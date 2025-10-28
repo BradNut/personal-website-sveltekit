@@ -1,34 +1,34 @@
 <script lang="ts">
-	import { PUBLIC_SITE_URL } from "$env/static/public";
-	const siteUrl = PUBLIC_SITE_URL || 'https://bradleyshellnut.com';
+import { PUBLIC_SITE_URL } from '$env/static/public';
+const siteUrl = PUBLIC_SITE_URL || 'https://bradleyshellnut.com';
 
-  const defaultMetadata = {
-    defaultTitle: 'Bradley Shellnut',
-    defaultDescription: "My name is Bradley Shellnut and I'm a Full Stack Software Engineer.",
-    defaultImage: '/b_shell_nut_favicon.png',
-    siteUrl,
-  };
+const defaultMetadata = {
+  defaultTitle: 'Bradley Shellnut',
+  defaultDescription: "My name is Bradley Shellnut and I'm a Full Stack Software Engineer.",
+  defaultImage: '/b_shell_nut_favicon.png',
+  siteUrl,
+};
 
-	interface Props {
-		title?: any;
-		description?: any;
-		image?: any;
-		location?: string;
-	}
+interface Props {
+  title?: any;
+  description?: any;
+  image?: any;
+  location?: string;
+}
 
-	let {
-		title = defaultMetadata.defaultTitle,
-		description = defaultMetadata.defaultDescription,
-		image = defaultMetadata.defaultImage,
-		location = ''
-	}: Props = $props();
+let {
+  title = defaultMetadata.defaultTitle,
+  description = defaultMetadata.defaultDescription,
+  image = defaultMetadata.defaultImage,
+  location = '',
+}: Props = $props();
 
-  let seo = $derived({
-    title,
-    description,
-    image: `${siteUrl}${image}`,
-    url: `${siteUrl}${location || ``}`,
-  });
+let seo = $derived({
+  title,
+  description,
+  image: `${siteUrl}${image}`,
+  url: `${siteUrl}${location || ``}`,
+});
 </script>
 
 <svelte:head>
