@@ -1,6 +1,6 @@
+import { sentrySvelteKit } from '@sentry/sveltekit';
 import { enhancedImages } from '@sveltejs/enhanced-img';
 import { sveltekit } from '@sveltejs/kit/vite';
-import { sentrySvelteKit } from '@sentry/sveltekit';
 import { imagetools } from '@zerodevx/svelte-img/vite';
 import { defineConfig } from 'vite';
 
