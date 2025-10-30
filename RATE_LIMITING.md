@@ -1,14 +1,18 @@
 # Rate Limiting
 
-The articles API is protected with rate limiting to prevent abuse while allowing normal browsing.
+All API endpoints are protected with rate limiting to prevent abuse while allowing normal browsing.
 
 ## Configuration
 
-### Articles API (`/api/articles`)
+### Default Rate Limits
 
-**Limits**:
+All API endpoints use the following default limits:
 - **30 requests per minute** per IP + User Agent combination
 - **100 requests per hour** per IP address
+
+**Protected Endpoints**:
+- `/api/articles`
+- `/api/bandcamp/albums`
 
 **Behavior**:
 - Returns `429 Too Many Requests` when limit is exceeded
@@ -69,16 +73,62 @@ After 30 requests within a minute, you should see:
 
 ## Implementation
 
-Uses `sveltekit-rate-limiter` package:
-- File: `src/routes/api/articles/+server.ts`
+Uses `sveltekit-rate-limiter` package with a centralized configuration:
+
+**Files**:
+- `src/lib/server/rateLimiter.ts` - Shared rate limiter configuration
+- `src/routes/api/articles/+server.ts` - Articles endpoint
+- `src/routes/api/bandcamp/albums/+server.ts` - Bandcamp endpoint
+
+**Features**:
 - No external dependencies (in-memory store)
 - Automatic cleanup of expired entries
-- Per-route configuration
+- Centralized configuration for consistency
+- Support for custom rate limits per endpoint
+
+### Custom Rate Limits
+
+You can create custom rate limiters for specific endpoints:
+
+```typescript
+import { createRateLimiter } from '$lib/server/rateLimiter';
+
+// Stricter limits for sensitive endpoints
+const strictLimiter = createRateLimiter({
+  IP: [50, 'h'],
+  IPUA: [10, 'm']
+});
+
+// Or override just one setting
+const customLimiter = createRateLimiter({
+  IPUA: [5, 'm'] // IP will use default [100, 'h']
+});
+```
+
+## Testing
+
+E2E tests verify rate limiting behavior:
+
+```bash
+# Run all tests including rate limiting
+pnpm test:integration
+
+# Run only rate limiting tests
+pnpm exec playwright test rate-limiting
+
+# Run with UI for debugging
+pnpm test:ui
+```
+
+Tests verify:
+- ✅ Requests within limits are allowed
+- ✅ Requests exceeding limits return 429
+- ✅ Rate limits work on all protected endpoints
 
 ## Future Considerations
 
 If you need to:
 - **Share limits across multiple servers**: Implement a Redis-based store
-- **Adjust limits**: Modify the `RateLimiter` configuration
-- **Add more endpoints**: Apply the same pattern to other API routes
+- **Adjust limits**: Modify the configuration in `src/lib/server/rateLimiter.ts`
+- **Add more endpoints**: Import `apiRateLimiter` or create custom limits with `createRateLimiter()`
 - **Whitelist IPs**: Create a custom limiter plugin

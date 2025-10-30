@@ -1,7 +1,8 @@
-import { json } from '@sveltejs/kit';
+import { error, json, type RequestEvent } from '@sveltejs/kit';
 import scrapeIt, { type ScrapeResult } from 'scrape-it';
 import { BANDCAMP_USERNAME, USE_REDIS_CACHE } from '$env/static/private';
-import { redisService, REDIS_PREFIXES } from '$lib/server/redis';
+import { apiRateLimiter } from '$lib/server/rateLimiter';
+import { REDIS_PREFIXES, redisService } from '$lib/server/redis';
 import type { Album, BandCampResults } from '$lib/types/album';
 
 async function retryWithBackoff<T>(fn: () => Promise<T>, maxRetries = 3, baseDelay = 500): Promise<T> {
@@ -19,7 +20,14 @@ async function retryWithBackoff<T>(fn: () => Promise<T>, maxRetries = 3, baseDel
   throw lastError;
 }
 
-export async function GET({ setHeaders }) {
+export async function GET(event: RequestEvent) {
+  // Check rate limit
+  if (await apiRateLimiter.isLimited(event)) {
+    error(429, 'Too many requests. Please try again later.');
+  }
+
+  const { setHeaders } = event;
+
   try {
     if (USE_REDIS_CACHE === 'true') {
       const cached: string | null = await redisService.get({ prefix: REDIS_PREFIXES.BANDCAMP_ALBUMS, key: 'albums' });
