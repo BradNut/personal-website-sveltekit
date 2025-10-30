@@ -1,15 +1,9 @@
 import { error, json, type RequestEvent } from '@sveltejs/kit';
 import type { ArticlePageLoad } from '@/lib/types/article.js';
 import { PAGE_SIZE } from '$env/static/private';
-import { apiRateLimiter } from '$lib/server/rateLimiter';
 import { fetchArticlesApi } from '$lib/services/articlesApi';
 
 export async function GET(event: RequestEvent) {
-  // Check rate limit
-  if (await apiRateLimiter.isLimited(event)) {
-    error(429, 'Too many requests. Please try again later.');
-  }
-
   const { setHeaders, url } = event;
   const page = url?.searchParams?.get('page') || '1';
   let limit = url?.searchParams?.get('limit') ?? PAGE_SIZE;

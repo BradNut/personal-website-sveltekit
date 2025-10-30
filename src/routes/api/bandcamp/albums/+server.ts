@@ -1,7 +1,6 @@
-import { error, json, type RequestEvent } from '@sveltejs/kit';
+import { json, type RequestEvent } from '@sveltejs/kit';
 import scrapeIt, { type ScrapeResult } from 'scrape-it';
 import { BANDCAMP_USERNAME, USE_REDIS_CACHE } from '$env/static/private';
-import { apiRateLimiter } from '$lib/server/rateLimiter';
 import { REDIS_PREFIXES, redisService } from '$lib/server/redis';
 import type { Album, BandCampResults } from '$lib/types/album';
 
@@ -21,11 +20,6 @@ async function retryWithBackoff<T>(fn: () => Promise<T>, maxRetries = 3, baseDel
 }
 
 export async function GET(event: RequestEvent) {
-  // Check rate limit
-  if (await apiRateLimiter.isLimited(event)) {
-    error(429, 'Too many requests. Please try again later.');
-  }
-
   const { setHeaders } = event;
 
   try {
