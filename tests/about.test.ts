@@ -184,7 +184,9 @@ test.describe('About page', () => {
     await fav.scrollIntoViewIfNeeded();
     const href = await fav.getAttribute('href');
     expect(href).toMatch(/\/articles(\/\d+)?\/?$/);
-    await page.goto(href!);
+    if (href) {
+      await page.goto(href);
+    }
     await expect(page).toHaveURL(/\/articles(\/\d+)?\/?$/, { timeout: 15000 });
 
     await footerNav.getByRole('link', { name: 'About', exact: true }).scrollIntoViewIfNeeded();

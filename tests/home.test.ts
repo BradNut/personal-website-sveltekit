@@ -113,7 +113,9 @@ test.describe('Home page', () => {
     await more.scrollIntoViewIfNeeded();
     const href = await more.getAttribute('href');
     expect(href).toMatch(/\/articles(\/\d+)?\/?$/);
-    await page.goto(href!);
+    if (href) {
+      await page.goto(href);
+    }
     await expect(page).toHaveURL(/\/articles(\/\d+)?\/?$/, { timeout: 15000 });
   });
 
