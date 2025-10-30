@@ -47,6 +47,7 @@
     "svelte-meta-tags": "^4.5.0",
     "svelte-preprocess": "^6.0.3",
     "svelte-sequential-preprocessor": "^2.0.2",
+    "sveltekit-rate-limiter": "^0.7.0",
     "tslib": "^2.8.1",
     "typescript": "^5.9.3",
     "vanilla-lazyload": "^19.1.3",
