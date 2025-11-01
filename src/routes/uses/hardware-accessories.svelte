@@ -1,5 +1,5 @@
 <script lang="ts">
-import ExternalLink from '$lib/components/ExternalLink.svelte';
+	import ExternalLink from "$lib/components/ExternalLink.svelte";
 </script>
 
 <section>
@@ -29,39 +29,59 @@ import ExternalLink from '$lib/components/ExternalLink.svelte';
 			Keyboard ⌨️: <ExternalLink
 				linkData={{
 					href: "https://www.duckychannel.com.tw/en/Ducky-One2-RGB-TKL",
-					ariaLabel: "Ducky One 2 RGB TKL Keyboard"
+					ariaLabel: "Ducky One 2 RGB TKL Keyboard",
 				}}
-				textData={{ text: "Ducky One 2 RGB TKL Keyboard", showIcon: true, location: "left" }}
+				textData={{
+					text: "Ducky One 2 RGB TKL Keyboard",
+					showIcon: true,
+					location: "left",
+				}}
 			/>
 		</li>
 		<li>
 			Mouse 🖱️: <ExternalLink
 				linkData={{
 					href: "https://www.amazon.com/Logitech-G502-Performance-Gaming-Mouse/dp/B07GBZ4Q68",
-					ariaLabel: "Logitech G502 Gaming Mouse"
+					ariaLabel: "Logitech G502 Gaming Mouse",
 				}}
-				textData={{ text: "Logitech G502 Gaming Mouse", showIcon: true, location: "left" }}
+				textData={{
+					text: "Logitech G502 Gaming Mouse",
+					showIcon: true,
+					location: "left",
+				}}
 			/>
 		</li>
 		<li>
 			Chair 🪑: <ExternalLink
 				linkData={{
 					href: "https://secretlabus.myshopify.com/collections/omega-series#omega_2020-stealth",
-					ariaLabel: "Secretlab Omega 2020 Fabric"
+					ariaLabel: "Secretlab Omega 2020 Fabric",
 				}}
-				textData={{ text: "Secretlab Omega 2020 Fabric", showIcon: true, location: "left" }}
+				textData={{
+					text: "Secretlab Omega 2020 Fabric",
+					showIcon: true,
+					location: "left",
+				}}
 			/>
 		</li>
 		<li>
 			Monitor 🖥️: <ExternalLink
-				linkData={{ href: "https://www.samsung.com/us/computing/monitors/gaming/32--odyssey-g7-gaming-monitor-lc32g75tqsnxza/", ariaLabel: "Samsung Odyssey G7 Gaming Monitor" }} textData={{ text: "Samsung Odyssey G7 Gaming Monitor", showIcon: true, location: "left" }} />
+				linkData={{
+					href: "https://www.samsung.com/us/computing/monitors/gaming/32--odyssey-g7-gaming-monitor-lc32g75tqsnxza/",
+					ariaLabel: "Samsung Odyssey G7 Gaming Monitor",
+				}}
+				textData={{
+					text: "Samsung Odyssey G7 Gaming Monitor",
+					showIcon: true,
+					location: "left",
+				}}
+			/>
 		</li>
 	</ul>
 </section>
 
 <style lang="postcss">
-  ul {
-    list-style-type: square;
-    padding-inline-start: 4rem;
-  }
+	ul {
+		padding-inline-start: 4rem;
+	}
 </style>

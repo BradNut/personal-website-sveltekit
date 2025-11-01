@@ -9,4 +9,5 @@ export type ExternalLink = {
   href: string;
   showIcon: boolean;
   text: string;
+  tag?: 'h3' | 'h4' | 'h5';
 };

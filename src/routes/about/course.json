@@ -7,7 +7,8 @@
           "ariaLabel": "Wes Bos Courses",
           "href": "https://wesbos.com/courses",
           "showIcon": true,
-          "text": "Wes Bos"
+          "text": "Wes Bos",
+          "tag": "h3"
         }
       ],
       "tags": ["React", "GraphQL", "Gatsby", "JavaScript"]
@@ -19,13 +20,15 @@
           "ariaLabel": "Scott Tolinski",
           "href": "https://www.scotttolinski.com",
           "showIcon": true,
-          "text": "Scott Tolinski"
+          "text": "Scott Tolinski",
+          "tag": "h3"
         },
         {
           "ariaLabel": "Levelup Tutorials",
           "href": "https://levelup.video",
           "showIcon": true,
-          "text": "Levelup Tutorials"
+          "text": "Levelup Tutorials",
+          "tag": "h4"
         }
       ],
       "tags": ["React", "TypeScript", "Svelte Kit", "Remix", "Figma", "Design Systems"]
@@ -37,13 +40,15 @@
           "ariaLabel": "Josh Comeau",
           "href": "https://www.joshwcomeau.com",
           "showIcon": true,
-          "text": "Josh Comeau"
+          "text": "Josh Comeau",
+          "tag": "h3"
         },
         {
           "ariaLabel": "The Joy of React",
           "href": "https://www.joyofreact.com/",
           "showIcon": true,
-          "text": "The Joy of React"
+          "text": "The Joy of React",
+          "tag": "h4"
         }
       ],
       "tags": ["Full Stack React", "NextJS"]
@@ -55,7 +60,8 @@
           "ariaLabel": "Amy Kapernick",
           "href": "https://www.amyskapers.dev/",
           "showIcon": true,
-          "text": "Amy Kapernick"
+          "text": "Amy Kapernick",
+          "tag": "h3"
         }
       ],
       "tags": ["Accessibility for Everyone"]
@@ -67,7 +73,8 @@
           "ariaLabel": "Andrew Mead on Udemy",
           "href": "https://www.udemy.com/user/andrewmead/",
           "showIcon": true,
-          "text": "Andrew Mead"
+          "text": "Andrew Mead",
+          "tag": "h3"
         }
       ],
       "tags": ["GraphQL", "Apollo", "Prisma"]
@@ -79,7 +86,8 @@
           "ariaLabel": "Steven Grider on Udemy",
           "href": "https://www.udemy.com/user/sgslo/",
           "showIcon": true,
-          "text": "Steven Grider"
+          "text": "Steven Grider",
+          "tag": "h3"
         }
       ],
       "tags": ["React", "Redux", "Docker", "GraphQL", "CSS", "HTML", "JavaScript"]

@@ -43,8 +43,7 @@ import ExternalLink from '$lib/components/ExternalLink.svelte';
 </section>
 
 <style lang="postcss">
-  ul {
-    list-style-type: square;
-    padding-inline-start: 4rem;
-  }
+	ul {
+		padding-inline-start: 4rem;
+	}
 </style>

@@ -97,6 +97,10 @@ body {
 	color: var(--textColor);
 }
 
+ul {
+	list-style-type: square;
+}
+
 /* Scrollbar Styles */
 body::-webkit-scrollbar {
 	width: 12px;
@@ -252,15 +256,12 @@ figure {
 
 .card {
 	display: grid;
-	align-items: center;
+	gap: 1rem;
 	padding: 1.5rem;
 	background: var(--cardBg);
 	box-shadow: var(--level-3);
 	border-radius: var(--borderRadius);
 	max-width: var(--cardWidthMax);
-	min-width: var(--cardWidthMin);
-	max-height: var(--cardHeightMax);
-	min-height: var(--cardHeightMin);
 }
 
 /* First item will never have margin top */

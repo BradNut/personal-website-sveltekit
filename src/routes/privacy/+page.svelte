@@ -1,5 +1,5 @@
 <script lang="ts">
-import ExternalLink from '$lib/components/ExternalLink.svelte';
+	import ExternalLink from "$lib/components/ExternalLink.svelte";
 </script>
 
 <div>
@@ -26,6 +26,14 @@ import ExternalLink from '$lib/components/ExternalLink.svelte';
 		/>. Sending "Do Not Track" requests in your browser is supported but not
 		overall it is not recommended to turn this on since it can be used to
 		fingerprint you on the web.
+	</p>
+	<p>
+		I am also using a self hosted instance of <ExternalLink
+			textData={{ text: "Bugsink", showIcon: true, location: "left" }}
+			linkData={{ href: "https://bugsink.com", ariaLabel: "Bugsink" }}
+		/> to collect and store any bugs or issues that occur on my site. Given this
+		is using the OpenSource Sentry project most AbBlockers can block this if you
+		desire.
 	</p>
 </div>
 <div>
