@@ -20,16 +20,16 @@
 </script>
 
 <div class="about">
-	<div>
-		<h1>About</h1>
+	<section aria-labelledby="intro-heading">
+		<h1 id="intro-heading">About</h1>
 		<p>Hey! My name is Bradley Shellnut.</p>
 		<p>
 			I'm {new Date().getFullYear() - 1991} years old and I am a full stack software
 			engineer who's interested in new tech and not afraid to discover new interests.
 		</p>
-	</div>
-	<div>
-		<h2>More deets</h2>
+	</section>
+	<section aria-labelledby="details-heading">
+		<h2 id="details-heading">More deets</h2>
 		<p>
 			I graduated from Cal Poly San Luis Obispo in 2013 with a Bachelor's degree
 			in Computer Engineering.{" "}
@@ -128,9 +128,9 @@
 				textData={{ text: "Docker", showIcon: true, location: "bottom" }}
 			/>
 		</div>
-	</div>
-	<div>
-		<h2>Extracurricular</h2>
+	</section>
+	<section aria-labelledby="extracurricular-heading">
+		<h2 id="extracurricular-heading">Extracurricular</h2>
 		<p>
 			Outside of work I like to take tutorials from many instructors like those
 			below:
@@ -140,20 +140,12 @@
 				<CourseCard {course} />
 			{/each}
 		</div>
-	</div>
-	<div>
-		<h2>Other fun things about me&hellip;</h2>
-		<div style="display: grid;">
+	</section>
+	<section aria-labelledby="fun-things-heading">
+		<h2 id="fun-things-heading">Other fun things about me&hellip;</h2>
+		<div class="travel-section">
 			<p>Recently visited Taiwan and Japan.</p>
-			<div
-				style="
-					display: grid;
-					grid-template-columns: minmax(200px, 400px);
-					align-items: center;
-					justify-content: center;
-					font-size: 5rem;
-				"
-			>
+			<div class="flag-emojis">
 				🇹🇼 🇯🇵 🌸
 			</div>
 		</div>
@@ -161,24 +153,24 @@
 			<p>Hanging out with these two cats, Turnip and Taco.</p>
 			<div class="cat-pics">
 				<figure>
-					<enhanced:img src={tortie_derp} alt="Tortie Cat" />
-					<p class="center">
+					<enhanced:img src={tortie_derp} alt="Tortie Cat lying down" />
+					<figcaption class="center">
 						Turnip <img
 							class="icon"
 							src={String(turnip)}
 							width="25px"
 							height="25px"
-							alt="Turnip"
+							alt="Turnip icon"
 						/>
-					</p>
+					</figcaption>
 				</figure>
 				<figure>
-					<enhanced:img src={orange_derp} alt="Tortie Cat" />
-					<p class="center">Taco 🌮</p>
+					<enhanced:img src={orange_derp} alt="Orange Cat sleeping" />
+					<figcaption class="center">Taco 🌮</figcaption>
 				</figure>
 			</div>
 		</div>
-	</div>
+	</section>
 </div>
 
 <style lang="postcss">
@@ -209,6 +201,16 @@
 		gap: 2rem;
 		margin-top: 1rem;
 		font-size: 2rem;
+
+		@media (max-width: 768px) {
+			gap: 1.5rem;
+			font-size: 1.8rem;
+		}
+
+		@media (max-width: 480px) {
+			gap: 1rem;
+			font-size: 1.5rem;
+		}
 	}
 
 	.extracurricular {
@@ -217,14 +219,32 @@
 		place-content: center;
 		gap: 1.5rem;
 
-		@media (max-width: 1000px) {
-			grid-template-columns: repeat(2, auto);
-			--cardHeightMin: 20rem;
+		@media (max-width: 768px) {
+			gap: 1rem;
+		}
+	}
+
+	.travel-section {
+		display: grid;
+		gap: 1rem;
+	}
+
+	.flag-emojis {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 1rem;
+		font-size: 5rem;
+		padding: 1rem;
+
+		@media (max-width: 768px) {
+			font-size: 4rem;
+			gap: 0.8rem;
 		}
 
-		@media (max-width: 700px) {
-			--cardHeightMin: 10rem;
-			grid-template-columns: 1fr;
+		@media (max-width: 480px) {
+			font-size: 3rem;
+			gap: 0.5rem;
 		}
 	}
 
@@ -234,5 +254,23 @@
 		align-items: center;
 		justify-content: center;
 		gap: 2rem;
+
+		@media (max-width: 768px) {
+			grid-template-columns: repeat(2, minmax(150px, 1fr));
+			gap: 1.5rem;
+		}
+
+		@media (max-width: 480px) {
+			grid-template-columns: 1fr;
+			gap: 1rem;
+		}
+	}
+
+	figcaption {
+		margin-top: 0.5rem;
+	}
+
+	.center {
+		text-align: center;
 	}
 </style>

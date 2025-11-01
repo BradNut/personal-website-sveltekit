@@ -39,13 +39,23 @@ const {
 
 <style lang="postcss">
 	:global(.portfolio-picture) {
-		border-radius: 3px;
+		border-radius: 8px;
+		overflow: hidden;
+	}
+
+	:global(.portfolio-picture h2) {
+		margin-bottom: 1rem;
 	}
 
 	:global(.portfolio) {
 		display: grid;
 		grid-template-columns: minmax(200px, 500px) auto;
-		margin: 1.5rem auto;
+		margin: 2rem auto;
+		gap: 2rem;
+		padding: 1.5rem;
+		background: rgba(255, 255, 255, 0.02);
+		border-radius: 12px;
+		border: 1px solid rgba(255, 255, 255, 0.05);
 
 		@media (width <= 1200px) {
 			grid-template-columns: minmax(200px, 500px);
@@ -54,10 +64,10 @@ const {
 	}
 
 	:global(.portfolio-details) {
-		margin: 0 1.5rem;
+		margin: 0;
 
 		@media (max-width: 800px) {
-			margin: 1rem 1.5rem;
+			margin: 0;
 		}
 	}
 
