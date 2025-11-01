@@ -3,10 +3,14 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 // Hoisted mocks to satisfy Vitest's module mock hoisting
 const hoisted = vi.hoisted(() => {
   return {
-    redisMock: {
+    redisServiceMock: {
       get: vi.fn(),
       set: vi.fn(),
+      setWithExpiry: vi.fn(),
       ttl: vi.fn(),
+      delete: vi.fn(),
+      scan: vi.fn(),
+      redis: null,
     },
   } as const;
 });
@@ -20,11 +24,17 @@ vi.mock('$env/static/private', () => ({
   WALLABAG_PASSWORD: 'password',
   WALLABAG_URL: 'https://wallabag.example',
   WALLABAG_USERNAME: 'username',
+  REDIS_URI: 'redis://localhost:6379',
 }));
 
-// Mock redis client so no real connection is used
+// Mock redis service so no real connection is used
 vi.mock('$lib/server/redis', () => ({
-  redis: hoisted.redisMock,
+  redisService: hoisted.redisServiceMock,
+  REDIS_PREFIXES: {
+    ARTICLES: 'articles',
+    BANDCAMP_ALBUMS: 'bandcampAlbums',
+    PAGE_CACHE: 'pageCache',
+  },
 }));
 
 // Helper to mock global fetch responses
@@ -48,8 +58,8 @@ describe('fetchArticlesApi (unit, mocked)', () => {
 
   it('fetches and maps articles on cache miss, then stores in redis', async () => {
     // Cache miss setup
-    hoisted.redisMock.get.mockResolvedValueOnce(null);
-    hoisted.redisMock.ttl.mockResolvedValueOnce(0);
+    hoisted.redisServiceMock.get.mockResolvedValueOnce(null);
+    hoisted.redisServiceMock.ttl.mockResolvedValueOnce(0);
 
     // Mock token fetch
     const token = { access_token: 'access-token' } as const;
@@ -107,12 +117,11 @@ describe('fetchArticlesApi (unit, mocked)', () => {
     expect(article.domain_name).toBe('example.com');
 
     // Stored in Redis with EX for 12 hours
-    expect(hoisted.redisMock.set).toHaveBeenCalled();
-    const setArgs = (hoisted.redisMock.set as unknown as { mock: { calls: unknown[][] } }).mock.calls[0] as [string, string, 'EX', number];
-    expect(setArgs[0]).toContain('perPage=10');
-    expect(setArgs[0]).toContain('page=1');
-    expect(setArgs[2]).toBe('EX');
-    expect(setArgs[3]).toBe(43200);
+    expect(hoisted.redisServiceMock.setWithExpiry).toHaveBeenCalled();
+    const setArgs = (hoisted.redisServiceMock.setWithExpiry as unknown as { mock: { calls: unknown[][] } }).mock.calls[0] as [{ prefix: string; key: string; value: string; expiry: number }];
+    expect(setArgs[0].key).toContain('perPage=10');
+    expect(setArgs[0].key).toContain('page=1');
+    expect(setArgs[0].expiry).toBe(43200);
   });
 
   it('returns cached response and cacheControl when redis has value (cache hit)', async () => {
@@ -124,8 +133,8 @@ describe('fetchArticlesApi (unit, mocked)', () => {
       totalArticles: 20,
     };
 
-    hoisted.redisMock.get.mockResolvedValueOnce(JSON.stringify(cached));
-    hoisted.redisMock.ttl.mockResolvedValueOnce(321);
+    hoisted.redisServiceMock.get.mockResolvedValueOnce(JSON.stringify(cached));
+    hoisted.redisServiceMock.ttl.mockResolvedValueOnce(321);
 
     const fetchMock = vi.fn();
     // @ts-expect-error assign to global

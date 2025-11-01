@@ -9,17 +9,27 @@ vi.mock('$env/static/private', () => ({
   WALLABAG_PASSWORD: 'pw',
   WALLABAG_URL: 'https://example.com',
   WALLABAG_USERNAME: 'user',
+  REDIS_URI: 'redis://localhost:6379',
 }));
 
-// Mock redis client
+// Mock redis service
 const redisGet = vi.fn();
-const redisSet = vi.fn();
+const redisSetWithExpiry = vi.fn();
 const redisTtl = vi.fn();
 vi.mock('$lib/server/redis', () => ({
-  redis: {
-    get: (key: string) => redisGet(key),
-    set: (key: string, value: string, mode: 'EX', seconds: number) => redisSet(key, value, mode, seconds),
-    ttl: (key: string) => redisTtl(key),
+  redisService: {
+    get: (data: { prefix: string; key: string }) => redisGet(data),
+    set: vi.fn(),
+    setWithExpiry: (data: { prefix: string; key: string; value: string; expiry: number }) => redisSetWithExpiry(data),
+    ttl: (data: { prefix: string; key: string }) => redisTtl(data),
+    delete: vi.fn(),
+    scan: vi.fn(),
+    redis: null,
+  },
+  REDIS_PREFIXES: {
+    ARTICLES: 'articles',
+    BANDCAMP_ALBUMS: 'bandcampAlbums',
+    PAGE_CACHE: 'pageCache',
   },
 }));
 
@@ -68,7 +78,7 @@ const originalFetch: typeof globalThis.fetch = globalThis.fetch;
 beforeEach(() => {
   vi.useFakeTimers();
   redisGet.mockReset();
-  redisSet.mockReset();
+  redisSetWithExpiry.mockReset();
   redisTtl.mockReset();
 });
 
@@ -126,6 +136,6 @@ describe('fetchArticlesApi', () => {
     expect(result.articles[0].domain_name).toBe('example.com');
 
     expect(fetchMock).toHaveBeenCalledTimes(2);
-    expect(redisSet).toHaveBeenCalled();
+    expect(redisSetWithExpiry).toHaveBeenCalled();
   });
 });
