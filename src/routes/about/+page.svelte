@@ -219,6 +219,11 @@
 		place-content: center;
 		gap: 1.5rem;
 
+		:global(.card) {
+			max-width: 350px;
+			flex: 1 1 300px;
+		}
+
 		@media (max-width: 768px) {
 			gap: 1rem;
 		}

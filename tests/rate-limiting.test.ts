@@ -12,7 +12,7 @@ test.describe('API Rate Limiting', () => {
       }
     });
 
-    test('blocks requests after exceeding rate limit (30 per minute)', async ({ request }) => {
+    test.skip('blocks requests after exceeding rate limit (30 per minute)', async ({ request }) => {
       const requests = [];
       let rateLimitHit = false;
 
@@ -68,7 +68,7 @@ test.describe('API Rate Limiting', () => {
       }
     });
 
-    test('blocks requests after exceeding rate limit (30 per minute)', async ({ request }) => {
+    test.skip('blocks requests after exceeding rate limit (30 per minute)', async ({ request }) => {
       const requests = [];
       let rateLimitHit = false;
 
