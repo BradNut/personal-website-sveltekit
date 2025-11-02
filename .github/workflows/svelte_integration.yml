@@ -42,12 +42,14 @@ jobs:
           BANDCAMP_USERNAME: ${{ secrets.BANDCAMP_USERNAME }}
           PUBLIC_SITE_URL: ${{ secrets.PUBLIC_SITE_URL }}
           PUBLIC_URL: ${{ secrets.PUBLIC_URL }}
+          PUBLIC_SITE_VERSION: ${{ secrets.PUBLIC_SITE_VERSION }}
           PUBLIC_UMAMI_DO_NOT_TRACK: ${{ secrets.PUBLIC_UMAMI_DO_NOT_TRACK }}
           PUBLIC_UMAMI_URL: ${{ secrets.PUBLIC_UMAMI_URL }}
           PUBLIC_UMAMI_ID: ${{ secrets.PUBLIC_UMAMI_ID }}
           PAGE_SIZE: ${{ secrets.PAGE_SIZE }}
           USE_REDIS_CACHE: 'false'
           REDIS_URI: ${{ secrets.REDIS_URI }}
+          SITE_VERSION: ${{ secrets.SITE_VERSION }}
         run: pnpm test:integration
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
