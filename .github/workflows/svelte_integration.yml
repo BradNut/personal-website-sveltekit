@@ -32,6 +32,7 @@ jobs:
         run: pnpm exec playwright install --with-deps
       - name: Run tests
         env:
+          ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
           WALLABAG_MAX_ARTICLES: ${{ secrets.WALLABAG_MAX_ARTICLES }}
           WALLABAG_MAX_PAGES: ${{ secrets.WALLABAG_MAX_PAGES }}
           WALLABAG_CLIENT_ID: ${{ secrets.WALLABAG_CLIENT_ID }}
@@ -42,12 +43,17 @@ jobs:
           BANDCAMP_USERNAME: ${{ secrets.BANDCAMP_USERNAME }}
           PUBLIC_SITE_URL: ${{ secrets.PUBLIC_SITE_URL }}
           PUBLIC_URL: ${{ secrets.PUBLIC_URL }}
+          PUBLIC_SENTRY_URL: ${{ secrets.PUBLIC_SENTRY_URL }}
+          PUBLIC_SITE_VERSION: ${{ secrets.PUBLIC_SITE_VERSION }}
           PUBLIC_UMAMI_DO_NOT_TRACK: ${{ secrets.PUBLIC_UMAMI_DO_NOT_TRACK }}
           PUBLIC_UMAMI_URL: ${{ secrets.PUBLIC_UMAMI_URL }}
           PUBLIC_UMAMI_ID: ${{ secrets.PUBLIC_UMAMI_ID }}
           PAGE_SIZE: ${{ secrets.PAGE_SIZE }}
           USE_REDIS_CACHE: 'false'
           REDIS_URI: ${{ secrets.REDIS_URI }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_BACKEND_URL: ${{ secrets.SENTRY_BACKEND_URL }}
+          SITE_VERSION: ${{ secrets.SITE_VERSION }}
         run: pnpm test:integration
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}

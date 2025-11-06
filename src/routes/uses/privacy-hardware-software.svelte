@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ExternalLink from "$lib/components/ExternalLink.svelte";
+import ExternalLink from '$lib/components/ExternalLink.svelte';
 </script>
 
 <section id="uses-privacy-hardware-software">
@@ -43,8 +43,7 @@
 </section>
 
 <style lang="postcss">
-  ul {
-    list-style-type: square;
-    padding-inline-start: 4rem;
-  }
+	ul {
+		padding-inline-start: 4rem;
+	}
 </style>

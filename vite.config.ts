@@ -1,10 +1,12 @@
-import { sveltekit } from '@sveltejs/kit/vite';
-import { defineConfig } from 'vite';
+import { sentrySvelteKit } from '@sentry/sveltekit';
 import { enhancedImages } from '@sveltejs/enhanced-img';
+import { sveltekit } from '@sveltejs/kit/vite';
 import { imagetools } from '@zerodevx/svelte-img/vite';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [
+    sentrySvelteKit(),
     enhancedImages(),
     sveltekit(),
     imagetools({

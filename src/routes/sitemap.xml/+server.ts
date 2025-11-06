@@ -5,10 +5,10 @@ import type { ArticlePageLoad } from '$lib/types/article';
 const site = `https://${PUBLIC_URL}`;
 
 export const GET: RequestHandler = async function GET({ fetch, setHeaders }) {
-	const resp = await fetch(`/api/articles`);
-	const { totalPages }: ArticlePageLoad = await resp.json();
+  const resp = await fetch(`/api/articles`);
+  const { totalPages }: ArticlePageLoad = await resp.json();
 
-	const xml = `<?xml version="1.0" encoding="UTF-8" ?>
+  const xml = `<?xml version="1.0" encoding="UTF-8" ?>
     <urlset
       xmlns="https://www.sitemaps.org/schemas/sitemap/0.9"
       xmlns:news="https://www.google.com/schemas/sitemap-news/0.9"
@@ -63,10 +63,10 @@ export const GET: RequestHandler = async function GET({ fetch, setHeaders }) {
     </urlset>
   `;
 
-	setHeaders({
-		'cache-control': 'max-age=0, s-maxage=3600',
-		'Content-Type': 'application/xml'
-	});
+  setHeaders({
+    'cache-control': 'max-age=0, s-maxage=3600',
+    'Content-Type': 'application/xml',
+  });
 
-	return new Response(xml);
+  return new Response(xml);
 };

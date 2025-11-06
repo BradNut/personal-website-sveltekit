@@ -1,18 +1,18 @@
 import type { ScrapeResult } from 'scrape-it';
 import scrapeIt from 'scrape-it';
 import { BANDCAMP_USERNAME, USE_REDIS_CACHE } from '$env/static/private';
-import { redis } from '$lib/server/redis';
+import { REDIS_PREFIXES, redisService } from '$lib/server/redis';
 import type { Album, BandCampResults } from '../types/album';
 
 export async function fetchBandcampAlbums(): Promise<Album[] & { cacheControl?: string }> {
   try {
     if (USE_REDIS_CACHE === 'true') {
-      const cached: string | null = await redis.get('bandcampAlbums');
+      const cached: string | null = await redisService.get({ prefix: REDIS_PREFIXES.BANDCAMP_ALBUMS, key: 'albums' });
 
       if (cached) {
         const response: Album[] = JSON.parse(cached);
         console.log('Cache hit!');
-        const ttl = await redis.ttl('bandcampAlbums');
+        const ttl = await redisService.ttl({ prefix: REDIS_PREFIXES.BANDCAMP_ALBUMS, key: 'albums' });
 
         // Preserve array shape; attach cacheControl as a non-enumerable property.
         if (typeof ttl === 'number' && ttl > 0) {
@@ -52,7 +52,7 @@ export async function fetchBandcampAlbums(): Promise<Album[] & { cacheControl?: 
     if (albums && albums?.length > 0) {
       if (USE_REDIS_CACHE === 'true') {
         // Store in Redis for 12 hours.
-        redis.set('bandcampAlbums', JSON.stringify(albums), 'EX', 43200);
+        await redisService.setWithExpiry({ prefix: REDIS_PREFIXES.BANDCAMP_ALBUMS, key: 'albums', value: JSON.stringify(albums), expiry: 43200 });
         // Reflect the cache TTL on the returned array as a hint to clients.
         Object.defineProperty(albums, 'cacheControl', {
           value: 'max-age=43200',

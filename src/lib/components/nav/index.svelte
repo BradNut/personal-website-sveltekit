@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/state';
+import { page } from '$app/state';
 </script>
 
 <header aria-label="header navigation">

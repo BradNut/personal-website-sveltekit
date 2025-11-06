@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ExternalLink from "$lib/components/ExternalLink.svelte";
+import ExternalLink from '$lib/components/ExternalLink.svelte';
 </script>
 
 <section id="uses-development">
@@ -197,9 +197,8 @@
 	</ul>
 </section>
 
-<style land="postcss">
+<style lang="postcss">
 	ul {
-    list-style-type: square;
-    padding-inline-start: 4rem;
-  }
+		padding-inline-start: 4rem;
+	}
 </style>

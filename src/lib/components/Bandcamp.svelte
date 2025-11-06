@@ -1,10 +1,9 @@
 <script lang="ts">
-  import type { Album } from "$lib/types/album";
-  import BandcampAlbum from './BandcampAlbum.svelte';
+	import type { Album } from "$lib/types/album";
+	import BandcampAlbum from "./BandcampAlbum.svelte";
 
-  const { albums }: { albums: Album[] } = $props();
-  const displayAlbums =
-    albums?.length > 6 ? albums.slice(0, 6) : albums;
+	const { albums }: { albums: Album[] } = $props();
+	const displayAlbums = albums?.length > 6 ? albums.slice(0, 6) : albums;
 
 	for (let album of displayAlbums) {
 		album.src = {
@@ -12,9 +11,9 @@
 			sources: {
 				avif: `${album.artwork}`,
 				webp: `${album.artwork}`,
-				jpg: `${album.artwork}`
-			}
-		}
+				jpg: `${album.artwork}`,
+			},
+		};
 	}
 </script>
 

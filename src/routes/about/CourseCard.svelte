@@ -12,14 +12,59 @@
 </script>
 
 <div class="card">
-	<h3>
+	<div class="links">
 		{#each externalLinks as link}
-			<ExternalLink
-				linkData={{ href: link.href, ariaLabel: link.ariaLabel, title: link.ariaLabel, target: '_blank', clazz: "tech-list-item" }}
-				textData={{ text: link.text, showIcon: link.showIcon, location: 'left' }}
-			/>
+			{#if link.tag === 'h4'}
+				<h4>
+					<ExternalLink
+						linkData={{
+							href: link.href,
+							ariaLabel: link.ariaLabel,
+							title: link.ariaLabel,
+							target: "_blank",
+						}}
+						textData={{
+							text: link.text,
+							showIcon: link.showIcon,
+							location: "left",
+						}}
+					/>
+				</h4>
+			{:else if link.tag === 'h5'}
+				<h5>
+					<ExternalLink
+						linkData={{
+							href: link.href,
+							ariaLabel: link.ariaLabel,
+							title: link.ariaLabel,
+							target: "_blank",
+						}}
+						textData={{
+							text: link.text,
+							showIcon: link.showIcon,
+							location: "left",
+						}}
+					/>
+				</h5>
+			{:else}
+				<h3>
+					<ExternalLink
+						linkData={{
+							href: link.href,
+							ariaLabel: link.ariaLabel,
+							title: link.ariaLabel,
+							target: "_blank",
+						}}
+						textData={{
+							text: link.text,
+							showIcon: link.showIcon,
+							location: "left",
+						}}
+					/>
+				</h3>
+			{/if}
 		{/each}
-	</h3>
+	</div>
 	<div class="tags">
 		{#each tags as tag}
 			<Tag name={tag} />
@@ -28,14 +73,22 @@
 </div>
 
 <style lang="postcss">
-	.card {
-		max-width: 30rem;
+	.links {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.links h3,
+	.links h4,
+	.links h5 {
+		margin: 0;
 	}
 
 	.tags {
 		display: flex;
 		flex-wrap: wrap;
-		justify-content: left;
+		gap: 0.5rem;
 		align-items: center;
 	}
 </style>

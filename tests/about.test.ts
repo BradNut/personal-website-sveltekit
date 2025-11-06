@@ -18,10 +18,7 @@ test.describe('About page', () => {
       return color;
     });
 
-    const areas = [
-      'header[aria-label="header navigation"]',
-      'footer nav[aria-label="footer navigation"]',
-    ];
+    const areas = ['header[aria-label="header navigation"]', 'footer nav[aria-label="footer navigation"]'];
 
     for (const area of areas) {
       const nav = page.locator(area);
@@ -48,10 +45,7 @@ test.describe('About page', () => {
 
   test('current page (About) link is active in header and footer', async ({ page }) => {
     await page.goto('/about');
-    const areas = [
-      'header[aria-label="header navigation"]',
-      'footer nav[aria-label="footer navigation"]',
-    ];
+    const areas = ['header[aria-label="header navigation"]', 'footer nav[aria-label="footer navigation"]'];
     for (const area of areas) {
       const nav = page.locator(area);
       const aboutLink = nav.getByRole('link', { name: 'About', exact: true });
@@ -110,11 +104,7 @@ test.describe('About page', () => {
     const cards = container.locator('.card');
     const count = await cards.count();
     expect(count).toBeGreaterThanOrEqual(3);
-    const [c0, c1, c2] = await Promise.all([
-      cards.nth(0).boundingBox(),
-      cards.nth(1).boundingBox(),
-      cards.nth(2).boundingBox(),
-    ]);
+    const [c0, c1, c2] = await Promise.all([cards.nth(0).boundingBox(), cards.nth(1).boundingBox(), cards.nth(2).boundingBox()]);
     expect(c0 && c1 && c2).toBeTruthy();
     if (c0 && c1 && c2) {
       // first two side-by-side on same row, third wrapped below
@@ -130,10 +120,7 @@ test.describe('About page', () => {
     const cards = container.locator('.card');
     const count = await cards.count();
     expect(count).toBeGreaterThanOrEqual(2);
-    const [a, b] = await Promise.all([
-      cards.nth(0).boundingBox(),
-      cards.nth(1).boundingBox(),
-    ]);
+    const [a, b] = await Promise.all([cards.nth(0).boundingBox(), cards.nth(1).boundingBox()]);
     expect(a && b).toBeTruthy();
     if (a && b) {
       expect(b.y).toBeGreaterThan(a.y + 10);
@@ -197,7 +184,9 @@ test.describe('About page', () => {
     await fav.scrollIntoViewIfNeeded();
     const href = await fav.getAttribute('href');
     expect(href).toMatch(/\/articles(\/\d+)?\/?$/);
-    await page.goto(href!);
+    if (href) {
+      await page.goto(href);
+    }
     await expect(page).toHaveURL(/\/articles(\/\d+)?\/?$/, { timeout: 15000 });
 
     await footerNav.getByRole('link', { name: 'About', exact: true }).scrollIntoViewIfNeeded();
@@ -225,10 +214,7 @@ test.describe('About page', () => {
     const img = page.locator('.cat-pics figure:nth-of-type(2) img');
     await expect(img).toBeVisible();
 
-    const [imgBox, sectionBox] = await Promise.all([
-      img.boundingBox(),
-      catSection.boundingBox(),
-    ]);
+    const [imgBox, sectionBox] = await Promise.all([img.boundingBox(), catSection.boundingBox()]);
     expect(imgBox && sectionBox).toBeTruthy();
     if (imgBox && sectionBox) {
       expect(imgBox.x).toBeGreaterThanOrEqual(sectionBox.x - 1);

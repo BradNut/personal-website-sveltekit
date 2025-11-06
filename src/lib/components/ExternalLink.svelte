@@ -1,31 +1,48 @@
 <script lang="ts">
-import { ExternalLink } from 'lucide-svelte';
-import type { ExternalLinkType, LinkIconType } from '$lib/types/externalLinkTypes';
+	import { ExternalLink } from "lucide-svelte";
+	import type {
+		ExternalLinkType,
+		LinkIconType,
+	} from "$lib/types/externalLinkTypes";
 
-const { iconData = { type: 'icon', icon: ExternalLink }, linkData, textData }: ExternalLinkType = $props();
-// Guarantee non-optional icon data for linkIcon()
-const safeIconData: LinkIconType = iconData ?? { type: 'icon', icon: ExternalLink };
+	const {
+		iconData = { type: "icon", icon: ExternalLink },
+		linkData,
+		textData,
+		iconSize = 20,
+	}: ExternalLinkType & { iconSize?: number } = $props();
+	// Guarantee non-optional icon data for linkIcon()
+	const safeIconData: LinkIconType = iconData ?? {
+		type: "icon",
+		icon: ExternalLink,
+	};
 
-let textLocationClass = '';
-if (textData?.location === 'top') {
-  textLocationClass = 'text-top';
-} else if (textData?.location === 'bottom') {
-  textLocationClass = 'text-bottom';
-} else if (textData?.location === 'left') {
-  textLocationClass = 'text-left';
-} else if (textData?.location === 'right') {
-  textLocationClass = 'text-right';
-} else {
-  textLocationClass = 'text-left';
-}
+	let textLocationClass = "";
+	if (textData?.location === "top") {
+		textLocationClass = "text-top";
+	} else if (textData?.location === "bottom") {
+		textLocationClass = "text-bottom";
+	} else if (textData?.location === "left") {
+		textLocationClass = "text-left";
+	} else if (textData?.location === "right") {
+		textLocationClass = "text-right";
+	} else {
+		textLocationClass = "text-left";
+	}
 
-const linkDecoration =
-  linkData?.textDecoration && linkData?.textDecoration === 'none' ? `text-decoration-${linkData?.textDecoration}` : 'text-decoration-underline';
-const linkClass = `${linkData?.clazz || ''} ${textLocationClass} ${linkDecoration}`.trim();
-
+	const linkDecoration =
+		linkData?.textDecoration && linkData?.textDecoration === "none"
+			? `text-decoration-${linkData?.textDecoration}`
+			: "text-decoration-underline";
+	const linkClass =
+		`${linkData?.clazz || ""} ${textLocationClass} ${linkDecoration}`.trim();
 </script>
 
-{#snippet externalLink({ iconData = { type: 'icon', icon: ExternalLink }, linkData, textData }: ExternalLinkType)}
+{#snippet externalLink({
+	iconData = { type: "icon", icon: ExternalLink },
+	linkData,
+	textData,
+}: ExternalLinkType)}
 	<a
 		class={linkClass}
 		aria-label={`Open ${linkData?.ariaLabel ?? linkData?.title ?? linkData?.href} externally`}
@@ -38,7 +55,7 @@ const linkClass = `${linkData?.clazz || ''} ${textLocationClass} ${linkDecoratio
 			{textData?.text}
 		{/if}
 		{#if textData?.showIcon}
-			{@render linkIcon(safeIconData)}
+			{@render linkIcon(safeIconData, iconSize)}
 		{/if}
 		{#if textData?.location === "bottom" || (textData?.location === "right" && textData?.text)}
 			{textData?.text}
@@ -46,7 +63,7 @@ const linkClass = `${linkData?.clazz || ''} ${textLocationClass} ${linkDecoratio
 	</a>
 {/snippet}
 
-{#snippet linkIcon({ type, icon, iconClass }: LinkIconType)}
+{#snippet linkIcon({ type, icon, iconClass }: LinkIconType, size: number = 20)}
 	{#if type === "svg" && icon && typeof icon === "function" && icon.length !== undefined}
 		<svg
 			style="width: 2.5rem; height: 2.5rem;"
@@ -62,10 +79,22 @@ const linkClass = `${linkData?.clazz || ''} ${textLocationClass} ${linkDecoratio
 		</svg>
 	{:else if type === "icon" && icon}
 		{@const Icon = icon}
-		<Icon><title>{linkData?.title ?? `Open ${linkData?.ariaLabel} externally`}</title></Icon>
+		<Icon
+			size={size}
+			strokeWidth={2}
+			><title
+				>{linkData?.title ?? `Open ${linkData?.ariaLabel} externally`}</title
+			></Icon
+		>
 	{:else}
 		{@const Icon = ExternalLink}
-		<Icon><title>{linkData?.title ?? `Open ${linkData?.ariaLabel} externally`}</title></Icon>
+		<Icon
+			size={size}
+			strokeWidth={2}
+			><title
+				>{linkData?.title ?? `Open ${linkData?.ariaLabel} externally`}</title
+			></Icon
+		>
 	{/if}
 {/snippet}
 
@@ -75,8 +104,6 @@ const linkClass = `${linkData?.clazz || ''} ${textLocationClass} ${linkDecoratio
 	a {
 		display: grid;
 		place-items: center;
-		padding: 0;
-		font-size: var(--bodyTextSize);
 	}
 
 	.text-top {
@@ -91,9 +118,19 @@ const linkClass = `${linkData?.clazz || ''} ${textLocationClass} ${linkDecoratio
 	.text-right {
 		display: inline-flex;
 		flex-direction: row;
-		place-items: baseline;
+		align-items: center;
 		place-content: center;
 		gap: 0.5rem;
+		transition: all 0.2s ease;
+
+		&:hover {
+			transform: translateY(-1px);
+			color: var(--shellYellow);
+		}
+
+		&:active {
+			transform: translateY(0);
+		}
 	}
 
 	.text-decoration-none {

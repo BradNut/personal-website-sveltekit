@@ -1,11 +1,11 @@
 <script lang="ts">
-  interface Props {
-    count?: number;
-    classes?: string[];
-  }
+interface Props {
+  count?: number;
+  classes?: string[];
+}
 
-  let { count = 6, classes = [""] }: Props = $props();
-  const placeholders = Array.from({ length: count });
+let { count = 6, classes = [''] }: Props = $props();
+const placeholders = Array.from({ length: count });
 </script>
 
 {#each placeholders as _, i (i)}

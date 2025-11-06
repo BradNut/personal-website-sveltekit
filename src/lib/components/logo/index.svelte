@@ -1,11 +1,11 @@
 <script lang="ts">
-	import beeIcon from '$lib/assets/images/bee.svg';
-	import nutIcon from '$lib/assets/images/hazelnut.svg';
-	import shellIcon from '$lib/assets/images/shell.svg';
+import beeIcon from '$lib/assets/images/bee.svg';
+import nutIcon from '$lib/assets/images/hazelnut.svg';
+import shellIcon from '$lib/assets/images/shell.svg';
 
-	const bee: string = beeIcon;
-	const shell: string = shellIcon;
-	const nut: string = nutIcon;
+const bee: string = beeIcon;
+const shell: string = shellIcon;
+const nut: string = nutIcon;
 </script>
 
 <div>

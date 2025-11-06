@@ -1,43 +1,43 @@
 <script lang="ts">
-	import "../styles/styles.pcss";
-	import { MetaTags } from "svelte-meta-tags";
-	import { dev } from "$app/environment";
-	import { page } from "$app/state";
-	import Header from "../lib/components/header/index.svelte";
-	import Footer from "../lib/components/footer/index.svelte";
-	import Analytics from "../lib/components/analytics/index.svelte";
-	import { onNavigate } from "$app/navigation";
-	import PageLoadingIndicator from "../lib/util/page_loading_indicator.svelte";
+import '../styles/styles.pcss';
+import { MetaTags } from 'svelte-meta-tags';
+import { dev } from '$app/environment';
+import { page } from '$app/state';
+import Header from '../lib/components/header/index.svelte';
+import Footer from '../lib/components/footer/index.svelte';
+import Analytics from '../lib/components/analytics/index.svelte';
+import { onNavigate } from '$app/navigation';
+import PageLoadingIndicator from '../lib/util/page_loading_indicator.svelte';
 
-	interface Props {
-		children?: import("svelte").Snippet;
-	}
+interface Props {
+  children?: import('svelte').Snippet;
+}
 
-	let { children }: Props = $props();
+let { children }: Props = $props();
 
-	const production = !dev || import.meta.env.NODE_ENV !== "production";
+const production = !dev || import.meta.env.NODE_ENV !== 'production';
 
-	onNavigate(async (navigation) => {
-		if (!document.startViewTransition) return;
+onNavigate(async (navigation) => {
+  if (!document.startViewTransition) return;
 
-		return new Promise((oldStateCaptureResolve) => {
-			document.startViewTransition(async () => {
-				oldStateCaptureResolve();
-				await navigation.complete;
-			});
-		});
-	});
+  return new Promise((oldStateCaptureResolve) => {
+    document.startViewTransition(async () => {
+      oldStateCaptureResolve();
+      await navigation.complete;
+    });
+  });
+});
 
-	let metaTags = $derived({
-		titleTemplate: "%s | Bradley Shellnut",
-		additionalMetaTags: [
-			{
-				property: "theme-color",
-				content: "#272727",
-			},
-		],
-		...page.data.metaTagsChild,
-	});
+let metaTags = $derived({
+  titleTemplate: '%s | Bradley Shellnut',
+  additionalMetaTags: [
+    {
+      property: 'theme-color',
+      content: '#272727',
+    },
+  ],
+  ...page.data.metaTagsChild,
+});
 </script>
 
 {#if production}

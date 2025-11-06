@@ -1,59 +1,57 @@
 <script lang="ts">
-	import { onNavigate, beforeNavigate } from "$app/navigation";
-	import { LoaderCircle } from "lucide-svelte";
+import { onNavigate, beforeNavigate } from '$app/navigation';
+import { LoaderCircle } from 'lucide-svelte';
 
-	let visible = $state(false);
-	let progress = $state(0);
-	let load_durations = $state<number[]>([]);
-	let average_load = $derived(
-		load_durations.reduce((a, b) => a + b, 0) / load_durations.length,
-	);
+let visible = $state(false);
+let progress = $state(0);
+let load_durations = $state<number[]>([]);
+let average_load = $derived(load_durations.reduce((a, b) => a + b, 0) / load_durations.length);
 
-	const increment = 1;
-	let interval: number | null = null;
+const increment = 1;
+let interval: number | null = null;
 
-	beforeNavigate(() => {
-		// Start the progress bar immediately when navigation begins
-		visible = true;
-		progress = 0;
-		
-		// Clear any existing interval
-		if (interval) {
-			clearInterval(interval);
-		}
-		
-		const typical_load_time = average_load || 200; // ms
-		const frequency = typical_load_time / 100;
-		
-		interval = setInterval(() => {
-			// Increment the progress bar but cap at 20% during beforeNavigate
-			if (progress < 20) {
-				progress += increment;
-			}
-		}, frequency);
-	});
+beforeNavigate(() => {
+  // Start the progress bar immediately when navigation begins
+  visible = true;
+  progress = 0;
 
-	onNavigate((navigation) => {
-		console.log("Navigating to", navigation?.to);
-		let start = performance.now();
-		
-		// Resolve the promise when the page is done loading
-		navigation?.complete.then(() => {
-			progress = 100; // Fill out the progress bar
-			if (interval) {
-				clearInterval(interval);
-				interval = null;
-			}
-			// after 100 ms hide the progress bar
-			setTimeout(() => {
-				visible = false;
-			}, 500);
-			// Log how long that one took
-			const end = performance.now();
-			const duration = end - start;
-			load_durations = [...load_durations, duration];
-		});
-	});
+  // Clear any existing interval
+  if (interval) {
+    clearInterval(interval);
+  }
+
+  const typical_load_time = average_load || 200; // ms
+  const frequency = typical_load_time / 100;
+
+  interval = setInterval(() => {
+    // Increment the progress bar but cap at 20% during beforeNavigate
+    if (progress < 20) {
+      progress += increment;
+    }
+  }, frequency);
+});
+
+onNavigate((navigation) => {
+  console.log('Navigating to', navigation?.to);
+  let start = performance.now();
+
+  // Resolve the promise when the page is done loading
+  navigation?.complete.then(() => {
+    progress = 100; // Fill out the progress bar
+    if (interval) {
+      clearInterval(interval);
+      interval = null;
+    }
+    // after 100 ms hide the progress bar
+    setTimeout(() => {
+      visible = false;
+    }, 500);
+    // Log how long that one took
+    const end = performance.now();
+    const duration = end - start;
+    load_durations = [...load_durations, duration];
+  });
+});
 </script>
 
 {#if visible}

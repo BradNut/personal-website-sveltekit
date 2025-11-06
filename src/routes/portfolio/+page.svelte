@@ -1,20 +1,20 @@
 <script lang="ts">
-	import { Tabs } from 'bits-ui';
-	import ExternalLink from '$lib/components/ExternalLink.svelte';
-	import type { ExternalLinkType } from '$lib/types/externalLinkType';
-	import { gitHubIcon } from '$lib/util/logoIcons.svelte';
-	import personalSite from '../../lib/assets/images/portfolio/Bradley_Shellnut_New_Site.png?enhanced';
-	import shellnutArchitectWebsite from '../../lib/assets/images/portfolio/Mark_Shellnut_Architect.png?enhanced';
-	import oldSite from '../../lib/assets/images/portfolio/Old_Website_Bradley_Shellnut.png?enhanced';
-	import weddingWebsite from '../../lib/assets/images/portfolio/Wedding_Website.png?enhanced';
-	import Portfolio from './Portfolio.svelte';
+	import { Tabs } from "bits-ui";
+	import ExternalLink from "$lib/components/ExternalLink.svelte";
+	import type { ExternalLinkType } from "$lib/types/externalLinkType";
+	import { gitHubIcon } from "$lib/util/logoIcons.svelte";
+	import personalSite from "../../lib/assets/images/portfolio/Bradley_Shellnut_New_Site.png?enhanced";
+	import shellnutArchitectWebsite from "../../lib/assets/images/portfolio/Mark_Shellnut_Architect.png?enhanced";
+	import oldSite from "../../lib/assets/images/portfolio/Old_Website_Bradley_Shellnut.png?enhanced";
+	import weddingWebsite from "../../lib/assets/images/portfolio/Wedding_Website.png?enhanced";
+	import Portfolio from "./Portfolio.svelte";
 </script>
 
 {#snippet links(externalLinks: ExternalLinkType[])}
-	<span>
+	<div class="project-links">
 		{#each externalLinks as link}
 			{#if link.icon && link.showIcon}
-				{#if typeof link.icon === 'function' && 'length' in link.icon}
+				{#if typeof link.icon === "function" && "length" in link.icon}
 					<!-- Snippet icon: pass snippet directly for LinkIconType 'svg' -->
 					<ExternalLink
 						linkData={{
@@ -28,7 +28,8 @@
 							showIcon: link.showIcon,
 							location: "left",
 						}}
-						iconData={{ type: 'svg', icon: link.icon as any }}
+						iconData={{ type: "svg", icon: link.icon as any }}
+						iconSize={32}
 					/>
 				{:else}
 					<!-- Component icon (e.g., lucide-svelte) -->
@@ -44,7 +45,8 @@
 							showIcon: link.showIcon,
 							location: "left",
 						}}
-						iconData={{ type: 'icon', icon: link.icon as any }}
+						iconData={{ type: "icon", icon: link.icon as any }}
+						iconSize={32}
 					/>
 				{/if}
 			{:else}
@@ -60,10 +62,11 @@
 						showIcon: link.showIcon,
 						location: "left",
 					}}
+					iconSize={32}
 				/>
 			{/if}
 		{/each}
-	</span>
+	</div>
 {/snippet}
 
 <h1>Portfolio!</h1>
@@ -90,88 +93,96 @@
 				},
 			]}
 		>
-			<h2>My personal website re-written using SvelteKit.</h2>
-			Tech Stack:
-			<ul>
-				<li>
-					<ExternalLink
+			<section>
+				<h2>My personal website re-written using SvelteKit.</h2>
+				<h3>Tech Stack:</h3>
+				<ul>
+					<li>
+						<ExternalLink
+							linkData={{
+								href: "https://kit.svelte.dev/",
+								ariaLabel: "SvelteKit",
+							}}
+							textData={{ text: "SvelteKit", showIcon: true, location: "left" }}
+						/>
+					</li>
+					<li>
+						<ExternalLink
+							linkData={{ href: "https://bits-ui.com/", ariaLabel: "Bits-UI" }}
+							textData={{ text: "Bits-UI", showIcon: true, location: "left" }}
+						/> for the headless-ui components.
+					</li>
+					<li>
+						<ExternalLink
+							linkData={{
+								href: "https://www.typescriptlang.org/",
+								ariaLabel: "TypeScript",
+							}}
+							textData={{
+								text: "TypeScript",
+								showIcon: true,
+								location: "left",
+							}}
+						/>
+					</li>
+					<li>Deployed on a Coolify Self Hosted Box</li>
+					<li>
+						Icons in the <a href="/about">/about</a> page and the Bee, Shell,
+						and Nut icons are all made by <ExternalLink
+							linkData={{
+								href: "https://www.flaticon.com/authors/freepik",
+								ariaLabel: "Freepik",
+							}}
+							textData={{ text: "Freepik", showIcon: true, location: "left" }}
+						/> from <ExternalLink
+							textData={{ text: "Flaticon", showIcon: true, location: "left" }}
+							linkData={{
+								href: "https://www.flaticon.com/",
+								ariaLabel: "Flaticon",
+							}}
+						/>
+					</li>
+				</ul>
+			</section>
+			<section class="portfolio-details">
+				<p>
+					The previous version of my website was written using React and Gatsby
+					which you can view <ExternalLink
 						linkData={{
-							href: "https://kit.svelte.dev/",
-							ariaLabel: "SvelteKit",
+							href: "https://wonderful-austin-9f17d2.netlify.app/",
+							ariaLabel: "React and Gatsby Personal Site version",
 						}}
-						textData={{ text: "SvelteKit", showIcon: true, location: "left" }}
+						textData={{ text: "here.", showIcon: true, location: "left" }}
 					/>
-				</li>
-				<li>
-					<ExternalLink
-						linkData={{ href: "https://bits-ui.com/", ariaLabel: "Bits-UI" }}
-						textData={{ text: "Bits-UI", showIcon: true, location: "left" }}
-					/> for the headless-ui components.
-				</li>
-				<li>
-					<ExternalLink
+				</p>
+				<p>
+					Each iteration brings better code and my previous React version was
+					improved after the suggestions on <ExternalLink
 						linkData={{
-							href: "https://www.typescriptlang.org/",
-							ariaLabel: "TypeScript",
+							href: "https://syntax.fm/show/444/syntax-highlight#t=33:19",
+							ariaLabel: "Syntax.fm Podcast Number 444",
 						}}
-						textData={{ text: "TypeScript", showIcon: true, location: "left" }}
-					/>
-				</li>
-				<li>Deployed on a Coolify Self Hosted Box</li>
-				<li>
-					Icons in the <a href="/about">/about</a> page and the Bee, Shell, and
-					Nut icons are all made by <ExternalLink
-						linkData={{
-							href: "https://www.flaticon.com/authors/freepik",
-							ariaLabel: "Freepik",
-						}}
-						textData={{ text: "Freepik", showIcon: true, location: "left" }}
-					/> from <ExternalLink
-						textData={{ text: "Flaticon", showIcon: true, location: "left" }}
-						linkData={{
-							href: "https://www.flaticon.com/",
-							ariaLabel: "Flaticon",
+						textData={{ text: "Show 444", showIcon: true, location: "left" }}
+					/> of the <ExternalLink
+						linkData={{ href: "https://syntax.fm/", ariaLabel: "Syntax.fm" }}
+						textData={{
+							text: "Syntax Pocast.",
+							showIcon: true,
+							location: "left",
 						}}
 					/>
-				</li>
-			</ul>
-			<p>
-				The previous version of my website was written using React and Gatsby
-				which you can view <ExternalLink
-					linkData={{
-						href: "https://wonderful-austin-9f17d2.netlify.app/",
-						ariaLabel: "React and Gatsby Personal Site version",
-					}}
-					textData={{ text: "here.", showIcon: true, location: "left" }}
-				/>
-			</p>
-			<p>
-				Each iteration brings better code and my previous React version was
-				improved after the suggestions on <ExternalLink
-					linkData={{
-						href: "https://syntax.fm/show/444/syntax-highlight#t=33:19",
-						ariaLabel: "Syntax.fm Podcast Number 444",
-					}}
-					textData={{ text: "Show 444", showIcon: true, location: "left" }}
-				/> of the <ExternalLink
-					linkData={{ href: "https://syntax.fm/", ariaLabel: "Syntax.fm" }}
-					textData={{
-						text: "Syntax Pocast.",
-						showIcon: true,
-						location: "left",
-					}}
-				/>
-			</p>
-			<p>
-				You can view the previous archived version of the site before those
-				changes <ExternalLink
-					textData={{ text: "here.", showIcon: true, location: "left" }}
-					linkData={{
-						href: "https://web.archive.org/web/20210224002046/https://bradleyshellnut.com/",
-						ariaLabel: "Archive before Syntax Podcast",
-					}}
-				/>
-			</p>
+				</p>
+				<p>
+					You can view the previous archived version of the site before those
+					changes <ExternalLink
+						textData={{ text: "here.", showIcon: true, location: "left" }}
+						linkData={{
+							href: "https://web.archive.org/web/20210224002046/https://bradleyshellnut.com/",
+							ariaLabel: "Archive before Syntax Podcast",
+						}}
+					/>
+				</p>
+			</section>
 		</Portfolio>
 		<Portfolio
 			name="Wedding Website"
@@ -189,28 +200,35 @@
 				},
 			]}
 		>
-			<p>
-				The app was initially created for my wedding but what is linked here is
-				a public demo of the application.
-			</p>
-			<p>
-				An application that allows viewing of wedding details and provides the
-				ability to RSVP to the wedding.
-			</p>
-			<p>Tech stack:</p>
-			<ul>
-				<li>Next.js 13</li>
-				<li>React 18</li>
-				<li>
-					<ExternalLink
-						linkData={{ href: "https://radix-ui.com/", ariaLabel: "Radix UI" }}
-						textData={{ text: "Radix UI", showIcon: true, location: "left" }}
-					/>
-				</li>
-				<li>MongoDB</li>
-				<li>Styled Components</li>
-				<li>Next Iron Session</li>
-			</ul>
+			<section>
+				<h3>Tech stack:</h3>
+				<ul>
+					<li>Next.js 13</li>
+					<li>React 18</li>
+					<li>
+						<ExternalLink
+							linkData={{
+								href: "https://radix-ui.com/",
+								ariaLabel: "Radix UI",
+							}}
+							textData={{ text: "Radix UI", showIcon: true, location: "left" }}
+						/>
+					</li>
+					<li>MongoDB</li>
+					<li>Styled Components</li>
+					<li>Next Iron Session</li>
+				</ul>
+			</section>
+			<section class="portfolio-details">
+				<p>
+					The app was initially created for my wedding but what is linked here
+					is a public demo of the application.
+				</p>
+				<p>
+					An application that allows viewing of wedding details and provides the
+					ability to RSVP to the wedding.
+				</p>
+			</section>
 		</Portfolio>
 		<Portfolio
 			name="Old Personal Website"
@@ -228,15 +246,19 @@
 				},
 			]}
 		>
-			<p>My first personal website</p>
-			<p>This was my first real personal website hosted on DigitalOcean.</p>
-			<p>Tech stack:</p>
-			<ul>
-				<li>React</li>
-				<li>Redux</li>
-				<li>ReactStrap for CSS grid management</li>
-				<li>React Router for routing links in the page</li>
-			</ul>
+			<section>
+				<h3>Tech stack:</h3>
+				<ul>
+					<li>React</li>
+					<li>Redux</li>
+					<li>ReactStrap for CSS grid management</li>
+					<li>React Router for routing links in the page</li>
+				</ul>
+			</section>
+			<section class="portfolio-details">
+				<p>My first personal website</p>
+				<p>This was my first real personal website hosted on DigitalOcean.</p>
+			</section>
 		</Portfolio>
 	</Tabs.Content>
 	<Tabs.Content value="professional">
@@ -255,38 +277,45 @@
 				},
 			]}
 		>
-			<p>Company website for Mark Shellnut Architect.</p>
-			<p>Tech stack:</p>
-			<ul>
-				<li>React 18</li>
-				<li>Gatsby 5</li>
-				<li>
-					<ExternalLink
-						linkData={{ href: "https://radix-ui.com/", ariaLabel: "Radix UI" }}
-						textData={{ text: "Radix UI", showIcon: true, location: "left" }}
-					/>
-				</li>
-				<li>Styled Components</li>
-				<li>GraphQL</li>
-				<li>Lambda Functions</li>
-			</ul>
+			<section>
+				<h3>Tech stack:</h3>
+				<ul>
+					<li>React 18</li>
+					<li>Gatsby 5</li>
+					<li>
+						<ExternalLink
+							linkData={{
+								href: "https://radix-ui.com/",
+								ariaLabel: "Radix UI",
+							}}
+							textData={{ text: "Radix UI", showIcon: true, location: "left" }}
+						/>
+					</li>
+					<li>Styled Components</li>
+					<li>GraphQL</li>
+					<li>Lambda Functions</li>
+				</ul>
+			</section>
+			<section class="portfolio-details">
+				<p>Company website for Mark Shellnut Architect.</p>
+			</section>
 		</Portfolio>
 	</Tabs.Content>
 </Tabs.Root>
 
 <style lang="postcss">
-  :global([data-tabs-root]) {
-    display: flex;
-    flex-direction: column;
+	:global([data-tabs-root]) {
+		display: flex;
+		flex-direction: column;
 
-    @media (min-width: 1000px) {
-      max-width: 50vw;
-    }
-  }
+		@media (min-width: 1000px) {
+			max-width: 50vw;
+		}
+	}
 
-  :global([data-tabs-root][data-orientation="vertical"]) {
-    flex-direction: row;
-  }
+	:global([data-tabs-root][data-orientation="vertical"]) {
+		flex-direction: row;
+	}
 
 	:global([data-tabs-list]) {
 		display: grid;
@@ -313,5 +342,53 @@
 		span {
 			border-bottom: 2px solid var(--white);
 		}
+	}
+
+	.project-links {
+		display: flex;
+		gap: 1rem;
+		margin-top: 1rem;
+		flex-wrap: wrap;
+	}
+
+	:global(.project-links a) {
+		background: rgba(255, 255, 255, 0.05);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		border-radius: 8px;
+		padding: 0.75rem 1.25rem;
+		font-weight: 500;
+		transition: all 0.2s ease;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.75rem;
+
+		&:hover {
+			background: rgba(255, 255, 255, 0.1);
+			border-color: var(--shellYellow);
+			transform: translateY(-2px);
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+		}
+
+		&:active {
+			transform: translateY(0);
+		}
+	}
+
+	:global(.portfolio-details section) {
+		margin-bottom: 2rem;
+	}
+
+	:global(.portfolio-details h3) {
+		margin-bottom: 0.75rem;
+		color: var(--shellYellow);
+	}
+
+	:global(.portfolio-details ul) {
+		display: flex;
+		flex-direction: column;
+	}
+
+	:global(.portfolio-details ul li) {
+		line-height: 1.6;
 	}
 </style>

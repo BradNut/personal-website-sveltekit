@@ -1,5 +1,5 @@
 import type { Icon as IconType } from 'lucide-svelte';
-import type { Snippet } from "svelte";
+import type { Snippet } from 'svelte';
 
 export type ExternalLinkType = {
   ariaLabel: string;
