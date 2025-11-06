@@ -3,12 +3,14 @@ import { expect, test } from '@playwright/test';
 test.describe('API Rate Limiting', () => {
   test.describe('/api/articles endpoint', () => {
     test('allows requests within rate limit', async ({ request }) => {
-      // Make a few requests that should succeed
+      // Make a few requests that should succeed (or return fallback data if API unavailable)
       for (let i = 0; i < 5; i++) {
         const response = await request.get('/api/articles?page=1&limit=10');
         expect(response.status()).toBe(200);
         const data = await response.json();
         expect(data).toHaveProperty('articles');
+        // In CI, external API may fail, so articles array might be empty
+        expect(Array.isArray(data.articles)).toBe(true);
       }
     });
 
