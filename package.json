@@ -59,7 +59,7 @@
     "@resvg/resvg-js": "^2.6.2",
     "@sentry/browser": "^10.23.0",
     "@sentry/node": "^10.23.0",
-    "@sentry/sveltekit": "^10.23.0",
+    "@sentry/sveltekit": "^10.27.0",
     "@vercel/og": "^0.8.5",
     "bits-ui": "2.14.2",
     "flexsearch": "^0.8.212",
