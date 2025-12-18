@@ -41,7 +41,7 @@
     "postcss-preset-env": "^10.4.0",
     "satori": "^0.18.3",
     "satori-html": "^0.3.2",
-    "storybook": "^10.0.5",
+    "storybook": "^10.1.10",
     "svelte": "^5.43.3",
     "svelte-check": "^4.3.3",
     "svelte-meta-tags": "^4.5.0",
