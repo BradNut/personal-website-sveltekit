@@ -23,6 +23,7 @@
 							ariaLabel: link.ariaLabel,
 							title: link.ariaLabel,
 							target: "_blank",
+							rel: "noopener",
 						}}
 						textData={{
 							text: link.text,
@@ -40,6 +41,7 @@
 							ariaLabel: link.ariaLabel,
 							title: link.ariaLabel,
 							target: "_blank",
+							rel: "noopener",
 						}}
 						textData={{
 							text: link.text,
@@ -57,6 +59,7 @@
 						ariaLabel: link.ariaLabel,
 						title: link.ariaLabel,
 						target: "_blank",
+						rel: "noopener",
 					}}
 					textData={{
 						text: link.text,
