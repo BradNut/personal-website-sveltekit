@@ -12,17 +12,41 @@ const userNames = {
 <footer>
 	<ContactHub showGithub showLinkedIn showEmail justify {userNames} />
 	<nav class="footer-list" aria-label="footer navigation">
-		<a class:active={page.url.pathname === "/"} href="/">Home</a>
-		<a class:active={page.url.pathname === "/about"} href="/about">About</a>
-		<a class:active={page.url.pathname === "/portfolio"} href="/portfolio"
-			>Portfolio</a
+		<a
+			class:active={page.url.pathname === "/"}
+			href="/"
+			data-umami-event="Footer Navigation"
+			data-umami-event-page="Home">Home</a
 		>
-		<a class:active={page.url.pathname === "/uses"} href="/uses">Uses</a>
-		<a class:active={page.url.pathname === "/privacy"} href="/privacy"
-			>Privacy</a
+		<a
+			class:active={page.url.pathname === "/about"}
+			href="/about"
+			data-umami-event="Footer Navigation"
+			data-umami-event-page="About">About</a
 		>
-		<a class:active={page.url.pathname === "/articles/1"} href="/articles/1"
-			>Favorite Articles</a
+		<a
+			class:active={page.url.pathname === "/portfolio"}
+			href="/portfolio"
+			data-umami-event="Footer Navigation"
+			data-umami-event-page="Portfolio">Portfolio</a
+		>
+		<a
+			class:active={page.url.pathname === "/uses"}
+			href="/uses"
+			data-umami-event="Footer Navigation"
+			data-umami-event-page="Uses">Uses</a
+		>
+		<a
+			class:active={page.url.pathname === "/privacy"}
+			href="/privacy"
+			data-umami-event="Footer Navigation"
+			data-umami-event-page="Privacy">Privacy</a
+		>
+		<a
+			class:active={page.url.pathname === "/articles/1"}
+			href="/articles/1"
+			data-umami-event="Footer Navigation"
+			data-umami-event-page="Favorite Articles">Favorite Articles</a
 		>
 	</nav>
 	<p>

@@ -118,7 +118,9 @@ describe('fetchArticlesApi (unit, mocked)', () => {
 
     // Stored in Redis with EX for 12 hours
     expect(hoisted.redisServiceMock.setWithExpiry).toHaveBeenCalled();
-    const setArgs = (hoisted.redisServiceMock.setWithExpiry as unknown as { mock: { calls: unknown[][] } }).mock.calls[0] as [{ prefix: string; key: string; value: string; expiry: number }];
+    const setArgs = (hoisted.redisServiceMock.setWithExpiry as unknown as { mock: { calls: unknown[][] } }).mock.calls[0] as [
+      { prefix: string; key: string; value: string; expiry: number },
+    ];
     expect(setArgs[0].key).toContain('perPage=10');
     expect(setArgs[0].key).toContain('page=1');
     expect(setArgs[0].expiry).toBe(43200);

@@ -7,4 +7,5 @@ export type ExternalLinkType = {
   icon?: Snippet | typeof IconType;
   showIcon: boolean;
   text: string;
+  linkType?: 'repo' | 'site';
 };

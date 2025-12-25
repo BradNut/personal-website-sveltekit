@@ -80,7 +80,11 @@ onNavigate((navigation) => {
     {/if}
   </div>
   {#if page.url.pathname === "/"}
-    <a class="moreArticles" href="/articles/1"
+    <a
+      class="moreArticles"
+      href="/articles/1"
+      data-umami-event="View More Articles"
+      data-umami-event-count={totalArticles}
       >{`${totalArticles} more articles`} <ArrowRight /></a
     >
   {/if}

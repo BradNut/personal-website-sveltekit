@@ -38,6 +38,7 @@ let {
 				title: "Contact through X",
 				target: "_blank",
 				clazz: "hub-icon x-contact",
+				trackingEvent: "Social Link Click",
 			}}
 			iconData={{ type: "svg", icon: xIcon, iconClass: "center" }}
 			textData={{ showIcon: true }}
@@ -51,6 +52,7 @@ let {
 				title: "Contact through Bluesky",
 				target: "_blank",
 				clazz: "hub-icon bluesky-contact",
+				trackingEvent: "Social Link Click",
 			}}
 			iconData={{ type: "svg", icon: blueSkyIcon, iconClass: "center" }}
 			textData={{ showIcon: true }}
@@ -64,6 +66,7 @@ let {
 				title: "Contact through LinkedIn",
 				target: "_blank",
 				clazz: "hub-icon linkedIn-contact",
+				trackingEvent: "Social Link Click",
 			}}
 			iconData={{ type: "svg", icon: linkedInIcon, iconClass: "center" }}
 			textData={{ showIcon: true }}
@@ -77,6 +80,7 @@ let {
 				title: "Contact through Github",
 				target: "_blank",
 				clazz: "hub-icon github-contact",
+				trackingEvent: "Social Link Click",
 			}}
 			iconData={{ type: "svg", icon: gitHubIcon, iconClass: "center" }}
 			textData={{ showIcon: true }}
@@ -90,6 +94,7 @@ let {
 				title: "Contact by email",
 				target: "_blank",
 				clazz: "hub-icon email-contact",
+				trackingEvent: "Social Link Click",
 			}}
 			iconData={{ type: "icon", icon: Mail, iconClass: "center" }}
 			textData={{ showIcon: true }}
