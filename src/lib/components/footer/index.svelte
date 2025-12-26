@@ -50,7 +50,7 @@ const userNames = {
 		>
 	</nav>
 	<p>
-		Bradley Shellnut &copy; 2012 - {new Date().getFullYear()}
+		Bradley Shellnut &copy; 2012 - {new Date().getFullYear()} test
 	</p>
 </footer>
 
