@@ -2,6 +2,7 @@
 	import { Tabs } from "bits-ui";
 	import ExternalLink from "$lib/components/ExternalLink.svelte";
 	import type { ExternalLinkType } from "$lib/types/externalLinkType";
+	import { ExternalLink as ExternalLinkIcon } from "lucide-svelte";
 	import { gitHubIcon } from "$lib/util/logoIcons.svelte";
 	import personalSite from "../../lib/assets/images/portfolio/Bradley_Shellnut_New_Site.png?enhanced";
 	import shellnutArchitectWebsite from "../../lib/assets/images/portfolio/Mark_Shellnut_Architect.png?enhanced";
@@ -14,14 +15,15 @@
 	<div class="project-links">
 		{#each externalLinks as link}
 			{#if link.icon && link.showIcon}
-				{#if typeof link.icon === "function" && "length" in link.icon}
-					<!-- Snippet icon: pass snippet directly for LinkIconType 'svg' -->
+				{#if link.linkType === "repo" || link.linkType === undefined}
+					<!-- Snippet icon (SVG): used for repo links with custom SVG icons -->
 					<ExternalLink
 						linkData={{
 							href: link.href,
 							ariaLabel: link.ariaLabel,
 							title: link.ariaLabel,
 							target: "_blank",
+							rel: "noopener",
 						}}
 						textData={{
 							text: link.text,
@@ -29,16 +31,17 @@
 							location: "left",
 						}}
 						iconData={{ type: "svg", icon: link.icon as any }}
-						iconSize={32}
+						iconSize={20}
 					/>
 				{:else}
-					<!-- Component icon (e.g., lucide-svelte) -->
+					<!-- Component icon (e.g., lucide-svelte): used for site links -->
 					<ExternalLink
 						linkData={{
 							href: link.href,
 							ariaLabel: link.ariaLabel,
 							title: link.ariaLabel,
 							target: "_blank",
+							rel: "noopener",
 						}}
 						textData={{
 							text: link.text,
@@ -46,7 +49,7 @@
 							location: "left",
 						}}
 						iconData={{ type: "icon", icon: link.icon as any }}
-						iconSize={32}
+						iconSize={20}
 					/>
 				{/if}
 			{:else}
@@ -56,13 +59,14 @@
 						ariaLabel: link.ariaLabel,
 						title: link.ariaLabel,
 						target: "_blank",
+						rel: "noopener",
 					}}
 					textData={{
 						text: link.text,
 						showIcon: link.showIcon,
 						location: "left",
 					}}
-					iconSize={32}
+					iconSize={20}
 				/>
 			{/if}
 		{/each}
@@ -192,11 +196,20 @@
 			{links}
 			externalLinks={[
 				{
+					ariaLabel: "View live wedding site demo",
+					href: "https://weddingsite-six.vercel.app/",
+					icon: ExternalLinkIcon,
+					showIcon: true,
+					text: "View Site",
+					linkType: "site",
+				},
+				{
 					ariaLabel: "View GitHub repository for the wedding site",
 					href: "https://github.com/BradNut/weddingsite",
 					icon: gitHubIcon,
 					showIcon: true,
 					text: "GitHub repository",
+					linkType: "repo",
 				},
 			]}
 		>

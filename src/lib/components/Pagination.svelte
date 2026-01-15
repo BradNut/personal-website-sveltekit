@@ -24,7 +24,11 @@ let { additionalClasses, pageSize, totalCount, currentPage, base }: Props = $pro
   onPageChange={(page) => goto(`${base}/${page}`)}
 >
   {#snippet children({ pages })}
-    <Pagination.PrevButton aria-label="Previous page">
+    <Pagination.PrevButton
+      aria-label="Previous page"
+      data-umami-event="Pagination"
+      data-umami-event-action="Previous"
+    >
       <ChevronLeft />
     </Pagination.PrevButton>
     {#each pages as page (page.key)}
@@ -39,6 +43,8 @@ let { additionalClasses, pageSize, totalCount, currentPage, base }: Props = $pro
               {...props}
               type="button"
               aria-label={`Go to page ${page.value}`}
+              data-umami-event="Pagination"
+              data-umami-event-action={`Page ${page.value}`}
             >
               {page.value}
             </button>
@@ -46,7 +52,11 @@ let { additionalClasses, pageSize, totalCount, currentPage, base }: Props = $pro
         </Pagination.Page>
       {/if}
     {/each}
-    <Pagination.NextButton aria-label="Next page">
+    <Pagination.NextButton
+      aria-label="Next page"
+      data-umami-event="Pagination"
+      data-umami-event-action="Next"
+    >
       <ChevronRight />
     </Pagination.NextButton>
   {/snippet}

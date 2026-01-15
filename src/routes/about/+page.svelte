@@ -16,7 +16,7 @@
 	import courseData from "./course.json";
 	import ExternalLink from "../../lib/components/ExternalLink.svelte";
 
-	const courses: Course[] = courseData.courses;
+	const courses: Course[] = (courseData as { courses: Course[] }).courses;
 </script>
 
 <div class="about">
@@ -145,9 +145,7 @@
 		<h2 id="fun-things-heading">Other fun things about me&hellip;</h2>
 		<div class="travel-section">
 			<p>Recently visited Taiwan and Japan.</p>
-			<div class="flag-emojis">
-				🇹🇼 🇯🇵 🌸
-			</div>
+			<div class="flag-emojis">🇹🇼 🇯🇵 🌸</div>
 		</div>
 		<div>
 			<p>Hanging out with these two cats, Turnip and Taco.</p>

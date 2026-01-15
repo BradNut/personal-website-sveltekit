@@ -12,30 +12,35 @@
 		iconSize = 20,
 	}: ExternalLinkType & { iconSize?: number } = $props();
 	// Guarantee non-optional icon data for linkIcon()
-	const safeIconData: LinkIconType = iconData ?? {
-		type: "icon",
-		icon: ExternalLink,
-	};
+	const safeIconData: LinkIconType = $derived(
+		iconData ?? {
+			type: "icon",
+			icon: ExternalLink,
+		},
+	);
 
-	let textLocationClass = "";
-	if (textData?.location === "top") {
-		textLocationClass = "text-top";
-	} else if (textData?.location === "bottom") {
-		textLocationClass = "text-bottom";
-	} else if (textData?.location === "left") {
-		textLocationClass = "text-left";
-	} else if (textData?.location === "right") {
-		textLocationClass = "text-right";
-	} else {
-		textLocationClass = "text-left";
-	}
+	const textLocationClass = $derived.by(() => {
+		if (textData?.location === "top") {
+			return "text-top";
+		} else if (textData?.location === "bottom") {
+			return "text-bottom";
+		} else if (textData?.location === "left") {
+			return "text-left";
+		} else if (textData?.location === "right") {
+			return "text-right";
+		} else {
+			return "text-left";
+		}
+	});
 
-	const linkDecoration =
+	const linkDecoration = $derived(
 		linkData?.textDecoration && linkData?.textDecoration === "none"
 			? `text-decoration-${linkData?.textDecoration}`
-			: "text-decoration-underline";
-	const linkClass =
-		`${linkData?.clazz || ""} ${textLocationClass} ${linkDecoration}`.trim();
+			: "text-decoration-underline",
+	);
+	const linkClass = $derived(
+		`${linkData?.clazz || ""} ${textLocationClass} ${linkDecoration}`.trim(),
+	);
 </script>
 
 {#snippet externalLink({
@@ -50,6 +55,11 @@
 		href={linkData.href}
 		rel={linkData?.rel ?? "noreferrer"}
 		target={linkData?.target ?? "_blank"}
+		data-umami-event={linkData?.trackingEvent ?? "External Link Click"}
+		data-umami-event-url={linkData.href}
+		data-umami-event-label={linkData?.ariaLabel ??
+			linkData?.title ??
+			linkData?.href}
 	>
 		{#if textData?.location === "top" || (textData?.location === "left" && textData?.text)}
 			{textData?.text}
@@ -64,9 +74,9 @@
 {/snippet}
 
 {#snippet linkIcon({ type, icon, iconClass }: LinkIconType, size: number = 20)}
-	{#if type === "svg" && icon && typeof icon === "function" && icon.length !== undefined}
+	{#if type === "svg" && icon && typeof icon === "function"}
 		<svg
-			style="width: 2.5rem; height: 2.5rem;"
+			style="width: {size}px; height: {size}px;"
 			class={iconClass ?? ""}
 			role="img"
 			viewBox="0 0 24 24"
@@ -79,18 +89,14 @@
 		</svg>
 	{:else if type === "icon" && icon}
 		{@const Icon = icon}
-		<Icon
-			size={size}
-			strokeWidth={2}
+		<Icon {size} strokeWidth={2}
 			><title
 				>{linkData?.title ?? `Open ${linkData?.ariaLabel} externally`}</title
 			></Icon
 		>
 	{:else}
 		{@const Icon = ExternalLink}
-		<Icon
-			size={size}
-			strokeWidth={2}
+		<Icon {size} strokeWidth={2}
 			><title
 				>{linkData?.title ?? `Open ${linkData?.ariaLabel} externally`}</title
 			></Icon

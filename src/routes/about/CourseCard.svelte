@@ -8,13 +8,14 @@
 	}
 
 	let { course }: Props = $props();
-	const { externalLinks, tags } = course;
+	const externalLinks = $derived.by(() => course.externalLinks);
+	const tags = $derived.by(() => course.tags);
 </script>
 
 <div class="card">
 	<div class="links">
 		{#each externalLinks as link}
-			{#if link.tag === 'h4'}
+			{#if link.tag === "h4"}
 				<h4>
 					<ExternalLink
 						linkData={{
@@ -30,7 +31,7 @@
 						}}
 					/>
 				</h4>
-			{:else if link.tag === 'h5'}
+			{:else if link.tag === "h5"}
 				<h5>
 					<ExternalLink
 						linkData={{

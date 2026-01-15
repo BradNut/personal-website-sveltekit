@@ -8,7 +8,7 @@ let load_durations = $state<number[]>([]);
 let average_load = $derived(load_durations.reduce((a, b) => a + b, 0) / load_durations.length);
 
 const increment = 1;
-let interval: number | null = null;
+let interval: ReturnType<typeof setInterval> | null = null;
 
 beforeNavigate(() => {
   // Start the progress bar immediately when navigation begins
@@ -72,7 +72,7 @@ onNavigate((navigation) => {
 		z-index: 50;
 		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 	}
-	
+
 	.loader-container {
 		position: fixed;
 		top: 1rem;
@@ -83,12 +83,12 @@ onNavigate((navigation) => {
 		align-items: center;
 		justify-content: center;
 	}
-	
+
 	:global(.loader-icon) {
 		animation: spin 1s linear infinite;
 		color: var(--lightGrey);
 	}
-	
+
 	@keyframes spin {
 		from {
 			transform: rotate(0deg);

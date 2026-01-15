@@ -13,7 +13,7 @@
 
   let { ariaLabel, href, clazz = "", textData, icon }: Props = $props();
   // Ensure a stable class for styling
-  const mergedClazz = `${clazz} tech-list-item`.trim();
+  const mergedClazz = $derived.by(() => `${clazz} tech-list-item`.trim());
 </script>
 
 <ExternalLink

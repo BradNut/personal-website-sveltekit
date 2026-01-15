@@ -14,6 +14,7 @@ export interface LinkDataType {
   ariaLabel: string;
   clazz?: string;
   textDecoration?: 'none' | 'underline' | 'line-through';
+  trackingEvent?: string;
 }
 
 export interface ExternalLinkType {

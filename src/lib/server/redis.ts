@@ -44,7 +44,7 @@ class RedisService {
 
   async scan(data: { prefix: string; pattern: string }): Promise<string[]> {
     if (!this.redis) return [];
-    
+
     const keys: string[] = [];
     const scanPattern = `${this.namespace}:${data.prefix}:${data.pattern}`;
     let cursor = '0';

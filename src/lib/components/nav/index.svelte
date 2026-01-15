@@ -4,22 +4,33 @@ import { page } from '$app/state';
 
 <header aria-label="header navigation">
 	<nav>
-		<a href="/" class:active={page.url.pathname === '/'}>Home</a>
+		<a
+			href="/"
+			class:active={page.url.pathname === "/"}
+			data-umami-event="Navigation"
+			data-umami-event-page="Home">Home</a
+		>
 		<a
 			href="/about"
-			class:active={page.url.pathname === '/about'}
+			class:active={page.url.pathname === "/about"}
+			data-umami-event="Navigation"
+			data-umami-event-page="About"
 		>
 			About
 		</a>
 		<a
 			href="/portfolio"
-			class:active={page.url.pathname === '/portfolio'}
+			class:active={page.url.pathname === "/portfolio"}
+			data-umami-event="Navigation"
+			data-umami-event-page="Portfolio"
 		>
 			Portfolio
 		</a>
 		<a
 			href="/uses"
-			class:active={page.url.pathname === '/uses'}
+			class:active={page.url.pathname === "/uses"}
+			data-umami-event="Navigation"
+			data-umami-event-page="Uses"
 		>
 			Uses
 		</a>
