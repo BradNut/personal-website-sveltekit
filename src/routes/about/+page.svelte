@@ -1,14 +1,22 @@
 <script lang="ts">
-import orange_derp from '../../lib/assets/images/orange_derp.jpg?enhanced';
-import tortie_derp from '../../lib/assets/images/tortie_derp.jpg?enhanced';
-import turnip from '../../lib/assets/images/turnip.svg?enhanced';
-import type { Course } from '../../lib/types/courses';
-import { dockerIcon, drizzleIcon, nextDotJsIcon, reactIcon, svelteIcon, typescriptIcon, honoIcon } from '../../lib/util/logoIcons.svelte';
-import CourseCard from './CourseCard.svelte';
-import courseData from './course.json';
-import ExternalLink from '../../lib/components/ExternalLink.svelte';
+	import orange_derp from "../../lib/assets/images/orange_derp.jpg?enhanced";
+	import tortie_derp from "../../lib/assets/images/tortie_derp.jpg?enhanced";
+	import turnip from "../../lib/assets/images/turnip.svg?enhanced";
+	import type { Course } from "../../lib/types/courses";
+	import {
+		dockerIcon,
+		drizzleIcon,
+		nextDotJsIcon,
+		reactIcon,
+		svelteIcon,
+		typescriptIcon,
+		honoIcon,
+	} from "../../lib/util/logoIcons.svelte";
+	import CourseCard from "./CourseCard.svelte";
+	import courseData from "./course.json";
+	import ExternalLink from "../../lib/components/ExternalLink.svelte";
 
-const courses: Course[] = courseData.courses;
+	const courses: Course[] = (courseData as { courses: Course[] }).courses;
 </script>
 
 <div class="about">
@@ -137,9 +145,7 @@ const courses: Course[] = courseData.courses;
 		<h2 id="fun-things-heading">Other fun things about me&hellip;</h2>
 		<div class="travel-section">
 			<p>Recently visited Taiwan and Japan.</p>
-			<div class="flag-emojis">
-				🇹🇼 🇯🇵 🌸
-			</div>
+			<div class="flag-emojis">🇹🇼 🇯🇵 🌸</div>
 		</div>
 		<div>
 			<p>Hanging out with these two cats, Turnip and Taco.</p>

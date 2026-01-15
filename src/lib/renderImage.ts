@@ -38,7 +38,7 @@ export async function componentToPng(component: Component, props: Record<string,
 
   const image = resvg.render();
 
-  return new Response(image.asPng(), {
+  return new Response(new Uint8Array(image.asPng()), {
     headers: {
       'content-type': 'image/png',
       'cache-control': dev ? 'no-cache, no-store' : 'public, immutable, no-transform, max-age=86400',

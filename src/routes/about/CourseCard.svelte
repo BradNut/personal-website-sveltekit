@@ -1,20 +1,21 @@
 <script lang="ts">
-import ExternalLink from '$lib/components/ExternalLink.svelte';
-import Tag from '$lib/components/Tag.svelte';
-import type { Course } from '$lib/types/courses';
+	import ExternalLink from "$lib/components/ExternalLink.svelte";
+	import Tag from "$lib/components/Tag.svelte";
+	import type { Course } from "$lib/types/courses";
 
-interface Props {
-  course: Course;
-}
+	interface Props {
+		course: Course;
+	}
 
-let { course }: Props = $props();
-const { externalLinks, tags } = course;
+	let { course }: Props = $props();
+	const externalLinks = $derived.by(() => course.externalLinks);
+	const tags = $derived.by(() => course.tags);
 </script>
 
 <div class="card">
 	<div class="links">
 		{#each externalLinks as link}
-			{#if link.tag === 'h4'}
+			{#if link.tag === "h4"}
 				<h4>
 					<ExternalLink
 						linkData={{
@@ -30,7 +31,7 @@ const { externalLinks, tags } = course;
 						}}
 					/>
 				</h4>
-			{:else if link.tag === 'h5'}
+			{:else if link.tag === "h5"}
 				<h5>
 					<ExternalLink
 						linkData={{

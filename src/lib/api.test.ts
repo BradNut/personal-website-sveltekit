@@ -139,7 +139,6 @@ describe('fetchArticlesApi (unit, mocked)', () => {
     hoisted.redisServiceMock.ttl.mockResolvedValueOnce(321);
 
     const fetchMock = vi.fn();
-    // @ts-expect-error assign to global
     global.fetch = fetchMock;
 
     const result = await fetchArticlesApi('GET', 'entries', { page: '2', limit: '10' });
