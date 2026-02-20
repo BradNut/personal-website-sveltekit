@@ -28,7 +28,7 @@
     "@storybook/sveltekit": "^10.1.11",
     "@sveltejs/adapter-node": "^5.5.1",
     "@sveltejs/enhanced-img": "^0.5.1",
-    "@sveltejs/kit": "^2.49.5",
+    "@sveltejs/kit": "^2.52.2",
     "@sveltejs/vite-plugin-svelte": "^5.1.1",
     "@unpic/svelte": "^1.0.1",
     "@zerodevx/svelte-img": "^2.1.2",
