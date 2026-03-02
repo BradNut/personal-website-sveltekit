@@ -28,12 +28,12 @@ test.describe('About page', () => {
       await expect(link).toBeVisible();
 
       const before = await link.evaluate((el) => {
-        const cs = getComputedStyle(el as Element) as CSSStyleDeclaration;
+        const cs = getComputedStyle(el as Element);
         return { color: cs.color };
       });
       await link.hover();
       const after = await link.evaluate((el) => {
-        const cs = getComputedStyle(el as Element) as CSSStyleDeclaration;
+        const cs = getComputedStyle(el as Element);
         return { color: cs.color };
       });
 

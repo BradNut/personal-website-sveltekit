@@ -1,22 +1,33 @@
 <script lang="ts">
-interface Props {
-  header: string;
-  page: string;
-  image: string;
-  content: string;
-  width?: number;
-  height?: number;
-  url: string;
-}
+	interface Props {
+		header: string;
+		page: string;
+		image: string;
+		content: string;
+		width?: number;
+		height?: number;
+		url: string;
+	}
 
-let { header, page, image, content, width = 1200, height = 630, url }: Props = $props();
+	let {
+		header,
+		page,
+		image,
+		content,
+		width = 1200,
+		height = 630,
+		url,
+	}: Props = $props();
 </script>
 
 <div class="social-card" style={`width: ${width}px; height: ${height}px;`}>
 	<div class="social-card-header">
 		<div class="social-card-title">
 			<div class="social-card-image">
-				<img src={image || '/images/b_shell_nut_favicon.png'} alt="Bradley Shellnut" />
+				<img
+					src={image || "/images/b_shell_nut_favicon.png"}
+					alt="Bradley Shellnut"
+				/>
 			</div>
 			<h1>{header}</h1>
 		</div>
@@ -27,15 +38,18 @@ let { header, page, image, content, width = 1200, height = 630, url }: Props = $
 	</div>
 	<div class="social-card-footer">
 		<footer>
-			<p>Bradley Shellnut &copy; {new Date().getFullYear()} | Built by Bradley Shellnut | {url || 'https://bradleyshellnut.com'}</p>
+			<p>
+				Bradley Shellnut &copy; {new Date().getFullYear()} | Built by Bradley Shellnut
+				| {url || "https://bradleyshellnut.com"}
+			</p>
 		</footer>
 	</div>
 </div>
 
 <style>
 	@font-face {
-		font-family: 'Fira Sans';
-		src: url('/src/lib/fonts/FiraSans-Bold.ttf');
+		font-family: "Fira Sans";
+		src: url("/src/lib/fonts/FiraSans-Bold.ttf");
 	}
 
 	.social-card {
@@ -43,7 +57,7 @@ let { header, page, image, content, width = 1200, height = 630, url }: Props = $
 		flex: 1;
 		flex-direction: column;
 		justify-content: space-between;
-		color: #D8D8D8;
+		color: #d8d8d8;
 		background-color: #131415;
 	}
 
@@ -51,7 +65,7 @@ let { header, page, image, content, width = 1200, height = 630, url }: Props = $
 		display: flex;
 		padding: 0 1.5rem;
 		flex-direction: column;
-		background-color: #2E2E2E;
+		background-color: #2e2e2e;
 	}
 
 	.social-card-title {
@@ -97,6 +111,6 @@ let { header, page, image, content, width = 1200, height = 630, url }: Props = $
 		font-size: 1.25rem;
 		line-height: 1.75rem;
 		font-weight: 700;
-		background-color: #2E2E2E;
+		background-color: #2e2e2e;
 	}
 </style>

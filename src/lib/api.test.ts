@@ -88,7 +88,14 @@ describe('fetchArticlesApi (unit, mocked)', () => {
     } as const;
 
     const fetchMock = vi.fn(async (input: unknown) => {
-      const url = String(input);
+      let url: string;
+      if (typeof input === 'string') {
+        url = input;
+      } else if (input instanceof Request) {
+        url = input.url;
+      } else {
+        url = String(input);
+      }
       if (url.endsWith('/oauth/v2/token')) {
         return makeJsonResponse(token);
       }
@@ -98,7 +105,7 @@ describe('fetchArticlesApi (unit, mocked)', () => {
       throw new Error('Unexpected fetch to ' + url);
     });
     // @ts-expect-error assign to global
-    global.fetch = fetchMock;
+    globalThis.fetch = fetchMock;
 
     const result = await fetchArticlesApi('GET', 'entries', { page: '1', limit: '10' });
 
@@ -139,7 +146,7 @@ describe('fetchArticlesApi (unit, mocked)', () => {
     hoisted.redisServiceMock.ttl.mockResolvedValueOnce(321);
 
     const fetchMock = vi.fn();
-    global.fetch = fetchMock;
+    globalThis.fetch = fetchMock;
 
     const result = await fetchArticlesApi('GET', 'entries', { page: '2', limit: '10' });
 

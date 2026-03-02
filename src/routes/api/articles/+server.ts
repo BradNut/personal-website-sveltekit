@@ -1,4 +1,4 @@
-import { error, json, type RequestEvent } from '@sveltejs/kit';
+import { json, type RequestEvent } from '@sveltejs/kit';
 import type { ArticlePageLoad } from '@/lib/types/article.js';
 import { PAGE_SIZE } from '$env/static/private';
 import { fetchArticlesApi } from '$lib/services/articlesApi';
@@ -19,13 +19,13 @@ export async function GET(event: RequestEvent) {
 
     if (response?.articles) {
       if (response?.cacheControl) {
-        if (!response.cacheControl.includes('no-cache')) {
+        if (response.cacheControl.includes('no-cache')) {
           setHeaders({
-            'cache-control': response?.cacheControl,
+            'cache-control': 'max-age=43200',
           });
         } else {
           setHeaders({
-            'cache-control': 'max-age=43200',
+            'cache-control': response?.cacheControl,
           });
         }
       }

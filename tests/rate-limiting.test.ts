@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { StatusCodes } from '$lib/constants/status-codes';
 
 test.describe('API Rate Limiting', () => {
   test.describe('/api/articles endpoint', () => {
@@ -6,7 +7,7 @@ test.describe('API Rate Limiting', () => {
       // Make a few requests that should succeed (or return fallback data if API unavailable)
       for (let i = 0; i < 5; i++) {
         const response = await request.get('/api/articles?page=1&limit=10');
-        expect(response.status()).toBe(200);
+        expect(response.status()).toBe(StatusCodes.OK);
         const data = await response.json();
         expect(data).toHaveProperty('articles');
         // In CI, external API may fail, so articles array might be empty
@@ -32,7 +33,7 @@ test.describe('API Rate Limiting', () => {
 
       // Check that at least one request was rate limited
       for (const response of responses) {
-        if (response && response.status() === 429) {
+        if (response?.status() === StatusCodes.TOO_MANY_REQUESTS) {
           rateLimitHit = true;
           break;
         }
@@ -51,10 +52,10 @@ test.describe('API Rate Limiting', () => {
       const responses = await Promise.allSettled(requests);
 
       // Find a 429 response
-      const rateLimitedResponse = responses.find((result) => result.status === 'fulfilled' && result.value.status() === 429);
+      const rateLimitedResponse = responses.find((result) => result.status === 'fulfilled' && result.value.status() === StatusCodes.TOO_MANY_REQUESTS);
 
-      if (rateLimitedResponse && rateLimitedResponse.status === 'fulfilled') {
-        expect(rateLimitedResponse.value.status()).toBe(429);
+      if (rateLimitedResponse?.status === 'fulfilled') {
+        expect(rateLimitedResponse.value.status()).toBe(StatusCodes.TOO_MANY_REQUESTS);
       }
     });
   });
@@ -64,9 +65,8 @@ test.describe('API Rate Limiting', () => {
       // Make a few requests that should succeed
       for (let i = 0; i < 5; i++) {
         const response = await request.get('/api/bandcamp/albums');
-        // Should be 200 or potentially fail due to external service
-        // May also be 429 if previous tests exhausted the rate limit
-        expect([200, 429, 500]).toContain(response.status());
+        // In CI, external API may fail, so articles array might be empty
+        expect([StatusCodes.OK, StatusCodes.TOO_MANY_REQUESTS, StatusCodes.INTERNAL_SERVER_ERROR]).toContain(response.status());
       }
     });
 
@@ -88,7 +88,7 @@ test.describe('API Rate Limiting', () => {
 
       // Check that at least one request was rate limited
       for (const response of responses) {
-        if (response && response.status() === 429) {
+        if (response?.status() === StatusCodes.TOO_MANY_REQUESTS) {
           rateLimitHit = true;
           break;
         }
@@ -107,10 +107,10 @@ test.describe('API Rate Limiting', () => {
       const responses = await Promise.allSettled(requests);
 
       // Find a 429 response
-      const rateLimitedResponse = responses.find((result) => result.status === 'fulfilled' && result.value.status() === 429);
+      const rateLimitedResponse = responses.find((result) => result.status === 'fulfilled' && result.value.status() === StatusCodes.TOO_MANY_REQUESTS);
 
-      if (rateLimitedResponse && rateLimitedResponse.status === 'fulfilled') {
-        expect(rateLimitedResponse.value.status()).toBe(429);
+      if (rateLimitedResponse?.status === 'fulfilled') {
+        expect(rateLimitedResponse.value.status()).toBe(StatusCodes.TOO_MANY_REQUESTS);
       }
     });
   });
@@ -129,7 +129,7 @@ test.describe('API Rate Limiting', () => {
       const bandcampResponse = await request.get('/api/bandcamp/albums');
 
       // May be rate limited (429) or succeed depending on timing
-      expect([200, 429, 500]).toContain(bandcampResponse.status());
+      expect([StatusCodes.OK, StatusCodes.TOO_MANY_REQUESTS, StatusCodes.INTERNAL_SERVER_ERROR]).toContain(bandcampResponse.status());
     });
   });
 });

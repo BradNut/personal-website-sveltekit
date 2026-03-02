@@ -1,8 +1,8 @@
 <script lang="ts">
-import type { Album } from '$lib/types/album';
-import LazyImage from './LazyImage.svelte';
+  import type { Album } from "$lib/types/album";
+  import LazyImage from "./LazyImage.svelte";
 
-const { album }: { album: Album } = $props();
+  const { album }: { album: Album } = $props();
 </script>
 
 <div class="albumStyles">
@@ -13,15 +13,17 @@ const { album }: { album: Album } = $props();
       href={album.url}
       rel="noreferrer"
     >
-      <LazyImage clazz="album-artwork" src={album.src} alt={`Album art for ${album.title}`} />
+      <LazyImage
+        clazz="album-artwork"
+        src={album.src}
+        alt={`Album art for ${album.title}`}
+      />
     </a>
   </figure>
-  <a
-    target="_blank"
-    href={album.url}
-    rel="noreferrer"
-  >
-    <h3>{album.title.length > 20 ? `${album.title.slice(0, 20)}...` : album.title}</h3>
+  <a target="_blank" href={album.url} rel="noreferrer">
+    <h3>
+      {album.title.length > 20 ? `${album.title.slice(0, 20)}...` : album.title}
+    </h3>
     <h3>{album.artist}</h3>
   </a>
 </div>

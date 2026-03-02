@@ -10,8 +10,8 @@ export const REDIS_PREFIXES = {
 } as const;
 
 class RedisService {
-  public redis: Redis | null;
-  private namespace: string;
+  public readonly redis: Redis | null;
+  private readonly namespace: string;
 
   constructor() {
     this.redis = USE_REDIS_CACHE === 'true' && REDIS_URI ? new Redis(REDIS_URI) : null;
