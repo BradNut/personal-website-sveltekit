@@ -98,7 +98,7 @@ describe('fetchArticlesApi (unit, mocked)', () => {
       throw new Error('Unexpected fetch to ' + url);
     });
     // @ts-expect-error assign to global
-    global.fetch = fetchMock;
+    globalThis.fetch = fetchMock;
 
     const result = await fetchArticlesApi('GET', 'entries', { page: '1', limit: '10' });
 
@@ -139,7 +139,7 @@ describe('fetchArticlesApi (unit, mocked)', () => {
     hoisted.redisServiceMock.ttl.mockResolvedValueOnce(321);
 
     const fetchMock = vi.fn();
-    global.fetch = fetchMock;
+    globalThis.fetch = fetchMock;
 
     const result = await fetchArticlesApi('GET', 'entries', { page: '2', limit: '10' });
 

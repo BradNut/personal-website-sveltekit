@@ -1,31 +1,31 @@
 <script lang="ts">
-import type { Snippet } from 'svelte';
-import type { Picture } from 'vite-imagetools';
-import type { ExternalLinkType } from '../types/externalLinkType';
+	import type { Snippet } from "svelte";
+	import type { Picture } from "vite-imagetools";
+	import type { ExternalLinkType } from "../types/externalLinkType";
 
-const {
-  links,
-  details,
-  portfolioDetails,
-  externalLinks,
-  name,
-  src,
-  alt,
-  style,
-  fetchpriority = 'auto',
-  loading = 'lazy',
-}: {
-  links: Snippet<[ExternalLinkType[]]>;
-  details: Snippet<[]>;
-  portfolioDetails: string;
-  externalLinks: ExternalLinkType[];
-  name: string;
-  src: string | Picture;
-  alt: string;
-  style: string;
-  fetchpriority?: 'high' | 'low' | 'auto';
-  loading?: 'lazy' | 'eager';
-} = $props();
+	const {
+		links,
+		details,
+		portfolioDetails,
+		externalLinks,
+		name,
+		src,
+		alt,
+		style,
+		fetchpriority = "auto",
+		loading = "lazy",
+	}: {
+		links: Snippet<[ExternalLinkType[]]>;
+		details: Snippet<[]>;
+		portfolioDetails: string;
+		externalLinks: ExternalLinkType[];
+		name: string;
+		src: string | Picture;
+		alt: string;
+		style: string;
+		fetchpriority?: "high" | "low" | "auto";
+		loading?: "lazy" | "eager";
+	} = $props();
 </script>
 
 <div class="portfolio">
