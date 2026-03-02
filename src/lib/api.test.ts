@@ -88,7 +88,14 @@ describe('fetchArticlesApi (unit, mocked)', () => {
     } as const;
 
     const fetchMock = vi.fn(async (input: unknown) => {
-      const url = String(input);
+      let url: string;
+      if (typeof input === 'string') {
+        url = input;
+      } else if (input instanceof Request) {
+        url = input.url;
+      } else {
+        url = String(input);
+      }
       if (url.endsWith('/oauth/v2/token')) {
         return makeJsonResponse(token);
       }
