@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { navigating } from "$app/state";
   import Articles from "$lib/components/Articles.svelte";
   import Pagination from "$lib/components/Pagination.svelte";
   import type { PageData } from "./$types";
@@ -15,6 +16,13 @@
   let totalArticles: number = $derived(data?.totalArticles || 0);
   let limit: number = $derived(data?.limit || 10);
   let totalPages: number = $derived(data?.totalPages || 1);
+
+  // Skeleton only while navigating to another articles page (slow data refetch),
+  // never on navigations to unrelated routes.
+  let loading = $derived(
+    navigating.to?.route.id === "/articles/[page]" &&
+      navigating.to?.params?.page !== String(currentPage),
+  );
 </script>
 
 <div class="articles-content">
@@ -28,7 +36,13 @@
   />
 
   <Articles
-    data={{ articles, totalArticles, classes: ["columns"], compact: false }}
+    data={{
+      articles,
+      totalArticles,
+      classes: ["columns"],
+      compact: false,
+      loading,
+    }}
   />
 
   <Pagination

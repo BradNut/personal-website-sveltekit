@@ -1,6 +1,5 @@
 <script lang="ts">
   import { ArrowRight } from "lucide-svelte";
-  import { beforeNavigate, onNavigate } from "$app/navigation";
   import { page } from "$app/state";
   import ArticlesSkeleton from "$lib/components/ArticlesSkeleton.svelte";
   import type { Article } from "$lib/types/article";
@@ -11,6 +10,7 @@
     totalArticles: number;
     classes?: string[];
     compact?: boolean;
+    loading?: boolean;
   };
 
   const { data }: { data: LoadData } = $props();
@@ -20,31 +20,16 @@
   const totalArticles = $derived(data.totalArticles || 0);
   const compact = $derived(data.compact);
   const classes = $derived(data.classes || []);
-
-  const articlesData = $derived(articles);
-  let loadingArticles = $state(false);
-
-  beforeNavigate(() => {
-    loadingArticles = true;
-  });
-
-  onNavigate((navigation) => {
-    loadingArticles = true;
-
-    // Resolve the promise when the page is done loading
-    navigation?.complete.then(() => {
-      loadingArticles = false;
-    });
-  });
+  const loading = $derived(data.loading ?? false);
 </script>
 
 <section class="articles">
   <h2>Favorite Articles</h2>
   <div class={classes.join(" ")}>
-    {#if loadingArticles}
+    {#if loading}
       <ArticlesSkeleton count={6} />
     {:else}
-      {#each articlesData as article (article.hashed_url)}
+      {#each articles as article (article.hashed_url)}
         <article class="card">
           <section>
             <h3>
