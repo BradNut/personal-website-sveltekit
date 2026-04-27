@@ -1,19 +1,25 @@
 # AGENTS
 
-Personal website built with SvelteKit 2 and Svelte 5.
+Personal website. SvelteKit 2, Svelte 5, TypeScript strict, Tailwind v4, Bits UI.
 
-## Always-relevant essentials
+## Essentials
 
 - Package manager: `pnpm`
-- Non-standard dev command: `pnpm dev` (runs Vite with `--inspect` and `--host`)
-- Typecheck command: `pnpm check` (runs `svelte-kit sync` + `svelte-check`)
+- Dev: `pnpm dev` (Vite `--inspect --host`)
+- Typecheck: `pnpm check` (`svelte-kit sync` + `svelte-check`)
+- Test unit: `pnpm test:unit` (Vitest)
+- Test e2e: `pnpm test:integration` (Playwright)
 
-## Task-specific guidance
+## Read Only What You Need
 
-- [Svelte conventions](docs/agents/svelte.md)
-- [SvelteKit conventions](docs/agents/sveltekit.md)
-- [TypeScript conventions](docs/agents/typescript.md)
-- [Testing expectations](docs/agents/testing.md)
+- **Unfamiliar with app**: [overview](.knowledge-base/overview.md) then [architecture](.knowledge-base/platform-architecture.md)
+- **Svelte/component work**: [core principles](.knowledge-base/core-principles.md) or Svelte MCP
+- **Ops/deployment/env**: [runbooks](.knowledge-base/runbooks/index.md)
+- **All docs**: [KB index](.knowledge-base/index.md)
 
+## Non-Negotiable Rules
 
-
+- Svelte 5 runes only. No legacy reactivity.
+- No `svelte-ignore`, `@ts-ignore`, `eslint-disable` without explicit approval.
+- Never import server-only modules into client bundles.
+- Never expose secrets to client.
