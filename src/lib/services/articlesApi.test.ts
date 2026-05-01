@@ -104,6 +104,103 @@ describe('fetchArticlesApi', () => {
     expect(globalThis.fetch).not.toHaveBeenCalled();
   });
 
+  it('returns fallback empty response when auth fetch throws', async () => {
+    redisGet.mockResolvedValueOnce(null);
+
+    globalThis.fetch = vi.fn().mockRejectedValue(new Error('network error')) as unknown as typeof globalThis.fetch;
+
+    const resultPromise = fetchArticlesApi('get', 'fetchArticles', { page: '1', limit: '10' });
+    await vi.runAllTimersAsync();
+    const result = await resultPromise;
+
+    expect(result.articles).toEqual([]);
+    expect(result.currentPage).toBe(1);
+    expect(result.totalPages).toBe(0);
+    expect(result.totalArticles).toBe(0);
+    expect(result.cacheControl).toBe('no-cache');
+  });
+
+  it('returns fallback empty response when entries fetch returns non-ok', async () => {
+    redisGet.mockResolvedValueOnce(null);
+
+    const authResponse = { ok: true, json: async () => ({ access_token: 'token' }) };
+    const badResponse = { ok: false, status: 500, statusText: 'Internal Server Error' };
+
+    globalThis.fetch = vi.fn()
+      .mockResolvedValueOnce(authResponse)
+      .mockResolvedValue(badResponse) as unknown as typeof globalThis.fetch;
+
+    const resultPromise = fetchArticlesApi('get', 'fetchArticles', { page: '2', limit: '5' });
+    await vi.runAllTimersAsync();
+    const result = await resultPromise;
+
+    expect(result.articles).toEqual([]);
+    expect(result.currentPage).toBe(2);
+    expect(result.cacheControl).toBe('no-cache');
+  });
+
+  it('filters out articles with no matching tags', async () => {
+    redisGet.mockResolvedValueOnce(null);
+
+    const entriesJson = {
+      _embedded: {
+        items: [
+          {
+            title: 'Untagged Post',
+            url: 'https://example.com/untagged',
+            domain_name: 'example.com',
+            hashed_url: 'hash99',
+            reading_time: 2,
+            preview_picture: null,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            archived_at: null,
+            tags: [{ id: 2, label: 'cooking', slug: 'cooking' }],
+          },
+        ],
+      },
+      page: 1,
+      pages: 1,
+      total: 1,
+      limit: 10,
+    };
+
+    const authResponse = { ok: true, json: async () => ({ access_token: 'token' }) };
+    const pageResponse = {
+      ok: true,
+      headers: { get: () => null },
+      json: async () => entriesJson,
+    };
+
+    globalThis.fetch = vi.fn()
+      .mockResolvedValueOnce(authResponse)
+      .mockResolvedValueOnce(pageResponse) as unknown as typeof globalThis.fetch;
+
+    const result = await fetchArticlesApi('get', 'fetchArticles', { page: '1', limit: '10' });
+
+    expect(result.articles).toEqual([]);
+    expect(result.totalArticles).toBe(1);
+    expect(redisSetWithExpiry).not.toHaveBeenCalled();
+  });
+
+  it('clamps perPage to PAGE_SIZE when limit is out of range', async () => {
+    redisGet.mockResolvedValueOnce(null);
+
+    const entriesJson = { _embedded: { items: [] }, page: 1, pages: 0, total: 0, limit: 10 };
+    const authResponse = { ok: true, json: async () => ({ access_token: 'token' }) };
+    const pageResponse = { ok: true, headers: { get: () => null }, json: async () => entriesJson };
+
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(authResponse)
+      .mockResolvedValueOnce(pageResponse);
+    globalThis.fetch = fetchMock as unknown as typeof globalThis.fetch;
+
+    await fetchArticlesApi('get', 'fetchArticles', { page: '1', limit: '999' });
+
+    const calledUrl: string = fetchMock.mock.calls[1][0] as string;
+    expect(calledUrl).toContain('perPage=10');
+  });
+
   it('fetches from API and stores in cache on cache miss', async () => {
     // Cache miss
     redisGet.mockResolvedValueOnce(null);

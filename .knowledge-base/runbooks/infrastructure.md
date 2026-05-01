@@ -88,3 +88,58 @@ Scrape selectors: `src/routes/api/bandcamp/albums/+server.ts`.
 
 - [Environment Configuration](./environment-config.md)
 - [Deployment](./deployment.md)
+
+---
+
+## Redis Service
+
+`src/lib/server/redis.ts`. Import: `import { redisService, REDIS_PREFIXES } from '$lib/server/redis'`.
+
+Key pattern: `personal-website:<prefix>:<key>`. Namespace isolates from other projects on shared Redis.
+
+### Prefixes
+
+```typescript
+REDIS_PREFIXES.ARTICLES        // articles — query param strings, TTL 12h
+REDIS_PREFIXES.BANDCAMP_ALBUMS // bandcampAlbums — key 'albums', TTL 12h
+REDIS_PREFIXES.PAGE_CACHE      // pageCache — reserved, not yet used
+```
+
+### API
+
+```typescript
+await redisService.get({ prefix, key })               // → string | null
+await redisService.set({ prefix, key, value })
+await redisService.setWithExpiry({ prefix, key, value, expiry }) // expiry in seconds
+await redisService.delete({ prefix, key })
+await redisService.ttl({ prefix, key })               // → remaining seconds
+await redisService.scan({ prefix, pattern })          // → string[] (keys without prefix)
+```
+
+Graceful degradation: all ops no-op if `USE_REDIS_CACHE !== 'true'` or Redis is unreachable.
+
+---
+
+## Rate Limiting
+
+`src/lib/server/rateLimiter.ts`. In-memory (no Redis). Resets on server restart.
+
+**Protected**: `/api/articles`, `/api/bandcamp/albums`
+
+**Limits**: 30 req/min per IP+UA → 100 req/hr per IP. First limit hit wins.
+
+Returns `429 { "message": "Too many requests. Please try again later." }`.
+
+### Custom limiter
+
+```typescript
+import { createRateLimiter } from '$lib/server/rateLimiter';
+const limiter = createRateLimiter({ IPUA: [10, 'm'], IP: [50, 'h'] });
+```
+
+### Test locally
+
+```bash
+for i in {1..35}; do curl -s http://localhost:5173/api/articles?page=1 > /dev/null; echo $i; done
+# Request 31+ should return 429
+```
