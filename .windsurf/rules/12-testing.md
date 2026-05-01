@@ -6,10 +6,8 @@ trigger: always_on
 
 ## Coverage Expectations
 
-- Every test suite must include both:
-  - Positive (happy path) coverage
-  - Negative (error and edge-case) coverage
-- Raise coverage quality for any suite below A+ standards.
+- Every test suite: positive (happy path) + negative (error/edge-case) coverage.
+- Raise any suite below A+ standards.
 
 ## Required Negative Test Scenarios
 
