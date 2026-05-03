@@ -1,17 +1,18 @@
 import * as Sentry from '@sentry/sveltekit';
 import type { HandleClientError } from '@sveltejs/kit';
+import { ENV } from 'varlock/env';
 import { dev } from '$app/environment';
-import { PUBLIC_SENTRY_URL, PUBLIC_SITE_VERSION } from '$env/static/public';
 
 Sentry.init({
-  release: `personal-website@${PUBLIC_SITE_VERSION}`,
-  dsn: `${PUBLIC_SENTRY_URL}`,
+  release: `personal-website@${ENV.PUBLIC_SITE_VERSION}`,
+  dsn: `${ENV.PUBLIC_SENTRY_URL}`,
   tracesSampleRate: 0.01,
   environment: dev ? 'development' : 'production',
   sendDefaultPii: true,
+  spotlight: true,
 });
 
-export const handleError: HandleClientError = async ({ error, event, status, message }) => {
+export const handleError: HandleClientError = async ({ error, event, status }) => {
   const errorId = crypto.randomUUID();
 
   // example integration with https://sentry.io/

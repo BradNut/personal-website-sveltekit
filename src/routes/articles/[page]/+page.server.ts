@@ -1,5 +1,5 @@
 import type { MetaTagsProps } from 'svelte-meta-tags';
-import { PUBLIC_SITE_URL } from '$env/static/public';
+import { ENV } from 'varlock/env';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, params, setHeaders, url, parent }) => {
@@ -16,7 +16,7 @@ export const load: PageServerLoad = async ({ fetch, params, setHeaders, url, par
     });
   }
 
-  const baseUrl = new URL(url.origin).href || PUBLIC_SITE_URL || 'https://bradleyshellnut.com';
+  const baseUrl = new URL(url.origin).href || ENV.PUBLIC_SITE_URL;
   const currentPageUrl = new URL(url.pathname, url.origin).href;
 
   const metaTags: MetaTagsProps = Object.freeze({

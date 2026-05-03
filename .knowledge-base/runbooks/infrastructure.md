@@ -58,7 +58,7 @@ Articles filtered by `programming` tag in `src/lib/types/articleTag.ts`.
 
 ### Diagnosis
 ```bash
-curl https://bradleyshellnut.com/api/bandcamp/albums
+curl https://production-url.com/api/bandcamp/albums
 # Expect: JSON array of albums
 ```
 

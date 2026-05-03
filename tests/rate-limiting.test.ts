@@ -52,7 +52,9 @@ test.describe('API Rate Limiting', () => {
       const responses = await Promise.allSettled(requests);
 
       // Find a 429 response
-      const rateLimitedResponse = responses.find((result) => result.status === 'fulfilled' && result.value.status() === StatusCodes.TOO_MANY_REQUESTS);
+      const rateLimitedResponse = responses.find(
+        (result) => result.status === 'fulfilled' && result.value.status() === StatusCodes.TOO_MANY_REQUESTS,
+      );
 
       if (rateLimitedResponse?.status === 'fulfilled') {
         expect(rateLimitedResponse.value.status()).toBe(StatusCodes.TOO_MANY_REQUESTS);
@@ -107,7 +109,9 @@ test.describe('API Rate Limiting', () => {
       const responses = await Promise.allSettled(requests);
 
       // Find a 429 response
-      const rateLimitedResponse = responses.find((result) => result.status === 'fulfilled' && result.value.status() === StatusCodes.TOO_MANY_REQUESTS);
+      const rateLimitedResponse = responses.find(
+        (result) => result.status === 'fulfilled' && result.value.status() === StatusCodes.TOO_MANY_REQUESTS,
+      );
 
       if (rateLimitedResponse?.status === 'fulfilled') {
         expect(rateLimitedResponse.value.status()).toBe(StatusCodes.TOO_MANY_REQUESTS);

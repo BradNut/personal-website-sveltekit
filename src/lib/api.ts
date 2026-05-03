@@ -1,19 +1,11 @@
 import intersect from 'just-intersect';
-import {
-  PAGE_SIZE,
-  USE_REDIS_CACHE,
-  WALLABAG_CLIENT_ID,
-  WALLABAG_CLIENT_SECRET,
-  WALLABAG_PASSWORD,
-  WALLABAG_URL,
-  WALLABAG_USERNAME,
-} from '$env/static/private';
-import { redisService, REDIS_PREFIXES } from '$lib/server/redis';
+import { ENV } from 'varlock/env';
+import { REDIS_PREFIXES, redisService } from '$lib/server/redis';
 import type { Article, ArticlePageLoad, WallabagArticle } from '$lib/types/article';
 import { ArticleTag } from '$lib/types/articleTag';
 import type { PageQuery } from './types/pageQuery';
 
-const base: string = WALLABAG_URL;
+const base: string = ENV.WALLABAG_URL ?? '';
 
 // Retry helper with exponential backoff
 async function retryWithBackoff<T>(fn: () => Promise<T>, maxRetries = 3, baseDelay = 500): Promise<T> {
@@ -39,11 +31,12 @@ async function retryWithBackoff<T>(fn: () => Promise<T>, maxRetries = 3, baseDel
   throw lastError;
 }
 
+// biome-ignore lint/correctness/noUnusedFunctionParameters: I want to keep the method and resource parameters for now
 export async function fetchArticlesApi(method: string, resource: string, queryParams: Record<string, string>) {
   try {
     let perPage = Number(queryParams?.limit);
     if (perPage === undefined || perPage > 30 || perPage < 1) {
-      perPage = Number(PAGE_SIZE);
+      perPage = Number(ENV.PAGE_SIZE);
     } else {
       perPage = Number(queryParams?.limit);
     }
@@ -65,7 +58,7 @@ export async function fetchArticlesApi(method: string, resource: string, queryPa
       content: pageQuery.content,
     });
 
-    if (USE_REDIS_CACHE === 'true') {
+    if (ENV.USE_REDIS_CACHE) {
       console.log('Using redis cache');
       const cacheKey = entriesQueryParams.toString();
       console.log(`Cache key: ${cacheKey}`);
@@ -85,10 +78,10 @@ export async function fetchArticlesApi(method: string, resource: string, queryPa
 
     const authBody = {
       grant_type: 'password',
-      client_id: WALLABAG_CLIENT_ID,
-      client_secret: WALLABAG_CLIENT_SECRET,
-      username: WALLABAG_USERNAME,
-      password: WALLABAG_PASSWORD,
+      client_id: ENV.WALLABAG_CLIENT_ID ?? '',
+      client_secret: ENV.WALLABAG_CLIENT_SECRET,
+      username: ENV.WALLABAG_USERNAME,
+      password: ENV.WALLABAG_PASSWORD,
     };
 
     console.log(`Auth body: ${JSON.stringify(authBody)}`);
@@ -111,7 +104,7 @@ export async function fetchArticlesApi(method: string, resource: string, queryPa
     console.log(`Got auth response: ${JSON.stringify(auth)}`);
 
     const { wallabagResponse, cacheControl } = await retryWithBackoff(async () => {
-      const pageResponse = await fetch(`${WALLABAG_URL}/api/entries.json?${entriesQueryParams}`, {
+      const pageResponse = await fetch(`${ENV.WALLABAG_URL}/api/entries.json?${entriesQueryParams}`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${auth.access_token}`,
@@ -171,7 +164,7 @@ export async function fetchArticlesApi(method: string, resource: string, queryPa
 
     console.log('Response data from API: ', JSON.stringify(responseData));
 
-    if (USE_REDIS_CACHE === 'true' && responseData?.articles?.length > 0) {
+    if (ENV.USE_REDIS_CACHE && responseData?.articles?.length > 0) {
       const cacheKey = entriesQueryParams.toString();
       console.log(`Storing in cache with key: ${cacheKey} for page ${page}`);
       await redisService.setWithExpiry({ prefix: REDIS_PREFIXES.ARTICLES, key: cacheKey, value: JSON.stringify(responseData), expiry: 43200 });
@@ -186,7 +179,7 @@ export async function fetchArticlesApi(method: string, resource: string, queryPa
       articles: [],
       currentPage: Number(queryParams?.page) || 1,
       totalPages: 0,
-      limit: Number(queryParams?.limit) || Number(PAGE_SIZE),
+      limit: Number(queryParams?.limit) || Number(ENV.PAGE_SIZE),
       totalArticles: 0,
       cacheControl: 'no-cache',
     };

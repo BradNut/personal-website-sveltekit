@@ -22,13 +22,13 @@ Full list: [environment-config.md](./environment-config.md).
 ## Post-Deploy Check
 
 ```bash
-curl -I https://bradleyshellnut.com/
+curl -I https://production-url.com/
 # Expect: 200
 
-curl https://bradleyshellnut.com/api/bandcamp/albums
+curl https://production-url.com/api/bandcamp/albums
 # Expect: JSON array
 
-curl https://bradleyshellnut.com/api/articles?page=1&limit=3
+curl https://production-url.com/api/articles?page=1&limit=3
 # Expect: JSON with articles array
 ```
 

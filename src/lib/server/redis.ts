@@ -1,5 +1,5 @@
 import { Redis } from 'ioredis';
-import { REDIS_URI, USE_REDIS_CACHE } from '$env/static/private';
+import { ENV } from 'varlock/env';
 
 const NAMESPACE = 'personal-website';
 
@@ -14,7 +14,7 @@ class RedisService {
   private readonly namespace: string;
 
   constructor() {
-    this.redis = USE_REDIS_CACHE === 'true' && REDIS_URI ? new Redis(REDIS_URI) : null;
+    this.redis = ENV.USE_REDIS_CACHE && ENV.REDIS_URI ? new Redis(ENV.REDIS_URI) : null;
     this.namespace = NAMESPACE;
   }
 

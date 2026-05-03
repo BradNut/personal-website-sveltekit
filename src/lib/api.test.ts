@@ -15,16 +15,18 @@ const hoisted = vi.hoisted(() => {
   } as const;
 });
 
-// Mock env constants used by fetchArticlesApi
-vi.mock('$env/static/private', () => ({
-  PAGE_SIZE: '10',
-  USE_REDIS_CACHE: 'true', // enable cache to test both hit/miss paths with stubs
-  WALLABAG_CLIENT_ID: 'client-id',
-  WALLABAG_CLIENT_SECRET: 'client-secret',
-  WALLABAG_PASSWORD: 'password',
-  WALLABAG_URL: 'https://wallabag.example',
-  WALLABAG_USERNAME: 'username',
-  REDIS_URI: 'redis://localhost:6379',
+// Mock varlock/env used by fetchArticlesApi
+vi.mock('varlock/env', () => ({
+  ENV: {
+    PAGE_SIZE: 10,
+    USE_REDIS_CACHE: true, // enable cache to test both hit/miss paths with stubs
+    WALLABAG_CLIENT_ID: 'client-id',
+    WALLABAG_CLIENT_SECRET: 'client-secret',
+    WALLABAG_PASSWORD: 'password',
+    WALLABAG_URL: 'https://wallabag.test',
+    WALLABAG_USERNAME: 'username',
+    REDIS_URI: 'redis://test-host:6379',
+  },
 }));
 
 // Mock redis service so no real connection is used
@@ -99,10 +101,10 @@ describe('fetchArticlesApi (unit, mocked)', () => {
       if (url.endsWith('/oauth/v2/token')) {
         return makeJsonResponse(token);
       }
-      if (url.startsWith('https://wallabag.example/api/entries.json')) {
+      if (url.startsWith('https://wallabag.test/api/entries.json')) {
         return makeJsonResponse(wallabagResponse, { 'cache-control': 'max-age=60' });
       }
-      throw new Error('Unexpected fetch to ' + url);
+      throw new Error(`Unexpected fetch to ${url}`);
     });
     // @ts-expect-error assign to global
     globalThis.fetch = fetchMock;

@@ -1,6 +1,6 @@
 import { json, type RequestEvent } from '@sveltejs/kit';
 import scrapeIt, { type ScrapeResult } from 'scrape-it';
-import { BANDCAMP_USERNAME, USE_REDIS_CACHE } from '$env/static/private';
+import { ENV } from 'varlock/env';
 import { REDIS_PREFIXES, redisService } from '$lib/server/redis';
 import type { Album, BandCampResults } from '$lib/types/album';
 
@@ -23,7 +23,7 @@ export async function GET(event: RequestEvent) {
   const { setHeaders } = event;
 
   try {
-    if (USE_REDIS_CACHE === 'true') {
+    if (ENV.USE_REDIS_CACHE) {
       const cached: string | null = await redisService.get({ prefix: REDIS_PREFIXES.BANDCAMP_ALBUMS, key: 'albums' });
 
       if (cached) {
@@ -45,7 +45,7 @@ export async function GET(event: RequestEvent) {
     // Scrape Bandcamp with realistic headers, plus retry/backoff
     const { data }: ScrapeResult<BandCampResults> = await retryWithBackoff(
       async () =>
-        await scrapeIt(`https://bandcamp.com/${BANDCAMP_USERNAME}`, {
+        await scrapeIt(`https://bandcamp.com/${ENV.BANDCAMP_USERNAME}`, {
           collectionItems: {
             listItem: '.collection-item-container',
             data: {
@@ -60,7 +60,7 @@ export async function GET(event: RequestEvent) {
 
     const albums: Album[] = data?.collectionItems || [];
     if (albums && albums.length > 0) {
-      if (USE_REDIS_CACHE === 'true') {
+      if (ENV.USE_REDIS_CACHE) {
         await redisService.setWithExpiry({ prefix: REDIS_PREFIXES.BANDCAMP_ALBUMS, key: 'albums', value: JSON.stringify(albums), expiry: 43200 });
       }
       setHeaders({ 'cache-control': 'max-age=43200' });

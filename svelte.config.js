@@ -18,6 +18,11 @@ const config = {
       $lib: './src/lib',
       '@': './src',
     },
+    typescript: {
+      config(config) {
+        config.include.push('../env.d.ts');
+      },
+    },
   },
   compilerOptions: {
     css: 'injected',

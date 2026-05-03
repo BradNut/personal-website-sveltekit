@@ -1,5 +1,5 @@
-import { persisted } from 'svelte-local-storage-store';
 import { writable } from 'svelte/store';
+import { persisted } from 'svelte-local-storage-store';
 
 export const searching = writable(false);
 export const overlay_open = writable(false);

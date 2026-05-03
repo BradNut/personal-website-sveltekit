@@ -1,15 +1,17 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-// Mock private env used by the service
-vi.mock('$env/static/private', () => ({
-  PAGE_SIZE: '10',
-  USE_REDIS_CACHE: 'true',
-  WALLABAG_CLIENT_ID: 'cid',
-  WALLABAG_CLIENT_SECRET: 'csecret',
-  WALLABAG_PASSWORD: 'pw',
-  WALLABAG_URL: 'https://example.com',
-  WALLABAG_USERNAME: 'user',
-  REDIS_URI: 'redis://localhost:6379',
+// Mock varlock/env used by the service
+vi.mock('varlock/env', () => ({
+  ENV: {
+    PAGE_SIZE: 10,
+    USE_REDIS_CACHE: true,
+    WALLABAG_CLIENT_ID: 'cid',
+    WALLABAG_CLIENT_SECRET: 'csecret',
+    WALLABAG_PASSWORD: 'pw',
+    WALLABAG_URL: 'https://example.com',
+    WALLABAG_USERNAME: 'user',
+    REDIS_URI: 'redis://test-host:6379',
+  },
 }));
 
 // Mock redis service
@@ -126,9 +128,7 @@ describe('fetchArticlesApi', () => {
     const authResponse = { ok: true, json: async () => ({ access_token: 'token' }) };
     const badResponse = { ok: false, status: 500, statusText: 'Internal Server Error' };
 
-    globalThis.fetch = vi.fn()
-      .mockResolvedValueOnce(authResponse)
-      .mockResolvedValue(badResponse) as unknown as typeof globalThis.fetch;
+    globalThis.fetch = vi.fn().mockResolvedValueOnce(authResponse).mockResolvedValue(badResponse) as unknown as typeof globalThis.fetch;
 
     const resultPromise = fetchArticlesApi('get', 'fetchArticles', { page: '2', limit: '5' });
     await vi.runAllTimersAsync();
@@ -172,9 +172,7 @@ describe('fetchArticlesApi', () => {
       json: async () => entriesJson,
     };
 
-    globalThis.fetch = vi.fn()
-      .mockResolvedValueOnce(authResponse)
-      .mockResolvedValueOnce(pageResponse) as unknown as typeof globalThis.fetch;
+    globalThis.fetch = vi.fn().mockResolvedValueOnce(authResponse).mockResolvedValueOnce(pageResponse) as unknown as typeof globalThis.fetch;
 
     const result = await fetchArticlesApi('get', 'fetchArticles', { page: '1', limit: '10' });
 
@@ -190,9 +188,7 @@ describe('fetchArticlesApi', () => {
     const authResponse = { ok: true, json: async () => ({ access_token: 'token' }) };
     const pageResponse = { ok: true, headers: { get: () => null }, json: async () => entriesJson };
 
-    const fetchMock = vi.fn()
-      .mockResolvedValueOnce(authResponse)
-      .mockResolvedValueOnce(pageResponse);
+    const fetchMock = vi.fn().mockResolvedValueOnce(authResponse).mockResolvedValueOnce(pageResponse);
     globalThis.fetch = fetchMock as unknown as typeof globalThis.fetch;
 
     await fetchArticlesApi('get', 'fetchArticles', { page: '1', limit: '999' });

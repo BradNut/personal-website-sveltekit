@@ -14,6 +14,7 @@ export async function GET({ url }) {
     const content = url.searchParams.get('content') ?? '';
 
     return componentToPng(
+      // biome-ignore lint/suspicious/noExplicitAny: Svelte component type cast for renderer
       SocialImageCard as any,
       {
         header,

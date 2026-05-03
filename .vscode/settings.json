@@ -1,16 +1,5 @@
 {
-  "cSpell.words": [
-    "Bandcamp",
-    "bradleyshellnut",
-    "clazz",
-    "iconify",
-    "Mullvad",
-    "nextjs",
-    "Obispo",
-    "selfhosting",
-    "Syncthing",
-    "Wallabag"
-  ],
+  "cSpell.words": ["Bandcamp", "bradleyshellnut", "clazz", "iconify", "Mullvad", "nextjs", "Obispo", "selfhosting", "Syncthing", "Wallabag"],
   "sonarlint.connectedMode.project": {
     "connectionId": "bradnut",
     "projectKey": "BradNut_personal-website-sveltekit"

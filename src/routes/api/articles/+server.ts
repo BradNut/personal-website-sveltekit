@@ -1,14 +1,14 @@
 import { json, type RequestEvent } from '@sveltejs/kit';
+import { ENV } from 'varlock/env';
 import type { ArticlePageLoad } from '@/lib/types/article.js';
-import { PAGE_SIZE } from '$env/static/private';
 import { fetchArticlesApi } from '$lib/services/articlesApi';
 
 export async function GET(event: RequestEvent) {
   const { setHeaders, url } = event;
   const page = url?.searchParams?.get('page') || '1';
-  let limit = url?.searchParams?.get('limit') ?? PAGE_SIZE;
+  let limit = url?.searchParams?.get('limit') ?? String(ENV.PAGE_SIZE);
   if (Number(limit) > 30) {
-    limit = PAGE_SIZE;
+    limit = String(ENV.PAGE_SIZE);
   }
 
   try {
