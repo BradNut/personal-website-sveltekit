@@ -6,7 +6,7 @@ export interface LinkTextType {
   location?: 'top' | 'bottom' | 'left' | 'right';
 }
 
-export interface LinkDataType {
+interface LinkDataType {
   rel?: string;
   target?: string;
   href: string;
