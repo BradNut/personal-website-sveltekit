@@ -18,7 +18,7 @@ env:
   WALLABAG_URL: https://wallabag.test
   BANDCAMP_USERNAME: test-user
   PUBLIC_SITE_URL: https://example.test
-  PUBLIC_URL: http://localhost:5173
+  PUBLIC_URL: https://localhost:5173
   PUBLIC_SENTRY_URL: https://sentry.test
   PUBLIC_UMAMI_URL: https://umami.test/script.js
   PUBLIC_UMAMI_ID: test-umami-id
@@ -32,15 +32,15 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
 
       - name: pnpm-setup
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
         with:
           version: 10
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: 22.x
           cache: 'pnpm'
