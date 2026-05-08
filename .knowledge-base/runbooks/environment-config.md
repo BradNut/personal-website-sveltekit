@@ -60,7 +60,21 @@ USE_REDIS_CACHE=true
 PAGE_SIZE=10
 ```
 
-Test mocks use `vi.mock('varlock/env', ...)` (not `$env/static/private`) since `ENV` is resolved at runtime by varlock, not replaced at build time.
+### Varlock and Vitest Mocking
+
+**`vi.mock('varlock/env')` does NOT work.** Varlock's Vite plugin (`@varlock/vite-integration`)
+inlines non-sensitive `ENV.*` values at build/transform time. By the time test code runs,
+`ENV.PAGE_SIZE` etc. have already been replaced with literal values from the resolved env cascade.
+The mock target (`varlock/env`) no longer matches the transformed code.
+
+**Correct approach:** Always run tests with `ENVIRONMENT=test` (the `pnpm test:unit` script does
+this automatically). This tells varlock to load `.env.test`, and the values defined there become
+the inlined literals. Do NOT rely on `vi.mock('varlock/env')` to override values — it is dead code.
+
+**Env file precedence** (increasing): `.env.schema` → `.env` → `.env.local` → `.env.test` → `.env.test.local`
+
+If you need a different `ENV` value in a specific test, change the value in `.env.test` or
+restructure the code so the dependency is injectable (e.g., pass `pageSize` as a parameter).
 
 ## Related
 

@@ -1,9 +1,11 @@
+// fallow-ignore-next-line code-duplication
 export const prerender = true;
 
 import type { MetaTagsProps } from 'svelte-meta-tags';
 import { ENV } from 'varlock/env';
 import type { PageServerLoad } from './$types';
 
+// fallow-ignore-next-line code-duplication
 export const load: PageServerLoad = async ({ url }) => {
   const baseUrl = new URL(url.origin).href || ENV.PUBLIC_SITE_URL;
   const currentPageUrl = new URL(url.pathname, url.origin).href;
