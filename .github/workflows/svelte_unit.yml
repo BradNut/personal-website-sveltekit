@@ -27,7 +27,7 @@ env:
   PUBLIC_SENTRY_URL: https://sentry.test
   PUBLIC_UMAMI_URL: https://umami.test/script.js
   PUBLIC_UMAMI_ID: test-umami-id
-  USE_REDIS_CACHE: 'false'
+  USE_REDIS_CACHE: 'true'
   SENTRY_AUTH_TOKEN: test-sentry-token
   SENTRY_BACKEND_URL: https://sentry-backend.test
 

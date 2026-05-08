@@ -34,7 +34,7 @@ describe('ExternalLink textLocationClass', () => {
   });
 
   it('defaults to text-left when no location provided', () => {
-    const html = renderWithLocation(undefined);
+    const html = renderWithLocation();
     expect(html).toContain('text-left');
   });
 });

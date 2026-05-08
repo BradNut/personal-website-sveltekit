@@ -10,7 +10,7 @@ vi.mock('$lib/components/socialImageCard.svelte', () => ({ default: {} }));
 
 import { GET } from './+server.js';
 
-function makeEvent(params: Record<string, string> = {}) {
+function makeEvent(params: Record<string, string> = {}): Parameters<typeof GET>[0] {
   const url = new URL('http://localhost/og');
   for (const [k, v] of Object.entries(params)) {
     url.searchParams.set(k, v);

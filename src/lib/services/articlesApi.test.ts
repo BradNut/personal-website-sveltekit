@@ -128,7 +128,7 @@ describe('fetchArticlesApi', () => {
     const authResponse = { ok: true, json: async () => ({ access_token: 'token' }) };
     const badResponse = { ok: false, status: 500, statusText: 'Internal Server Error' };
 
-    globalThis.fetch = vi.fn().mockResolvedValueOnce(authResponse).mockResolvedValue(badResponse) as unknown as typeof globalThis.fetch;
+    globalThis.fetch = vi.fn().mockResolvedValueOnce(authResponse).mockResolvedValue(badResponse);
 
     const resultPromise = fetchArticlesApi('get', 'fetchArticles', { page: '2', limit: '5' });
     await vi.runAllTimersAsync();
@@ -172,7 +172,7 @@ describe('fetchArticlesApi', () => {
       json: async () => entriesJson,
     };
 
-    globalThis.fetch = vi.fn().mockResolvedValueOnce(authResponse).mockResolvedValueOnce(pageResponse) as unknown as typeof globalThis.fetch;
+    globalThis.fetch = vi.fn().mockResolvedValueOnce(authResponse).mockResolvedValueOnce(pageResponse);
 
     const result = await fetchArticlesApi('get', 'fetchArticles', { page: '1', limit: '10' });
 

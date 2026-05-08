@@ -23,6 +23,7 @@ env:
   PUBLIC_UMAMI_URL: https://umami.test/script.js
   PUBLIC_UMAMI_ID: test-umami-id
   USE_REDIS_CACHE: 'false'
+  REDIS_URI: redis://localhost:6379
   SENTRY_AUTH_TOKEN: test-sentry-token
   SENTRY_BACKEND_URL: https://sentry-backend.test
 
@@ -46,7 +47,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --ignore-scripts
+        run: pnpm install --frozen-lockfile --ignore-scripts
 
       - name: Run Svelte Check
         run: pnpm check

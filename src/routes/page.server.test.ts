@@ -54,7 +54,7 @@ describe('load (root page)', () => {
 
     // ENV.PUBLIC_SITE_URL from .env.test, or hardcoded fallback
     expect(result.baseUrl).toBeTruthy();
-    expect(result.baseUrl as string).not.toContain('prerender');
+    expect(result.baseUrl).not.toContain('prerender');
   });
 
   it('includes correct meta tag structure', async () => {
