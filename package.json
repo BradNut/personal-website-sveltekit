@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "NODE_OPTIONS=\"--inspect\" vite dev --host",
     "build": "vite build",
+    "start": "varlock run -- node build/index.js",
     "preview": "vite preview",
     "test": "npm run test:integration && npm run test:unit",
     "test:ui": "svelte-kit sync && playwright test --ui",
