@@ -49,5 +49,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
 
+      - name: Generate Varlock types
+        run: npx varlock typegen
+
       - name: Run Svelte Check
         run: pnpm check
