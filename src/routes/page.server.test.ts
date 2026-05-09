@@ -44,12 +44,12 @@ describe('load (root page)', () => {
     expect(capturedHeaders['cache-control']).toBe('max-age=43200');
     expect(result.albums).toEqual(mockAlbums);
     expect(result.articlesData).toEqual(mockArticles);
-    expect(result.baseUrl).toBe('http://localhost/');
+    expect(result.baseUrl).toBe('http://localhost/'); // NOSONAR - localhost test fixture, not production
     expect(result.metaTagsChild).toBeDefined();
   });
 
   it('uses PUBLIC_SITE_URL fallback for prerender origin', async () => {
-    const { args } = makeLoadArgs('http://prerender.internal');
+    const { args } = makeLoadArgs('http://prerender.internal'); // NOSONAR - internal test fixture
     const result = await load(args) as Record<string, unknown>;
 
     // ENV.PUBLIC_SITE_URL from .env.test, or hardcoded fallback

@@ -11,7 +11,7 @@ vi.mock('$lib/components/socialImageCard.svelte', () => ({ default: {} }));
 import { GET } from './+server.js';
 
 function makeEvent(params: Record<string, string> = {}): Parameters<typeof GET>[0] {
-  const url = new URL('http://localhost/og');
+  const url = new URL('http://localhost/og'); // NOSONAR - localhost test fixture
   for (const [k, v] of Object.entries(params)) {
     url.searchParams.set(k, v);
   }
@@ -37,10 +37,10 @@ describe('GET /og', () => {
     expect(props.header).toBe('My Header');
     expect(props.page).toBe('Home');
     expect(props.content).toBe('Some content');
-    expect(props.image).toBe('http://localhost/b_shell_nut_favicon.png');
+    expect(props.image).toBe('http://localhost/b_shell_nut_favicon.png'); // NOSONAR - localhost test fixture
     expect(props.width).toBe('1200');
     expect(props.height).toBe('630');
-    expect(props.url).toBe('http://localhost/');
+    expect(props.url).toBe('http://localhost/'); // NOSONAR - localhost test fixture
     expect(h).toBe(630);
     expect(w).toBe(1200);
   });

@@ -12,7 +12,7 @@ vi.mock('varlock/env', () => ({
 import { GET } from './+server.js';
 
 function makeRequestEvent(params: Record<string, string> = {}) {
-  const url = new URL('http://localhost/api/articles');
+  const url = new URL('http://localhost/api/articles'); // NOSONAR - localhost test fixture
   for (const [k, v] of Object.entries(params)) {
     url.searchParams.set(k, v);
   }
