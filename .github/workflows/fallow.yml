@@ -1,0 +1,67 @@
+name: Fallow Analysis
+
+on:
+  push:
+    branches: [main, master, development]
+  pull_request:
+    branches: [main, master, development]
+
+  workflow_dispatch:
+
+jobs:
+  fallow:
+    name: Dead code, duplication & complexity
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: pnpm-setup
+        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+        with:
+          version: 10
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 22.x
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --ignore-scripts
+      - uses: fallow-rs/fallow@624adaf8c8ae33de863911658890890a529a46f3
+        with:
+          format: sarif
+          comment: true
+          auto-changed-since: true
+          fail-on-issues: false
+          production: true
+      - uses: github/codeql-action/upload-sarif@5e316336eb4f107009e477d4bfbfff13d7250fae
+        if: always()
+        with:
+          sarif_file: fallow-results.sarif
+
+  badge:
+    name: Publish health badge
+    runs-on: ubuntu-latest
+    needs: fallow
+    if: github.event_name == 'push'
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Generate health badge
+        run: |
+          mkdir -p badge-output
+          npx --ignore-scripts fallow@2.63.0 health --format badge > badge-output/badge.svg
+      - name: Publish badge
+        uses: peaceiris/actions-gh-pages@e9c66a37f080288a11235e32cbe2dc5fb3a679cc
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: badge-output
+          publish_branch: badges
+          keep_files: true

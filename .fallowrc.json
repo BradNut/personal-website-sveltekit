@@ -1,0 +1,17 @@
+{
+  "entry": [
+    "instrument.mjs",
+    "src/**/*.stories.svelte"
+  ],
+  "ignorePatterns": [
+    "tests/**/*.test.ts"
+  ],
+  "ignoreDependencies": [
+    "@varlock/bitwarden-plugin",
+    "@varlock/proton-pass-plugin",
+    "@varlock/vite-integration",
+    "postcss-load-config",
+    "tslib"
+  ],
+  "production": true
+}

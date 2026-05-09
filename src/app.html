@@ -7,10 +7,9 @@
 		<script>
 			const htmlElement = document.documentElement;
 			const userTheme = localStorage.theme;
-			const userFont = localStorage.font;
 
-			const prefersDarkMode = window.matchMedia('prefers-color-scheme: dark').matches;
-			const prefersLightMode = window.matchMedia('prefers-color-scheme: light').matches;
+			const prefersDarkMode = globalThis.matchMedia('prefers-color-scheme: dark').matches;
+			const prefersLightMode = globalThis.matchMedia('prefers-color-scheme: light').matches;
 
 			// check if the user set a theme
 			if (userTheme) {

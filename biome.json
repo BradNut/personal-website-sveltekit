@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.4.13/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.4.14/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -28,7 +28,8 @@
       "!**/pnpm-lock.yaml",
       "!**/package-lock.json",
       "!**/yarn.lock",
-      "!**/paraglide/**"
+      "!**/paraglide/**",
+      "!**/*.svelte"
     ]
   },
   "assist": { "actions": { "source": { "organizeImports": "on" } } },
@@ -74,6 +75,10 @@
       "includes": ["**/*.svelte"],
       "linter": {
         "rules": {
+          "correctness": {
+            "noUnusedVariables": "off",
+            "noUnusedImports": "off"
+          },
           "style": {
             "useImportType": "off"
           }
