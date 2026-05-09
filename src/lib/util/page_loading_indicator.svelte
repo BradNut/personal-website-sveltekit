@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { onNavigate, beforeNavigate } from "$app/navigation";
 	import { LoaderCircle } from "lucide-svelte";
+	import { beforeNavigate, onNavigate } from "$app/navigation";
 
 	let visible = $state(false);
 	let progress = $state(0);

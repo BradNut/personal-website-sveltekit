@@ -3,5 +3,8 @@
   "sonarlint.connectedMode.project": {
     "connectionId": "bradnut",
     "projectKey": "BradNut_personal-website-sveltekit"
+  },
+  "[svelte]": {
+    "editor.formatOnSave": false
   }
 }
