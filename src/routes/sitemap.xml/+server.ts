@@ -1,11 +1,11 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import { PUBLIC_URL } from '$env/static/public';
+import { ENV } from 'varlock/env';
 import type { ArticlePageLoad } from '$lib/types/article';
 
-const site = `https://${PUBLIC_URL}`;
+const site = `https://${ENV.PUBLIC_URL}`;
 
 export const GET: RequestHandler = async function GET({ fetch, setHeaders }) {
-  const resp = await fetch(`/api/articles`);
+  const resp = await fetch('/api/articles');
   const { totalPages }: ArticlePageLoad = await resp.json();
 
   const xml = `<?xml version="1.0" encoding="UTF-8" ?>

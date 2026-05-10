@@ -15,28 +15,21 @@ on:
   workflow_dispatch:
 
 env:
-  ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
-  WALLABAG_MAX_ARTICLES: ${{ secrets.WALLABAG_MAX_ARTICLES }}
-  WALLABAG_MAX_PAGES: ${{ secrets.WALLABAG_MAX_PAGES }}
-  WALLABAG_CLIENT_ID: ${{ secrets.WALLABAG_CLIENT_ID }}
-  WALLABAG_CLIENT_SECRET: ${{ secrets.WALLABAG_CLIENT_SECRET }}
-  WALLABAG_USERNAME: ${{ secrets.WALLABAG_USERNAME }}
-  WALLABAG_PASSWORD: ${{ secrets.WALLABAG_PASSWORD }}
-  WALLABAG_URL: ${{ secrets.WALLABAG_URL }}
-  BANDCAMP_USERNAME: ${{ secrets.BANDCAMP_USERNAME }}
-  PUBLIC_SITE_URL: ${{ secrets.PUBLIC_SITE_URL }}
-  PUBLIC_URL: ${{ secrets.PUBLIC_URL }}
-  PUBLIC_SENTRY_URL: ${{ secrets.PUBLIC_SENTRY_URL }}
-  PUBLIC_SITE_VERSION: ${{ secrets.PUBLIC_SITE_VERSION }}
-  PUBLIC_UMAMI_DO_NOT_TRACK: ${{ secrets.PUBLIC_UMAMI_DO_NOT_TRACK }}
-  PUBLIC_UMAMI_URL: ${{ secrets.PUBLIC_UMAMI_URL }}
-  PUBLIC_UMAMI_ID: ${{ secrets.PUBLIC_UMAMI_ID }}
-  PAGE_SIZE: ${{ secrets.PAGE_SIZE }}
-  USE_REDIS_CACHE: 'false'
-  REDIS_URI: ${{ secrets.REDIS_URI }}
-  SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-  SENTRY_BACKEND_URL: ${{ secrets.SENTRY_BACKEND_URL }}
-  SITE_VERSION: ${{ secrets.SITE_VERSION }}
+  ENVIRONMENT: test
+  WALLABAG_CLIENT_ID: test-client-id
+  WALLABAG_CLIENT_SECRET: test-client-secret
+  WALLABAG_USERNAME: test-user
+  WALLABAG_PASSWORD: test-password
+  WALLABAG_URL: https://wallabag.test
+  BANDCAMP_USERNAME: test-user
+  PUBLIC_SITE_URL: https://example.test
+  PUBLIC_URL: https://localhost:5173
+  PUBLIC_SENTRY_URL: https://sentry.test
+  PUBLIC_UMAMI_URL: https://umami.test/script.js
+  PUBLIC_UMAMI_ID: test-umami-id
+  USE_REDIS_CACHE: 'true'
+  SENTRY_AUTH_TOKEN: test-sentry-token
+  SENTRY_BACKEND_URL: https://sentry-backend.test
 
 jobs:
   test:
@@ -44,21 +37,21 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
 
       - name: pnpm-setup
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
         with:
           version: 10
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: 22.x
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --ignore-scripts
 
       - name: Execute unit tests
         run: pnpm test:unit

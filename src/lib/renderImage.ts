@@ -16,7 +16,7 @@ export async function componentToPng(component: Component, props: Record<string,
   console.log('result', result);
   const markup = toReactNode(`${result.body}${result.head}`);
 
-  // Cast markup to any to satisfy satori's ReactNode expectation
+  // biome-ignore lint/suspicious/noExplicitAny: satori-html output incompatible with satori ReactNode
   const svg = await satori(markup as any, {
     fonts: [
       {

@@ -1,5 +1,5 @@
 import type { MetaTagsProps } from 'svelte-meta-tags';
-import { PUBLIC_SITE_URL } from '$env/static/public';
+import { ENV } from 'varlock/env';
 import type { Album } from '$lib/types/album';
 import type { ArticlePageLoad } from '$lib/types/article';
 import type { PageServerLoad } from './$types';
@@ -7,9 +7,9 @@ import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
   let baseUrl: string;
   if (url.origin.includes('prerender')) {
-    baseUrl = PUBLIC_SITE_URL || 'https://bradleyshellnut.com';
+    baseUrl = ENV.PUBLIC_SITE_URL || 'https://bradleyshellnut.com';
   } else {
-    baseUrl = new URL(url.origin).href || PUBLIC_SITE_URL || 'https://bradleyshellnut.com';
+    baseUrl = new URL(url.origin).href || ENV.PUBLIC_SITE_URL || 'https://bradleyshellnut.com';
   }
   const currentPageUrl = new URL(url.pathname, url.origin).href;
 

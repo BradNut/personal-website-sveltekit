@@ -120,6 +120,56 @@ another". Use `oninput` callbacks or function bindings instead.
 
 ---
 
+### 1d. Using $effect to Sync Async Data into Form State ❌
+
+**WRONG:**
+
+```svelte
+<script>
+	let query = $derived(get_item({ id }))
+	let name = $state('')
+
+	// BAD — $effect as escape hatch to sync query → form state
+	$effect(() => {
+		if (query.ready) name = query.current.name
+	})
+</script>
+
+<input bind:value={name} />
+```
+
+**RIGHT — Gate child component behind `.ready`:**
+
+```svelte
+<!-- Parent.svelte -->
+<script>
+	let query = $derived(get_item({ id }))
+</script>
+
+{#if !query.ready}
+	<Skeleton />
+{:else}
+	<EditForm item={query.current} />
+{/if}
+```
+
+```svelte
+<!-- EditForm.svelte -->
+<script>
+	let { item } = $props()
+	// svelte-ignore state_referenced_locally
+	let form = $state({ name: item.name }) // init from prop at mount
+</script>
+
+<input bind:value={form.name} />
+```
+
+**Why:** The child component initializes `$state` from props once at
+mount time. No `$effect` needed, no `state_unsafe_mutation` warning.
+This is the standard pattern for editable forms backed by async data.
+
+---
+
 ### 2. Reassigning $derived Values ⚠️
 
 **Note:** As of Svelte 5.25+, `$derived` CAN be reassigned, but will
@@ -745,3 +795,34 @@ proxies.
 9. ✅ Use `{@render children()}` not `{children}`
 10. ✅ Use `onclick` not `on:click`
 11. ✅ Remember: `$effect` doesn't run during SSR
+
+## Debugging: $inspect.trace
+
+`$inspect.trace` is a debugging tool for reactivity. Add it as the first
+line of an `$effect` or `$derived.by` to trace dependencies and discover
+which one triggered an update.
+
+```svelte
+<script>
+	let count = $state(0);
+	let name = $state('world');
+
+	$effect(() => {
+		$inspect.trace('greeting effect');
+		console.log(`Hello ${name}, count is ${count}`);
+	});
+
+	const message = $derived.by(() => {
+		$inspect.trace('message derived');
+		return `${name}: ${count}`;
+	});
+</script>
+```
+
+**When to use:**
+- Something is not updating when it should
+- An effect or derived is running more often than expected
+- You need to identify which dependency triggered a re-run
+
+**Note:** Remove `$inspect.trace` before production — it's for debugging
+only, like `{@debug}`.

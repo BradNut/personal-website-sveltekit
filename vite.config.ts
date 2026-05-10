@@ -1,13 +1,17 @@
 import { sentrySvelteKit } from '@sentry/sveltekit';
 import { enhancedImages } from '@sveltejs/enhanced-img';
 import { sveltekit } from '@sveltejs/kit/vite';
+import { varlockVitePlugin } from '@varlock/vite-integration';
 import { imagetools } from '@zerodevx/svelte-img/vite';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [
-    sentrySvelteKit(),
+    sentrySvelteKit({
+      telemetry: false,
+    }),
     enhancedImages(),
+    varlockVitePlugin(),
     sveltekit(),
     imagetools({
       // By default, directives are `?width=480;1024;1920&format=avif;webp;jpg`
