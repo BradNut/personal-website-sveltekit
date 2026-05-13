@@ -1,7 +1,6 @@
 import { json, type RequestEvent } from '@sveltejs/kit';
 import scrapeIt, { type ScrapeResult } from 'scrape-it';
 import { ENV } from 'varlock/env';
-import { REDIS_PREFIXES } from '$lib/server/redis';
 import { RESPONSE_CACHE_TTL_SECONDS, readCachedJson, writeCachedJson } from '$lib/server/responseCache';
 import type { Album, BandCampResults } from '$lib/types/album';
 import { retryWithBackoff } from '$lib/util/retry';
@@ -12,9 +11,8 @@ export async function GET(event: RequestEvent) {
   try {
     const cached = await readCachedJson<Album[]>({
       enabled: ENV.USE_REDIS_CACHE === true,
-      prefix: REDIS_PREFIXES.BANDCAMP_ALBUMS,
+      cacheName: 'currentlyListening',
       key: 'albums',
-      fallbackTtl: RESPONSE_CACHE_TTL_SECONDS,
     });
 
     if (cached.hit) {
@@ -42,7 +40,7 @@ export async function GET(event: RequestEvent) {
 
     const albums: Album[] = data?.collectionItems || [];
     if (albums && albums.length > 0) {
-      await writeCachedJson({ enabled: ENV.USE_REDIS_CACHE === true, prefix: REDIS_PREFIXES.BANDCAMP_ALBUMS, key: 'albums', value: albums, ttl: RESPONSE_CACHE_TTL_SECONDS });
+      await writeCachedJson({ enabled: ENV.USE_REDIS_CACHE === true, cacheName: 'currentlyListening', key: 'albums', value: albums });
       setHeaders({ 'cache-control': `max-age=${RESPONSE_CACHE_TTL_SECONDS}` });
       return json(albums);
     }

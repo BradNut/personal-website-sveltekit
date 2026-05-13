@@ -24,6 +24,27 @@ beforeEach(() => {
 });
 
 describe('response cache', () => {
+  it('reads favorite articles through the cache domain without caller Redis prefixes', async () => {
+    redisGet.mockResolvedValueOnce(JSON.stringify({ articles: ['One'] }));
+    redisTtl.mockResolvedValueOnce(120);
+
+    const result = await readCachedJson<{ articles: string[] }>({
+      enabled: true,
+      cacheName: 'favoriteArticles',
+      key: 'entries',
+    });
+
+    expect(result).toEqual({
+      hit: true,
+      value: { articles: ['One'] },
+      cacheControl: 'max-age=120',
+    });
+    expect(redisGet).toHaveBeenCalledWith({
+      prefix: 'articles',
+      key: 'entries',
+    });
+  });
+
   it('returns cached JSON with TTL-derived cache-control', async () => {
     redisGet.mockResolvedValueOnce(JSON.stringify({ albums: ['Blue Rev'] }));
     redisTtl.mockResolvedValueOnce(3600);

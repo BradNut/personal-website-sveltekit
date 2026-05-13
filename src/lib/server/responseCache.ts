@@ -1,6 +1,21 @@
-import { redisService } from '$lib/server/redis';
+import { REDIS_PREFIXES, redisService } from '$lib/server/redis';
 
 export const RESPONSE_CACHE_TTL_SECONDS = 43200;
+
+const RESPONSE_CACHES = {
+  favoriteArticles: {
+    prefix: REDIS_PREFIXES.ARTICLES,
+    ttl: RESPONSE_CACHE_TTL_SECONDS,
+  },
+  currentlyListening: {
+    prefix: REDIS_PREFIXES.BANDCAMP_ALBUMS,
+    ttl: RESPONSE_CACHE_TTL_SECONDS,
+  },
+} as const;
+
+type ResponseCacheName = keyof typeof RESPONSE_CACHES;
+
+type ResponseCacheTarget = { cacheName: ResponseCacheName; prefix?: never } | { cacheName?: never; prefix: string };
 
 export type CachedJsonHit<T> = {
   hit: true;
@@ -15,23 +30,33 @@ export type CachedJsonMiss = {
 
 export type CachedJsonResult<T> = CachedJsonHit<T> | CachedJsonMiss;
 
-export type CachedJsonOptions = {
+export type CachedJsonOptions = ResponseCacheTarget & {
   enabled: boolean;
-  prefix: string;
   key: string;
   fallbackTtl?: number;
 };
 
-export type WriteCachedJsonOptions<T> = {
+export type WriteCachedJsonOptions<T> = ResponseCacheTarget & {
   enabled: boolean;
-  prefix: string;
   key: string;
   value: T;
-  ttl: number;
+  ttl?: number;
 };
 
+function resolveCachePolicy(options: ResponseCacheTarget): { prefix: string; ttl: number } {
+  if (options.cacheName) {
+    return RESPONSE_CACHES[options.cacheName];
+  }
+
+  return {
+    prefix: options.prefix,
+    ttl: RESPONSE_CACHE_TTL_SECONDS,
+  };
+}
+
 export async function readCachedJson<T>(options: CachedJsonOptions): Promise<CachedJsonResult<T>> {
-  const fallbackCacheControl = `max-age=${options.fallbackTtl ?? 0}`;
+  const policy = resolveCachePolicy(options);
+  const fallbackCacheControl = `max-age=${options.fallbackTtl ?? policy.ttl}`;
   if (!options.enabled) {
     return {
       hit: false,
@@ -41,7 +66,7 @@ export async function readCachedJson<T>(options: CachedJsonOptions): Promise<Cac
 
   let cached: string | null;
   try {
-    cached = await redisService.get({ prefix: options.prefix, key: options.key });
+    cached = await redisService.get({ prefix: policy.prefix, key: options.key });
   } catch {
     return {
       hit: false,
@@ -56,7 +81,7 @@ export async function readCachedJson<T>(options: CachedJsonOptions): Promise<Cac
     };
   }
 
-  const ttl = await redisService.ttl({ prefix: options.prefix, key: options.key });
+  const ttl = await redisService.ttl({ prefix: policy.prefix, key: options.key });
   const cacheControl = ttl > 0 ? `max-age=${ttl}` : fallbackCacheControl;
 
   return {
@@ -68,10 +93,11 @@ export async function readCachedJson<T>(options: CachedJsonOptions): Promise<Cac
 
 export async function writeCachedJson<T>(options: WriteCachedJsonOptions<T>): Promise<void> {
   if (!options.enabled) return;
+  const policy = resolveCachePolicy(options);
   await redisService.setWithExpiry({
-    prefix: options.prefix,
+    prefix: policy.prefix,
     key: options.key,
     value: JSON.stringify(options.value),
-    expiry: options.ttl,
+    expiry: options.ttl ?? policy.ttl,
   });
 }

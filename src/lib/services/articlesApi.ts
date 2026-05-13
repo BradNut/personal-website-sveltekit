@@ -1,7 +1,6 @@
 import intersect from 'just-intersect';
 import { ENV } from 'varlock/env';
-import { REDIS_PREFIXES } from '$lib/server/redis';
-import { RESPONSE_CACHE_TTL_SECONDS, readCachedJson, writeCachedJson } from '$lib/server/responseCache';
+import { readCachedJson, writeCachedJson } from '$lib/server/responseCache';
 import type { Article, ArticlePageLoad, WallabagArticle } from '$lib/types/article';
 import { ArticleTag } from '$lib/types/articleTag';
 import { retryWithBackoff } from '$lib/util/retry';
@@ -42,9 +41,8 @@ function buildEntriesParams(queryParams: Record<string, string>): URLSearchParam
 async function getCachedResponse(cacheKey: string): Promise<ArticlePageLoad | null> {
   const cached = await readCachedJson<ArticlePageLoad>({
     enabled: ENV.USE_REDIS_CACHE === true,
-    prefix: REDIS_PREFIXES.ARTICLES,
+    cacheName: 'favoriteArticles',
     key: cacheKey,
-    fallbackTtl: RESPONSE_CACHE_TTL_SECONDS,
   });
   if (!cached.hit) return null;
   return { ...cached.value, cacheControl: cached.cacheControl };
@@ -150,7 +148,7 @@ export async function fetchArticlesApi(_method: string, _resource: string, query
 
     if (articles.length > 0) {
       console.log(`Storing in cache with key: ${cacheKey} for page ${page}`);
-      await writeCachedJson({ enabled: ENV.USE_REDIS_CACHE === true, prefix: REDIS_PREFIXES.ARTICLES, key: cacheKey, value: responseData, ttl: RESPONSE_CACHE_TTL_SECONDS });
+      await writeCachedJson({ enabled: ENV.USE_REDIS_CACHE === true, cacheName: 'favoriteArticles', key: cacheKey, value: responseData });
     }
 
     return responseData;
