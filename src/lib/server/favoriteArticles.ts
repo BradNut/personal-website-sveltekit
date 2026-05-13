@@ -3,10 +3,14 @@ import { ENV } from 'varlock/env';
 import { REDIS_PREFIXES, redisService } from '$lib/server/redis';
 import type { Article, ArticlePageLoad, WallabagArticle } from '$lib/types/article';
 import { ArticleTag } from '$lib/types/articleTag';
+import type { PageQuery } from '$lib/types/pageQuery';
 import { retryWithBackoff } from '$lib/util/retry';
-import type { PageQuery } from '../types/pageQuery';
 
-// Normalize Wallabag base URL and derive endpoints robustly
+type FavoriteArticlesQuery = {
+  page?: string;
+  limit?: string;
+};
+
 const wallabagBase = new URL(ENV.WALLABAG_URL ?? '');
 const tokenUrl = new URL('/oauth/v2/token', wallabagBase).toString();
 const entriesUrl = new URL('/api/entries.json', wallabagBase).toString();
@@ -19,12 +23,12 @@ function resolvePerPage(limit: string | undefined): number {
   return parsed;
 }
 
-function buildEntriesParams(queryParams: Record<string, string>): URLSearchParams {
+function buildEntriesParams(queryParams: FavoriteArticlesQuery): URLSearchParams {
   const pageQuery: PageQuery = {
     sort: 'updated',
-    perPage: resolvePerPage(queryParams?.limit),
+    perPage: resolvePerPage(queryParams.limit),
     since: 0,
-    page: Number(queryParams?.page) || 1,
+    page: Number(queryParams.page) || 1,
     tags: 'programming',
     content: 'metadata',
   };
@@ -42,7 +46,6 @@ async function getCachedResponse(cacheKey: string): Promise<ArticlePageLoad | nu
   if (!ENV.USE_REDIS_CACHE) return null;
   const cached = await redisService.get({ prefix: REDIS_PREFIXES.ARTICLES, key: cacheKey });
   if (!cached) return null;
-  // Cache hit, return cached payload with TTL-derived cache-control
   const response = JSON.parse(cached);
   const ttl = await redisService.ttl({ prefix: REDIS_PREFIXES.ARTICLES, key: cacheKey });
   return { ...response, cacheControl: `max-age=${ttl}` };
@@ -60,7 +63,7 @@ async function authenticateWallabag(): Promise<{ access_token: string }> {
         username: ENV.WALLABAG_USERNAME,
         password: ENV.WALLABAG_PASSWORD,
       }),
-      signal: AbortSignal.timeout(10000), // 10 second timeout
+      signal: AbortSignal.timeout(10000),
     });
 
     if (!authResponse.ok) {
@@ -80,11 +83,10 @@ async function fetchWallabagEntries(accessToken: string, params: URLSearchParams
         Authorization: `Bearer ${accessToken}`,
         Accept: 'application/json',
       },
-      signal: AbortSignal.timeout(15000), // 15 second timeout
+      signal: AbortSignal.timeout(15000),
     });
 
     if (!pageResponse.ok) {
-      // Log status only to avoid leaking headers/body
       console.warn(`Wallabag entries request failed: ${pageResponse.status} ${pageResponse.statusText}`);
       throw new Error(`API request failed: ${pageResponse.status} ${pageResponse.statusText}`);
     }
@@ -98,10 +100,10 @@ async function fetchWallabagEntries(accessToken: string, params: URLSearchParams
 function mapWallabagArticles(items: WallabagArticle[]): Article[] {
   const validTags = Object.values(ArticleTag);
   return items.reduce<Article[]>((acc, article) => {
-    const rawTags = article?.tags?.map((tag) => tag.slug);
-    if (intersect(rawTags, validTags)?.length > 0) {
+    const rawTags = article.tags.map((tag) => tag.slug);
+    if (intersect(rawTags, validTags).length > 0) {
       acc.push({
-        tags: rawTags.map((rawTag) => rawTag as unknown as ArticleTag),
+        tags: rawTags.map((rawTag) => rawTag as ArticleTag),
         title: article.title,
         url: new URL(article.url),
         domain_name: article.domain_name?.replace('www.', '') ?? '',
@@ -117,18 +119,36 @@ function mapWallabagArticles(items: WallabagArticle[]): Article[] {
   }, []);
 }
 
-function buildFallbackResponse(queryParams: Record<string, string>): ArticlePageLoad {
+function buildFallbackResponse(queryParams: FavoriteArticlesQuery): ArticlePageLoad {
   return {
     articles: [],
-    currentPage: Number(queryParams?.page) || 1,
+    currentPage: Number(queryParams.page) || 1,
     totalPages: 0,
-    limit: Number(queryParams?.limit) || Number(ENV.PAGE_SIZE),
+    limit: Number(queryParams.limit) || Number(ENV.PAGE_SIZE),
     totalArticles: 0,
     cacheControl: 'no-cache',
   };
 }
 
-export async function fetchArticlesApi(_method: string, _resource: string, queryParams: Record<string, string>) {
+async function fetchWallabagArticlePage(entriesQueryParams: URLSearchParams): Promise<ArticlePageLoad> {
+  const auth = await authenticateWallabag();
+  const { wallabagResponse, cacheControl } = await fetchWallabagEntries(auth.access_token, entriesQueryParams);
+  const { _embedded: favoriteArticles, page, pages, total, limit } = wallabagResponse;
+
+  console.info(`Wallabag entries: page=${page} pages=${pages} total=${total} limit=${limit}`);
+
+  const articles = mapWallabagArticles(favoriteArticles.items as WallabagArticle[]);
+  return { articles, currentPage: page, totalPages: pages, limit, totalArticles: total, cacheControl };
+}
+
+async function cacheArticlePage(cacheKey: string, responseData: ArticlePageLoad): Promise<void> {
+  if (ENV.USE_REDIS_CACHE && responseData.articles.length > 0) {
+    console.log(`Storing in cache with key: ${cacheKey} for page ${responseData.currentPage}`);
+    await redisService.setWithExpiry({ prefix: REDIS_PREFIXES.ARTICLES, key: cacheKey, value: JSON.stringify(responseData), expiry: 43200 });
+  }
+}
+
+export async function fetchFavoriteArticles(queryParams: FavoriteArticlesQuery): Promise<ArticlePageLoad> {
   try {
     const entriesQueryParams = buildEntriesParams(queryParams);
     const cacheKey = entriesQueryParams.toString();
@@ -136,24 +156,11 @@ export async function fetchArticlesApi(_method: string, _resource: string, query
     const cachedResponse = await getCachedResponse(cacheKey);
     if (cachedResponse) return cachedResponse;
 
-    const auth = await authenticateWallabag();
-    const { wallabagResponse, cacheControl } = await fetchWallabagEntries(auth.access_token, entriesQueryParams);
-    const { _embedded: favoriteArticles, page, pages, total, limit } = wallabagResponse;
-
-    // Minimal, non-sensitive diagnostics
-    console.info(`Wallabag entries: page=${page} pages=${pages} total=${total} limit=${limit}`);
-
-    const articles = mapWallabagArticles(favoriteArticles.items as WallabagArticle[]);
-    const responseData: ArticlePageLoad = { articles, currentPage: page, totalPages: pages, limit, totalArticles: total, cacheControl };
-
-    if (ENV.USE_REDIS_CACHE && articles.length > 0) {
-      console.log(`Storing in cache with key: ${cacheKey} for page ${page}`);
-      await redisService.setWithExpiry({ prefix: REDIS_PREFIXES.ARTICLES, key: cacheKey, value: JSON.stringify(responseData), expiry: 43200 });
-    }
-
+    const responseData = await fetchWallabagArticlePage(entriesQueryParams);
+    await cacheArticlePage(cacheKey, responseData);
     return responseData;
   } catch (error) {
-    console.error(`Error fetching articles for page ${queryParams?.page}:`, error);
+    console.error(`Error fetching articles for page ${queryParams.page}:`, error);
     return buildFallbackResponse(queryParams);
   }
 }
