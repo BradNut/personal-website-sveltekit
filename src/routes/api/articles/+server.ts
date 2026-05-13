@@ -1,7 +1,7 @@
 import { json, type RequestEvent } from '@sveltejs/kit';
 import { ENV } from 'varlock/env';
 import type { ArticlePageLoad } from '@/lib/types/article.js';
-import { fetchArticlesApi } from '$lib/services/articlesApi';
+import { fetchFavoriteArticles } from '$lib/server/favoriteArticles';
 
 export async function GET(event: RequestEvent) {
   const { setHeaders, url } = event;
@@ -12,7 +12,7 @@ export async function GET(event: RequestEvent) {
   }
 
   try {
-    const response: ArticlePageLoad = await fetchArticlesApi('get', 'fetchArticles', {
+    const response: ArticlePageLoad = await fetchFavoriteArticles({
       page,
       limit,
     });

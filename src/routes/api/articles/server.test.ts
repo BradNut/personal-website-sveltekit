@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const fetchArticlesApiMock = vi.fn();
-vi.mock('$lib/services/articlesApi', () => ({
-  fetchArticlesApi: (...args: unknown[]) => fetchArticlesApiMock(...args),
+const fetchFavoriteArticlesMock = vi.fn();
+vi.mock('$lib/server/favoriteArticles', () => ({
+  fetchFavoriteArticles: (...args: unknown[]) => fetchFavoriteArticlesMock(...args),
 }));
 
 vi.mock('varlock/env', () => ({
@@ -26,12 +26,12 @@ function makeRequestEvent(params: Record<string, string> = {}) {
 }
 
 beforeEach(() => {
-  fetchArticlesApiMock.mockReset();
+  fetchFavoriteArticlesMock.mockReset();
 });
 
 describe('GET /api/articles', () => {
   it('returns articles with cache-control from response', async () => {
-    fetchArticlesApiMock.mockResolvedValueOnce({
+    fetchFavoriteArticlesMock.mockResolvedValueOnce({
       articles: [{ title: 'Test' }],
       currentPage: 1,
       totalPages: 1,
@@ -49,7 +49,7 @@ describe('GET /api/articles', () => {
   });
 
   it('sets max-age=43200 when cacheControl is no-cache', async () => {
-    fetchArticlesApiMock.mockResolvedValueOnce({
+    fetchFavoriteArticlesMock.mockResolvedValueOnce({
       articles: [{ title: 'Test' }],
       currentPage: 1,
       totalPages: 1,
@@ -67,7 +67,7 @@ describe('GET /api/articles', () => {
   });
 
   it('clamps limit to PAGE_SIZE when over 30', async () => {
-    fetchArticlesApiMock.mockResolvedValueOnce({
+    fetchFavoriteArticlesMock.mockResolvedValueOnce({
       articles: [],
       currentPage: 1,
       totalPages: 0,
@@ -79,14 +79,14 @@ describe('GET /api/articles', () => {
     const { event } = makeRequestEvent({ page: '1', limit: '999' });
     await GET(event);
 
-    expect(fetchArticlesApiMock).toHaveBeenCalledWith('get', 'fetchArticles', {
+    expect(fetchFavoriteArticlesMock).toHaveBeenCalledWith({
       page: '1',
       limit: '10',
     });
   });
 
-  it('returns fallback JSON when fetchArticlesApi throws', async () => {
-    fetchArticlesApiMock.mockRejectedValueOnce(new Error('upstream down'));
+  it('returns fallback JSON when fetchFavoriteArticles throws', async () => {
+    fetchFavoriteArticlesMock.mockRejectedValueOnce(new Error('upstream down'));
 
     const { event } = makeRequestEvent({ page: '2' });
     const response = await GET(event);
@@ -97,7 +97,7 @@ describe('GET /api/articles', () => {
   });
 
   it('defaults page to 1 when not provided', async () => {
-    fetchArticlesApiMock.mockResolvedValueOnce({
+    fetchFavoriteArticlesMock.mockResolvedValueOnce({
       articles: [],
       currentPage: 1,
       totalPages: 0,
@@ -109,7 +109,7 @@ describe('GET /api/articles', () => {
     const { event } = makeRequestEvent();
     await GET(event);
 
-    expect(fetchArticlesApiMock).toHaveBeenCalledWith('get', 'fetchArticles', {
+    expect(fetchFavoriteArticlesMock).toHaveBeenCalledWith({
       page: '1',
       limit: '10',
     });
