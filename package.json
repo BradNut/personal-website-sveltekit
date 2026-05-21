@@ -29,7 +29,7 @@
     "@storybook/sveltekit": "^10.3.6",
     "@sveltejs/adapter-node": "^5.5.4",
     "@sveltejs/enhanced-img": "^0.5.1",
-    "@sveltejs/kit": "^2.59.1",
+    "@sveltejs/kit": "^2.60.1",
     "@sveltejs/vite-plugin-svelte": "^5.1.1",
     "@types/node": "^25.6.2",
     "@varlock/bitwarden-plugin": "^1.0.0",
