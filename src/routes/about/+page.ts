@@ -2,13 +2,17 @@
 export const prerender = true;
 
 import type { MetaTagsProps } from 'svelte-meta-tags';
-import { ENV } from 'varlock/env';
+import { resolveCurrentPageUrl, resolveOgEndpointUrl } from '$lib/shared/siteUrl';
 import type { PageLoad } from './$types';
 
 // fallow-ignore-next-line code-duplication
 export const load: PageLoad = async ({ url }) => {
-  const baseUrl = new URL(url.origin).href || ENV.PUBLIC_SITE_URL;
-  const currentPageUrl = new URL(url.pathname, url.origin).href;
+  const currentPageUrl = resolveCurrentPageUrl(url);
+  const ogImageUrl = resolveOgEndpointUrl(url, {
+    header: 'About | bradleyshellnut.com',
+    page: 'Hey! My name is Bradley Shellnut.',
+    content: "I am a full stack software engineer who's interested in new tech and not afraid to discover new interests.",
+  });
   const metaTags: MetaTagsProps = Object.freeze({
     title: 'About',
     description: 'About Bradley Shellnut',
@@ -21,7 +25,7 @@ export const load: PageLoad = async ({ url }) => {
       locale: 'en_US',
       images: [
         {
-          url: `${baseUrl}og?header=About | bradleyshellnut.com&page=Hey! My name is Bradley Shellnut.&content=I am a full stack software engineer who's interested in new tech and not afraid to discover new interests.`,
+          url: ogImageUrl,
           alt: 'About Bradley Shellnut',
           width: 1200,
           height: 630,
@@ -32,7 +36,7 @@ export const load: PageLoad = async ({ url }) => {
       title: 'About',
       description: 'About page',
       card: 'summary_large_image',
-      image: `${baseUrl}og?header=About | bradleyshellnut.com&page=Hey! My name is Bradley Shellnut.&content=I am a full stack software engineer who's interested in new tech and not afraid to discover new interests.`,
+      image: ogImageUrl,
       imageAlt: 'Bradley Shellnut Website Logo',
     },
     url: currentPageUrl,

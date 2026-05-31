@@ -2,13 +2,13 @@
 export const prerender = true;
 
 import type { MetaTagsProps } from 'svelte-meta-tags';
-import { ENV } from 'varlock/env';
+import { resolveCurrentPageUrl, resolveOgEndpointUrl } from '$lib/shared/siteUrl';
 import type { PageLoad } from './$types';
 
 // fallow-ignore-next-line code-duplication
 export const load: PageLoad = async ({ url }) => {
-  const baseUrl = new URL(url.origin).href || ENV.PUBLIC_SITE_URL;
-  const currentPageUrl = new URL(url.pathname, url.origin).href;
+  const currentPageUrl = resolveCurrentPageUrl(url);
+  const ogImageUrl = resolveOgEndpointUrl(url, { header: 'Uses | bradleyshellnut.com', page: 'What I use!' });
 
   const metaTags: MetaTagsProps = Object.freeze({
     title: '/Uses',
@@ -16,13 +16,13 @@ export const load: PageLoad = async ({ url }) => {
     openGraph: {
       title: '/Uses',
       description: 'What I use!',
-      url: new URL(url.pathname, url.origin).href,
+      url: currentPageUrl,
       siteName: 'Bradley Shellnut Personal Website',
       type: 'website',
       locale: 'en_US',
       images: [
         {
-          url: `${baseUrl}og?header=Uses | bradleyshellnut.com&page=What I use!`,
+          url: ogImageUrl,
           alt: 'Bradley Shellnut Uses Page',
           width: 1200,
           height: 630,
@@ -33,7 +33,7 @@ export const load: PageLoad = async ({ url }) => {
       title: '/Uses',
       description: 'What I use!',
       card: 'summary_large_image',
-      image: `${baseUrl}og?header=Uses | bradleyshellnut.com&page=What I use!`,
+      image: ogImageUrl,
       imageAlt: 'Bradley Shellnut Website Logo',
     },
     url: currentPageUrl,

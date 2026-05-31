@@ -2,13 +2,16 @@
 export const prerender = true;
 
 import type { MetaTagsProps } from 'svelte-meta-tags';
-import { ENV } from 'varlock/env';
+import { resolveCurrentPageUrl, resolveOgEndpointUrl } from '$lib/shared/siteUrl';
 import type { PageLoad } from './$types';
 
 // fallow-ignore-next-line code-duplication
 export const load: PageLoad = async ({ url }) => {
-  const baseUrl = new URL(url.origin).href || ENV.PUBLIC_SITE_URL;
-  const currentPageUrl = new URL(url.pathname, url.origin).href;
+  const currentPageUrl = resolveCurrentPageUrl(url);
+  const ogImageUrl = resolveOgEndpointUrl(url, {
+    header: 'Privacy Blog | bradleyshellnut.com',
+    page: 'My thoughts on personal internet privacy.',
+  });
 
   const metaTags: MetaTagsProps = Object.freeze({
     title: 'Privacy Blog',
@@ -16,13 +19,13 @@ export const load: PageLoad = async ({ url }) => {
     openGraph: {
       title: 'Privacy Blog',
       description: 'My thoughts on personal internet privacy.',
-      url: new URL(url.pathname, url.origin).href,
+      url: currentPageUrl,
       siteName: 'Bradley Shellnut Personal Website',
       type: 'website',
       locale: 'en_US',
       images: [
         {
-          url: `${baseUrl}og?header=Privacy Blog | bradleyshellnut.com&page=My thoughts on personal internet privacy.`,
+          url: ogImageUrl,
           alt: 'Bradley Shellnut Privacy Blog',
           width: 1200,
           height: 630,
@@ -33,7 +36,7 @@ export const load: PageLoad = async ({ url }) => {
       title: 'Privacy Blog',
       description: 'My thoughts on personal internet privacy.',
       card: 'summary_large_image',
-      image: `${baseUrl}og?header=Privacy Blog | bradleyshellnut.com&page=My thoughts on personal internet privacy.`,
+      image: ogImageUrl,
       imageAlt: 'Bradley Shellnut Website Logo',
     },
     url: currentPageUrl,

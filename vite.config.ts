@@ -21,9 +21,6 @@ export default defineConfig({
       },
     }),
   ],
-  esbuild: {
-    target: 'es2022',
-  },
   test: {
     include: ['src/**/*.{test,spec}.{js,ts}'],
     mockReset: true,

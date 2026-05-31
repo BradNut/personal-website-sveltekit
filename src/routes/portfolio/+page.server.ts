@@ -2,13 +2,16 @@
 export const prerender = true;
 
 import type { MetaTagsProps } from 'svelte-meta-tags';
-import { ENV } from 'varlock/env';
+import { resolveCurrentPageUrl, resolveOgEndpointUrl } from '$lib/shared/siteUrl';
 import type { PageServerLoad } from './$types';
 
 // fallow-ignore-next-line code-duplication
 export const load: PageServerLoad = async ({ url }) => {
-  const baseUrl = new URL(url.origin).href || ENV.PUBLIC_SITE_URL;
-  const currentPageUrl = new URL(url.pathname, url.origin).href;
+  const currentPageUrl = resolveCurrentPageUrl(url);
+  const ogImageUrl = resolveOgEndpointUrl(url, {
+    header: 'Portfolio | bradleyshellnut.com',
+    page: 'My portfolio of sites I have created.',
+  });
 
   const metaTags: MetaTagsProps = Object.freeze({
     title: 'Portfolio',
@@ -22,7 +25,7 @@ export const load: PageServerLoad = async ({ url }) => {
       locale: 'en_US',
       images: [
         {
-          url: `${baseUrl}og?header=Portfolio | bradleyshellnut.com&page=My portfolio of sites I have created.`,
+          url: ogImageUrl,
           alt: 'Bradley Shellnut Portfolio Page',
           width: 1200,
           height: 630,
@@ -33,7 +36,7 @@ export const load: PageServerLoad = async ({ url }) => {
       title: 'Portfolio',
       description: "Bradley Shellnut's Portfolio",
       card: 'summary_large_image',
-      image: `${baseUrl}og?header=Portfolio | bradleyshellnut.com&page=My portfolio of sites I have created.`,
+      image: ogImageUrl,
       imageAlt: 'Bradley Shellnut Website Logo',
     },
     url: currentPageUrl,

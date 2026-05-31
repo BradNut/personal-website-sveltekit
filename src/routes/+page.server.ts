@@ -1,17 +1,12 @@
 import type { MetaTagsProps } from 'svelte-meta-tags';
-import { ENV } from 'varlock/env';
+import { resolveCurrentPageUrl, resolveOgEndpointUrl, resolveSiteUrl } from '$lib/shared/siteUrl';
 import type { Album } from '$lib/types/album';
 import type { ArticlePageLoad } from '$lib/types/article';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
-  let baseUrl: string;
-  if (url.origin.includes('prerender')) {
-    baseUrl = ENV.PUBLIC_SITE_URL || 'https://bradleyshellnut.com';
-  } else {
-    baseUrl = new URL(url.origin).href || ENV.PUBLIC_SITE_URL || 'https://bradleyshellnut.com';
-  }
-  const currentPageUrl = new URL(url.pathname, url.origin).href;
+  const baseUrl = resolveSiteUrl(url);
+  const currentPageUrl = resolveCurrentPageUrl(url);
 
   const metaTags: MetaTagsProps = Object.freeze({
     title: 'Home',
@@ -25,7 +20,11 @@ export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
       locale: 'en_US',
       images: [
         {
-          url: `${baseUrl}og?header=Home | bradleyshellnut.com&page=Hi I'm Bradley Shellnut.&content=I'm a full stack software engineer currently working on Java Spring, PostgreSQL, and React / Angular JS.`,
+          url: resolveOgEndpointUrl(url, {
+            header: 'Home | bradleyshellnut.com',
+            page: "Hi I'm Bradley Shellnut.",
+            content: "I'm a full stack software engineer currently working on Java Spring, PostgreSQL, and React / Angular JS.",
+          }),
           alt: 'Bradley Shellnut Website Home Page',
           width: 1200,
           height: 630,
@@ -36,7 +35,11 @@ export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
       title: 'Home',
       description: 'Home page',
       card: 'summary_large_image',
-      image: `${baseUrl}og?header=Home | bradleyshellnut.com&page=Hi I'm Bradley Shellnut.&content=I'm a full stack software engineer currently working on Java Spring, PostgreSQL, and SvelteKit.`,
+      image: resolveOgEndpointUrl(url, {
+        header: 'Home | bradleyshellnut.com',
+        page: "Hi I'm Bradley Shellnut.",
+        content: "I'm a full stack software engineer currently working on Java Spring, PostgreSQL, and SvelteKit.",
+      }),
       imageAlt: 'Bradley Shellnut Website Logo',
     },
     url: currentPageUrl,
