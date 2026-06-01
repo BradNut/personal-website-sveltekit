@@ -1,6 +1,9 @@
+import { ENV } from 'varlock/env';
 import { describe, expect, it, vi } from 'vitest';
 
 import { GET } from './+server.js';
+
+const base = new URL(ENV.PUBLIC_SITE_URL ?? 'https://bradleyshellnut.com').origin;
 
 function makeEvent(totalPages = 2) {
   const capturedHeaders: Record<string, string> = {};
@@ -27,10 +30,10 @@ describe('GET /sitemap.xml', () => {
 
     expect(fetchMock).toHaveBeenCalledWith('/api/articles');
     expect(capturedHeaders['Content-Type']).toBe('application/xml');
-    expect(xml).toContain('<loc>https://bradleyshellnut.com/</loc>');
-    expect(xml).toContain('<loc>https://bradleyshellnut.com/about</loc>');
-    expect(xml).toContain('<loc>https://bradleyshellnut.com/articles/1</loc>');
-    expect(xml).toContain('<loc>https://bradleyshellnut.com/articles/2</loc>');
-    expect(xml).toContain('<loc>https://bradleyshellnut.com/uses</loc>');
+    expect(xml).toContain(`<loc>${base}/</loc>`);
+    expect(xml).toContain(`<loc>${base}/about</loc>`);
+    expect(xml).toContain(`<loc>${base}/articles/1</loc>`);
+    expect(xml).toContain(`<loc>${base}/articles/2</loc>`);
+    expect(xml).toContain(`<loc>${base}/uses</loc>`);
   });
 });
