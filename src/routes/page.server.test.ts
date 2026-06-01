@@ -51,10 +51,12 @@ describe('load (root page)', () => {
   it('uses PUBLIC_SITE_URL fallback for prerender origin', async () => {
     const { args } = makeLoadArgs('http://prerender.internal'); // NOSONAR - internal test fixture
     const result = await load(args) as Record<string, unknown>;
+    const meta = result.metaTagsChild as Record<string, unknown>;
 
     // ENV.PUBLIC_SITE_URL from .env.test, or hardcoded fallback
     expect(result.baseUrl).toBeTruthy();
     expect(result.baseUrl).not.toContain('prerender');
+    expect(meta.url).not.toContain('prerender');
   });
 
   it('includes correct meta tag structure', async () => {

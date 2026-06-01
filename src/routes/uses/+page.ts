@@ -1,42 +1,15 @@
-// fallow-ignore-next-line code-duplication
 export const prerender = true;
 
-import type { MetaTagsProps } from 'svelte-meta-tags';
-import { ENV } from 'varlock/env';
+import { buildPageMetaTags } from '$lib/shared/pageMeta';
 import type { PageLoad } from './$types';
 
-// fallow-ignore-next-line code-duplication
 export const load: PageLoad = async ({ url }) => {
-  const baseUrl = new URL(url.origin).href || ENV.PUBLIC_SITE_URL;
-  const currentPageUrl = new URL(url.pathname, url.origin).href;
-
-  const metaTags: MetaTagsProps = Object.freeze({
+  const metaTags = buildPageMetaTags({
+    url,
     title: '/Uses',
     description: 'What I use!',
-    openGraph: {
-      title: '/Uses',
-      description: 'What I use!',
-      url: new URL(url.pathname, url.origin).href,
-      siteName: 'Bradley Shellnut Personal Website',
-      type: 'website',
-      locale: 'en_US',
-      images: [
-        {
-          url: `${baseUrl}og?header=Uses | bradleyshellnut.com&page=What I use!`,
-          alt: 'Bradley Shellnut Uses Page',
-          width: 1200,
-          height: 630,
-        },
-      ],
-    },
-    twitter: {
-      title: '/Uses',
-      description: 'What I use!',
-      card: 'summary_large_image',
-      image: `${baseUrl}og?header=Uses | bradleyshellnut.com&page=What I use!`,
-      imageAlt: 'Bradley Shellnut Website Logo',
-    },
-    url: currentPageUrl,
+    og: { header: 'Uses | bradleyshellnut.com', page: 'What I use!' },
+    imageAlt: 'Bradley Shellnut Uses Page',
   });
 
   return {

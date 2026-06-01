@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@11.1.1",
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "dev": "NODE_OPTIONS=\"--inspect\" vite dev --host",
     "build": "vite build",
@@ -19,22 +23,22 @@
     "test:unit": "ENVIRONMENT=test vitest"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.15",
+    "@biomejs/biome": "^2.4.16",
     "@chromatic-com/storybook": "^5.1.2",
-    "@internationalized/date": "^3.12.1",
+    "@internationalized/date": "^3.12.2",
     "@playwright/test": "^1.59.1",
     "@storybook/addon-a11y": "^10.3.6",
     "@storybook/addon-docs": "^10.3.6",
     "@storybook/addon-svelte-csf": "^5.1.2",
     "@storybook/sveltekit": "^10.3.6",
     "@sveltejs/adapter-node": "^5.5.4",
-    "@sveltejs/enhanced-img": "^0.5.1",
-    "@sveltejs/kit": "^2.59.1",
-    "@sveltejs/vite-plugin-svelte": "^5.1.1",
+    "@sveltejs/enhanced-img": "^0.10.4",
+    "@sveltejs/kit": "^2.61.1",
+    "@sveltejs/vite-plugin-svelte": "^7.1.2",
     "@types/node": "^25.6.2",
     "@varlock/bitwarden-plugin": "^1.0.0",
     "@varlock/proton-pass-plugin": "^1.0.0",
-    "@varlock/vite-integration": "^1.1.1",
+    "@varlock/vite-integration": "^1.1.2",
     "@zerodevx/svelte-img": "^2.1.2",
     "just-intersect": "^4.3.0",
     "postcss": "^8.5.14",
@@ -42,27 +46,27 @@
     "postcss-import": "^16.1.1",
     "postcss-load-config": "^6.0.1",
     "postcss-preset-env": "^11.2.1",
-    "satori": "^0.19.2",
+    "satori": "^0.26.0",
     "satori-html": "^0.3.2",
     "storybook": "^10.3.6",
-    "svelte": "^5.55.5",
+    "svelte": "^5.56.0",
     "svelte-check": "^4.4.8",
     "svelte-meta-tags": "^4.7.0",
-    "svelte-preprocess": "^6.0.3",
+    "svelte-preprocess": "^6.0.5",
     "tslib": "^2.8.1",
     "typescript": "^6.0.3",
-    "vite": "^6.3.5",
-    "vite-imagetools": "^7.1.1",
-    "vitest": "^3.2.4"
+    "vite": "^8.0.14",
+    "vite-imagetools": "^10.0.0",
+    "vitest": "^4.1.7"
   },
   "dependencies": {
     "@resvg/resvg-js": "^2.6.2",
-    "@sentry/node": "^10.52.0",
-    "@sentry/sveltekit": "^10.52.0",
+    "@sentry/node": "^10.55.0",
+    "@sentry/sveltekit": "^10.55.0",
     "bits-ui": "2.18.1",
-    "ioredis": "^5.10.1",
+    "ioredis": "^5.11.0",
     "lucide-svelte": "^1.0.1",
     "scrape-it": "^6.1.12",
-    "varlock": "^1.1.0"
+    "varlock": "^1.4.0"
   }
 }

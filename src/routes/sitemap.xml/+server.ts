@@ -1,8 +1,6 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import { ENV } from 'varlock/env';
+import { resolveSitemapUrl } from '$lib/shared/siteUrl';
 import type { ArticlePageLoad } from '$lib/types/article';
-
-const site = `https://${ENV.PUBLIC_URL}`;
 
 export const GET: RequestHandler = async function GET({ fetch, setHeaders }) {
   const resp = await fetch('/api/articles');
@@ -18,19 +16,19 @@ export const GET: RequestHandler = async function GET({ fetch, setHeaders }) {
       xmlns:video="https://www.google.com/schemas/sitemap-video/1.1"
     >
       <url>
-        <loc>${site}</loc>
+        <loc>${resolveSitemapUrl('/')}</loc>
         <changefreq>daily</changefreq>
         <priority>1</priority>
       </url>
 
       <url>
-        <loc>${site}/about</loc>
+        <loc>${resolveSitemapUrl('/about')}</loc>
         <changefreq>monthly</changefreq>
         <priority>0.4</priority>
       </url>
 
       <url>
-        <loc>${site}/articles</loc>
+        <loc>${resolveSitemapUrl('/articles')}</loc>
         <changefreq>weekly</changefreq>
         <priority>1</priority>
       </url>
@@ -38,7 +36,7 @@ export const GET: RequestHandler = async function GET({ fetch, setHeaders }) {
       ${Array.from({ length: totalPages }, (_, i) => {
         return `
           <url>
-            <loc>${site}/articles/${i + 1}</loc>
+            <loc>${resolveSitemapUrl(`/articles/${i + 1}`)}</loc>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
           </url>
@@ -46,17 +44,17 @@ export const GET: RequestHandler = async function GET({ fetch, setHeaders }) {
       })}
 
 			<url>
-        <loc>${site}/portfolio</loc>
+        <loc>${resolveSitemapUrl('/portfolio')}</loc>
         <changefreq>monthly</changefreq>
         <priority>0.4</priority>
       </url>
 			<url>
-        <loc>${site}/privacy</loc>
+        <loc>${resolveSitemapUrl('/privacy')}</loc>
         <changefreq>monthly</changefreq>
         <priority>0.1</priority>
       </url>
 			<url>
-        <loc>${site}/uses</loc>
+        <loc>${resolveSitemapUrl('/uses')}</loc>
         <changefreq>monthly</changefreq>
         <priority>0.4</priority>
       </url>

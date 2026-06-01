@@ -6,10 +6,9 @@ import { ArticleTag } from '$lib/types/articleTag';
 import { retryWithBackoff } from '$lib/util/retry';
 import type { PageQuery } from '../types/pageQuery';
 
-// Normalize Wallabag base URL and derive endpoints robustly
-const wallabagBase = new URL(ENV.WALLABAG_URL ?? '');
-const tokenUrl = new URL('/oauth/v2/token', wallabagBase).toString();
-const entriesUrl = new URL('/api/entries.json', wallabagBase).toString();
+// Lazy URL construction — WALLABAG_URL may be empty locally; only evaluated at request time
+const getTokenUrl = () => new URL('/oauth/v2/token', ENV.WALLABAG_URL).toString();
+const getEntriesUrl = () => new URL('/api/entries.json', ENV.WALLABAG_URL).toString();
 
 function resolvePerPage(limit: string | undefined): number {
   const parsed = Number(limit);
@@ -50,7 +49,7 @@ async function getCachedResponse(cacheKey: string): Promise<ArticlePageLoad | nu
 
 async function authenticateWallabag(): Promise<{ access_token: string }> {
   return retryWithBackoff(async () => {
-    const authResponse = await fetch(tokenUrl, {
+    const authResponse = await fetch(getTokenUrl(), {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
@@ -73,7 +72,7 @@ async function authenticateWallabag(): Promise<{ access_token: string }> {
 
 async function fetchWallabagEntries(accessToken: string, params: URLSearchParams) {
   return retryWithBackoff(async () => {
-    const requestUrl = `${entriesUrl}?${params}`;
+    const requestUrl = `${getEntriesUrl()}?${params}`;
     const pageResponse = await fetch(requestUrl, {
       method: 'GET',
       headers: {

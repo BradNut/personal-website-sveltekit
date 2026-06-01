@@ -5,6 +5,14 @@ const redisGetMock = vi.fn();
 const redisTtlMock = vi.fn();
 const redisSetWithExpiryMock = vi.fn();
 
+vi.mock('varlock/env', () => ({
+  initVarlockEnv: vi.fn(),
+  ENV: {
+    USE_REDIS_CACHE: true,
+    BANDCAMP_USERNAME: 'testuser',
+  },
+}));
+
 vi.mock('scrape-it', () => ({ default: (...args: unknown[]) => scrapeItMock(...args) }));
 
 vi.mock('$lib/server/redis', () => ({

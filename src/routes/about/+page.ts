@@ -1,41 +1,20 @@
-// fallow-ignore-next-line code-duplication
 export const prerender = true;
 
-import type { MetaTagsProps } from 'svelte-meta-tags';
-import { ENV } from 'varlock/env';
+import { buildPageMetaTags } from '$lib/shared/pageMeta';
 import type { PageLoad } from './$types';
 
-// fallow-ignore-next-line code-duplication
 export const load: PageLoad = async ({ url }) => {
-  const baseUrl = new URL(url.origin).href || ENV.PUBLIC_SITE_URL;
-  const currentPageUrl = new URL(url.pathname, url.origin).href;
-  const metaTags: MetaTagsProps = Object.freeze({
+  const metaTags = buildPageMetaTags({
+    url,
     title: 'About',
     description: 'About Bradley Shellnut',
-    openGraph: {
-      title: 'About',
-      description: 'About Bradley Shellnut',
-      url: currentPageUrl,
-      siteName: 'Bradley Shellnut Personal Website',
-      type: 'website',
-      locale: 'en_US',
-      images: [
-        {
-          url: `${baseUrl}og?header=About | bradleyshellnut.com&page=Hey! My name is Bradley Shellnut.&content=I am a full stack software engineer who's interested in new tech and not afraid to discover new interests.`,
-          alt: 'About Bradley Shellnut',
-          width: 1200,
-          height: 630,
-        },
-      ],
+    og: {
+      header: 'About | bradleyshellnut.com',
+      page: 'Hey! My name is Bradley Shellnut.',
+      content: "I am a full stack software engineer who's interested in new tech and not afraid to discover new interests.",
     },
-    twitter: {
-      title: 'About',
-      description: 'About page',
-      card: 'summary_large_image',
-      image: `${baseUrl}og?header=About | bradleyshellnut.com&page=Hey! My name is Bradley Shellnut.&content=I am a full stack software engineer who's interested in new tech and not afraid to discover new interests.`,
-      imageAlt: 'Bradley Shellnut Website Logo',
-    },
-    url: currentPageUrl,
+    imageAlt: 'About Bradley Shellnut',
+    twitterDescription: 'About page',
   });
 
   return {

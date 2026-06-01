@@ -1,5 +1,5 @@
 import type { MetaTagsProps } from 'svelte-meta-tags';
-import { ENV } from 'varlock/env';
+import { resolveCurrentPageUrl, resolveOgEndpointUrl } from '$lib/shared/siteUrl';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, params, setHeaders, url, parent }) => {
@@ -16,8 +16,11 @@ export const load: PageServerLoad = async ({ fetch, params, setHeaders, url, par
     });
   }
 
-  const baseUrl = new URL(url.origin).href || ENV.PUBLIC_SITE_URL;
-  const currentPageUrl = new URL(url.pathname, url.origin).href;
+  const currentPageUrl = resolveCurrentPageUrl(url);
+  const ogImageUrl = resolveOgEndpointUrl(url, {
+    header: `Articles Page ${page} | bradleyshellnut.com`,
+    page: 'My favorite articles',
+  });
 
   const metaTags: MetaTagsProps = Object.freeze({
     title: 'Favorite Articles',
@@ -31,7 +34,7 @@ export const load: PageServerLoad = async ({ fetch, params, setHeaders, url, par
       locale: 'en_US',
       images: [
         {
-          url: `${baseUrl}og?header=Articles Page ${page} | bradleyshellnut.com&page=My favorite articles`,
+          url: ogImageUrl,
           alt: `Bradley Shellnut Articles Page ${page}`,
           width: 1200,
           height: 630,
@@ -42,7 +45,7 @@ export const load: PageServerLoad = async ({ fetch, params, setHeaders, url, par
       title: 'Favorite Articles',
       description: 'My favorite articles',
       card: 'summary_large_image',
-      image: `${baseUrl}og?header=Articles Page ${page} | bradleyshellnut.com&page=My favorite articles`,
+      image: ogImageUrl,
       imageAlt: 'Bradley Shellnut Website Logo',
     },
     url: currentPageUrl,

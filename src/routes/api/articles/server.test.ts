@@ -6,6 +6,7 @@ vi.mock('$lib/services/articlesApi', () => ({
 }));
 
 vi.mock('varlock/env', () => ({
+  initVarlockEnv: vi.fn(),
   ENV: { PAGE_SIZE: 10 },
 }));
 

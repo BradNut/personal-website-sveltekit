@@ -6,5 +6,9 @@
   },
   "[svelte]": {
     "editor.formatOnSave": false
+  },
+  "json.schemaDownload.enable": true,
+  "json.schemaDownload.trustedDomains": {
+    "https://schema.railpack.com/": true
   }
 }

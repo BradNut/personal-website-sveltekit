@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock varlock/env used by the service
 vi.mock('varlock/env', () => ({
+  initVarlockEnv: vi.fn(),
   ENV: {
     PAGE_SIZE: 10,
     USE_REDIS_CACHE: true,
