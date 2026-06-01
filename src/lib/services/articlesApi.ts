@@ -1,6 +1,6 @@
 import intersect from 'just-intersect';
 import { ENV } from 'varlock/env';
-import { REDIS_PREFIXES, redisService } from '$lib/server/redis';
+import { readCachedJson, writeCachedJson } from '$lib/server/responseCache';
 import type { Article, ArticlePageLoad, WallabagArticle } from '$lib/types/article';
 import { ArticleTag } from '$lib/types/articleTag';
 import { retryWithBackoff } from '$lib/util/retry';
@@ -38,13 +38,13 @@ function buildEntriesParams(queryParams: Record<string, string>): URLSearchParam
 }
 
 async function getCachedResponse(cacheKey: string): Promise<ArticlePageLoad | null> {
-  if (!ENV.USE_REDIS_CACHE) return null;
-  const cached = await redisService.get({ prefix: REDIS_PREFIXES.ARTICLES, key: cacheKey });
-  if (!cached) return null;
-  // Cache hit, return cached payload with TTL-derived cache-control
-  const response = JSON.parse(cached);
-  const ttl = await redisService.ttl({ prefix: REDIS_PREFIXES.ARTICLES, key: cacheKey });
-  return { ...response, cacheControl: `max-age=${ttl}` };
+  const cached = await readCachedJson<ArticlePageLoad>({
+    enabled: ENV.USE_REDIS_CACHE === true,
+    cacheName: 'favoriteArticles',
+    key: cacheKey,
+  });
+  if (!cached.hit) return null;
+  return { ...cached.value, cacheControl: cached.cacheControl };
 }
 
 async function authenticateWallabag(): Promise<{ access_token: string }> {
@@ -145,9 +145,9 @@ export async function fetchArticlesApi(_method: string, _resource: string, query
     const articles = mapWallabagArticles(favoriteArticles.items as WallabagArticle[]);
     const responseData: ArticlePageLoad = { articles, currentPage: page, totalPages: pages, limit, totalArticles: total, cacheControl };
 
-    if (ENV.USE_REDIS_CACHE && articles.length > 0) {
+    if (articles.length > 0) {
       console.log(`Storing in cache with key: ${cacheKey} for page ${page}`);
-      await redisService.setWithExpiry({ prefix: REDIS_PREFIXES.ARTICLES, key: cacheKey, value: JSON.stringify(responseData), expiry: 43200 });
+      await writeCachedJson({ enabled: ENV.USE_REDIS_CACHE === true, cacheName: 'favoriteArticles', key: cacheKey, value: responseData });
     }
 
     return responseData;

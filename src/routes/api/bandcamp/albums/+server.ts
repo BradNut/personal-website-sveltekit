@@ -1,7 +1,7 @@
 import { json, type RequestEvent } from '@sveltejs/kit';
 import scrapeIt, { type ScrapeResult } from 'scrape-it';
 import { ENV } from 'varlock/env';
-import { REDIS_PREFIXES, redisService } from '$lib/server/redis';
+import { RESPONSE_CACHE_TTL_SECONDS, readCachedJson, writeCachedJson } from '$lib/server/responseCache';
 import type { Album, BandCampResults } from '$lib/types/album';
 import { retryWithBackoff } from '$lib/util/retry';
 
@@ -9,23 +9,17 @@ export async function GET(event: RequestEvent) {
   const { setHeaders } = event;
 
   try {
-    if (ENV.USE_REDIS_CACHE) {
-      const cached: string | null = await redisService.get({ prefix: REDIS_PREFIXES.BANDCAMP_ALBUMS, key: 'albums' });
+    const cached = await readCachedJson<Album[]>({
+      enabled: ENV.USE_REDIS_CACHE === true,
+      cacheName: 'currentlyListening',
+      key: 'albums',
+    });
 
-      if (cached) {
-        const response: Album[] = JSON.parse(cached);
-        const ttl = await redisService.ttl({ prefix: REDIS_PREFIXES.BANDCAMP_ALBUMS, key: 'albums' });
-        if (ttl) {
-          setHeaders({
-            'cache-control': `max-age=${ttl}`,
-          });
-        } else {
-          setHeaders({
-            'cache-control': 'max-age=43200',
-          });
-        }
-        return json(response);
-      }
+    if (cached.hit) {
+      setHeaders({
+        'cache-control': cached.cacheControl,
+      });
+      return json(cached.value);
     }
 
     // Scrape Bandcamp with realistic headers, plus retry/backoff
@@ -46,10 +40,8 @@ export async function GET(event: RequestEvent) {
 
     const albums: Album[] = data?.collectionItems || [];
     if (albums && albums.length > 0) {
-      if (ENV.USE_REDIS_CACHE) {
-        await redisService.setWithExpiry({ prefix: REDIS_PREFIXES.BANDCAMP_ALBUMS, key: 'albums', value: JSON.stringify(albums), expiry: 43200 });
-      }
-      setHeaders({ 'cache-control': 'max-age=43200' });
+      await writeCachedJson({ enabled: ENV.USE_REDIS_CACHE === true, cacheName: 'currentlyListening', key: 'albums', value: albums });
+      setHeaders({ 'cache-control': `max-age=${RESPONSE_CACHE_TTL_SECONDS}` });
       return json(albums);
     }
     return json([]);

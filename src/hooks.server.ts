@@ -3,6 +3,7 @@ import type { Handle, HandleServerError } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import { ENV } from 'varlock/env';
 import { dev } from '$app/environment';
+import { StatusCodes } from '$lib/constants/status-codes';
 
 Sentry.init({
   release: `personal-website@${ENV.PUBLIC_SITE_VERSION}`,
@@ -17,6 +18,14 @@ export const handle: Handle = sequence(Sentry.sentryHandle());
 
 export const handleError: HandleServerError = async ({ error, event, status }) => {
   const errorId = crypto.randomUUID();
+
+  if (status === StatusCodes.NOT_FOUND) {
+    return {
+      message: 'Not found',
+      errorId,
+    };
+  }
+
   console.log('error', error);
 
   Sentry.captureException(error, {
