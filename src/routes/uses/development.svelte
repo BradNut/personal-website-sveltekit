@@ -35,8 +35,8 @@
 	<ul>
 		<li>
 			Linux: <ExternalLink
-				linkData={{ href: "https://tabby.sh/", ariaLabel: "Tabby" }}
-				textData={{ text: "Tabby terminal", showIcon: true, location: "left" }}
+				linkData={{ href: "https://ghostty.org", ariaLabel: "Ghostty" }}
+				textData={{ text: "Ghostty", showIcon: true, location: "left" }}
 			/> running ZSH and <ExternalLink
 				linkData={{ href: "https://starship.rs/", ariaLabel: "Starship" }}
 				textData={{ text: "Starship", showIcon: true, location: "left" }}
@@ -44,8 +44,8 @@
 		</li>
 		<li>
 			Mac: <ExternalLink
-				linkData={{ href: "https://iterm2.com/", ariaLabel: "iTerm2" }}
-				textData={{ text: "iTerm2", showIcon: true, location: "left" }}
+				linkData={{ href: "https://ghostty.org", ariaLabel: "Ghostty" }}
+				textData={{ text: "Ghostty", showIcon: true, location: "left" }}
 			/>
 		</li>
 		<li>
@@ -114,6 +114,12 @@
 					/>
 				</li>
 			</ul>
+		</li>
+		<li>
+			<ExternalLink
+				linkData={{ href: "https://zed.dev/", ariaLabel: "Zed Editor" }}
+				textData={{ text: "Zed Editor", showIcon: true, location: "left" }}
+			/>
 		</li>
 		<li>
 			<ExternalLink
