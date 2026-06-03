@@ -17,7 +17,7 @@
 		</li>
 		<li>Dell XPS 13 running PopOS.</li>
 		<li>
-			Phone 📱: Pixel 6 running <ExternalLink
+			Phone 📱: Pixel 10 running <ExternalLink
 				linkData={{
 					href: "https://grapheneos.org/",
 					ariaLabel: "GrapheneOS",
@@ -28,11 +28,11 @@
 		<li>
 			Keyboard ⌨️: <ExternalLink
 				linkData={{
-					href: "https://www.duckychannel.com.tw/en/Ducky-One2-RGB-TKL",
-					ariaLabel: "Ducky One 2 RGB TKL Keyboard",
+					href: "https://trulyergonomic.com/",
+					ariaLabel: "Truly Ergonomic Keyboard",
 				}}
 				textData={{
-					text: "Ducky One 2 RGB TKL Keyboard",
+					text: "Truly Ergonomic Keyboard",
 					showIcon: true,
 					location: "left",
 				}}
@@ -41,11 +41,11 @@
 		<li>
 			Mouse 🖱️: <ExternalLink
 				linkData={{
-					href: "https://www.amazon.com/Logitech-G502-Performance-Gaming-Mouse/dp/B07GBZ4Q68",
-					ariaLabel: "Logitech G502 Gaming Mouse",
+					href: "https://www.logitech.com/en-us/shop/p/mx-ergo-wireless-trackball-mouse",
+					ariaLabel: "Logitech MX ERGO",
 				}}
 				textData={{
-					text: "Logitech G502 Gaming Mouse",
+					text: "Logitech MX ERGO",
 					showIcon: true,
 					location: "left",
 				}}
