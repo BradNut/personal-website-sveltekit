@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { Pagination } from "bits-ui";
-  import { ChevronLeft, ChevronRight } from "lucide-svelte";
+  
+  import { ChevronLeft, ChevronRight } from "@lucide/svelte";
+import { Pagination } from "bits-ui";
   import { goto } from "$app/navigation";
 
   interface Props {

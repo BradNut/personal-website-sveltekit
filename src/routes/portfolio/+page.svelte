@@ -1,8 +1,8 @@
 <script lang="ts">
+import { ExternalLink as ExternalLinkIcon } from '@lucide/svelte';
 import { Tabs } from 'bits-ui';
 import ExternalLink from '$lib/components/ExternalLink.svelte';
 import type { ExternalLinkType } from '$lib/types/externalLinkType';
-import { ExternalLink as ExternalLinkIcon } from 'lucide-svelte';
 import { gitHubIcon } from '$lib/util/logoIcons.svelte';
 import personalSite from '../../lib/assets/images/portfolio/Bradley_Shellnut_New_Site.png?enhanced';
 import shellnutArchitectWebsite from '../../lib/assets/images/portfolio/Mark_Shellnut_Architect.png?enhanced';
@@ -34,7 +34,7 @@ import Portfolio from './Portfolio.svelte';
 						iconSize={20}
 					/>
 				{:else}
-					<!-- Component icon (e.g., lucide-svelte): used for site links -->
+					<!-- Component icon (e.g., @lucide/svelte): used for site links -->
 					<ExternalLink
 						linkData={{
 							href: link.href,

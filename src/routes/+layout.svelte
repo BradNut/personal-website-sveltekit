@@ -2,11 +2,11 @@
 	import "../styles/styles.pcss";
 	import { MetaTags } from "svelte-meta-tags";
 	import { dev } from "$app/environment";
-	import { page } from "$app/state";
-	import Header from "../lib/components/header/index.svelte";
-	import Footer from "../lib/components/footer/index.svelte";
-	import Analytics from "../lib/components/analytics/index.svelte";
 	import { onNavigate } from "$app/navigation";
+	import { page } from "$app/state";
+	import Analytics from "../lib/components/analytics/index.svelte";
+	import Footer from "../lib/components/footer/index.svelte";
+	import Header from "../lib/components/header/index.svelte";
 	import PageLoadingIndicator from "../lib/util/page_loading_indicator.svelte";
 
 	interface Props {

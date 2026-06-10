@@ -1,4 +1,4 @@
-import type { Icon as IconType } from 'lucide-svelte';
+import type { LucideIcon as IconType } from '@lucide/svelte';
 
 export interface LinkTextType {
   text?: string;
@@ -31,6 +31,6 @@ export type LinkIconType =
     }
   | {
       type: 'icon';
-      icon: typeof IconType;
+      icon: IconType;
       iconClass?: string;
     };
