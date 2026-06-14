@@ -5,7 +5,11 @@
     "projectKey": "BradNut_personal-website-sveltekit"
   },
   "[svelte]": {
-    "editor.formatOnSave": false
+    "editor.formatOnSave": false,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports.biome": "never",
+      "source.fixAll.biome": "never"
+    }
   },
   "json.schemaDownload.enable": true,
   "json.schemaDownload.trustedDomains": {

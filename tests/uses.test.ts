@@ -84,7 +84,7 @@ test.describe('Uses page', () => {
     const expectedLinks = [
       /Open\s+Bradley Shellnut Computer Setup\s+externally/i,
       /Open\s+Dotfiles\s+externally/i,
-      /Open\s+Tabby\s+externally/i,
+      /Open\s+Ghostty\s+externally/i,
       /Open\s+Starship\s+externally/i,
       /Open\s+ZimFW\s+externally/i,
       /Open\s+Linux Brew\s+externally/i,

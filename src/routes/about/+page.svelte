@@ -2,19 +2,19 @@
 	import orange_derp from "../../lib/assets/images/orange_derp.jpg?enhanced";
 	import tortie_derp from "../../lib/assets/images/tortie_derp.jpg?enhanced";
 	import turnip from "../../lib/assets/images/turnip.svg?enhanced";
+	import ExternalLink from "../../lib/components/ExternalLink.svelte";
 	import type { Course } from "../../lib/types/courses";
 	import {
 		dockerIcon,
 		drizzleIcon,
+		honoIcon,
 		nextDotJsIcon,
 		reactIcon,
 		svelteIcon,
 		typescriptIcon,
-		honoIcon,
 	} from "../../lib/util/logoIcons.svelte";
 	import CourseCard from "./CourseCard.svelte";
 	import courseData from "./course.json";
-	import ExternalLink from "../../lib/components/ExternalLink.svelte";
 
 	const courses: Course[] = (courseData as { courses: Course[] }).courses;
 </script>

@@ -44,7 +44,7 @@
 		</li>
 		<li>
 			Mac: <ExternalLink
-				linkData={{ href: "https://ghostty.org", ariaLabel: "Ghostty" }}
+				linkData={{ href: "https://ghostty.org", ariaLabel: "Ghostty for Mac" }}
 				textData={{ text: "Ghostty", showIcon: true, location: "left" }}
 			/>
 		</li>
