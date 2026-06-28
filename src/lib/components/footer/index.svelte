@@ -50,7 +50,7 @@
 		>
 	</nav>
 	<p>
-		Bradley Shellnut &copy; 2012 - {new Date().getFullYear()} test
+		Bradley Shellnut &copy; 2012 - {new Date().getFullYear()}
 	</p>
 </footer>
 

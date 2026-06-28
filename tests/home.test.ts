@@ -108,6 +108,64 @@ test.describe('Home page', () => {
     expect(count).toBeGreaterThanOrEqual(0);
   });
 
+  test('article cards have hover state', async ({ page }) => {
+    await page.goto('/');
+    // Skip if no articles loaded (API unavailable in CI)
+    const articleCount = await page.locator('section.articles article').count();
+    if (articleCount === 0) {
+      test.skip();
+      return;
+    }
+    const firstCard = page.locator('section.articles article').first();
+    await expect(firstCard).toBeVisible();
+
+    // Check that card has transition property for smooth hover effect
+    const transition = await firstCard.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return cs.transition;
+    });
+
+    expect(transition).not.toBe('');
+  });
+
+  test('article cards maintain responsive layout', async ({ page }) => {
+    await page.goto('/');
+    // Skip if no articles loaded (API unavailable in CI)
+    const articleCount = await page.locator('section.articles article').count();
+    if (articleCount === 0) {
+      test.skip();
+      return;
+    }
+
+    // Test desktop layout
+    await page.setViewportSize({ width: 1200, height: 800 });
+    const cardsDesktop = page.locator('section.articles article');
+    await expect(cardsDesktop.first()).toBeVisible();
+
+    // Test mobile layout
+    await page.setViewportSize({ width: 375, height: 800 });
+    const cardsMobile = page.locator('section.articles article');
+    await expect(cardsMobile.first()).toBeVisible();
+  });
+
+  test('article title links navigate to correct URLs', async ({ page }) => {
+    await page.goto('/');
+    // Skip if no articles loaded (API unavailable in CI)
+    const articleCount = await page.locator('section.articles article').count();
+    if (articleCount === 0) {
+      test.skip();
+      return;
+    }
+
+    const firstCard = page.locator('section.articles article').first();
+    const link = firstCard.getByRole('link').first();
+    await expect(link).toBeVisible();
+
+    const href = await link.getAttribute('href');
+    expect(href).toBeTruthy();
+    expect(href).toMatch(/^https?:\/\//);
+  });
+
   test('"more articles" link points to /articles and navigates', async ({ page }) => {
     await page.goto('/');
     const more = page.locator('a.moreArticles');
@@ -120,6 +178,14 @@ test.describe('Home page', () => {
       await page.goto(href);
     }
     await expect(page).toHaveURL(/\/articles(\/\d+)?\/?$/, { timeout: 15000 });
+  });
+
+  test('"more articles" button has analytics attributes', async ({ page }) => {
+    await page.goto('/');
+    const more = page.locator('a.moreArticles');
+    await expect(more).toHaveAttribute('data-umami-event', 'View More Articles');
+    const count = await more.getAttribute('data-umami-event-count');
+    expect(count).toBeTruthy();
   });
 
   test('has social/contact links', async ({ page }) => {

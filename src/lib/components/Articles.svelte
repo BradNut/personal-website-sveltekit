@@ -1,9 +1,11 @@
 <script lang="ts">
   import { ArrowRight } from "@lucide/svelte";
+  import { Button } from "bits-ui";
   import { page } from "$app/state";
   import ArticlesSkeleton from "$lib/components/ArticlesSkeleton.svelte";
   import type { Article } from "$lib/types/article";
   import ExternalLink from "./ExternalLink.svelte";
+  import Tag from "./Tag.svelte";
 
   type LoadData = {
     articles: Article[];
@@ -54,9 +56,9 @@
           <section>
             <p>Reading time: {article.reading_time} minutes</p>
             <div class="tagsStyles">
-              <p>Tags:</p>
-              {#each article.tags as tag}
-                <p>{tag}</p>
+              <span>Tags:</span>
+              {#each article.tags as tag (tag)}
+                <Tag name={tag} />
               {/each}
             </div>
           </section>
@@ -65,13 +67,14 @@
     {/if}
   </div>
   {#if page.url.pathname === "/"}
-    <a
+    <Button.Root
       class="moreArticles"
       href="/articles/1"
       data-umami-event="View More Articles"
       data-umami-event-count={totalArticles}
-      >{`${totalArticles} more articles`} <ArrowRight /></a
     >
+      {`${totalArticles} more articles`} <ArrowRight />
+    </Button.Root>
   {/if}
 </section>
 
@@ -111,18 +114,9 @@
     flex-direction: row;
     justify-content: left;
     align-items: center;
-
-    & p + p {
-      background-color: var(--linkHover);
-      color: var(--buttonTextColor);
-      padding: 0.25rem 0.5rem;
-      margin: 0.5rem;
-      border-radius: 2px;
-      font-size: 1.2rem;
-    }
   }
 
-  .moreArticles {
+  :global(.moreArticles) {
     display: flex;
     flex-wrap: wrap;
     place-items: center;
