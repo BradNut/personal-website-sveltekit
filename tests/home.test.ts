@@ -18,7 +18,7 @@ test.describe('Home page', () => {
       return color;
     });
 
-    const areas = ['header[aria-label="header navigation"]', 'footer nav[aria-label="footer navigation"]'];
+    const areas = ['nav[aria-label="header navigation"]', 'footer nav[aria-label="footer navigation"]'];
 
     for (const area of areas) {
       const nav = page.locator(area);
@@ -44,7 +44,7 @@ test.describe('Home page', () => {
 
   test('current page (Home) link is active in header and footer', async ({ page }) => {
     await page.goto('/');
-    const areas = ['header[aria-label="header navigation"]', 'footer nav[aria-label="footer navigation"]'];
+    const areas = ['nav[aria-label="header navigation"]', 'footer nav[aria-label="footer navigation"]'];
     for (const area of areas) {
       const nav = page.locator(area);
       const link = nav.getByRole('link', { name: 'Home', exact: true });
@@ -56,7 +56,7 @@ test.describe('Home page', () => {
 
   test('header navigation links go to correct routes', async ({ page }) => {
     await page.goto('/');
-    const headerNav = page.locator('header[aria-label="header navigation"]');
+    const headerNav = page.locator('nav[aria-label="header navigation"]');
 
     // About
     await headerNav.getByRole('link', { name: 'About', exact: true }).click();
@@ -77,12 +77,37 @@ test.describe('Home page', () => {
 
   test('header navigation shows expected links', async ({ page }) => {
     await page.goto('/');
-    const headerNavContainer = page.locator('header[aria-label="header navigation"]');
+    const headerNavContainer = page.locator('nav[aria-label="header navigation"]');
     await expect(headerNavContainer).toBeVisible();
     await expect(headerNavContainer.getByRole('link', { name: 'Home', exact: true })).toBeVisible();
     await expect(headerNavContainer.getByRole('link', { name: 'About', exact: true })).toBeVisible();
     await expect(headerNavContainer.getByRole('link', { name: 'Portfolio', exact: true })).toBeVisible();
     await expect(headerNavContainer.getByRole('link', { name: 'Uses', exact: true })).toBeVisible();
+  });
+
+  test('header navigation uses bits-ui navigation-menu structure', async ({ page }) => {
+    await page.goto('/');
+    const headerNav = page.locator('nav[aria-label="header navigation"]');
+
+    // Check for NavigationMenu.Root structure (data-orientation attribute is used by bits-ui)
+    const root = headerNav.locator('ul[data-orientation]');
+    await expect(root).toBeVisible();
+
+    // Check for NavigationMenu.List
+    const list = headerNav.locator('ul');
+    await expect(list).toBeVisible();
+
+    // Check for NavigationMenu.Item wrappers (li elements)
+    const items = headerNav.locator('ul > li');
+    const itemCount = await items.count();
+    expect(itemCount).toBe(4);
+
+    // Check that each item contains a NavigationMenu.Link
+    for (let i = 0; i < itemCount; i++) {
+      const item = items.nth(i);
+      const link = item.locator('a');
+      await expect(link).toBeVisible();
+    }
   });
 
   test('shows key sections', async ({ page }) => {
