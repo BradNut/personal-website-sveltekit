@@ -32,6 +32,8 @@ test.describe('Home page', () => {
         return { color: cs.color };
       });
       await link.hover();
+      // Wait for color transition to complete (0.2s ease)
+      await page.waitForTimeout(300);
       const after = await link.evaluate((el) => {
         const cs = getComputedStyle(el);
         return { color: cs.color };
@@ -211,6 +213,40 @@ test.describe('Home page', () => {
     await expect(more).toHaveAttribute('data-umami-event', 'View More Articles');
     const count = await more.getAttribute('data-umami-event-count');
     expect(count).toBeTruthy();
+  });
+
+  test('hr divider has non-zero rendered height and a visible background color', async ({ page }) => {
+    await page.goto('/');
+    const hr = page.locator('.home hr');
+    await expect(hr).toBeVisible();
+
+    const styles = await hr.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return {
+        height: cs.height,
+        backgroundColor: cs.backgroundColor,
+      };
+    });
+
+    const heightPx = Number.parseFloat(styles.height);
+    expect(heightPx).toBeGreaterThan(0);
+    expect(styles.backgroundColor).not.toBe('rgba(0, 0, 0, 0)');
+    expect(styles.backgroundColor).not.toBe('transparent');
+  });
+
+  test('has a visible hr divider between bio block and social-info section', async ({ page }) => {
+    await page.goto('/');
+    const home = page.locator('.home');
+    const hr = home.locator('hr');
+    await expect(hr).toBeVisible();
+
+    const socialInfo = home.locator('.social-info');
+    const [hrBox, socialBox] = await Promise.all([hr.boundingBox(), socialInfo.boundingBox()]);
+    expect(hrBox).toBeTruthy();
+    expect(socialBox).toBeTruthy();
+    if (hrBox && socialBox) {
+      expect(hrBox.y).toBeLessThan(socialBox.y);
+    }
   });
 
   test('has social/contact links', async ({ page }) => {

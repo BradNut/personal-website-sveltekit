@@ -89,5 +89,6 @@
 	a {
 		margin: 1rem;
 		line-height: 1rem;
+		transition: color 0.2s ease;
 	}
 </style>

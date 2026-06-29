@@ -95,8 +95,13 @@
 			}
 
 			&:global(.active)::after,
-			&:hover::after {
+			&:hover::after,
+			&:focus-visible::after {
 				transform: scale(1);
+			}
+
+			&:focus-visible {
+				outline: none;
 			}
 		}
 	}

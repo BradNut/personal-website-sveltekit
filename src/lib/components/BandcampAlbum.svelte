@@ -33,10 +33,25 @@
     display: grid;
     justify-content: center;
     text-align: center;
+    transition: transform 0.3s ease;
 
     & figure {
       margin-left: auto;
       margin-right: auto;
+      overflow: hidden;
+      border-radius: var(--borderRadius);
+    }
+
+    & figure :global(.album-artwork) {
+      transition: transform 0.3s ease;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+
+      & figure :global(.album-artwork) {
+        transform: scale(1.05);
+      }
     }
 
     @media (max-width: 550px) {

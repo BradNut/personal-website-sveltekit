@@ -120,9 +120,9 @@
 	}
 
 	:global(.hub-icon) {
-		transition: transform 0.2s cubic-bezier(0.65, 0, 0.35, 1);
+		transition: transform 0.2s cubic-bezier(0.65, 0, 0.35, 1), color 0.2s ease;
 		&:hover {
-			transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+			transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1), color 0.2s ease;
 			transform: translateY(-4px);
 		}
 	}

@@ -81,6 +81,12 @@
 <style lang="postcss">
   article {
     margin: 1.5rem 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--level-4);
+    }
 
     & p {
       margin: 0.25rem 0rem;
