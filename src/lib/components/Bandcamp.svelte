@@ -32,7 +32,7 @@
 <style lang="postcss">
 	.albumsStyles {
 		display: grid;
-		grid-template-columns: repeat(3, minmax(auto, 1fr));
+		grid-template-columns: repeat(3, minmax(0, 1fr));
 		gap: 1rem;
 
 		:global(.album-artwork) {
@@ -41,11 +41,11 @@
 		}
 
 		@media (max-width: 1000px) {
-			grid-template-columns: repeat(2, minmax(150px, 1fr));
+			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
 
 		@media (max-width: 575px) {
-			height: 500px;
+			max-height: 500px;
 			overflow-x: hidden;
 			overflow-y: auto;
 
@@ -66,7 +66,7 @@
 				border: 3px solid var(--darkGrey);
 			}
 
-			grid-template-columns: minmax(230px, 1fr);
+			grid-template-columns: minmax(0, 1fr);
 		}
 	}
 </style>

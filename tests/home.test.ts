@@ -358,4 +358,58 @@ test.describe('Home page', () => {
       }
     }
   });
+
+  test('stacked layout: social-info gap is reduced at 800px', async ({ page }) => {
+    await page.setViewportSize({ width: 800, height: 900 });
+    await page.goto('/');
+    const socialInfo = page.locator('.social-info');
+    await expect(socialInfo).toBeVisible();
+
+    const gap = await socialInfo.evaluate((el) => getComputedStyle(el).gap);
+    expect(gap).toBe('15px');
+  });
+
+  test('mobile layout: albums grid uses max-height and vertical scroll', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 900 });
+    await page.goto('/');
+    const albumsGrid = page.locator('.albumsStyles');
+
+    // Skip if no albums loaded (API unavailable in CI)
+    const albumCount = await page.locator('.albumsStyles .album-artwork').count();
+    if (albumCount === 0) {
+      test.skip();
+      return;
+    }
+
+    await expect(albumsGrid).toBeVisible();
+
+    const styles = await albumsGrid.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return {
+        maxHeight: cs.maxHeight,
+        height: cs.height,
+        overflowY: cs.overflowY,
+        scrollHeight: el.scrollHeight,
+        clientHeight: el.clientHeight,
+      };
+    });
+
+    expect(styles.maxHeight).toBe('500px');
+    expect(styles.overflowY).toBe('auto');
+    expect(styles.clientHeight).toBeLessThan(styles.scrollHeight);
+  });
+
+  test('mobile layout: album cards align at the 575px breakpoint', async ({ page }) => {
+    await page.goto('/');
+    const albumCards = page.locator('.albumStyles');
+    const albumCount = await albumCards.count();
+    if (albumCount === 0) {
+      test.skip();
+      return;
+    }
+
+    await page.setViewportSize({ width: 575, height: 900 });
+    const alignItems = await albumCards.first().evaluate((el) => getComputedStyle(el).alignItems);
+    expect(alignItems).toBe('center');
+  });
 });

@@ -100,18 +100,20 @@
 
   .columns {
     display: grid;
-    grid-template-columns: repeat(2, minmax(250px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     min-height: 800px;
+    gap: 2.5rem;
 
     @media (max-width: 1000px) {
-      grid-template-columns: repeat(2, minmax(250px, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      min-height: auto;
     }
 
     @media (max-width: 650px) {
-      grid-template-columns: minmax(250px, 1fr);
+      grid-template-columns: minmax(0, 1fr);
+      min-height: auto;
+      gap: 1.5rem;
     }
-
-    gap: 2.5rem;
   }
 
   .tagsStyles {

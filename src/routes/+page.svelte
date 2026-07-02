@@ -58,6 +58,7 @@
 		</a>
 		, or read more <a href="/about">about me</a>.
 	</p>
+	<hr />
 	<div class="social-info">
 		<Bandcamp {albums} />
 		<Articles data={{ articles, totalArticles, compact: true }} />
@@ -67,11 +68,10 @@
 <style lang="postcss">
 	.home {
 		display: grid;
-		gap: 0.5rem;
+		gap: 1.5rem;
 	}
 
 	.social-info {
-		margin-top: 2rem;
 		display: grid;
 		grid-template-columns: 1fr 0.5fr;
 		gap: 3rem;
@@ -82,6 +82,7 @@
 
 		@media (max-width: 800px) {
 			grid-template-columns: 1fr;
+			gap: 1.5rem;
 		}
 	}
 </style>
