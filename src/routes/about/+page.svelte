@@ -2,17 +2,8 @@
 	import orange_derp from "../../lib/assets/images/orange_derp.jpg?enhanced";
 	import tortie_derp from "../../lib/assets/images/tortie_derp.jpg?enhanced";
 	import turnip from "../../lib/assets/images/turnip.svg?enhanced";
-	import ExternalLink from "../../lib/components/ExternalLink.svelte";
+	import TechStack from "../../lib/components/TechStack.svelte";
 	import type { Course } from "../../lib/types/courses";
-	import {
-		dockerIcon,
-		drizzleIcon,
-		honoIcon,
-		nextDotJsIcon,
-		reactIcon,
-		svelteIcon,
-		typescriptIcon,
-	} from "../../lib/util/logoIcons.svelte";
 	import CourseCard from "./CourseCard.svelte";
 	import courseData from "./course.json";
 
@@ -42,92 +33,7 @@
 		<p>
 			At home I delve into other frameworks, languages, and platforms such as:
 		</p>
-		<div class="tech-list">
-			<ExternalLink
-				iconData={{ type: "svg", icon: svelteIcon, iconClass: "center" }}
-				linkData={{
-					href: "https://svelte.dev",
-					ariaLabel: "Svelte",
-					title: "Svelte",
-					target: "_blank",
-					clazz: "tech-list-item",
-					textDecoration: "none",
-				}}
-				textData={{ text: "Svelte", showIcon: true, location: "bottom" }}
-			/>
-			<ExternalLink
-				iconData={{ type: "svg", icon: honoIcon, iconClass: "center" }}
-				linkData={{
-					href: "https://hono.dev",
-					ariaLabel: "Hono",
-					title: "Hono",
-					target: "_blank",
-					clazz: "tech-list-item",
-					textDecoration: "none",
-				}}
-				textData={{ text: "Hono", showIcon: true, location: "bottom" }}
-			/>
-			<ExternalLink
-				iconData={{ type: "svg", icon: typescriptIcon, iconClass: "center" }}
-				linkData={{
-					href: "https://www.typescriptlang.org/",
-					ariaLabel: "TypeScript",
-					title: "TypeScript",
-					target: "_blank",
-					clazz: "tech-list-item",
-					textDecoration: "none",
-				}}
-				textData={{ text: "TypeScript", showIcon: true, location: "bottom" }}
-			/>
-			<ExternalLink
-				iconData={{ type: "svg", icon: drizzleIcon, iconClass: "center" }}
-				linkData={{
-					href: "https://orm.drizzle.team/",
-					ariaLabel: "Drizzle ORM",
-					title: "Drizzle ORM",
-					target: "_blank",
-					clazz: "tech-list-item",
-					textDecoration: "none",
-				}}
-				textData={{ text: "Drizzle ORM", showIcon: true, location: "bottom" }}
-			/>
-			<ExternalLink
-				iconData={{ type: "svg", icon: reactIcon, iconClass: "center" }}
-				linkData={{
-					href: "https://reactjs.org/",
-					ariaLabel: "React",
-					title: "React",
-					target: "_blank",
-					clazz: "tech-list-item",
-					textDecoration: "none",
-				}}
-				textData={{ text: "React", showIcon: true, location: "bottom" }}
-			/>
-			<ExternalLink
-				iconData={{ type: "svg", icon: nextDotJsIcon, iconClass: "center" }}
-				linkData={{
-					href: "https://nextjs.org/",
-					ariaLabel: "Next.js",
-					title: "Next.js",
-					target: "_blank",
-					clazz: "tech-list-item",
-					textDecoration: "none",
-				}}
-				textData={{ text: "Next.js", showIcon: true, location: "bottom" }}
-			/>
-			<ExternalLink
-				iconData={{ type: "svg", icon: dockerIcon, iconClass: "center" }}
-				linkData={{
-					href: "https://www.docker.com/",
-					ariaLabel: "Docker",
-					title: "Docker",
-					target: "_blank",
-					clazz: "tech-list-item",
-					textDecoration: "none",
-				}}
-				textData={{ text: "Docker", showIcon: true, location: "bottom" }}
-			/>
-		</div>
+		<TechStack />
 	</section>
 	<section aria-labelledby="extracurricular-heading">
 		<h2 id="extracurricular-heading">Extracurricular</h2>
@@ -188,26 +94,6 @@
 
 		& p {
 			margin: 1rem;
-		}
-	}
-
-	.tech-list {
-		display: flex;
-		flex-wrap: wrap;
-		flex-direction: row;
-		place-content: center;
-		gap: 2rem;
-		margin-top: 1rem;
-		font-size: 2rem;
-
-		@media (max-width: 768px) {
-			gap: 1.5rem;
-			font-size: 1.8rem;
-		}
-
-		@media (max-width: 480px) {
-			gap: 1rem;
-			font-size: 1.5rem;
 		}
 	}
 
