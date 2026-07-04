@@ -2,7 +2,7 @@
 import { ExternalLink as ExternalLinkIcon } from '@lucide/svelte';
 import { Tabs } from 'bits-ui';
 import ExternalLink from '$lib/components/ExternalLink.svelte';
-import type { ExternalLinkType } from '$lib/types/externalLinkType';
+import type { ProjectLink } from '$lib/types/externalLinkType';
 import { gitHubIcon } from '$lib/util/logoIcons.svelte';
 import personalSite from '../../lib/assets/images/portfolio/Bradley_Shellnut_New_Site.png?enhanced';
 import shellnutArchitectWebsite from '../../lib/assets/images/portfolio/Mark_Shellnut_Architect.png?enhanced';
@@ -11,7 +11,7 @@ import weddingWebsite from '../../lib/assets/images/portfolio/Wedding_Website.pn
 import Portfolio from './Portfolio.svelte';
 </script>
 
-{#snippet links(externalLinks: ExternalLinkType[])}
+{#snippet links(externalLinks: ProjectLink[])}
 	<div class="project-links">
 		{#each externalLinks as link}
 			{#if link.icon && link.showIcon}

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from "svelte";
 	import type { Picture } from "vite-imagetools";
-	import type { ExternalLinkType } from "$lib/types/externalLinkType";
+	import type { ProjectLink } from "$lib/types/externalLinkType";
 
 	const {
 		links,
@@ -14,8 +14,8 @@
 		loading = "lazy",
 		children,
 	}: {
-		links: Snippet<[ExternalLinkType[]]>;
-		externalLinks: ExternalLinkType[];
+		links: Snippet<[ProjectLink[]]>;
+		externalLinks: ProjectLink[];
 		name: string;
 		src: string | Picture;
 		alt: string;
