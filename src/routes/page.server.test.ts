@@ -68,4 +68,16 @@ describe('load (root page)', () => {
     expect((meta.openGraph as Record<string, unknown>)?.type).toBe('website');
     expect((meta.twitter as Record<string, unknown>)?.card).toBe('summary_large_image');
   });
+
+  it('OG and Twitter images share the same URL', async () => {
+    const { args } = makeLoadArgs();
+    const result = await load(args) as Record<string, unknown>;
+    const meta = result.metaTagsChild as Record<string, unknown>;
+
+    const ogImage = ((meta.openGraph as Record<string, unknown>)?.images as Array<Record<string, unknown>>)?.[0]?.url;
+    const twitterImage = (meta.twitter as Record<string, unknown>)?.image;
+
+    expect(ogImage).toBeTruthy();
+    expect(ogImage).toBe(twitterImage);
+  });
 });

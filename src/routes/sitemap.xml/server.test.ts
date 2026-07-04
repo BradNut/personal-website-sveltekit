@@ -1,9 +1,15 @@
-import { ENV } from 'varlock/env';
 import { describe, expect, it, vi } from 'vitest';
+
+vi.mock('varlock/env', () => ({
+  initVarlockEnv: vi.fn(),
+  ENV: {
+    PUBLIC_SITE_URL: 'https://bradleyshellnut.com',
+  },
+}));
 
 import { GET } from './+server.js';
 
-const base = new URL(ENV.PUBLIC_SITE_URL ?? 'https://bradleyshellnut.com').origin;
+const base = 'https://bradleyshellnut.com';
 
 function makeEvent(totalPages = 2) {
   const capturedHeaders: Record<string, string> = {};
