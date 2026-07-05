@@ -134,5 +134,9 @@
     background: transparent;
     text-decoration: none;
     cursor: pointer;
+
+    &:hover {
+      color: var(--shellYellow);
+    }
   }
 </style>
