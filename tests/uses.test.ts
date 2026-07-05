@@ -64,6 +64,33 @@ test.describe('Uses page', () => {
     await expect(page.getByRole('link', { name: /Open\s+Uses\.tech\s+externally/i })).toBeVisible();
   });
 
+  test('uses page sections are accordion triggers', async ({ page }) => {
+    await page.goto('/uses');
+
+    const sections = [
+      'Hardware & Accessories',
+      'Development',
+      'Privacy Hardware and Software',
+    ];
+
+    for (const name of sections) {
+      await expect(page.getByRole('button', { name, exact: true })).toBeVisible();
+    }
+  });
+
+  test('accordion sections can be toggled', async ({ page }) => {
+    await page.goto('/uses');
+
+    const devTrigger = page.getByRole('button', { name: 'Development', exact: true });
+    const devSection = page.locator('section#uses-development');
+
+    await expect(devSection).toBeVisible();
+    await devTrigger.click();
+    await expect(devSection).toBeHidden();
+    await devTrigger.click();
+    await expect(devSection).toBeVisible();
+  });
+
   test('sections and subsections render', async ({ page }) => {
     await page.goto('/uses');
 

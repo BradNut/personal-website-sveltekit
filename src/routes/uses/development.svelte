@@ -2,11 +2,8 @@
 	import ExternalLink from "$lib/components/ExternalLink.svelte";
 </script>
 
-<section id="uses-development">
-	<h2>Development</h2>
-
-	<p>
-		My development setup has been documented here: <ExternalLink
+<p>
+	My development setup has been documented here: <ExternalLink
 			linkData={{
 				href: "https://github.com/BradNut/computer-setup-info/blob/master/linux/Environment-Setup.md",
 				ariaLabel: "Bradley Shellnut Computer Setup",
@@ -27,7 +24,6 @@
 			}}
 			textData={{ text: "Dotfiles", showIcon: true, location: "left" }}
 		/>
-		>.
 	</p>
 
 	<h3>Terminal & Shell Setup</h3>
@@ -40,7 +36,7 @@
 			/> running ZSH and <ExternalLink
 				linkData={{ href: "https://starship.rs/", ariaLabel: "Starship" }}
 				textData={{ text: "Starship", showIcon: true, location: "left" }}
-			/> as my prompt >.
+			/> as my prompt.
 		</li>
 		<li>
 			Mac: <ExternalLink
@@ -201,7 +197,6 @@
 			/>
 		</li>
 	</ul>
-</section>
 
 <style lang="postcss">
 	ul {
