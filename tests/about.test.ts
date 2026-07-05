@@ -225,4 +225,35 @@ test.describe('About page', () => {
       expect(imgBox.x + imgBox.width).toBeLessThanOrEqual(sectionBox.x + sectionBox.width + 1);
     }
   });
+
+  test('renders decorative separators between sections', async ({ page }) => {
+    await page.goto('/about');
+    const separators = page.locator('[data-separator-root]');
+    await expect(separators).toHaveCount(3);
+    await expect(separators.first()).toBeVisible();
+    const orientations = await separators.evaluateAll((els) => els.map((el) => (el as HTMLElement).dataset.orientation));
+    expect(orientations.every((o) => o === 'horizontal')).toBeTruthy();
+  });
+
+  test('cat images are constrained to a consistent aspect ratio', async ({ page }) => {
+    await page.setViewportSize({ width: 800, height: 1000 });
+    await page.goto('/about');
+    const catSection = page.locator('.cat-pics');
+    await expect(catSection).toBeVisible();
+    await catSection.scrollIntoViewIfNeeded();
+
+    const aspectWrappers = catSection.locator('[data-aspect-ratio-root]');
+    await expect(aspectWrappers).toHaveCount(2);
+    await expect(aspectWrappers.first()).toBeVisible();
+
+    const ratios = await aspectWrappers.evaluateAll((els) =>
+      els.map((el) => {
+        const rect = el.getBoundingClientRect();
+        return rect.width / rect.height;
+      }),
+    );
+    for (const ratio of ratios) {
+      expect(Math.abs(ratio - 4 / 3)).toBeLessThan(0.05);
+    }
+  });
 });

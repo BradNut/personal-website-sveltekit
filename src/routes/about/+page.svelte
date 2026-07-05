@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { AspectRatio, Separator } from "bits-ui";
 	import orange_derp from "../../lib/assets/images/orange_derp.jpg?enhanced";
 	import tortie_derp from "../../lib/assets/images/tortie_derp.jpg?enhanced";
 	import turnip from "../../lib/assets/images/turnip.svg?enhanced";
@@ -19,6 +20,7 @@
 			engineer who's interested in new tech and not afraid to discover new interests.
 		</p>
 	</section>
+	<Separator.Root class="about-separator" decorative={true} />
 	<section aria-labelledby="details-heading">
 		<h2 id="details-heading">More deets</h2>
 		<p>
@@ -35,6 +37,7 @@
 		</p>
 		<TechStack />
 	</section>
+	<Separator.Root class="about-separator" decorative={true} />
 	<section aria-labelledby="extracurricular-heading">
 		<h2 id="extracurricular-heading">Extracurricular</h2>
 		<p>
@@ -47,6 +50,7 @@
 			{/each}
 		</div>
 	</section>
+	<Separator.Root class="about-separator" decorative={true} />
 	<section aria-labelledby="fun-things-heading">
 		<h2 id="fun-things-heading">Other fun things about me&hellip;</h2>
 		<div class="travel-section">
@@ -57,7 +61,11 @@
 			<p>Hanging out with these two cats, Turnip and Taco.</p>
 			<div class="cat-pics">
 				<figure>
-					<enhanced:img src={tortie_derp} alt="Tortie Cat lying down" />
+					<AspectRatio.Root ratio={4 / 3} class="cat-aspect-root">
+						<div class="cat-image-wrapper">
+							<enhanced:img src={tortie_derp} alt="Tortie Cat lying down" />
+						</div>
+					</AspectRatio.Root>
 					<figcaption class="center">
 						Turnip <img
 							class="icon"
@@ -69,7 +77,11 @@
 					</figcaption>
 				</figure>
 				<figure>
-					<enhanced:img src={orange_derp} alt="Orange Cat sleeping" />
+					<AspectRatio.Root ratio={4 / 3} class="cat-aspect-root">
+						<div class="cat-image-wrapper">
+							<enhanced:img src={orange_derp} alt="Orange Cat sleeping" />
+						</div>
+					</AspectRatio.Root>
 					<figcaption class="center">Taco 🌮</figcaption>
 				</figure>
 			</div>
@@ -86,6 +98,32 @@
 	.icon {
 		display: inline-block;
 		vertical-align: top;
+	}
+
+	:global(.about-separator) {
+		background-color: var(--lightHairLine);
+		width: 100%;
+		height: 1px;
+		border: none;
+	}
+
+	:global(.cat-aspect-root) {
+		position: relative;
+		overflow: hidden;
+		border-radius: var(--borderRadius);
+	}
+
+	.cat-image-wrapper {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	.cat-image-wrapper :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 	}
 
 	.about {
