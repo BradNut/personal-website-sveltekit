@@ -2,7 +2,6 @@
 import { ExternalLink as ExternalLinkIcon } from '@lucide/svelte';
 import { Tabs } from 'bits-ui';
 import ExternalLink from '$lib/components/ExternalLink.svelte';
-import type { ProjectLink } from '$lib/types/externalLinkType';
 import { gitHubIcon } from '$lib/util/logoIcons.svelte';
 import personalSite from '../../lib/assets/images/portfolio/Bradley_Shellnut_New_Site.png?enhanced';
 import shellnutArchitectWebsite from '../../lib/assets/images/portfolio/Mark_Shellnut_Architect.png?enhanced';
@@ -10,68 +9,6 @@ import oldSite from '../../lib/assets/images/portfolio/Old_Website_Bradley_Shell
 import weddingWebsite from '../../lib/assets/images/portfolio/Wedding_Website.png?enhanced';
 import Portfolio from './Portfolio.svelte';
 </script>
-
-{#snippet links(externalLinks: ProjectLink[])}
-	<div class="project-links">
-		{#each externalLinks as link}
-			{#if link.icon && link.showIcon}
-				{#if link.linkType === "repo" || link.linkType === undefined}
-					<!-- Snippet icon (SVG): used for repo links with custom SVG icons -->
-					<ExternalLink
-						linkData={{
-							href: link.href,
-							ariaLabel: link.ariaLabel,
-							title: link.ariaLabel,
-							target: "_blank",
-							rel: "noopener",
-						}}
-						textData={{
-							text: link.text,
-							showIcon: link.showIcon,
-							location: "left",
-						}}
-						iconData={{ type: "svg", icon: link.icon as any }}
-						iconSize={20}
-					/>
-				{:else}
-					<!-- Component icon (e.g., @lucide/svelte): used for site links -->
-					<ExternalLink
-						linkData={{
-							href: link.href,
-							ariaLabel: link.ariaLabel,
-							title: link.ariaLabel,
-							target: "_blank",
-							rel: "noopener",
-						}}
-						textData={{
-							text: link.text,
-							showIcon: link.showIcon,
-							location: "left",
-						}}
-						iconData={{ type: "icon", icon: link.icon as any }}
-						iconSize={20}
-					/>
-				{/if}
-			{:else}
-				<ExternalLink
-					linkData={{
-						href: link.href,
-						ariaLabel: link.ariaLabel,
-						title: link.ariaLabel,
-						target: "_blank",
-						rel: "noopener",
-					}}
-					textData={{
-						text: link.text,
-						showIcon: link.showIcon,
-						location: "left",
-					}}
-					iconSize={20}
-				/>
-			{/if}
-		{/each}
-	</div>
-{/snippet}
 
 <h1>Portfolio!</h1>
 <Tabs.Root value="personal">
@@ -86,7 +23,6 @@ import Portfolio from './Portfolio.svelte';
 			src={personalSite}
 			loading="eager"
 			alt="Picture of Bradley Shellnut's Personal Website"
-			{links}
 			externalLinks={[
 				{
 					ariaLabel: "View GitHub repository for my personal website",
@@ -193,7 +129,6 @@ import Portfolio from './Portfolio.svelte';
 			style="max-height: 550px;"
 			src={weddingWebsite}
 			alt="Picture of NextJS Wedding Website"
-			{links}
 			externalLinks={[
 				{
 					ariaLabel: "View live wedding site demo",
@@ -248,7 +183,6 @@ import Portfolio from './Portfolio.svelte';
 			style="max-height: 320px;"
 			src={oldSite}
 			alt="Home Page of the old bradleyshellnut.com website"
-			{links}
 			externalLinks={[
 				{
 					ariaLabel: "Archive of bradleyshellnut.com",
@@ -280,7 +214,6 @@ import Portfolio from './Portfolio.svelte';
 			style="max-height: 550px;"
 			src={shellnutArchitectWebsite}
 			alt="Picture of Mark Shellnut Architect's Website"
-			{links}
 			externalLinks={[
 				{
 					ariaLabel: "View Mark Shellnut Architect",
@@ -354,36 +287,6 @@ import Portfolio from './Portfolio.svelte';
 	:global([data-state="inactive"]) {
 		span {
 			border-bottom: 2px solid var(--white);
-		}
-	}
-
-	.project-links {
-		display: flex;
-		gap: 1rem;
-		margin-top: 1rem;
-		flex-wrap: wrap;
-	}
-
-	:global(.project-links a) {
-		background: rgba(255, 255, 255, 0.05);
-		border: 1px solid rgba(255, 255, 255, 0.1);
-		border-radius: 8px;
-		padding: 0.75rem 1.25rem;
-		font-weight: 500;
-		transition: all 0.2s ease;
-		display: inline-flex;
-		align-items: center;
-		gap: 0.75rem;
-
-		&:hover {
-			background: rgba(255, 255, 255, 0.1);
-			border-color: var(--shellYellow);
-			transform: translateY(-2px);
-			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-		}
-
-		&:active {
-			transform: translateY(0);
 		}
 	}
 

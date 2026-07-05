@@ -1,16 +1,54 @@
 <script lang="ts">
 	import { ExternalLink } from "@lucide/svelte";
+	import type { ProjectLink } from "$lib/types/externalLinkType";
 	import type {
 		ExternalLinkType,
 		LinkIconType,
 	} from "$lib/types/externalLinkTypes";
 
-	const {
-		iconData = { type: "icon", icon: ExternalLink },
-		linkData,
-		textData,
-		iconSize = 20,
-	}: ExternalLinkType & { iconSize?: number } = $props();
+	type Props = (ExternalLinkType | { projectLink: ProjectLink }) & { iconSize?: number };
+
+	const rawProps: Props = $props();
+
+	const isProjectLink = (p: Props): p is { projectLink: ProjectLink; iconSize?: number } =>
+		"projectLink" in p;
+
+	function inferIconData(link: ProjectLink): LinkIconType | undefined {
+		if (!link.icon) return undefined;
+		if (link.linkType === "site") {
+			return { type: "icon", icon: link.icon as import("@lucide/svelte").LucideIcon };
+		}
+		return { type: "svg", icon: link.icon as () => unknown };
+	}
+
+	const defaultIconData: LinkIconType = { type: "icon", icon: ExternalLink };
+
+	const iconData = $derived(
+		isProjectLink(rawProps)
+			? (inferIconData(rawProps.projectLink) ?? defaultIconData)
+			: (rawProps.iconData ?? defaultIconData),
+	);
+	const linkData = $derived(
+		isProjectLink(rawProps)
+			? {
+					href: rawProps.projectLink.href,
+					ariaLabel: rawProps.projectLink.ariaLabel,
+					title: rawProps.projectLink.ariaLabel,
+					target: "_blank" as const,
+					rel: "noopener",
+				}
+			: rawProps.linkData,
+	);
+	const textData = $derived(
+		isProjectLink(rawProps)
+			? {
+					text: rawProps.projectLink.text,
+					showIcon: rawProps.projectLink.showIcon,
+					location: "left" as const,
+				}
+			: rawProps.textData,
+	);
+	const iconSize = $derived(rawProps.iconSize ?? 20);
 	// Guarantee non-optional icon data for linkIcon()
 	const safeIconData: LinkIconType = $derived(
 		iconData ?? {
