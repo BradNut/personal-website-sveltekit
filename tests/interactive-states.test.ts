@@ -202,8 +202,7 @@ test.describe('Interactive states: ContactHub color transition', () => {
 
     // Should include both transform and color (or 'all' which covers both)
     const coversColorAndTransform =
-      transitionProperty === 'all' ||
-      (transitionProperty.includes('color') && transitionProperty.includes('transform'));
+      transitionProperty === 'all' || (transitionProperty.includes('color') && transitionProperty.includes('transform'));
     expect(coversColorAndTransform).toBeTruthy();
   });
 });

@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { page } from "$app/state";
+	
 	import { NavigationMenu } from "bits-ui";
+import { page } from "$app/state";
 </script>
 
 <nav aria-label="header navigation">

@@ -60,15 +60,14 @@
 	const textLocationClass = $derived.by(() => {
 		if (textData?.location === "top") {
 			return "text-top";
-		} else if (textData?.location === "bottom") {
+		}if (textData?.location === "bottom") {
 			return "text-bottom";
-		} else if (textData?.location === "left") {
+		}if (textData?.location === "left") {
 			return "text-left";
-		} else if (textData?.location === "right") {
+		}if (textData?.location === "right") {
 			return "text-right";
-		} else {
-			return "text-left";
 		}
+			return "text-left";
 	});
 
 	const linkDecoration = $derived(

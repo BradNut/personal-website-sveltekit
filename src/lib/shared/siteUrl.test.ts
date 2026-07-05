@@ -37,11 +37,10 @@ describe('site URL resolution', () => {
     const url = new URL('http://prerender.internal/about');
     const options = { publicSiteUrl: 'https://bradleyshellnut.com' };
 
-    expect(resolveAssetUrl(url, 'b_shell_nut_favicon.png', options)).toBe(
-      'https://bradleyshellnut.com/b_shell_nut_favicon.png',
+    expect(resolveAssetUrl(url, 'b_shell_nut_favicon.png', options)).toBe('https://bradleyshellnut.com/b_shell_nut_favicon.png');
+    expect(resolveOgEndpointUrl(url, { header: 'About | bradleyshellnut.com', page: 'About Bradley Shellnut' }, options)).toBe(
+      'https://bradleyshellnut.com/og?header=About+%7C+bradleyshellnut.com&page=About+Bradley+Shellnut',
     );
-    expect(resolveOgEndpointUrl(url, { header: 'About | bradleyshellnut.com', page: 'About Bradley Shellnut' }, options))
-      .toBe('https://bradleyshellnut.com/og?header=About+%7C+bradleyshellnut.com&page=About+Bradley+Shellnut');
   });
 
   it('resolves sitemap URLs against the configured public site URL', () => {

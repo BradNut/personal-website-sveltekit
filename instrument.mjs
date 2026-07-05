@@ -9,5 +9,5 @@ Sentry.init({
   tracesSampleRate: 0,
   sendDefaultPii: true,
   release: `personal-website@${ENV.SITE_VERSION}`,
-  spotlight: true
+  spotlight: true,
 });

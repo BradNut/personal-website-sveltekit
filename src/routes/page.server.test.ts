@@ -9,7 +9,8 @@ const mockArticles = { articles: [], currentPage: 1, totalPages: 0, limit: 3, to
 
 function makeLoadArgs(originUrl = 'http://localhost') {
   const capturedHeaders: Record<string, string> = {};
-  const fetchMock = vi.fn()
+  const fetchMock = vi
+    .fn()
     .mockResolvedValueOnce({ json: async () => mockAlbums })
     .mockResolvedValueOnce({ json: async () => mockArticles });
 
@@ -37,7 +38,7 @@ beforeEach(() => {
 describe('load (root page)', () => {
   it('fetches albums and articles, sets cache headers', async () => {
     const { args, fetchMock, capturedHeaders } = makeLoadArgs();
-    const result = await load(args) as Record<string, unknown>;
+    const result = (await load(args)) as Record<string, unknown>;
 
     expect(fetchMock).toHaveBeenCalledWith('/api/bandcamp/albums');
     expect(fetchMock).toHaveBeenCalledWith('/api/articles?page=1&limit=3');
@@ -50,7 +51,7 @@ describe('load (root page)', () => {
 
   it('uses PUBLIC_SITE_URL fallback for prerender origin', async () => {
     const { args } = makeLoadArgs('http://prerender.internal'); // NOSONAR - internal test fixture
-    const result = await load(args) as Record<string, unknown>;
+    const result = (await load(args)) as Record<string, unknown>;
     const meta = result.metaTagsChild as Record<string, unknown>;
 
     // ENV.PUBLIC_SITE_URL from .env.test, or hardcoded fallback
@@ -61,7 +62,7 @@ describe('load (root page)', () => {
 
   it('includes correct meta tag structure', async () => {
     const { args } = makeLoadArgs();
-    const result = await load(args) as Record<string, unknown>;
+    const result = (await load(args)) as Record<string, unknown>;
     const meta = result.metaTagsChild as Record<string, unknown>;
 
     expect(meta.title).toBe('Home');
@@ -71,7 +72,7 @@ describe('load (root page)', () => {
 
   it('OG and Twitter images share the same URL', async () => {
     const { args } = makeLoadArgs();
-    const result = await load(args) as Record<string, unknown>;
+    const result = (await load(args)) as Record<string, unknown>;
     const meta = result.metaTagsChild as Record<string, unknown>;
 
     const ogImage = ((meta.openGraph as Record<string, unknown>)?.images as Array<Record<string, unknown>>)?.[0]?.url;
