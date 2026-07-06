@@ -51,12 +51,12 @@
                 }}
               />
             </h3>
-            <p>{article.domain_name}</p>
+            <p class="meta">{article.domain_name}</p>
           </section>
           <section>
-            <p>Reading time: {article.reading_time} minutes</p>
+            <p class="meta">Reading time: {article.reading_time} minutes</p>
             <div class="tagsStyles">
-              <span>Tags:</span>
+              <span class="tags-label">Tags:</span>
               {#each article.tags as tag (tag)}
                 <Tag name={tag} />
               {/each}
@@ -116,12 +116,25 @@
     }
   }
 
+  .meta {
+    font-size: var(--smallText);
+    color: var(--textColor);
+  }
+
   .tagsStyles {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: left;
     align-items: center;
+
+    & span {
+      font-size: var(--smallText);
+    }
+  }
+
+  .tagsStyles .tags-label {
+    font-size: var(--bodyTextSize);
   }
 
   :global(.moreArticles) {

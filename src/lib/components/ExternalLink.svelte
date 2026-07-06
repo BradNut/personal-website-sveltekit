@@ -33,7 +33,6 @@
 			? {
 					href: rawProps.projectLink.href,
 					ariaLabel: rawProps.projectLink.ariaLabel,
-					title: rawProps.projectLink.ariaLabel,
 					target: "_blank" as const,
 					rel: "noopener",
 				}
@@ -78,6 +77,12 @@
 	const linkClass = $derived(
 		`${linkData?.clazz || ""} ${textLocationClass} ${linkDecoration}`.trim(),
 	);
+	const ariaLabel = $derived(
+		`Open ${linkData?.ariaLabel ?? linkData?.title ?? linkData?.href} externally`,
+	);
+	const titleAttribute = $derived(
+		linkData?.title && linkData.title !== ariaLabel ? linkData.title : undefined,
+	);
 </script>
 
 {#snippet externalLink({
@@ -87,16 +92,14 @@
 }: ExternalLinkType)}
 	<a
 		class={linkClass}
-		aria-label={`Open ${linkData?.ariaLabel ?? linkData?.title ?? linkData?.href} externally`}
-		title={linkData?.title ?? `Open ${linkData?.ariaLabel} externally`}
+		aria-label={ariaLabel}
+		title={titleAttribute}
 		href={linkData.href}
 		rel={linkData?.rel ?? "noreferrer"}
 		target={linkData?.target ?? "_blank"}
 		data-umami-event={linkData?.trackingEvent ?? "External Link Click"}
 		data-umami-event-url={linkData.href}
-		data-umami-event-label={linkData?.ariaLabel ??
-			linkData?.title ??
-			linkData?.href}
+		data-umami-event-label={ariaLabel}
 	>
 		{#if textData?.location === "top" || (textData?.location === "left" && textData?.text)}
 			{textData?.text}
@@ -115,29 +118,18 @@
 		<svg
 			style="width: {size}px; height: {size}px;"
 			class={iconClass ?? ""}
-			role="img"
+			aria-hidden="true"
 			viewBox="0 0 24 24"
 			xmlns="http://www.w3.org/2000/svg"
 		>
-			<title>
-				{linkData?.title ?? `Open ${linkData?.ariaLabel} externally`}
-			</title>
 			{@render (icon as any)()}
 		</svg>
 	{:else if type === "icon" && icon}
 		{@const Icon = icon}
-		<Icon {size} strokeWidth={2}
-			><title
-				>{linkData?.title ?? `Open ${linkData?.ariaLabel} externally`}</title
-			></Icon
-		>
+		<Icon {size} strokeWidth={2} aria-hidden="true" />
 	{:else}
 		{@const Icon = ExternalLink}
-		<Icon {size} strokeWidth={2}
-			><title
-				>{linkData?.title ?? `Open ${linkData?.ariaLabel} externally`}</title
-			></Icon
-		>
+		<Icon {size} strokeWidth={2} aria-hidden="true" />
 	{/if}
 {/snippet}
 

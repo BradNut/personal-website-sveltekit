@@ -8,69 +8,65 @@
 	const nut: string = nutIcon;
 </script>
 
-<div>
-	<a href="/" class="center">
-		<img src={bee} alt="Bee Icon" width="30" height="30" />
+<a href="/" class="center logo-link">
+	<div class="logo-part">
+		<img src={bee} alt="" width="30" height="30" />
 		<p>Bradley</p>
-	</a>
-	<a href="/" class="center">
-		<img src={shell} alt="Shell Icon" width="30" height="30" />
+	</div>
+	<div class="logo-part">
+		<img src={shell} alt="" width="30" height="30" />
 		<p>Shell</p>
-	</a>
-	<a href="/" class="center">
-		<img src={nut} alt="Nut Icon" width="30" height="30" />
+	</div>
+	<div class="logo-part">
+		<img src={nut} alt="" width="30" height="30" />
 		<p>Nut</p>
-	</a>
-</div>
+	</div>
+</a>
 
 <style lang="postcss">
-	div {
+	a.logo-link {
 		text-transform: uppercase;
 		display: grid;
 		grid-template-columns: repeat(3, auto);
 		justify-content: center;
 		align-items: center;
-		grid-gap: 1rem;
-		padding: 0rem;
+		gap: 1rem;
+		padding: 0;
 		font-size: 2rem;
 		--scale: 0;
+		text-decoration: none;
 
-		& p::after {
-			content: "";
-			position: absolute;
-			width: 100%;
-			height: 2px;
-			bottom: -0.5px;
-			left: 0px;
-			background: var(--linkHover);
-			transition: transform 0.3s ease 0s;
-			transform: scale(var(--scale));
+		&:hover {
+			--scale: 1;
 		}
 
-		& a {
+		& .logo-part {
 			display: grid;
 			justify-items: center;
-			text-decoration: none;
-
 			font-weight: bold;
 			margin-right: 0;
 			padding: 0;
 			padding-right: 0.3rem;
 
-			&:hover {
-				--scale: 1;
-			}
-
 			& p {
 				position: relative;
-				font-size: 0.5em;
-				/* padding-top: 0.3rem; */
+				font-size: 1.4rem;
 				margin: 0.5rem 0 0 0;
+
+				&::after {
+					content: "";
+					position: absolute;
+					width: 100%;
+					height: 2px;
+					bottom: -0.5px;
+					left: 0px;
+					background: var(--linkHover);
+					transition: transform 0.3s ease 0s;
+					transform: scale(var(--scale));
+				}
+
 				&:hover {
 					--scale: 1;
-				}
-				&:after {
-					transform: scale(var(--scale));
 				}
 			}
 

@@ -33,7 +33,7 @@
     flex-direction: row;
     place-content: center;
     gap: 2rem;
-    margin-top: 1rem;
+    margin-top: 2rem;
     font-size: 2rem;
 
     @media (max-width: 768px) {

@@ -44,6 +44,35 @@ describe('ExternalLink textLocationClass', () => {
   });
 });
 
+describe('ExternalLink title attribute', () => {
+  it('omits title when it matches the aria-label', () => {
+    const props: ExternalLinkType & { iconSize?: number } = {
+      linkData: {
+        href: 'https://example.com',
+        ariaLabel: 'Contact through LinkedIn',
+        title: 'Open Contact through LinkedIn externally',
+      },
+      textData: { showIcon: true },
+    };
+    const { body } = render(ExternalLink, { props });
+    expect(body).toContain('aria-label="Open Contact through LinkedIn externally"');
+    expect(body).not.toContain('title=');
+  });
+
+  it('keeps title when it differs from the aria-label', () => {
+    const props: ExternalLinkType & { iconSize?: number } = {
+      linkData: {
+        href: 'https://example.com',
+        ariaLabel: 'Example',
+        title: 'A different title',
+      },
+      textData: { showIcon: true },
+    };
+    const { body } = render(ExternalLink, { props });
+    expect(body).toContain('title="A different title"');
+  });
+});
+
 describe('ExternalLink with ProjectLink prop', () => {
   it('infers svg icon type when linkType is repo', () => {
     const projectLink: ProjectLink = {
