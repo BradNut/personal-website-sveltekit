@@ -1,8 +1,9 @@
 import type { MetaTagsProps } from 'svelte-meta-tags';
+import { fetchArticles } from '$lib/services/articlesApi';
 import { resolveCurrentPageUrl, resolveOgEndpointUrl } from '$lib/shared/siteUrl';
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ fetch, params, setHeaders, url, parent }) => {
+export const load: PageServerLoad = async ({ params, setHeaders, url, parent }) => {
   const { page } = params;
   const { cacheControl } = await parent();
 
@@ -51,8 +52,7 @@ export const load: PageServerLoad = async ({ fetch, params, setHeaders, url, par
     url: currentPageUrl,
   });
 
-  const articlesData = await fetch(`/api/articles?page=${page}`);
-  const { articles, currentPage } = await articlesData.json();
+  const { articles, currentPage } = await fetchArticles({ page });
 
   return {
     articles,

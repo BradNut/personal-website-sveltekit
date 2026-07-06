@@ -127,7 +127,7 @@ function buildFallbackResponse(queryParams: Record<string, string>): ArticlePage
   };
 }
 
-export async function fetchArticlesApi(_method: string, _resource: string, queryParams: Record<string, string>) {
+export async function fetchArticles(queryParams: Record<string, string>): Promise<ArticlePageLoad> {
   try {
     const entriesQueryParams = buildEntriesParams(queryParams);
     const cacheKey = entriesQueryParams.toString();

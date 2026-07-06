@@ -1,3 +1,4 @@
+import { fetchArticles } from '$lib/services/articlesApi';
 import { buildPageMetaTags } from '$lib/shared/pageMeta';
 import { resolveSiteUrl } from '$lib/shared/siteUrl';
 import type { Album } from '$lib/types/album';
@@ -22,7 +23,7 @@ export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
 
   const [albums, articles]: [Album[], ArticlePageLoad] = await Promise.all([
     (await fetch('/api/bandcamp/albums')).json(),
-    (await fetch('/api/articles?page=1&limit=3')).json(),
+    fetchArticles({ page: '1', limit: '3' }),
   ]);
 
   setHeaders({
