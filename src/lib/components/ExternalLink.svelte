@@ -1,16 +1,53 @@
 <script lang="ts">
-	import { ExternalLink } from "lucide-svelte";
+	import { ExternalLink } from "@lucide/svelte";
+	import type { ProjectLink } from "$lib/types/externalLinkType";
 	import type {
 		ExternalLinkType,
 		LinkIconType,
 	} from "$lib/types/externalLinkTypes";
 
-	const {
-		iconData = { type: "icon", icon: ExternalLink },
-		linkData,
-		textData,
-		iconSize = 20,
-	}: ExternalLinkType & { iconSize?: number } = $props();
+	type Props = (ExternalLinkType | { projectLink: ProjectLink }) & { iconSize?: number };
+
+	const rawProps: Props = $props();
+
+	const isProjectLink = (p: Props): p is { projectLink: ProjectLink; iconSize?: number } =>
+		"projectLink" in p;
+
+	function inferIconData(link: ProjectLink): LinkIconType | undefined {
+		if (!link.icon) return undefined;
+		if (link.linkType === "site") {
+			return { type: "icon", icon: link.icon as import("@lucide/svelte").LucideIcon };
+		}
+		return { type: "svg", icon: link.icon as () => unknown };
+	}
+
+	const defaultIconData: LinkIconType = { type: "icon", icon: ExternalLink };
+
+	const iconData = $derived(
+		isProjectLink(rawProps)
+			? (inferIconData(rawProps.projectLink) ?? defaultIconData)
+			: (rawProps.iconData ?? defaultIconData),
+	);
+	const linkData = $derived(
+		isProjectLink(rawProps)
+			? {
+					href: rawProps.projectLink.href,
+					ariaLabel: rawProps.projectLink.ariaLabel,
+					target: "_blank" as const,
+					rel: "noopener",
+				}
+			: rawProps.linkData,
+	);
+	const textData = $derived(
+		isProjectLink(rawProps)
+			? {
+					text: rawProps.projectLink.text,
+					showIcon: rawProps.projectLink.showIcon,
+					location: "left" as const,
+				}
+			: rawProps.textData,
+	);
+	const iconSize = $derived(rawProps.iconSize ?? 20);
 	// Guarantee non-optional icon data for linkIcon()
 	const safeIconData: LinkIconType = $derived(
 		iconData ?? {
@@ -22,15 +59,14 @@
 	const textLocationClass = $derived.by(() => {
 		if (textData?.location === "top") {
 			return "text-top";
-		} else if (textData?.location === "bottom") {
+		}if (textData?.location === "bottom") {
 			return "text-bottom";
-		} else if (textData?.location === "left") {
+		}if (textData?.location === "left") {
 			return "text-left";
-		} else if (textData?.location === "right") {
+		}if (textData?.location === "right") {
 			return "text-right";
-		} else {
-			return "text-left";
 		}
+			return "text-left";
 	});
 
 	const linkDecoration = $derived(
@@ -41,6 +77,12 @@
 	const linkClass = $derived(
 		`${linkData?.clazz || ""} ${textLocationClass} ${linkDecoration}`.trim(),
 	);
+	const ariaLabel = $derived(
+		`Open ${linkData?.ariaLabel ?? linkData?.title ?? linkData?.href} externally`,
+	);
+	const titleAttribute = $derived(
+		linkData?.title && linkData.title !== ariaLabel ? linkData.title : undefined,
+	);
 </script>
 
 {#snippet externalLink({
@@ -50,16 +92,14 @@
 }: ExternalLinkType)}
 	<a
 		class={linkClass}
-		aria-label={`Open ${linkData?.ariaLabel ?? linkData?.title ?? linkData?.href} externally`}
-		title={linkData?.title ?? `Open ${linkData?.ariaLabel} externally`}
+		aria-label={ariaLabel}
+		title={titleAttribute}
 		href={linkData.href}
 		rel={linkData?.rel ?? "noreferrer"}
 		target={linkData?.target ?? "_blank"}
 		data-umami-event={linkData?.trackingEvent ?? "External Link Click"}
 		data-umami-event-url={linkData.href}
-		data-umami-event-label={linkData?.ariaLabel ??
-			linkData?.title ??
-			linkData?.href}
+		data-umami-event-label={ariaLabel}
 	>
 		{#if textData?.location === "top" || (textData?.location === "left" && textData?.text)}
 			{textData?.text}
@@ -78,29 +118,18 @@
 		<svg
 			style="width: {size}px; height: {size}px;"
 			class={iconClass ?? ""}
-			role="img"
+			aria-hidden="true"
 			viewBox="0 0 24 24"
 			xmlns="http://www.w3.org/2000/svg"
 		>
-			<title>
-				{linkData?.title ?? `Open ${linkData?.ariaLabel} externally`}
-			</title>
 			{@render (icon as any)()}
 		</svg>
 	{:else if type === "icon" && icon}
 		{@const Icon = icon}
-		<Icon {size} strokeWidth={2}
-			><title
-				>{linkData?.title ?? `Open ${linkData?.ariaLabel} externally`}</title
-			></Icon
-		>
+		<Icon {size} strokeWidth={2} aria-hidden="true" />
 	{:else}
 		{@const Icon = ExternalLink}
-		<Icon {size} strokeWidth={2}
-			><title
-				>{linkData?.title ?? `Open ${linkData?.ariaLabel} externally`}</title
-			></Icon
-		>
+		<Icon {size} strokeWidth={2} aria-hidden="true" />
 	{/if}
 {/snippet}
 

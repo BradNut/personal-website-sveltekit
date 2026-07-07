@@ -1,77 +1,39 @@
 <script lang="ts">
-import { Tabs } from 'bits-ui';
-import ExternalLink from '$lib/components/ExternalLink.svelte';
-import type { ExternalLinkType } from '$lib/types/externalLinkType';
-import { ExternalLink as ExternalLinkIcon } from 'lucide-svelte';
-import { gitHubIcon } from '$lib/util/logoIcons.svelte';
-import personalSite from '../../lib/assets/images/portfolio/Bradley_Shellnut_New_Site.png?enhanced';
-import shellnutArchitectWebsite from '../../lib/assets/images/portfolio/Mark_Shellnut_Architect.png?enhanced';
-import oldSite from '../../lib/assets/images/portfolio/Old_Website_Bradley_Shellnut.png?enhanced';
-import weddingWebsite from '../../lib/assets/images/portfolio/Wedding_Website.png?enhanced';
-import Portfolio from './Portfolio.svelte';
-</script>
+	import { ExternalLink as ExternalLinkIcon } from '@lucide/svelte';
+	import { Tabs } from 'bits-ui';
+	import type { Picture } from 'vite-imagetools';
 
-{#snippet links(externalLinks: ExternalLinkType[])}
-	<div class="project-links">
-		{#each externalLinks as link}
-			{#if link.icon && link.showIcon}
-				{#if link.linkType === "repo" || link.linkType === undefined}
-					<!-- Snippet icon (SVG): used for repo links with custom SVG icons -->
-					<ExternalLink
-						linkData={{
-							href: link.href,
-							ariaLabel: link.ariaLabel,
-							title: link.ariaLabel,
-							target: "_blank",
-							rel: "noopener",
-						}}
-						textData={{
-							text: link.text,
-							showIcon: link.showIcon,
-							location: "left",
-						}}
-						iconData={{ type: "svg", icon: link.icon as any }}
-						iconSize={20}
-					/>
-				{:else}
-					<!-- Component icon (e.g., lucide-svelte): used for site links -->
-					<ExternalLink
-						linkData={{
-							href: link.href,
-							ariaLabel: link.ariaLabel,
-							title: link.ariaLabel,
-							target: "_blank",
-							rel: "noopener",
-						}}
-						textData={{
-							text: link.text,
-							showIcon: link.showIcon,
-							location: "left",
-						}}
-						iconData={{ type: "icon", icon: link.icon as any }}
-						iconSize={20}
-					/>
-				{/if}
-			{:else}
-				<ExternalLink
-					linkData={{
-						href: link.href,
-						ariaLabel: link.ariaLabel,
-						title: link.ariaLabel,
-						target: "_blank",
-						rel: "noopener",
-					}}
-					textData={{
-						text: link.text,
-						showIcon: link.showIcon,
-						location: "left",
-					}}
-					iconSize={20}
-				/>
-			{/if}
-		{/each}
-	</div>
-{/snippet}
+	import ExternalLink from '$lib/components/ExternalLink.svelte';
+	import type { ProjectLink } from '$lib/types/externalLinkType';
+	import { gitHubIcon } from '$lib/util/logoIcons.svelte';
+
+	import personalSiteImg from '../../lib/assets/images/portfolio/Bradley_Shellnut_New_Site.png?enhanced';
+	import shellnutArchitectWebsiteImg from '../../lib/assets/images/portfolio/Mark_Shellnut_Architect.png?enhanced';
+	import oldSiteImg from '../../lib/assets/images/portfolio/Old_Website_Bradley_Shellnut.png?enhanced';
+	import weddingWebsiteImg from '../../lib/assets/images/portfolio/Wedding_Website.png?enhanced';
+	import type { PageData } from './$types';
+	import Portfolio from './Portfolio.svelte';
+
+	const { data }: { data: PageData } = $props();
+
+	const imageMap: Record<string, string | Picture> = {
+		personalSite: personalSiteImg,
+		weddingWebsite: weddingWebsiteImg,
+		oldSite: oldSiteImg,
+		shellnutArchitectWebsite: shellnutArchitectWebsiteImg,
+	};
+
+	function resolveLinks(links: PageData['projects'][number]['externalLinks']): ProjectLink[] {
+		return links.map((link) => ({
+			ariaLabel: link.ariaLabel,
+			href: link.href,
+			showIcon: link.showIcon,
+			text: link.text,
+			linkType: link.linkType,
+			icon: link.iconKey === 'github' ? gitHubIcon : link.iconKey === 'external' ? ExternalLinkIcon : undefined,
+		}));
+	}
+</script>
 
 <h1>Portfolio!</h1>
 <Tabs.Root value="personal">
@@ -80,239 +42,74 @@ import Portfolio from './Portfolio.svelte';
 		<Tabs.Trigger value="professional"><span>Professional</span></Tabs.Trigger>
 	</Tabs.List>
 	<Tabs.Content value="personal">
-		<Portfolio
-			name="Personal Website"
-			style="max-height: 550px;"
-			src={personalSite}
-			loading="eager"
-			alt="Picture of Bradley Shellnut's Personal Website"
-			{links}
-			externalLinks={[
-				{
-					ariaLabel: "View GitHub repository for my personal website",
-					href: "https://github.com/BradNut/personal-website-sveltekit",
-					icon: gitHubIcon,
-					showIcon: true,
-					text: "GitHub repository",
-				},
-			]}
-		>
-			<section>
-				<h2>My personal website re-written using SvelteKit.</h2>
-				<h3>Tech Stack:</h3>
-				<ul>
-					<li>
-						<ExternalLink
-							linkData={{
-								href: "https://kit.svelte.dev/",
-								ariaLabel: "SvelteKit",
-							}}
-							textData={{ text: "SvelteKit", showIcon: true, location: "left" }}
-						/>
-					</li>
-					<li>
-						<ExternalLink
-							linkData={{ href: "https://bits-ui.com/", ariaLabel: "Bits-UI" }}
-							textData={{ text: "Bits-UI", showIcon: true, location: "left" }}
-						/> for the headless-ui components.
-					</li>
-					<li>
-						<ExternalLink
-							linkData={{
-								href: "https://www.typescriptlang.org/",
-								ariaLabel: "TypeScript",
-							}}
-							textData={{
-								text: "TypeScript",
-								showIcon: true,
-								location: "left",
-							}}
-						/>
-					</li>
-					<li>Deployed on a Coolify Self Hosted Box</li>
-					<li>
-						Icons in the <a href="/about">/about</a> page and the Bee, Shell,
-						and Nut icons are all made by <ExternalLink
-							linkData={{
-								href: "https://www.flaticon.com/authors/freepik",
-								ariaLabel: "Freepik",
-							}}
-							textData={{ text: "Freepik", showIcon: true, location: "left" }}
-						/> from <ExternalLink
-							textData={{ text: "Flaticon", showIcon: true, location: "left" }}
-							linkData={{
-								href: "https://www.flaticon.com/",
-								ariaLabel: "Flaticon",
-							}}
-						/>
-					</li>
-				</ul>
-			</section>
-			<section class="portfolio-details">
-				<p>
-					The previous version of my website was written using React and Gatsby
-					which you can view <ExternalLink
-						linkData={{
-							href: "https://wonderful-austin-9f17d2.netlify.app/",
-							ariaLabel: "React and Gatsby Personal Site version",
-						}}
-						textData={{ text: "here.", showIcon: true, location: "left" }}
-					/>
-				</p>
-				<p>
-					Each iteration brings better code and my previous React version was
-					improved after the suggestions on <ExternalLink
-						linkData={{
-							href: "https://syntax.fm/show/444/syntax-highlight#t=33:19",
-							ariaLabel: "Syntax.fm Podcast Number 444",
-						}}
-						textData={{ text: "Show 444", showIcon: true, location: "left" }}
-					/> of the <ExternalLink
-						linkData={{ href: "https://syntax.fm/", ariaLabel: "Syntax.fm" }}
-						textData={{
-							text: "Syntax Pocast.",
-							showIcon: true,
-							location: "left",
-						}}
-					/>
-				</p>
-				<p>
-					You can view the previous archived version of the site before those
-					changes <ExternalLink
-						textData={{ text: "here.", showIcon: true, location: "left" }}
-						linkData={{
-							href: "https://web.archive.org/web/20210224002046/https://bradleyshellnut.com/",
-							ariaLabel: "Archive before Syntax Podcast",
-						}}
-					/>
-				</p>
-			</section>
-		</Portfolio>
-		<Portfolio
-			name="Wedding Website"
-			style="max-height: 550px;"
-			src={weddingWebsite}
-			alt="Picture of NextJS Wedding Website"
-			{links}
-			externalLinks={[
-				{
-					ariaLabel: "View live wedding site demo",
-					href: "https://weddingsite-six.vercel.app/",
-					icon: ExternalLinkIcon,
-					showIcon: true,
-					text: "View Site",
-					linkType: "site",
-				},
-				{
-					ariaLabel: "View GitHub repository for the wedding site",
-					href: "https://github.com/BradNut/weddingsite",
-					icon: gitHubIcon,
-					showIcon: true,
-					text: "GitHub repository",
-					linkType: "repo",
-				},
-			]}
-		>
-			<section>
-				<h3>Tech stack:</h3>
-				<ul>
-					<li>Next.js 13</li>
-					<li>React 18</li>
-					<li>
-						<ExternalLink
-							linkData={{
-								href: "https://radix-ui.com/",
-								ariaLabel: "Radix UI",
-							}}
-							textData={{ text: "Radix UI", showIcon: true, location: "left" }}
-						/>
-					</li>
-					<li>MongoDB</li>
-					<li>Styled Components</li>
-					<li>Next Iron Session</li>
-				</ul>
-			</section>
-			<section class="portfolio-details">
-				<p>
-					The app was initially created for my wedding but what is linked here
-					is a public demo of the application.
-				</p>
-				<p>
-					An application that allows viewing of wedding details and provides the
-					ability to RSVP to the wedding.
-				</p>
-			</section>
-		</Portfolio>
-		<Portfolio
-			name="Old Personal Website"
-			style="max-height: 320px;"
-			src={oldSite}
-			alt="Home Page of the old bradleyshellnut.com website"
-			{links}
-			externalLinks={[
-				{
-					ariaLabel: "Archive of bradleyshellnut.com",
-					href: "https://web.archive.org/web/20201205233507/https://bradleyshellnut.com/about",
-					icon: gitHubIcon,
-					showIcon: true,
-					text: "Link to an archive snapshot",
-				},
-			]}
-		>
-			<section>
-				<h3>Tech stack:</h3>
-				<ul>
-					<li>React</li>
-					<li>Redux</li>
-					<li>ReactStrap for CSS grid management</li>
-					<li>React Router for routing links in the page</li>
-				</ul>
-			</section>
-			<section class="portfolio-details">
-				<p>My first personal website</p>
-				<p>This was my first real personal website hosted on DigitalOcean.</p>
-			</section>
-		</Portfolio>
+		{#each data.projects.filter((p) => p.category === 'personal') as project}
+			<Portfolio
+				name={project.name}
+				style={project.style}
+				src={imageMap[project.imageKey]}
+				alt={project.alt}
+				loading={project.loading ?? 'lazy'}
+				externalLinks={resolveLinks(project.externalLinks)}
+			>
+				<section>
+					<h3>Tech stack:</h3>
+					<ul>
+						{#each project.techStack as item}
+							<li>
+								{#if item.href}
+									<ExternalLink
+										linkData={{ href: item.href, ariaLabel: item.label }}
+										textData={{ text: item.label, showIcon: true, location: 'left' }}
+									/>
+								{:else}
+									{item.label}
+								{/if}
+							</li>
+						{/each}
+					</ul>
+				</section>
+				<section class="portfolio-details">
+					{#each project.description as paragraph}
+						<p>{paragraph}</p>
+					{/each}
+				</section>
+			</Portfolio>
+		{/each}
 	</Tabs.Content>
 	<Tabs.Content value="professional">
-		<Portfolio
-			name="Mark Shellnut Architect"
-			style="max-height: 550px;"
-			src={shellnutArchitectWebsite}
-			alt="Picture of Mark Shellnut Architect's Website"
-			{links}
-			externalLinks={[
-				{
-					ariaLabel: "View Mark Shellnut Architect",
-					href: "https://markshellnutarchitect.com",
-					showIcon: false,
-					text: "Link to Mark Shellnut Architect",
-				},
-			]}
-		>
-			<section>
-				<h3>Tech stack:</h3>
-				<ul>
-					<li>React 18</li>
-					<li>Gatsby 5</li>
-					<li>
-						<ExternalLink
-							linkData={{
-								href: "https://radix-ui.com/",
-								ariaLabel: "Radix UI",
-							}}
-							textData={{ text: "Radix UI", showIcon: true, location: "left" }}
-						/>
-					</li>
-					<li>Styled Components</li>
-					<li>GraphQL</li>
-					<li>Lambda Functions</li>
-				</ul>
-			</section>
-			<section class="portfolio-details">
-				<p>Company website for Mark Shellnut Architect.</p>
-			</section>
-		</Portfolio>
+		{#each data.projects.filter((p) => p.category === 'professional') as project}
+			<Portfolio
+				name={project.name}
+				style={project.style}
+				src={imageMap[project.imageKey]}
+				alt={project.alt}
+				loading={project.loading ?? 'lazy'}
+				externalLinks={resolveLinks(project.externalLinks)}
+			>
+				<section>
+					<h3>Tech stack:</h3>
+					<ul>
+						{#each project.techStack as item}
+							<li>
+								{#if item.href}
+									<ExternalLink
+										linkData={{ href: item.href, ariaLabel: item.label }}
+										textData={{ text: item.label, showIcon: true, location: 'left' }}
+									/>
+								{:else}
+									{item.label}
+								{/if}
+							</li>
+						{/each}
+					</ul>
+				</section>
+				<section class="portfolio-details">
+					{#each project.description as paragraph}
+						<p>{paragraph}</p>
+					{/each}
+				</section>
+			</Portfolio>
+		{/each}
 	</Tabs.Content>
 </Tabs.Root>
 
@@ -354,36 +151,6 @@ import Portfolio from './Portfolio.svelte';
 	:global([data-state="inactive"]) {
 		span {
 			border-bottom: 2px solid var(--white);
-		}
-	}
-
-	.project-links {
-		display: flex;
-		gap: 1rem;
-		margin-top: 1rem;
-		flex-wrap: wrap;
-	}
-
-	:global(.project-links a) {
-		background: rgba(255, 255, 255, 0.05);
-		border: 1px solid rgba(255, 255, 255, 0.1);
-		border-radius: 8px;
-		padding: 0.75rem 1.25rem;
-		font-weight: 500;
-		transition: all 0.2s ease;
-		display: inline-flex;
-		align-items: center;
-		gap: 0.75rem;
-
-		&:hover {
-			background: rgba(255, 255, 255, 0.1);
-			border-color: var(--shellYellow);
-			transform: translateY(-2px);
-			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-		}
-
-		&:active {
-			transform: translateY(0);
 		}
 	}
 

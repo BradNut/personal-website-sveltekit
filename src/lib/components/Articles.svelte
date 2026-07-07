@@ -1,9 +1,11 @@
 <script lang="ts">
-  import { ArrowRight } from "lucide-svelte";
+  import { ArrowRight } from "@lucide/svelte";
+  import { Button } from "bits-ui";
   import { page } from "$app/state";
   import ArticlesSkeleton from "$lib/components/ArticlesSkeleton.svelte";
   import type { Article } from "$lib/types/article";
   import ExternalLink from "./ExternalLink.svelte";
+  import Tag from "./Tag.svelte";
 
   type LoadData = {
     articles: Article[];
@@ -49,14 +51,14 @@
                 }}
               />
             </h3>
-            <p>{article.domain_name}</p>
+            <p class="meta">{article.domain_name}</p>
           </section>
           <section>
-            <p>Reading time: {article.reading_time} minutes</p>
+            <p class="meta">Reading time: {article.reading_time} minutes</p>
             <div class="tagsStyles">
-              <p>Tags:</p>
-              {#each article.tags as tag}
-                <p>{tag}</p>
+              <span class="tags-label">Tags:</span>
+              {#each article.tags as tag (tag)}
+                <Tag name={tag} />
               {/each}
             </div>
           </section>
@@ -65,19 +67,26 @@
     {/if}
   </div>
   {#if page.url.pathname === "/"}
-    <a
+    <Button.Root
       class="moreArticles"
       href="/articles/1"
       data-umami-event="View More Articles"
       data-umami-event-count={totalArticles}
-      >{`${totalArticles} more articles`} <ArrowRight /></a
     >
+      {`${totalArticles} more articles`} <ArrowRight />
+    </Button.Root>
   {/if}
 </section>
 
 <style lang="postcss">
   article {
     margin: 1.5rem 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--level-4);
+    }
 
     & p {
       margin: 0.25rem 0rem;
@@ -91,18 +100,25 @@
 
   .columns {
     display: grid;
-    grid-template-columns: repeat(2, minmax(250px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     min-height: 800px;
+    gap: 2.5rem;
 
     @media (max-width: 1000px) {
-      grid-template-columns: repeat(2, minmax(250px, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      min-height: auto;
     }
 
     @media (max-width: 650px) {
-      grid-template-columns: minmax(250px, 1fr);
+      grid-template-columns: minmax(0, 1fr);
+      min-height: auto;
+      gap: 1.5rem;
     }
+  }
 
-    gap: 2.5rem;
+  .meta {
+    font-size: var(--smallText);
+    color: var(--textColor);
   }
 
   .tagsStyles {
@@ -112,17 +128,16 @@
     justify-content: left;
     align-items: center;
 
-    & p + p {
-      background-color: var(--linkHover);
-      color: var(--buttonTextColor);
-      padding: 0.25rem 0.5rem;
-      margin: 0.5rem;
-      border-radius: 2px;
-      font-size: 1.2rem;
+    & span {
+      font-size: var(--smallText);
     }
   }
 
-  .moreArticles {
+  .tagsStyles .tags-label {
+    font-size: var(--bodyTextSize);
+  }
+
+  :global(.moreArticles) {
     display: flex;
     flex-wrap: wrap;
     place-items: center;

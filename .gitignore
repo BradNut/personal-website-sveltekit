@@ -27,3 +27,5 @@ test-results/*
 
 # Exclude generated env types file
 env.d.ts
+
+.issues

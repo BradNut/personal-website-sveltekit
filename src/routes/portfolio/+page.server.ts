@@ -2,6 +2,7 @@ export const prerender = true;
 
 import { buildPageMetaTags } from '$lib/shared/pageMeta';
 import type { PageServerLoad } from './$types';
+import { portfolioProjects } from './portfolioProjects';
 
 export const load: PageServerLoad = async ({ url }) => {
   const metaTags = buildPageMetaTags({
@@ -17,5 +18,6 @@ export const load: PageServerLoad = async ({ url }) => {
 
   return {
     metaTagsChild: metaTags,
+    projects: portfolioProjects,
   };
 };

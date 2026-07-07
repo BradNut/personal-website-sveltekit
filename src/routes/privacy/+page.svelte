@@ -1,8 +1,9 @@
 <script lang="ts">
+	import { Separator } from "bits-ui";
 	import ExternalLink from "$lib/components/ExternalLink.svelte";
 </script>
 
-<div>
+<section>
 	<h1>Privacy</h1>
 	<p>
 		Long story short, I believe everyone should know who has your personal data,
@@ -35,8 +36,9 @@
 		is using the OpenSource Sentry project most AbBlockers can block this if you
 		desire.
 	</p>
-</div>
-<div>
+</section>
+<Separator.Root class="privacy-separator" decorative={true} />
+<section>
 	<h2>Useful Resources</h2>
 	<p>
 		Here are a few sites/lists of privacy oriented software for you to check
@@ -75,8 +77,9 @@
 			/>
 		</li>
 	</ul>
-</div>
-<div>
+</section>
+<Separator.Root class="privacy-separator" decorative={true} />
+<section>
 	<h3>Privacy Centric Paid Services I use:</h3>
 	<ul>
 		<li>
@@ -121,8 +124,9 @@
 			/>
 		</li>
 	</ul>
-</div>
-<div>
+</section>
+<Separator.Root class="privacy-separator" decorative={true} />
+<section>
 	<h3>NAS Servers for Self Hosting:</h3>
 	<ul>
 		<li>
@@ -150,11 +154,15 @@
 			/>
 		</li>
 	</ul>
-</div>
+</section>
 
 <style lang="postcss">
-	div {
-		margin-bottom: 2rem;
+	:global(.privacy-separator) {
+		background-color: var(--lightHairLine);
+		width: 100%;
+		height: 1px;
+		border: none;
+		margin: 2rem 0;
 	}
 	p {
 		margin-bottom: 1rem;

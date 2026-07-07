@@ -18,7 +18,7 @@ test.describe('About page', () => {
       return color;
     });
 
-    const areas = ['header[aria-label="header navigation"]', 'footer nav[aria-label="footer navigation"]'];
+    const areas = ['nav[aria-label="header navigation"]', 'footer nav[aria-label="footer navigation"]'];
 
     for (const area of areas) {
       const nav = page.locator(area);
@@ -32,6 +32,8 @@ test.describe('About page', () => {
         return { color: cs.color };
       });
       await link.hover();
+      // Wait for color transition to complete (0.2s ease)
+      await page.waitForTimeout(300);
       const after = await link.evaluate((el) => {
         const cs = getComputedStyle(el as Element);
         return { color: cs.color };
@@ -45,7 +47,7 @@ test.describe('About page', () => {
 
   test('current page (About) link is active in header and footer', async ({ page }) => {
     await page.goto('/about');
-    const areas = ['header[aria-label="header navigation"]', 'footer nav[aria-label="footer navigation"]'];
+    const areas = ['nav[aria-label="header navigation"]', 'footer nav[aria-label="footer navigation"]'];
     for (const area of areas) {
       const nav = page.locator(area);
       const aboutLink = nav.getByRole('link', { name: 'About', exact: true });
@@ -77,6 +79,8 @@ test.describe('About page', () => {
 
       const before = await link.evaluate((el) => getComputedStyle(el as Element).color);
       await link.hover();
+      // Wait for color transition to complete (0.2s ease)
+      await page.waitForTimeout(300);
       const after = await link.evaluate((el) => getComputedStyle(el as Element).color);
 
       expect(before).not.toBe(shellYellow);
@@ -131,7 +135,7 @@ test.describe('About page', () => {
   // Mirror header link presence from home tests
   test('header navigation shows expected links', async ({ page }) => {
     await page.goto('/about');
-    const headerNav = page.locator('header[aria-label="header navigation"]');
+    const headerNav = page.locator('nav[aria-label="header navigation"]');
     await expect(headerNav).toBeVisible();
     await expect(headerNav.getByRole('link', { name: 'Home', exact: true })).toBeVisible();
     await expect(headerNav.getByRole('link', { name: 'About', exact: true })).toBeVisible();
@@ -142,7 +146,7 @@ test.describe('About page', () => {
   // Mirror header navigation flow from home tests (starting on /about)
   test('header navigation links go to correct routes (from /about)', async ({ page }) => {
     await page.goto('/about');
-    const headerNav = page.locator('header[aria-label="header navigation"]');
+    const headerNav = page.locator('nav[aria-label="header navigation"]');
 
     await headerNav.getByRole('link', { name: 'Portfolio', exact: true }).click();
     await expect(page).toHaveURL(/\/portfolio\/?$/);
@@ -219,6 +223,37 @@ test.describe('About page', () => {
     if (imgBox && sectionBox) {
       expect(imgBox.x).toBeGreaterThanOrEqual(sectionBox.x - 1);
       expect(imgBox.x + imgBox.width).toBeLessThanOrEqual(sectionBox.x + sectionBox.width + 1);
+    }
+  });
+
+  test('renders decorative separators between sections', async ({ page }) => {
+    await page.goto('/about');
+    const separators = page.locator('[data-separator-root]');
+    await expect(separators).toHaveCount(3);
+    await expect(separators.first()).toBeVisible();
+    const orientations = await separators.evaluateAll((els) => els.map((el) => (el as HTMLElement).dataset.orientation));
+    expect(orientations.every((o) => o === 'horizontal')).toBeTruthy();
+  });
+
+  test('cat images are constrained to a consistent aspect ratio', async ({ page }) => {
+    await page.setViewportSize({ width: 800, height: 1000 });
+    await page.goto('/about');
+    const catSection = page.locator('.cat-pics');
+    await expect(catSection).toBeVisible();
+    await catSection.scrollIntoViewIfNeeded();
+
+    const aspectWrappers = catSection.locator('[data-aspect-ratio-root]');
+    await expect(aspectWrappers).toHaveCount(2);
+    await expect(aspectWrappers.first()).toBeVisible();
+
+    const ratios = await aspectWrappers.evaluateAll((els) =>
+      els.map((el) => {
+        const rect = el.getBoundingClientRect();
+        return rect.width / rect.height;
+      }),
+    );
+    for (const ratio of ratios) {
+      expect(Math.abs(ratio - 4 / 3)).toBeLessThan(0.05);
     }
   });
 });

@@ -1,10 +1,9 @@
 import type { RequestHandler } from '@sveltejs/kit';
+import { fetchArticles } from '$lib/services/articlesApi';
 import { resolveSitemapUrl } from '$lib/shared/siteUrl';
-import type { ArticlePageLoad } from '$lib/types/article';
 
-export const GET: RequestHandler = async function GET({ fetch, setHeaders }) {
-  const resp = await fetch('/api/articles');
-  const { totalPages }: ArticlePageLoad = await resp.json();
+export const GET: RequestHandler = async function GET({ setHeaders }) {
+  const { totalPages } = await fetchArticles({});
 
   const xml = `<?xml version="1.0" encoding="UTF-8" ?>
     <urlset

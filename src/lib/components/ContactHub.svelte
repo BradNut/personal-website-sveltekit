@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Mail } from "lucide-svelte";
+	import { Mail } from "@lucide/svelte";
 	import ExternalLink from "$lib/components/ExternalLink.svelte";
 	import {
 		blueSkyIcon,
@@ -40,7 +40,6 @@
 			linkData={{
 				href: `https://www.x.com/${userNames.x}`,
 				ariaLabel: "Contact through X",
-				title: "Contact through X",
 				target: "_blank",
 				clazz: "hub-icon x-contact",
 				trackingEvent: "Social Link Click",
@@ -54,7 +53,6 @@
 			linkData={{
 				href: `https://bsky.app/profile/${userNames.blueSky}`,
 				ariaLabel: "Contact through Bluesky",
-				title: "Contact through Bluesky",
 				target: "_blank",
 				clazz: "hub-icon bluesky-contact",
 				trackingEvent: "Social Link Click",
@@ -68,7 +66,6 @@
 			linkData={{
 				href: `https://www.linkedin.com/in/${userNames.linkedIn}`,
 				ariaLabel: "Contact through LinkedIn",
-				title: "Contact through LinkedIn",
 				target: "_blank",
 				clazz: "hub-icon linkedIn-contact",
 				trackingEvent: "Social Link Click",
@@ -82,7 +79,6 @@
 			linkData={{
 				href: `https://www.github.com/${userNames.github}`,
 				ariaLabel: "Contact through Github",
-				title: "Contact through Github",
 				target: "_blank",
 				clazz: "hub-icon github-contact",
 				trackingEvent: "Social Link Click",
@@ -96,7 +92,6 @@
 			linkData={{
 				href: `mailto:${userNames.email}`,
 				ariaLabel: "Contact by email",
-				title: "Contact by email",
 				target: "_blank",
 				clazz: "hub-icon email-contact",
 				trackingEvent: "Social Link Click",
@@ -120,9 +115,9 @@
 	}
 
 	:global(.hub-icon) {
-		transition: transform 0.2s cubic-bezier(0.65, 0, 0.35, 1);
+		transition: transform 0.2s cubic-bezier(0.65, 0, 0.35, 1), color 0.2s ease;
 		&:hover {
-			transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+			transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1), color 0.2s ease;
 			transform: translateY(-4px);
 		}
 	}

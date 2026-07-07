@@ -1,20 +1,12 @@
 <script lang="ts">
+	import { AspectRatio, Separator } from "bits-ui";
 	import orange_derp from "../../lib/assets/images/orange_derp.jpg?enhanced";
 	import tortie_derp from "../../lib/assets/images/tortie_derp.jpg?enhanced";
 	import turnip from "../../lib/assets/images/turnip.svg?enhanced";
+	import TechStack from "../../lib/components/TechStack.svelte";
 	import type { Course } from "../../lib/types/courses";
-	import {
-		dockerIcon,
-		drizzleIcon,
-		nextDotJsIcon,
-		reactIcon,
-		svelteIcon,
-		typescriptIcon,
-		honoIcon,
-	} from "../../lib/util/logoIcons.svelte";
 	import CourseCard from "./CourseCard.svelte";
 	import courseData from "./course.json";
-	import ExternalLink from "../../lib/components/ExternalLink.svelte";
 
 	const courses: Course[] = (courseData as { courses: Course[] }).courses;
 </script>
@@ -28,6 +20,7 @@
 			engineer who's interested in new tech and not afraid to discover new interests.
 		</p>
 	</section>
+	<Separator.Root class="about-separator" decorative={true} />
 	<section aria-labelledby="details-heading">
 		<h2 id="details-heading">More deets</h2>
 		<p>
@@ -42,93 +35,9 @@
 		<p>
 			At home I delve into other frameworks, languages, and platforms such as:
 		</p>
-		<div class="tech-list">
-			<ExternalLink
-				iconData={{ type: "svg", icon: svelteIcon, iconClass: "center" }}
-				linkData={{
-					href: "https://svelte.dev",
-					ariaLabel: "Svelte",
-					title: "Svelte",
-					target: "_blank",
-					clazz: "tech-list-item",
-					textDecoration: "none",
-				}}
-				textData={{ text: "Svelte", showIcon: true, location: "bottom" }}
-			/>
-			<ExternalLink
-				iconData={{ type: "svg", icon: honoIcon, iconClass: "center" }}
-				linkData={{
-					href: "https://hono.dev",
-					ariaLabel: "Hono",
-					title: "Hono",
-					target: "_blank",
-					clazz: "tech-list-item",
-					textDecoration: "none",
-				}}
-				textData={{ text: "Hono", showIcon: true, location: "bottom" }}
-			/>
-			<ExternalLink
-				iconData={{ type: "svg", icon: typescriptIcon, iconClass: "center" }}
-				linkData={{
-					href: "https://www.typescriptlang.org/",
-					ariaLabel: "TypeScript",
-					title: "TypeScript",
-					target: "_blank",
-					clazz: "tech-list-item",
-					textDecoration: "none",
-				}}
-				textData={{ text: "TypeScript", showIcon: true, location: "bottom" }}
-			/>
-			<ExternalLink
-				iconData={{ type: "svg", icon: drizzleIcon, iconClass: "center" }}
-				linkData={{
-					href: "https://orm.drizzle.team/",
-					ariaLabel: "Drizzle ORM",
-					title: "Drizzle ORM",
-					target: "_blank",
-					clazz: "tech-list-item",
-					textDecoration: "none",
-				}}
-				textData={{ text: "Drizzle ORM", showIcon: true, location: "bottom" }}
-			/>
-			<ExternalLink
-				iconData={{ type: "svg", icon: reactIcon, iconClass: "center" }}
-				linkData={{
-					href: "https://reactjs.org/",
-					ariaLabel: "React",
-					title: "React",
-					target: "_blank",
-					clazz: "tech-list-item",
-					textDecoration: "none",
-				}}
-				textData={{ text: "React", showIcon: true, location: "bottom" }}
-			/>
-			<ExternalLink
-				iconData={{ type: "svg", icon: nextDotJsIcon, iconClass: "center" }}
-				linkData={{
-					href: "https://nextjs.org/",
-					ariaLabel: "Next.js",
-					title: "Next.js",
-					target: "_blank",
-					clazz: "tech-list-item",
-					textDecoration: "none",
-				}}
-				textData={{ text: "Next.js", showIcon: true, location: "bottom" }}
-			/>
-			<ExternalLink
-				iconData={{ type: "svg", icon: dockerIcon, iconClass: "center" }}
-				linkData={{
-					href: "https://www.docker.com/",
-					ariaLabel: "Docker",
-					title: "Docker",
-					target: "_blank",
-					clazz: "tech-list-item",
-					textDecoration: "none",
-				}}
-				textData={{ text: "Docker", showIcon: true, location: "bottom" }}
-			/>
-		</div>
+		<TechStack />
 	</section>
+	<Separator.Root class="about-separator" decorative={true} />
 	<section aria-labelledby="extracurricular-heading">
 		<h2 id="extracurricular-heading">Extracurricular</h2>
 		<p>
@@ -141,6 +50,7 @@
 			{/each}
 		</div>
 	</section>
+	<Separator.Root class="about-separator" decorative={true} />
 	<section aria-labelledby="fun-things-heading">
 		<h2 id="fun-things-heading">Other fun things about me&hellip;</h2>
 		<div class="travel-section">
@@ -151,7 +61,11 @@
 			<p>Hanging out with these two cats, Turnip and Taco.</p>
 			<div class="cat-pics">
 				<figure>
-					<enhanced:img src={tortie_derp} alt="Tortie Cat lying down" />
+					<AspectRatio.Root ratio={4 / 3} class="cat-aspect-root">
+						<div class="cat-image-wrapper">
+							<enhanced:img src={tortie_derp} alt="Tortie Cat lying down" />
+						</div>
+					</AspectRatio.Root>
 					<figcaption class="center">
 						Turnip <img
 							class="icon"
@@ -163,7 +77,11 @@
 					</figcaption>
 				</figure>
 				<figure>
-					<enhanced:img src={orange_derp} alt="Orange Cat sleeping" />
+					<AspectRatio.Root ratio={4 / 3} class="cat-aspect-root">
+						<div class="cat-image-wrapper">
+							<enhanced:img src={orange_derp} alt="Orange Cat sleeping" />
+						</div>
+					</AspectRatio.Root>
 					<figcaption class="center">Taco 🌮</figcaption>
 				</figure>
 			</div>
@@ -182,32 +100,38 @@
 		vertical-align: top;
 	}
 
+	:global(.about-separator) {
+		background-color: var(--lightHairLine);
+		width: 100%;
+		height: 1px;
+		border: none;
+	}
+
+	:global(.cat-aspect-root) {
+		position: relative;
+		overflow: hidden;
+		border-radius: var(--borderRadius);
+	}
+
+	.cat-image-wrapper {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+	}
+
+	.cat-image-wrapper :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
 	.about {
 		display: grid;
 		grid-gap: 2.5rem;
 
 		& p {
 			margin: 1rem;
-		}
-	}
-
-	.tech-list {
-		display: flex;
-		flex-wrap: wrap;
-		flex-direction: row;
-		place-content: center;
-		gap: 2rem;
-		margin-top: 1rem;
-		font-size: 2rem;
-
-		@media (max-width: 768px) {
-			gap: 1.5rem;
-			font-size: 1.8rem;
-		}
-
-		@media (max-width: 480px) {
-			gap: 1rem;
-			font-size: 1.5rem;
 		}
 	}
 

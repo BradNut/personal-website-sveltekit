@@ -1,10 +1,11 @@
 <script module lang="ts">
+	// biome-ignore lint/style/useExportType: Svelte snippets are runtime values consumed by ExternalLink, not types.
 	export {
 		blueSkyIcon,
 		dockerIcon,
 		drizzleIcon,
-		honoIcon,
 		gitHubIcon,
+		honoIcon,
 		linkedInIcon,
 		lucideIcon,
 		nextDotJsIcon,

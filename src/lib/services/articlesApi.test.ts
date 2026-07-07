@@ -36,7 +36,7 @@ vi.mock('$lib/server/redis', () => ({
   },
 }));
 
-import { fetchArticlesApi } from './articlesApi';
+import { fetchArticles } from './articlesApi';
 
 type MockResponse<T> = {
   ok: boolean;
@@ -90,7 +90,7 @@ afterEach(() => {
   globalThis.fetch = originalFetch;
 });
 
-describe('fetchArticlesApi', () => {
+describe('fetchArticles', () => {
   it('returns cached response with cacheControl on cache hit', async () => {
     const cached = makeCachedResponse();
     redisGet.mockResolvedValueOnce(JSON.stringify(cached));
@@ -99,7 +99,7 @@ describe('fetchArticlesApi', () => {
     // fetch should not be called on cache hit
     globalThis.fetch = vi.fn() as unknown as typeof globalThis.fetch;
 
-    const result = await fetchArticlesApi('get', 'fetchArticles', { page: '1', limit: '10' });
+    const result = await fetchArticles({ page: '1', limit: '10' });
 
     expect(result).toBeTruthy();
     expect(result.cacheControl).toBe('max-age=60');
@@ -112,7 +112,7 @@ describe('fetchArticlesApi', () => {
 
     globalThis.fetch = vi.fn().mockRejectedValue(new Error('network error')) as unknown as typeof globalThis.fetch;
 
-    const resultPromise = fetchArticlesApi('get', 'fetchArticles', { page: '1', limit: '10' });
+    const resultPromise = fetchArticles({ page: '1', limit: '10' });
     await vi.runAllTimersAsync();
     const result = await resultPromise;
 
@@ -131,7 +131,7 @@ describe('fetchArticlesApi', () => {
 
     globalThis.fetch = vi.fn().mockResolvedValueOnce(authResponse).mockResolvedValue(badResponse);
 
-    const resultPromise = fetchArticlesApi('get', 'fetchArticles', { page: '2', limit: '5' });
+    const resultPromise = fetchArticles({ page: '2', limit: '5' });
     await vi.runAllTimersAsync();
     const result = await resultPromise;
 
@@ -175,7 +175,7 @@ describe('fetchArticlesApi', () => {
 
     globalThis.fetch = vi.fn().mockResolvedValueOnce(authResponse).mockResolvedValueOnce(pageResponse);
 
-    const result = await fetchArticlesApi('get', 'fetchArticles', { page: '1', limit: '10' });
+    const result = await fetchArticles({ page: '1', limit: '10' });
 
     expect(result.articles).toEqual([]);
     expect(result.totalArticles).toBe(1);
@@ -192,7 +192,7 @@ describe('fetchArticlesApi', () => {
     const fetchMock = vi.fn().mockResolvedValueOnce(authResponse).mockResolvedValueOnce(pageResponse);
     globalThis.fetch = fetchMock as unknown as typeof globalThis.fetch;
 
-    await fetchArticlesApi('get', 'fetchArticles', { page: '1', limit: '999' });
+    await fetchArticles({ page: '1', limit: '999' });
 
     const calledUrl: string = fetchMock.mock.calls[1][0] as string;
     expect(calledUrl).toContain('perPage=10');
@@ -222,7 +222,7 @@ describe('fetchArticlesApi', () => {
 
     globalThis.fetch = fetchMock as unknown as typeof globalThis.fetch;
 
-    const result = await fetchArticlesApi('get', 'fetchArticles', { page: '1', limit: '10' });
+    const result = await fetchArticles({ page: '1', limit: '10' });
 
     expect(result).toBeTruthy();
     expect(result.cacheControl).toBe('max-age=120');

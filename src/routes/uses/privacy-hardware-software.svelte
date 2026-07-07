@@ -2,13 +2,10 @@
 	import ExternalLink from "$lib/components/ExternalLink.svelte";
 </script>
 
-<section id="uses-privacy-hardware-software">
-	<h2>Privacy Hardware and Software</h2>
-
-	<p>
-		For the past few years I've been working towards moving my data to
-		self-hosted systems and systems I trust to hold my data.
-	</p>
+<p>
+	For the past few years I've been working towards moving my data to
+	self-hosted systems and systems I trust to hold my data.
+</p>
 
 	<p>
 		If you want to see more info about this head to my <a href="/privacy"
@@ -40,7 +37,6 @@
 			/>
 		</li>
 	</ul>
-</section>
 
 <style lang="postcss">
 	ul {

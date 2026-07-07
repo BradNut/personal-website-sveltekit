@@ -1,9 +1,11 @@
 <script lang="ts">
+	import { Accordion } from "bits-ui";
 	import desktop from "$lib/assets/images/Desktop_so_clean.jpg?enhanced";
 	import ExternalLink from "$lib/components/ExternalLink.svelte";
 	import Development from "./development.svelte";
 	import HardwareAccessories from "./hardware-accessories.svelte";
 	import PrivacyHardwareSoftware from "./privacy-hardware-software.svelte";
+	import UsesSection from "./UsesSection.svelte";
 </script>
 
 <div class="uses">
@@ -34,11 +36,28 @@
 			loading="eager"
 		/>
 	</div>
-	<div>
-		<HardwareAccessories />
-		<Development />
-		<PrivacyHardwareSoftware />
-	</div>
+	<Accordion.Root
+		type="multiple"
+		value={["hardware", "development", "privacy"]}
+	>
+		<UsesSection title="Hardware & Accessories" value="hardware">
+			<HardwareAccessories />
+		</UsesSection>
+		<UsesSection
+			title="Development"
+			value="development"
+			id="uses-development"
+		>
+			<Development />
+		</UsesSection>
+		<UsesSection
+			title="Privacy Hardware and Software"
+			value="privacy"
+			id="uses-privacy-hardware-software"
+		>
+			<PrivacyHardwareSoftware />
+		</UsesSection>
+	</Accordion.Root>
 </div>
 
 <style lang="postcss">

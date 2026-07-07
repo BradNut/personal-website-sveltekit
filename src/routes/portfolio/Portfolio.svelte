@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type { Snippet } from "svelte";
 	import type { Picture } from "vite-imagetools";
-	import type { ExternalLinkType } from "$lib/types/externalLinkType";
+	import ExternalLink from "$lib/components/ExternalLink.svelte";
+	import type { ProjectLink } from "$lib/types/externalLinkType";
 
 	const {
-		links,
 		externalLinks,
 		name,
 		src,
@@ -14,8 +14,7 @@
 		loading = "lazy",
 		children,
 	}: {
-		links: Snippet<[ExternalLinkType[]]>;
-		externalLinks: ExternalLinkType[];
+		externalLinks: ProjectLink[];
 		name: string;
 		src: string | Picture;
 		alt: string;
@@ -30,7 +29,11 @@
 	<div class="portfolio-picture">
 		<h2>{name}</h2>
 		<enhanced:img {src} {style} {alt} fetchpriority={fetchPriority} {loading} />
-		{@render links(externalLinks)}
+		<div class="project-links">
+			{#each externalLinks as projectLink}
+				<ExternalLink {projectLink} iconSize={20} />
+			{/each}
+		</div>
 	</div>
 	<div class="portfolio-details">
 		{@render children?.()}
@@ -74,5 +77,35 @@
 	:global(.portfolio-details ul) {
 		list-style-type: disc;
 		padding-left: 1.5rem;
+	}
+
+	.project-links {
+		display: flex;
+		gap: 1rem;
+		margin-top: 1rem;
+		flex-wrap: wrap;
+	}
+
+	:global(.project-links a) {
+		background: rgba(255, 255, 255, 0.05);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		border-radius: 8px;
+		padding: 0.75rem 1.25rem;
+		font-weight: 500;
+		transition: all 0.2s ease;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.75rem;
+
+		&:hover {
+			background: rgba(255, 255, 255, 0.1);
+			border-color: var(--shellYellow);
+			transform: translateY(-2px);
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+		}
+
+		&:active {
+			transform: translateY(0);
+		}
 	}
 </style>

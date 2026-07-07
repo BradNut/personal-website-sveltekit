@@ -1,6 +1,6 @@
 <script lang="ts">
+  import { ChevronLeft, ChevronRight } from "@lucide/svelte";
   import { Pagination } from "bits-ui";
-  import { ChevronLeft, ChevronRight } from "lucide-svelte";
   import { goto } from "$app/navigation";
 
   interface Props {
@@ -134,5 +134,9 @@
     background: transparent;
     text-decoration: none;
     cursor: pointer;
+
+    &:hover {
+      color: var(--shellYellow);
+    }
   }
 </style>

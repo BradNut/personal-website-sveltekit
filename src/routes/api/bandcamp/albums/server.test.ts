@@ -1,39 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const scrapeItMock = vi.fn();
-const redisGetMock = vi.fn();
-const redisTtlMock = vi.fn();
-const redisSetWithExpiryMock = vi.fn();
-
-vi.mock('varlock/env', () => ({
-  initVarlockEnv: vi.fn(),
-  ENV: {
-    USE_REDIS_CACHE: true,
-    BANDCAMP_USERNAME: 'testuser',
-  },
-}));
-
-vi.mock('scrape-it', () => ({ default: (...args: unknown[]) => scrapeItMock(...args) }));
-
-vi.mock('$lib/server/redis', () => ({
-  redisService: {
-    get: (d: unknown) => redisGetMock(d),
-    ttl: (d: unknown) => redisTtlMock(d),
-    setWithExpiry: (d: unknown) => redisSetWithExpiryMock(d),
-    set: vi.fn(),
-    delete: vi.fn(),
-    scan: vi.fn(),
-    redis: null,
-  },
-  REDIS_PREFIXES: {
-    ARTICLES: 'articles',
-    BANDCAMP_ALBUMS: 'bandcampAlbums',
-    PAGE_CACHE: 'pageCache',
-  },
-}));
-
-vi.mock('$lib/util/retry', () => ({
-  retryWithBackoff: (fn: () => Promise<unknown>) => fn(),
+const fetchAlbumsMock = vi.fn();
+vi.mock('$lib/services/bandcampApi', () => ({
+  fetchAlbums: (...args: unknown[]) => fetchAlbumsMock(...args),
 }));
 
 import { GET } from './+server.js';
@@ -58,10 +27,8 @@ beforeEach(() => {
 });
 
 describe('GET /api/bandcamp/albums', () => {
-  it('returns cached albums with TTL-based cache-control', async () => {
-    const cached = [makeAlbum()];
-    redisGetMock.mockResolvedValueOnce(JSON.stringify(cached));
-    redisTtlMock.mockResolvedValueOnce(3600);
+  it('returns the albums from fetchAlbums and sets the cache-control header', async () => {
+    fetchAlbumsMock.mockResolvedValueOnce({ albums: [makeAlbum()], cacheControl: 'max-age=3600' });
 
     const { event, capturedHeaders } = makeRequestEvent();
     const response = await GET(event);
@@ -70,54 +37,16 @@ describe('GET /api/bandcamp/albums', () => {
     expect(body).toHaveLength(1);
     expect(body[0].title).toBe('Test Album');
     expect(capturedHeaders['cache-control']).toBe('max-age=3600');
-    expect(scrapeItMock).not.toHaveBeenCalled();
   });
 
-  it('returns cached albums with fallback cache-control when no TTL', async () => {
-    const cached = [makeAlbum()];
-    redisGetMock.mockResolvedValueOnce(JSON.stringify(cached));
-    redisTtlMock.mockResolvedValueOnce(0);
-
-    const { event, capturedHeaders } = makeRequestEvent();
-    await GET(event);
-
-    expect(capturedHeaders['cache-control']).toBe('max-age=43200');
-  });
-
-  it('scrapes and returns albums on cache miss', async () => {
-    redisGetMock.mockResolvedValueOnce(null);
-    scrapeItMock.mockResolvedValueOnce({ data: { collectionItems: [makeAlbum()] } });
+  it('returns an empty array with no-cache when fetchAlbums yields no albums', async () => {
+    fetchAlbumsMock.mockResolvedValueOnce({ albums: [], cacheControl: 'no-cache' });
 
     const { event, capturedHeaders } = makeRequestEvent();
     const response = await GET(event);
     const body = await response.json();
 
-    expect(body).toHaveLength(1);
-    expect(body[0].artist).toBe('Test Artist');
-    expect(capturedHeaders['cache-control']).toBe('max-age=43200');
-    expect(redisSetWithExpiryMock).toHaveBeenCalledOnce();
-  });
-
-  it('returns empty array when scrape returns no items', async () => {
-    redisGetMock.mockResolvedValueOnce(null);
-    scrapeItMock.mockResolvedValueOnce({ data: { collectionItems: [] } });
-
-    const { event } = makeRequestEvent();
-    const response = await GET(event);
-    const body = await response.json();
-
     expect(body).toEqual([]);
-    expect(redisSetWithExpiryMock).not.toHaveBeenCalled();
-  });
-
-  it('returns empty array when scrape throws', async () => {
-    redisGetMock.mockResolvedValueOnce(null);
-    scrapeItMock.mockRejectedValueOnce(new Error('scrape failed'));
-
-    const { event } = makeRequestEvent();
-    const response = await GET(event);
-    const body = await response.json();
-
-    expect(body).toEqual([]);
+    expect(capturedHeaders['cache-control']).toBe('no-cache');
   });
 });

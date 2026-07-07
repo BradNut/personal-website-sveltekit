@@ -18,7 +18,7 @@ test.describe('Uses page', () => {
       return color;
     });
 
-    const areas = ['header[aria-label="header navigation"]', 'footer nav[aria-label="footer navigation"]'];
+    const areas = ['nav[aria-label="header navigation"]', 'footer nav[aria-label="footer navigation"]'];
 
     for (const area of areas) {
       const nav = page.locator(area);
@@ -29,6 +29,8 @@ test.describe('Uses page', () => {
 
       const before = await link.evaluate((el) => getComputedStyle(el as Element).color);
       await link.hover();
+      // Wait for color transition to complete (0.2s ease)
+      await page.waitForTimeout(300);
       const after = await link.evaluate((el) => getComputedStyle(el as Element).color);
 
       expect(after).toBe(shellYellow);
@@ -38,7 +40,7 @@ test.describe('Uses page', () => {
 
   test('current page (Uses) link is active in header and footer', async ({ page }) => {
     await page.goto('/uses');
-    const areas = ['header[aria-label="header navigation"]', 'footer nav[aria-label="footer navigation"]'];
+    const areas = ['nav[aria-label="header navigation"]', 'footer nav[aria-label="footer navigation"]'];
     for (const area of areas) {
       const nav = page.locator(area);
       const usesLink = nav.getByRole('link', { name: 'Uses', exact: true });
@@ -60,6 +62,33 @@ test.describe('Uses page', () => {
     await expect(page.getByRole('link', { name: /Open\s+Wes Bos' Website\s+externally/i })).toBeVisible();
     await expect(page.getByRole('link', { name: /Open\s+Wes Bos' Uses Page\s+externally/i })).toBeVisible();
     await expect(page.getByRole('link', { name: /Open\s+Uses\.tech\s+externally/i })).toBeVisible();
+  });
+
+  test('uses page sections are accordion triggers', async ({ page }) => {
+    await page.goto('/uses');
+
+    const sections = [
+      'Hardware & Accessories',
+      'Development',
+      'Privacy Hardware and Software',
+    ];
+
+    for (const name of sections) {
+      await expect(page.getByRole('button', { name, exact: true })).toBeVisible();
+    }
+  });
+
+  test('accordion sections can be toggled', async ({ page }) => {
+    await page.goto('/uses');
+
+    const devTrigger = page.getByRole('button', { name: 'Development', exact: true });
+    const devSection = page.locator('section#uses-development');
+
+    await expect(devSection).toBeVisible();
+    await devTrigger.click();
+    await expect(devSection).toBeHidden();
+    await devTrigger.click();
+    await expect(devSection).toBeVisible();
   });
 
   test('sections and subsections render', async ({ page }) => {
@@ -84,7 +113,7 @@ test.describe('Uses page', () => {
     const expectedLinks = [
       /Open\s+Bradley Shellnut Computer Setup\s+externally/i,
       /Open\s+Dotfiles\s+externally/i,
-      /Open\s+Tabby\s+externally/i,
+      /Open\s+Ghostty\s+externally/i,
       /Open\s+Starship\s+externally/i,
       /Open\s+ZimFW\s+externally/i,
       /Open\s+Linux Brew\s+externally/i,
@@ -110,7 +139,7 @@ test.describe('Uses page', () => {
   // Header nav presence
   test('header navigation shows expected links', async ({ page }) => {
     await page.goto('/uses');
-    const headerNav = page.locator('header[aria-label="header navigation"]');
+    const headerNav = page.locator('nav[aria-label="header navigation"]');
     await expect(headerNav).toBeVisible();
     await expect(headerNav.getByRole('link', { name: 'Home', exact: true })).toBeVisible();
     await expect(headerNav.getByRole('link', { name: 'About', exact: true })).toBeVisible();
@@ -121,7 +150,7 @@ test.describe('Uses page', () => {
   // Header navigation flow (starting on /uses)
   test('header navigation links go to correct routes (from /uses)', async ({ page }) => {
     await page.goto('/uses');
-    const headerNav = page.locator('header[aria-label="header navigation"]');
+    const headerNav = page.locator('nav[aria-label="header navigation"]');
 
     await headerNav.getByRole('link', { name: 'About', exact: true }).click();
     await expect(page).toHaveURL(/\/about\/?$/);

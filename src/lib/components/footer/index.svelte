@@ -50,7 +50,7 @@
 		>
 	</nav>
 	<p>
-		Bradley Shellnut &copy; 2012 - {new Date().getFullYear()} test
+		Bradley Shellnut &copy; 2012 - {new Date().getFullYear()}
 	</p>
 </footer>
 
@@ -89,5 +89,10 @@
 	a {
 		margin: 1rem;
 		line-height: 1rem;
+		transition: color 0.2s ease;
+
+		&:hover {
+			color: var(--primaryColor);
+		}
 	}
 </style>

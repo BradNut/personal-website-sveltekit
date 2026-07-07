@@ -47,7 +47,7 @@
 	--h3: 1.953rem;
 	--h4: 1.563rem;
 	--h5: 1.25rem;
-	--h6: 1.8rem;
+	--h6: 1rem;
 	--bodyTextSize: 1.8rem;
 	--smallText: 1.44rem;
 	--lineHeight: 1.75;
@@ -154,6 +154,13 @@ button {
 
 a {
 	text-decoration-color: var(--shellYellow);
+	transition: color 0.2s ease;
+}
+
+:focus-visible {
+	outline: 2px solid var(--shellYellow);
+	outline-offset: 2px;
+	border-radius: 2px;
 }
 
 a:hover {
@@ -204,7 +211,8 @@ h5 {
 
 hr {
 	border: 0;
-	height: 8px;
+	height: 1px;
+	background: var(--lightHairLine);
 }
 
 nav {
