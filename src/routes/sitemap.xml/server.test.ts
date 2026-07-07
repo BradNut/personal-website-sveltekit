@@ -1,15 +1,12 @@
 import { describe, expect, it, vi } from 'vitest';
 
-vi.mock('varlock/env', () => ({
-  initVarlockEnv: vi.fn(),
-  ENV: {
-    PUBLIC_SITE_URL: 'https://bradleyshellnut.com',
-  },
-}));
-
 const fetchArticlesMock = vi.fn();
 vi.mock('$lib/services/articlesApi', () => ({
   fetchArticles: (...args: unknown[]) => fetchArticlesMock(...args),
+}));
+
+vi.mock('$lib/shared/siteUrl', () => ({
+  resolveSitemapUrl: (pathname: string) => `https://bradleyshellnut.com${pathname}`,
 }));
 
 import { GET } from './+server.js';
