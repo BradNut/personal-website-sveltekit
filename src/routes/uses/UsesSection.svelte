@@ -16,7 +16,7 @@
 <Accordion.Item {value}>
 	<Accordion.Header level={2}>
 		<Accordion.Trigger>
-			{#snippet child({ props })}
+			{#snippet child({ props }: { props: Record<string, unknown> })}
 				<button {...props} class="uses-trigger">
 					{title}
 					<span class="uses-chevron" aria-hidden="true">
@@ -27,7 +27,7 @@
 		</Accordion.Trigger>
 	</Accordion.Header>
 	<Accordion.Content hiddenUntilFound>
-		{#snippet child({ props })}
+		{#snippet child({ props }: { open: boolean; props: Record<string, unknown> })}
 			<div {...props} class="uses-content">
 				<section {id}>
 					{@render children()}

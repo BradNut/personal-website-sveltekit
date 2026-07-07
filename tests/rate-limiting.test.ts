@@ -1,5 +1,11 @@
 import { expect, test } from '@playwright/test';
-import { StatusCodes } from '$lib/constants/status-codes';
+
+const StatusCodes = {
+  OK: 200,
+  NOT_FOUND: 404,
+  TOO_MANY_REQUESTS: 429,
+  INTERNAL_SERVER_ERROR: 500,
+} as const;
 
 test.describe('API Rate Limiting', () => {
   test.describe('/api/bandcamp/albums endpoint', () => {
