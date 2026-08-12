@@ -41,7 +41,7 @@
     "@varlock/vite-integration": "^1.2.0",
     "@zerodevx/svelte-img": "^2.1.2",
     "just-intersect": "^4.3.0",
-    "postcss": "^8.5.16",
+    "postcss": "^8.5.23",
     "postcss-custom-media": "^12.0.1",
     "postcss-import": "^16.1.1",
     "postcss-load-config": "^6.0.1",
