@@ -2,6 +2,7 @@ import * as Sentry from '@sentry/sveltekit';
 import type { HandleClientError } from '@sveltejs/kit';
 import { ENV } from 'varlock/env';
 import { dev } from '$app/environment';
+import { isReportableError } from '$lib/shared/reportableError';
 
 Sentry.init({
   release: `personal-website@${ENV.PUBLIC_SITE_VERSION}`,
@@ -13,9 +14,14 @@ Sentry.init({
 });
 
 export const handleError: HandleClientError = async ({ error, event, status }) => {
+  if (!isReportableError({ error, status })) {
+    return {
+      message: 'Whoops!',
+    };
+  }
+
   const errorId = crypto.randomUUID();
 
-  // example integration with https://sentry.io/
   Sentry.captureException(error, {
     extra: { event, errorId, status },
   });

@@ -3,6 +3,7 @@ import type { Handle, HandleServerError } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import { ENV } from 'varlock/env';
 import { dev } from '$app/environment';
+import { isReportableError } from '$lib/shared/reportableError';
 
 Sentry.init({
   release: `personal-website@${ENV.PUBLIC_SITE_VERSION}`,
@@ -16,8 +17,13 @@ Sentry.init({
 export const handle: Handle = sequence(Sentry.sentryHandle());
 
 export const handleError: HandleServerError = async ({ error, event, status }) => {
+  if (!isReportableError({ error, status })) {
+    return {
+      message: 'Whoops!',
+    };
+  }
+
   const errorId = crypto.randomUUID();
-  console.log('error', error);
 
   Sentry.captureException(error, {
     extra: { event, errorId, status },
