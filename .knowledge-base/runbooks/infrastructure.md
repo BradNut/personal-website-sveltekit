@@ -84,6 +84,34 @@ Scrape selectors: `src/routes/api/bandcamp/albums/+server.ts`.
 - Verify `PUBLIC_SENTRY_URL` (browser) and `SENTRY_BACKEND_URL` (server) both set
 - Verify `SENTRY_AUTH_TOKEN` set for source map uploads during build
 
+### Reportable Error Policy & Backup Crawler Filtering
+
+App-owned policy (primary layer, enforced in code):
+- `src/lib/shared/reportableError.ts` — `isReportableError()`. Only 5xx (or an error object carrying a 5xx `status`) is reportable. All intentional 4xx (Route Misses, rate limits, validation, etc.) are Expected HTTP Errors and are never sent to Bugsink. Consumed symmetrically by `src/hooks.server.ts` and `src/hooks.client.ts`.
+- `src/lib/server/probeRequest.ts` — `isProbeRequest()`. Curated denylist (WordPress, sensitive files, CGI, root-level PHP) for known high-signal scanner paths. Matches are short-circuited in `handleProbeRequest` (`src/hooks.server.ts`, first in the `sequence(...)` chain) with a plain generic 404 — no route resolution, no Sentry, no production log. Expand the denylist as new scanner patterns show up in access logs.
+
+Backup layer (Bugsink/Sentry inbound filters): **not available on this stack.** This site runs self-hosted [Bugsink](https://bugsink.com), which is Sentry-SDK-compatible for ingestion but does not implement Sentry SaaS's "Inbound Data Filters" project setting (the `web-crawlers` / `browser-extensions` / `legacy-browser` toggles are implemented in Sentry's closed-source Relay service and have no Bugsink equivalent as of this writing). So there is no dashboard toggle to enable here — the app-owned policy above is the only enforcement layer. If Bugsink adds inbound filtering in the future, revisit this section and enable it as a genuine second layer.
+
+In the meantime, the manual backup is Bugsink's own issue tooling: mute or resolve noisy issues per-project in the Bugsink UI (Issue → Mute/Resolve). This doesn't prevent ingestion, but keeps them out of the active triage view. Prefer adding the underlying path to `PROBE_DENYLIST_*` in `probeRequest.ts` over muting recurring scanner noise by hand.
+
+### Verifying suppressed vs. reportable behavior
+
+```bash
+# Known Probe Request path -> plain generic 404, no Bugsink event
+curl -i https://production-url.com/wp-login.php
+# Expect: HTTP/1.1 404, body "Not Found", no corresponding issue in Bugsink
+
+# Ordinary Route Miss -> normal site 404 page, no Bugsink event
+curl -i https://production-url.com/some-typo-page
+# Expect: HTTP/1.1 404 with the site's styled not-found page, no corresponding issue in Bugsink
+
+# Genuine unexpected failure -> still reported
+# (trigger a real 5xx, e.g. a temporarily broken upstream integration)
+# Expect: an issue appears in Bugsink with request/status context and the response includes an errorId
+```
+
+If a suppressed path unexpectedly shows up as a Bugsink issue, check `isProbeRequest`/`isReportableError` first before assuming a backup filter is misconfigured — there isn't one to misconfigure.
+
 ## Related
 
 - [Environment Configuration](./environment-config.md)
