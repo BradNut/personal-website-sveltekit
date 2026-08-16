@@ -24,10 +24,39 @@ vi.mock('$app/environment', () => ({
   dev: false,
 }));
 
-import { handleError } from './hooks.server';
+import { handleError, handleProbeRequest } from './hooks.server';
 
 beforeEach(() => {
   vi.clearAllMocks();
+});
+
+describe('handleProbeRequest', () => {
+  it('short-circuits known Probe Requests with a plain generic 404 and skips route resolution', async () => {
+    const resolve = vi.fn();
+
+    const response = (await handleProbeRequest({
+      event: { url: new URL('https://example.com/wp-login.php') } as Parameters<typeof handleProbeRequest>[0]['event'],
+      resolve,
+    })) as Response;
+
+    expect(response).toBeInstanceOf(Response);
+    expect(response.status).toBe(404);
+    expect(resolve).not.toHaveBeenCalled();
+  });
+
+  it('passes ordinary Route Misses through to route resolution', async () => {
+    const resolve = vi.fn(async () => new Response('normal 404', { status: 404 }));
+
+    const response = await handleProbeRequest({
+      event: {
+        url: new URL('https://example.com/some-typo-page'),
+      } as Parameters<typeof handleProbeRequest>[0]['event'],
+      resolve,
+    });
+
+    expect(resolve).toHaveBeenCalledOnce();
+    expect(response).toBeInstanceOf(Response);
+  });
 });
 
 describe('server handleError', () => {
