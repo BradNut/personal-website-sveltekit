@@ -12,6 +12,7 @@ const config: PlaywrightTestConfig = {
   use: {
     baseURL: 'http://localhost:4173',
   },
+  reporter: 'html',
   // Run on main browsers: Chromium (Chrome), Firefox, WebKit (Safari)
   projects: [
     {

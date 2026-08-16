@@ -82,13 +82,25 @@ test.describe('Uses page', () => {
     await page.goto('/uses');
 
     const devTrigger = page.getByRole('button', { name: 'Development', exact: true });
-    const devSection = page.locator('section#uses-development');
+    const devContent = page.locator('.uses-content').filter({ has: page.locator('#uses-development') });
 
-    await expect(devSection).toBeVisible();
+    // Open by default.
+    await expect(devTrigger).toHaveAttribute('aria-expanded', 'true');
+    await expect(devContent).toHaveAttribute('data-state', 'open');
+    await expect(page.locator('section#uses-development')).toBeVisible();
+
+    // Collapse. The content uses `hidden="until-found"` (content-visibility: hidden),
+    // which WebKit still reports as a laid-out box for descendants. Assert the
+    // accordion's ARIA/data state rather than pixel visibility so the toggle
+    // behaviour is verified consistently across engines.
     await devTrigger.click();
-    await expect(devSection).toBeHidden();
+    await expect(devTrigger).toHaveAttribute('aria-expanded', 'false');
+    await expect(devContent).toHaveAttribute('data-state', 'closed');
+
+    // Expand again.
     await devTrigger.click();
-    await expect(devSection).toBeVisible();
+    await expect(devTrigger).toHaveAttribute('aria-expanded', 'true');
+    await expect(devContent).toHaveAttribute('data-state', 'open');
   });
 
   test('sections and subsections render', async ({ page }) => {

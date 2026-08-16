@@ -29,3 +29,17 @@ test-results/*
 env.d.ts
 
 .issues
+
+# Devin AI local file
+.devin
+
+# Playwright report
+playwright-report
+
+# Coverage and test artifacts
+coverage
+coverage/*
+.nyc_output
+
+# Cache directories
+.cache

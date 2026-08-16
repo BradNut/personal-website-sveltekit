@@ -92,7 +92,7 @@
 		transition: color 0.2s ease;
 
 		&:hover {
-			color: var(--primaryColor);
+			color: var(--linkHover);
 		}
 	}
 </style>
