@@ -24,7 +24,6 @@ vi.mock('$app/environment', () => ({
   dev: false,
 }));
 
-import { GENERIC_ERROR_MESSAGE } from '$lib/shared/errorReporter';
 import { handleError, handleProbeRequest } from './hooks.server';
 
 beforeEach(() => {
@@ -74,6 +73,6 @@ describe('server handleError', () => {
     expect(captureExceptionMock).toHaveBeenCalledWith(error, {
       extra: { event, errorId: result.errorId, status: 500 },
     });
-    expect(result).toEqual({ message: GENERIC_ERROR_MESSAGE, errorId: expect.any(String) });
+    expect(result).toEqual({ message: 'Whoops!', errorId: expect.any(String) });
   });
 });

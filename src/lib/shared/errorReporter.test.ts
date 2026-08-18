@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { GENERIC_ERROR_MESSAGE, reportError } from './errorReporter';
+import { reportError } from './errorReporter';
 
 const event = { url: new URL('https://example.com/missing') };
 
@@ -11,7 +11,7 @@ describe('reportError', () => {
     const result = reportError({ error: new Error('Not found'), event, status: 404, capture });
 
     expect(capture).not.toHaveBeenCalled();
-    expect(result).toEqual({ message: GENERIC_ERROR_MESSAGE });
+    expect(result).toEqual({ message: 'Whoops!' });
   });
 
   it('captures unexpected 5xx errors and returns an error id', () => {
@@ -22,7 +22,7 @@ describe('reportError', () => {
 
     expect(capture).toHaveBeenCalledOnce();
     expect(capture).toHaveBeenCalledWith(error, { extra: { event, errorId: result.errorId, status: 500 } });
-    expect(result.message).toBe(GENERIC_ERROR_MESSAGE);
+    expect(result.message).toBe('Whoops!');
     expect(result.errorId).toEqual(expect.any(String));
   });
 
@@ -33,7 +33,7 @@ describe('reportError', () => {
     const result = reportError({ error, event, status: 500, capture });
 
     expect(capture).not.toHaveBeenCalled();
-    expect(result).toEqual({ message: GENERIC_ERROR_MESSAGE });
+    expect(result).toEqual({ message: 'Whoops!' });
   });
 
   it('mints a fresh error id for each reportable error', () => {
@@ -80,7 +80,7 @@ describe('reportError', () => {
     const silent = reportError({ error, event, status: 404, capture });
 
     expect(reportable.errorId).toEqual(expect.any(String));
-    expect(silent).toEqual({ message: GENERIC_ERROR_MESSAGE });
+    expect(silent).toEqual({ message: 'Whoops!' });
     expect(capture).toHaveBeenCalledOnce();
   });
 
@@ -91,7 +91,7 @@ describe('reportError', () => {
 
     const result = reportError({ error: new Error('boom'), event, status: 500, capture });
 
-    expect(result.message).toBe(GENERIC_ERROR_MESSAGE);
+    expect(result.message).toBe('Whoops!');
     expect(result.errorId).toEqual(expect.any(String));
   });
 });

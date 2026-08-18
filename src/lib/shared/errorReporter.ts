@@ -1,8 +1,8 @@
 import { isReportableError } from './reportableError';
 
-export const GENERIC_ERROR_MESSAGE = 'Whoops!';
+const GENERIC_ERROR_MESSAGE = 'Whoops!';
 
-export type CaptureContext = {
+type CaptureContext = {
   extra: {
     event: unknown;
     errorId: string;
@@ -10,7 +10,7 @@ export type CaptureContext = {
   };
 };
 
-export type CaptureAdapter = (error: unknown, context: CaptureContext) => unknown;
+type CaptureAdapter = (error: unknown, context: CaptureContext) => unknown;
 
 type ReportErrorInput = {
   error: unknown;
