@@ -5,7 +5,7 @@ import { ENV } from 'varlock/env';
 import { dev } from '$app/environment';
 import { StatusCodes } from '$lib/constants/status-codes';
 import { isProbeRequest } from '$lib/server/probeRequest';
-import { isReportableError } from '$lib/shared/reportableError';
+import { reportError } from '$lib/shared/errorReporter';
 
 Sentry.init({
   release: `personal-website@${ENV.PUBLIC_SITE_VERSION}`,
@@ -30,21 +30,5 @@ export const handleProbeRequest: Handle = async ({ event, resolve }) => {
 
 export const handle: Handle = sequence(handleProbeRequest, Sentry.sentryHandle());
 
-export const handleError: HandleServerError = async ({ error, event, status }) => {
-  if (!isReportableError({ error, status })) {
-    return {
-      message: 'Whoops!',
-    };
-  }
-
-  const errorId = crypto.randomUUID();
-
-  Sentry.captureException(error, {
-    extra: { event, errorId, status },
-  });
-
-  return {
-    message: 'Whoops!',
-    errorId,
-  };
-};
+export const handleError: HandleServerError = async ({ error, event, status }) =>
+  reportError({ error, event, status, capture: Sentry.captureException });
