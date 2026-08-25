@@ -5,7 +5,7 @@
 <p>
 	My development setup has been documented here: <ExternalLink
 			linkData={{
-				href: "https://github.com/BradNut/computer-setup-info/blob/master/linux/Environment-Setup.md",
+				href: "https://github.com/BradNut/computer-setup-info/blob/master/environment/Environment.md",
 				ariaLabel: "Bradley Shellnut Computer Setup",
 			}}
 			textData={{
@@ -100,10 +100,10 @@
 					My extensions list: <ExternalLink
 						linkData={{
 							href: "https://github.com/BradNut/dotfiles/blob/master/vs-code-extensions-i-use.md",
-							ariaLabel: "VSCode Extensions List",
+							ariaLabel: "VS Code Extensions",
 						}}
 						textData={{
-							text: "VSCode Extensions List",
+							text: "VS Code Extensions",
 							showIcon: true,
 							location: "left",
 						}}
@@ -120,20 +120,20 @@
 		<li>
 			<ExternalLink
 				linkData={{
-					href: "https://www.sublimetext.com/3",
-					ariaLabel: "Sublime Text 3",
+					href: "https://www.sublimetext.com/",
+					ariaLabel: "Sublime Text",
 				}}
-				textData={{ text: "Sublime Text 3", showIcon: true, location: "left" }}
+				textData={{ text: "Sublime Text", showIcon: true, location: "left" }}
 			/>
 			<ul>
 				<li>
 					My Packages List: <ExternalLink
 						linkData={{
 							href: "https://github.com/BradNut/dotfiles/blob/master/sublime-text-extensions-i-use.md",
-							ariaLabel: "Sublime Text Packages List",
+							ariaLabel: "Sublime Text Extensions",
 						}}
 						textData={{
-							text: "Sublime Text Packages List",
+							text: "Sublime Text Extensions",
 							showIcon: true,
 							location: "left",
 						}}
