@@ -4,11 +4,12 @@
 	import tortie_derp from "../../lib/assets/images/tortie_derp.jpg?enhanced";
 	import turnip from "../../lib/assets/images/turnip.svg?enhanced";
 	import TechStack from "../../lib/components/TechStack.svelte";
-	import type { Course } from "../../lib/types/courses";
-	import CourseCard from "./CourseCard.svelte";
+	import ExternalLink from "../../lib/components/ExternalLink.svelte";
+	import Tag from "../../lib/components/Tag.svelte";
+	import type { LearningSource } from "../../lib/types/courses";
 	import courseData from "./course.json";
 
-	const courses: Course[] = (courseData as { courses: Course[] }).courses;
+	const sources: LearningSource[] = (courseData as { learningSources: LearningSource[] }).learningSources;
 </script>
 
 <div class="about">
@@ -41,14 +42,37 @@
 	<section aria-labelledby="extracurricular-heading">
 		<h2 id="extracurricular-heading">Extracurricular</h2>
 		<p>
-			Outside of work I like to take tutorials from many instructors like those
-			below:
+			Outside of work, I’ve learned from:
 		</p>
-		<div class="extracurricular">
-			{#each courses as course}
-				<CourseCard {course} />
+		<ul class="learning-sources">
+			{#each sources as source}
+				<li>
+					<div class="source-info">
+						{#if source.href}
+							<ExternalLink
+								textData={{ text: source.name, showIcon: true, location: "left" }}
+								linkData={{ href: source.href, ariaLabel: source.name, target: "_blank" }}
+							/>
+						{:else if source.links}
+							<span class="source-name">{source.name}</span>
+							<span class="source-links">
+								{#each source.links as link}
+									<ExternalLink
+										textData={{ text: link.text, showIcon: true, location: "left" }}
+										linkData={{ href: link.href, ariaLabel: `${source.name} ${link.text}`, target: "_blank" }}
+									/>
+								{/each}
+							</span>
+						{/if}
+					</div>
+					<div class="tags">
+						{#each source.tags as tag}
+							<Tag name={tag} />
+						{/each}
+					</div>
+				</li>
 			{/each}
-		</div>
+		</ul>
 	</section>
 	<Separator.Root class="about-separator" decorative={true} />
 	<section aria-labelledby="fun-things-heading">
@@ -58,7 +82,7 @@
 			<div class="flag-emojis">🇹🇼 🇯🇵 🌸</div>
 		</div>
 		<div>
-			<p>Hanging out with these two cats, Turnip and Taco.</p>
+			<p class="cat-blurb">Hanging out with these two cats, Turnip and Taco.</p>
 			<div class="cat-pics">
 				<figure>
 					<AspectRatio.Root ratio={4 / 3} class="cat-aspect-root">
@@ -135,19 +159,56 @@
 		}
 	}
 
-	.extracurricular {
+	.learning-sources {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: grid;
+		gap: 1rem;
+	}
+
+	.learning-sources li {
 		display: flex;
 		flex-wrap: wrap;
-		place-content: center;
-		gap: 1.5rem;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 0.75rem;
+		border: 1px solid var(--lightHairLine);
+		border-radius: var(--borderRadius);
+	}
 
-		:global(.card) {
-			max-width: 350px;
-			flex: 1 1 300px;
-		}
+	.source-info {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.75rem;
+	}
 
-		@media (max-width: 768px) {
-			gap: 1rem;
+	.source-name {
+		font-weight: 600;
+	}
+
+	.source-links {
+		display: inline-flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		align-items: center;
+	}
+
+	.cat-blurb {
+		font-size: 1.25rem;
+	}
+
+	@media (max-width: 480px) {
+		.cat-blurb {
+			font-size: 1.1rem;
 		}
 	}
 
