@@ -1,13 +1,11 @@
-export type Course = {
-  name: string;
-  externalLinks: ExternalLink[];
-  tags: string[];
+export type LearningSourceLink = {
+  text: string;
+  href: string;
 };
 
-export type ExternalLink = {
-  ariaLabel: string;
-  href: string;
-  showIcon: boolean;
-  text: string;
-  tag?: 'h3' | 'h4' | 'h5';
+export type LearningSource = {
+  name: string;
+  href?: string;
+  links?: LearningSourceLink[];
+  tags: string[];
 };

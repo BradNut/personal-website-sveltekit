@@ -100,36 +100,47 @@ test.describe('About page', () => {
     }
   });
 
-  test('tablet viewport (~800px): extracurricular wraps to multiple rows', async ({ page }) => {
-    await page.setViewportSize({ width: 800, height: 1000 });
+  test('shows extracurricular learning sources intro', async ({ page }) => {
     await page.goto('/about');
-    const container = page.locator('.extracurricular');
-    await expect(container).toBeVisible();
-    const cards = container.locator('.card');
-    const count = await cards.count();
-    expect(count).toBeGreaterThanOrEqual(3);
-    const [c0, c1, c2] = await Promise.all([cards.nth(0).boundingBox(), cards.nth(1).boundingBox(), cards.nth(2).boundingBox()]);
-    expect(c0 && c1 && c2).toBeTruthy();
-    if (c0 && c1 && c2) {
-      // first two side-by-side on same row, third wrapped below
-      expect(Math.abs(c0.y - c1.y)).toBeLessThan(10);
-      expect(c2.y).toBeGreaterThan(c0.y + 10);
-    }
+    await expect(page.getByText("Outside of work, I’ve learned from:")).toBeVisible();
   });
 
-  test('mobile viewport (375px): extracurricular cards stack vertically', async ({ page }) => {
-    await page.setViewportSize({ width: 375, height: 900 });
+  test('renders a compact list of six learning sources', async ({ page }) => {
     await page.goto('/about');
-    const container = page.locator('.extracurricular');
-    const cards = container.locator('.card');
-    const count = await cards.count();
-    expect(count).toBeGreaterThanOrEqual(2);
-    const [a, b] = await Promise.all([cards.nth(0).boundingBox(), cards.nth(1).boundingBox()]);
-    expect(a && b).toBeTruthy();
-    if (a && b) {
-      expect(b.y).toBeGreaterThan(a.y + 10);
-      expect(Math.abs(b.x - a.x)).toBeLessThan(40);
+    const list = page.locator('ul.learning-sources');
+    await expect(list).toBeVisible();
+    const items = list.locator('li');
+    await expect(items).toHaveCount(6);
+  });
+
+  test('learning source links point to expected URLs', async ({ page }) => {
+    await page.goto('/about');
+    const list = page.locator('ul.learning-sources');
+
+    const singleLinks = [
+      { name: 'Wes Bos', href: 'https://wesbos.com/courses' },
+      { name: 'Scott Tolinski', href: 'https://tolin.ski' },
+      { name: 'Josh Comeau', href: 'https://www.joshwcomeau.com' },
+      { name: 'Amy Kapernick', href: 'https://www.amyskapers.dev/' },
+      { name: 'Matt Pocock', href: 'https://www.aihero.dev/' },
+    ];
+
+    for (const expected of singleLinks) {
+      const link = list.locator(`a[href="${expected.href}"]`);
+      await expect(link).toBeVisible();
+      await expect(link).toHaveText(new RegExp(expected.name));
     }
+
+    await expect(list.locator('a[href="https://www.youtube.com/watch?v=taJlPG82Ucw"]')).toBeVisible();
+    await expect(list.locator('a[href="https://www.youtube.com/watch?v=Q1Y_g0wMwww"]')).toBeVisible();
+  });
+
+  test('learning sources have associated tags', async ({ page }) => {
+    await page.goto('/about');
+    const list = page.locator('ul.learning-sources');
+    const tags = list.locator('.badge');
+    const count = await tags.count();
+    expect(count).toBeGreaterThan(5);
   });
 
   // Mirror header link presence from home tests
