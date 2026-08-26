@@ -47,6 +47,15 @@ describe('portfolioProjects', () => {
     }
   });
 
+  it('every externalLink that shows an icon names a known iconKey', () => {
+    for (const project of portfolioProjects) {
+      for (const link of project.externalLinks) {
+        if (!link.showIcon) continue;
+        expect(['github', 'external']).toContain(link.iconKey);
+      }
+    }
+  });
+
   it('every project has a non-empty techStack array', () => {
     for (const project of portfolioProjects) {
       expect(Array.isArray(project.techStack)).toBe(true);

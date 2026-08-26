@@ -105,42 +105,97 @@ test.describe('About page', () => {
     await expect(page.getByText("Outside of work, I’ve learned from:")).toBeVisible();
   });
 
-  test('renders a compact list of six learning sources', async ({ page }) => {
+  test('renders one compact card per learning source', async ({ page }) => {
     await page.goto('/about');
     const list = page.locator('ul.learning-sources');
     await expect(list).toBeVisible();
-    const items = list.locator('li');
-    await expect(items).toHaveCount(6);
+    await expect(list.locator('> li.source-card')).toHaveCount(6);
   });
 
   test('learning source links point to expected URLs', async ({ page }) => {
     await page.goto('/about');
     const list = page.locator('ul.learning-sources');
 
-    const singleLinks = [
+    const sources = [
       { name: 'Wes Bos', href: 'https://wesbos.com/courses' },
       { name: 'Scott Tolinski', href: 'https://tolin.ski' },
       { name: 'Josh Comeau', href: 'https://www.joshwcomeau.com' },
       { name: 'Amy Kapernick', href: 'https://www.amyskapers.dev/' },
       { name: 'Matt Pocock', href: 'https://www.aihero.dev/' },
+      { name: 'Syntax', href: 'https://syntax.fm' },
     ];
 
-    for (const expected of singleLinks) {
+    for (const expected of sources) {
       const link = list.locator(`a[href="${expected.href}"]`);
       await expect(link).toBeVisible();
       await expect(link).toHaveText(new RegExp(expected.name));
     }
-
-    await expect(list.locator('a[href="https://www.youtube.com/watch?v=taJlPG82Ucw"]')).toBeVisible();
-    await expect(list.locator('a[href="https://www.youtube.com/watch?v=Q1Y_g0wMwww"]')).toBeVisible();
   });
 
-  test('learning sources have associated tags', async ({ page }) => {
+  test('learning source cards open their links in a new tab safely', async ({ page }) => {
+    await page.goto('/about');
+    const links = page.locator('ul.learning-sources a');
+    const count = await links.count();
+    expect(count).toBeGreaterThan(0);
+    for (let i = 0; i < count; i += 1) {
+      const link = links.nth(i);
+      await expect(link).toHaveAttribute('target', '_blank');
+      await expect(link).toHaveAttribute('href', /^https:\/\//);
+    }
+  });
+
+  test('notable works are shown for the sources that have one', async ({ page }) => {
     await page.goto('/about');
     const list = page.locator('ul.learning-sources');
-    const tags = list.locator('.badge');
-    const count = await tags.count();
+
+    await expect(list.locator('a[href="https://levelup.video"]')).toHaveText(/Level Up Tutorials/);
+    await expect(list.locator('a[href="https://www.joyofreact.com"]')).toHaveText(/The Joy of React/);
+    await expect(
+      list.locator('a[href="https://www.youtube.com/watch?v=taJlPG82Ucw"]'),
+    ).toBeVisible();
+  });
+
+  test('every learning source card lists at least one subject', async ({ page }) => {
+    await page.goto('/about');
+    const cards = page.locator('ul.learning-sources > li.source-card');
+    const count = await cards.count();
+    expect(count).toBeGreaterThan(0);
+    for (let i = 0; i < count; i += 1) {
+      const subjects = cards.nth(i).locator('ul.subjects > li');
+      expect(await subjects.count()).toBeGreaterThan(0);
+    }
+  });
+
+  test('subjects render as low-emphasis outline badges, not filled ones', async ({ page }) => {
+    await page.goto('/about');
+    const badges = page.locator('ul.learning-sources .badge');
+    const count = await badges.count();
     expect(count).toBeGreaterThan(5);
+    for (let i = 0; i < count; i += 1) {
+      await expect(badges.nth(i)).toHaveClass(/badge-outline/);
+      await expect(badges.nth(i)).not.toHaveClass(/badge-default/);
+    }
+  });
+
+  test('learning source cards form a multi-column grid on desktop and stack on mobile', async ({
+    page,
+  }) => {
+    await page.goto('/about');
+    const list = page.locator('ul.learning-sources');
+
+    const desktopColumns = await list.evaluate(
+      (el) => getComputedStyle(el as Element).gridTemplateColumns.split(' ').length,
+    );
+    expect(desktopColumns).toBeGreaterThan(1);
+
+    await page.setViewportSize({ width: 375, height: 800 });
+    const mobileColumns = await list.evaluate(
+      (el) => getComputedStyle(el as Element).gridTemplateColumns.split(' ').length,
+    );
+    expect(mobileColumns).toBe(1);
+
+    const overflowX = await list.evaluate((el) => el.scrollWidth - el.clientWidth);
+    expect(overflowX).toBeLessThanOrEqual(2);
   });
 
   // Mirror header link presence from home tests

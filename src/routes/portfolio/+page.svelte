@@ -5,6 +5,7 @@
 
 	import ExternalLink from '$lib/components/ExternalLink.svelte';
 	import type { ProjectLink } from '$lib/types/externalLinkType';
+	import type { LinkIconType } from '$lib/types/externalLinkTypes';
 	import { gitHubIcon } from '$lib/util/logoIcons.svelte';
 
 	import personalSiteImg from '../../lib/assets/images/portfolio/Bradley_Shellnut_New_Site.png?enhanced';
@@ -12,6 +13,7 @@
 	import oldSiteImg from '../../lib/assets/images/portfolio/Old_Website_Bradley_Shellnut.png?enhanced';
 	import weddingWebsiteImg from '../../lib/assets/images/portfolio/Wedding_Website.png?enhanced';
 	import type { PageData } from './$types';
+	import type { PortfolioProjectLink } from './portfolioProjects';
 	import Portfolio from './Portfolio.svelte';
 
 	const { data }: { data: PageData } = $props();
@@ -23,14 +25,23 @@
 		shellnutArchitectWebsite: shellnutArchitectWebsiteImg,
 	};
 
+	function resolveIcon(iconKey: PortfolioProjectLink['iconKey']): LinkIconType | undefined {
+		if (iconKey === 'github') {
+			return { type: 'svg', icon: gitHubIcon };
+		}
+		if (iconKey === 'external') {
+			return { type: 'icon', icon: ExternalLinkIcon };
+		}
+		return undefined;
+	}
+
 	function resolveLinks(links: PageData['projects'][number]['externalLinks']): ProjectLink[] {
 		return links.map((link) => ({
 			ariaLabel: link.ariaLabel,
 			href: link.href,
 			showIcon: link.showIcon,
 			text: link.text,
-			linkType: link.linkType,
-			icon: link.iconKey === 'github' ? gitHubIcon : link.iconKey === 'external' ? ExternalLinkIcon : undefined,
+			icon: resolveIcon(link.iconKey),
 		}));
 	}
 </script>

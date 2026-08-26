@@ -5,11 +5,8 @@
 	import turnip from "../../lib/assets/images/turnip.svg?enhanced";
 	import TechStack from "../../lib/components/TechStack.svelte";
 	import ExternalLink from "../../lib/components/ExternalLink.svelte";
-	import Tag from "../../lib/components/Tag.svelte";
-	import type { LearningSource } from "../../lib/types/courses";
-	import courseData from "./course.json";
-
-	const sources: LearningSource[] = (courseData as { learningSources: LearningSource[] }).learningSources;
+	import Badge from "../../lib/components/Badge.svelte";
+	import { learningSources } from "$lib/shared/learningSources";
 </script>
 
 <div class="about">
@@ -45,31 +42,31 @@
 			Outside of work, I’ve learned from:
 		</p>
 		<ul class="learning-sources">
-			{#each sources as source}
-				<li>
-					<div class="source-info">
-						{#if source.href}
-							<ExternalLink
-								textData={{ text: source.name, showIcon: true, location: "left" }}
-								linkData={{ href: source.href, ariaLabel: source.name, target: "_blank" }}
-							/>
-						{:else if source.links}
-							<span class="source-name">{source.name}</span>
-							<span class="source-links">
-								{#each source.links as link}
-									<ExternalLink
-										textData={{ text: link.text, showIcon: true, location: "left" }}
-										linkData={{ href: link.href, ariaLabel: `${source.name} ${link.text}`, target: "_blank" }}
-									/>
-								{/each}
-							</span>
-						{/if}
-					</div>
-					<div class="tags">
-						{#each source.tags as tag}
-							<Tag name={tag} />
+			{#each learningSources as source (source.name)}
+				<li class="source-card">
+					<h3 class="source-name">
+						<ExternalLink
+							textData={{ text: source.name, showIcon: true, location: "left" }}
+							linkData={{ href: source.href, ariaLabel: source.name, target: "_blank" }}
+						/>
+					</h3>
+					{#if source.notableWork}
+						<ExternalLink
+							textData={{ text: source.notableWork.text, showIcon: true, location: "left" }}
+							linkData={{
+								href: source.notableWork.href,
+								ariaLabel: `${source.name} — ${source.notableWork.text}`,
+								target: "_blank",
+								clazz: "notable-work",
+							}}
+							iconSize={16}
+						/>
+					{/if}
+					<ul class="subjects" aria-label={`Subjects taught by ${source.name}`}>
+						{#each source.subjects as subject (subject)}
+							<li><Badge variant="outline">{subject}</Badge></li>
 						{/each}
-					</div>
+					</ul>
 				</li>
 			{/each}
 		</ul>
@@ -164,38 +161,36 @@
 		padding: 0;
 		margin: 0;
 		display: grid;
-		gap: 1rem;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 1.5rem;
+
+		@media (max-width: 480px) {
+			gap: 1rem;
+		}
 	}
 
-	.learning-sources li {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		justify-content: space-between;
-		gap: 1rem;
-		padding: 0.75rem;
-		border: 1px solid var(--lightHairLine);
+	.source-card {
+		display: grid;
+		align-content: start;
+		gap: 0.5rem;
+		padding: 1rem;
+		background-color: var(--cardBg);
 		border-radius: var(--borderRadius);
 	}
 
-	.source-info {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: 0.75rem;
-	}
-
 	.source-name {
-		font-weight: 600;
+		margin: 0;
+		font-size: var(--bodyTextSize);
 	}
 
-	.source-links {
-		display: inline-flex;
-		flex-wrap: wrap;
-		gap: 0.5rem;
+	.source-card :global(.notable-work) {
+		font-size: var(--smallText);
 	}
 
-	.tags {
+	.subjects {
+		list-style: none;
+		padding: 0;
+		margin: 0;
 		display: flex;
 		flex-wrap: wrap;
 		gap: 0.5rem;
@@ -203,12 +198,12 @@
 	}
 
 	.cat-blurb {
-		font-size: 1.25rem;
+		font-size: 2.2rem;
 	}
 
 	@media (max-width: 480px) {
 		.cat-blurb {
-			font-size: 1.1rem;
+			font-size: var(--bodyTextSize);
 		}
 	}
 
@@ -256,6 +251,7 @@
 
 	figcaption {
 		margin-top: 0.5rem;
+		font-size: var(--bodyTextSize);
 	}
 
 	.center {

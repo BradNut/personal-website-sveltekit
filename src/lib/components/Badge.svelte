@@ -29,7 +29,6 @@
 		align-items: center;
 		border-radius: 2px;
 		padding: 0.25rem 0.5rem;
-		margin: 0.5rem;
 		font-size: 1.2rem;
 		font-weight: 800;
 		transition: all 0.2s;

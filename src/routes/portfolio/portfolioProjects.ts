@@ -4,7 +4,6 @@ export type PortfolioProjectLink = {
   iconKey?: 'github' | 'external';
   showIcon: boolean;
   text: string;
-  linkType?: 'repo' | 'site';
 };
 
 export type TechStackItem = {
@@ -73,7 +72,6 @@ export const portfolioProjects: PortfolioProject[] = [
         iconKey: 'external',
         showIcon: true,
         text: 'View Site',
-        linkType: 'site',
       },
       {
         ariaLabel: 'View GitHub repository for the wedding site',
@@ -81,7 +79,6 @@ export const portfolioProjects: PortfolioProject[] = [
         iconKey: 'github',
         showIcon: true,
         text: 'GitHub repository',
-        linkType: 'repo',
       },
     ],
     techStack: [
