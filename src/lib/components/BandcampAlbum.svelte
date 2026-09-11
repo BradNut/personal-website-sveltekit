@@ -55,7 +55,6 @@
     }
 
     @media (max-width: 550px) {
-      font-size: 1rem;
       align-items: center;
     }
   }
