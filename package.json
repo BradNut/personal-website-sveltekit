@@ -62,7 +62,7 @@
     "@resvg/resvg-js": "^2.6.2",
     "@sentry/node": "^10.70.0",
     "@sentry/sveltekit": "^10.70.0",
-    "@sveltejs/kit": "^2.70.2",
+    "@sveltejs/kit": "^3.0.0",
     "bits-ui": "2.18.1",
     "ioredis": "^6.0.0",
     "scrape-it": "^6.1.14",
