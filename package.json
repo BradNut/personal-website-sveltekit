@@ -46,7 +46,7 @@
     "postcss-import": "^16.2.0",
     "postcss-load-config": "^6.0.1",
     "postcss-preset-env": "^11.3.2",
-    "satori": "^0.29.0",
+    "satori": "^0.33.5",
     "satori-html": "^0.3.2",
     "storybook": "^10.5.8",
     "svelte-check": "^4.7.6",
