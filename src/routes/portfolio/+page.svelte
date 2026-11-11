@@ -13,10 +13,12 @@
 	import oldSiteImg from '../../lib/assets/images/portfolio/Old_Website_Bradley_Shellnut.png?enhanced';
 	import weddingWebsiteImg from '../../lib/assets/images/portfolio/Wedding_Website.png?enhanced';
 	import type { PageData } from './$types';
-	import type { PortfolioProjectLink } from './portfolioProjects';
 	import Portfolio from './Portfolio.svelte';
+	import type { PortfolioProject, PortfolioProjectLink } from './portfolioProjects';
 
 	const { data }: { data: PageData } = $props();
+
+	const categories: PortfolioProject['category'][] = ['personal', 'professional'];
 
 	const imageMap: Record<string, string | Picture> = {
 		personalSite: personalSiteImg,
@@ -52,76 +54,43 @@
 		<Tabs.Trigger value="personal"><span>Personal</span></Tabs.Trigger>
 		<Tabs.Trigger value="professional"><span>Professional</span></Tabs.Trigger>
 	</Tabs.List>
-	<Tabs.Content value="personal">
-		{#each data.projects.filter((p) => p.category === 'personal') as project}
-			<Portfolio
-				name={project.name}
-				style={project.style}
-				src={imageMap[project.imageKey]}
-				alt={project.alt}
-				loading={project.loading ?? 'lazy'}
-				externalLinks={resolveLinks(project.externalLinks)}
-			>
-				<section>
-					<h3>Tech stack:</h3>
-					<ul>
-						{#each project.techStack as item}
-							<li>
-								{#if item.href}
-									<ExternalLink
-										linkData={{ href: item.href, ariaLabel: item.label }}
-										textData={{ text: item.label, showIcon: true, location: 'left' }}
-									/>
-								{:else}
-									{item.label}
-								{/if}
-							</li>
+	{#each categories as category (category)}
+		<Tabs.Content value={category}>
+			{#each data.projects.filter((p) => p.category === category) as project (project.name)}
+				<Portfolio
+					name={project.name}
+					style={project.style}
+					src={imageMap[project.imageKey]}
+					alt={project.alt}
+					loading={project.loading ?? 'lazy'}
+					externalLinks={resolveLinks(project.externalLinks)}
+				>
+					<section>
+						<h3>Tech stack:</h3>
+						<ul>
+							{#each project.techStack as item (item.label)}
+								<li>
+									{#if item.href}
+										<ExternalLink
+											linkData={{ href: item.href, ariaLabel: item.label }}
+											textData={{ text: item.label, showIcon: true, location: 'left' }}
+										/>
+									{:else}
+										{item.label}
+									{/if}
+								</li>
+							{/each}
+						</ul>
+					</section>
+					<section class="portfolio-details">
+						{#each project.description as paragraph, i (i)}
+							<p>{paragraph}</p>
 						{/each}
-					</ul>
-				</section>
-				<section class="portfolio-details">
-					{#each project.description as paragraph}
-						<p>{paragraph}</p>
-					{/each}
-				</section>
-			</Portfolio>
-		{/each}
-	</Tabs.Content>
-	<Tabs.Content value="professional">
-		{#each data.projects.filter((p) => p.category === 'professional') as project}
-			<Portfolio
-				name={project.name}
-				style={project.style}
-				src={imageMap[project.imageKey]}
-				alt={project.alt}
-				loading={project.loading ?? 'lazy'}
-				externalLinks={resolveLinks(project.externalLinks)}
-			>
-				<section>
-					<h3>Tech stack:</h3>
-					<ul>
-						{#each project.techStack as item}
-							<li>
-								{#if item.href}
-									<ExternalLink
-										linkData={{ href: item.href, ariaLabel: item.label }}
-										textData={{ text: item.label, showIcon: true, location: 'left' }}
-									/>
-								{:else}
-									{item.label}
-								{/if}
-							</li>
-						{/each}
-					</ul>
-				</section>
-				<section class="portfolio-details">
-					{#each project.description as paragraph}
-						<p>{paragraph}</p>
-					{/each}
-				</section>
-			</Portfolio>
-		{/each}
-	</Tabs.Content>
+					</section>
+				</Portfolio>
+			{/each}
+		</Tabs.Content>
+	{/each}
 </Tabs.Root>
 
 <style lang="postcss">

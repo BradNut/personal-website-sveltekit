@@ -22,7 +22,7 @@ type LayoutNavOptions = {
   hoverLink: string;
 };
 
-async function resolveCssColor(page: Page, value: string): Promise<string> {
+function resolveCssColor(page: Page, value: string): Promise<string> {
   return page.evaluate((cssValue) => {
     const probe = document.createElement('div');
     probe.style.color = cssValue;
