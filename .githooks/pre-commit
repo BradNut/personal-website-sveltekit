@@ -1,0 +1,15 @@
+#!/bin/sh
+# Fast checks on staged files only: env-file guard, varlock secret scan, then Biome format + lint.
+set -e
+cd "$(git rev-parse --show-toplevel)"
+
+git diff --cached --name-only --diff-filter=ACMR | scripts/check-no-env-files.sh
+
+pnpm exec varlock scan
+
+node_modules/.bin/biome check --staged --no-errors-on-unmatched --colors=off || {
+  echo ""
+  echo "pre-commit: Biome found problems in staged files."
+  echo "Fix with: node_modules/.bin/biome check --write --staged   (then re-stage)"
+  exit 1
+}
