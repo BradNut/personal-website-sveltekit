@@ -3,7 +3,6 @@
 	import Bandcamp from "$lib/components/Bandcamp.svelte";
 	import type { Album } from "$lib/types/album";
 	import type { Article, ArticlePageLoad } from "$lib/types/article";
-	import type { PageData } from "./$types";
 
 	const { data } = $props();
 	let albums: Album[] = $derived(data.albums);

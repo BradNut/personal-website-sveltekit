@@ -17,7 +17,7 @@
 	<Accordion.Header level={2}>
 		<Accordion.Trigger>
 			{#snippet child({ props }: { props: Record<string, unknown> })}
-				<button {...props} class="uses-trigger">
+				<button type="button" {...props} class="uses-trigger">
 					{title}
 					<span class="uses-chevron" aria-hidden="true">
 						<ChevronDown />

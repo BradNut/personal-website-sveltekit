@@ -6,7 +6,8 @@
     "useIgnoreFile": true
   },
   "files": {
-    "ignoreUnknown": false
+    "ignoreUnknown": false,
+    "includes": ["**", "!src/lib/assets/**/*.svg"]
   },
   "formatter": {
     "enabled": true,
@@ -29,10 +30,17 @@
       "!**/package-lock.json",
       "!**/yarn.lock",
       "!**/paraglide/**",
-      "!**/*.svelte"
+      "!.agents"
     ]
   },
-  "assist": { "actions": { "source": { "organizeImports": "on" } } },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    },
+    "includes": ["**", "!.agents"]
+  },
   "linter": {
     "enabled": true,
     "rules": {
@@ -49,7 +57,8 @@
         "noInferrableTypes": "error",
         "noUselessElse": "error"
       }
-    }
+    },
+    "includes": ["**", "!.agents"]
   },
   "javascript": {
     "formatter": {
@@ -70,20 +79,12 @@
       "unsafeParameterDecoratorsEnabled": true
     }
   },
-  "overrides": [
-    {
-      "includes": ["**/*.svelte"],
-      "linter": {
-        "rules": {
-          "correctness": {
-            "noUnusedVariables": "off",
-            "noUnusedImports": "off"
-          },
-          "style": {
-            "useImportType": "off"
-          }
-        }
-      }
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
     }
-  ]
+  },
+  "html": {
+    "experimentalFullSupportEnabled": true
+  }
 }

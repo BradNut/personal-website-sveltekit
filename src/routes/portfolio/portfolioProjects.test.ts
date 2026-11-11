@@ -75,26 +75,24 @@ describe('portfolioProjects', () => {
   it('Personal Website links to Syntax Podcast Show 444', () => {
     const personal = portfolioProjects.find((p) => p.name === 'Personal Website');
     expect(personal).toBeDefined();
-    const hasSyntaxLink = personal?.externalLinks.some(
-      (link) => link.href === 'https://syntax.fm/show/444/syntax-highlight',
-    );
+    const hasSyntaxLink = personal?.externalLinks.some((link) => link.href === 'https://syntax.fm/show/444/syntax-highlight');
     expect(hasSyntaxLink).toBe(true);
   });
 
   it('product-named tech stack items use canonical hrefs', () => {
     const canonicalHrefs: Record<string, string> = {
-      'Coolify': 'https://coolify.io',
+      Coolify: 'https://coolify.io',
       'Next.js 13': 'https://nextjs.org',
       'React 18': 'https://react.dev',
-      'MongoDB': 'https://www.mongodb.com',
+      MongoDB: 'https://www.mongodb.com',
       'Styled Components': 'https://styled-components.com',
       'Next Iron Session': 'https://github.com/vvo/iron-session',
-      'React': 'https://react.dev',
-      'Redux': 'https://redux.js.org',
-      'ReactStrap': 'https://reactstrap.github.io',
+      React: 'https://react.dev',
+      Redux: 'https://redux.js.org',
+      ReactStrap: 'https://reactstrap.github.io',
       'React Router': 'https://reactrouter.com',
       'Gatsby 5': 'https://www.gatsbyjs.com',
-      'GraphQL': 'https://graphql.org',
+      GraphQL: 'https://graphql.org',
     };
     for (const project of portfolioProjects) {
       for (const item of project.techStack) {

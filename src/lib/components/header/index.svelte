@@ -13,7 +13,6 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		background-color: var(--darkGrey);
 		background: var(--headerBackground);
 		box-shadow: var(--level-2);
 		padding: 0 var(--containerPadding);
