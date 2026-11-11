@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { StatusCodes } from "$/lib/constants/status-codes";
+	import { StatusCodes } from "$lib/constants/status-codes";
 	import { page } from "$app/state";
 </script>
 

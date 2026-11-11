@@ -4,7 +4,6 @@ export type PortfolioProjectLink = {
   iconKey?: 'github' | 'external';
   showIcon: boolean;
   text: string;
-  linkType?: 'repo' | 'site';
 };
 
 export type TechStackItem = {
@@ -24,6 +23,21 @@ export type PortfolioProject = {
   description: string[];
 };
 
+const link = (iconKey: 'github' | 'external', text: string, ariaLabel: string, href: string): PortfolioProjectLink => ({
+  ariaLabel,
+  href,
+  iconKey,
+  showIcon: true,
+  text,
+});
+
+const TECH = {
+  react: { label: 'React', href: 'https://react.dev' },
+  react18: { label: 'React 18', href: 'https://react.dev' },
+  radix: { label: 'Radix UI', href: 'https://radix-ui.com/' },
+  styledComponents: { label: 'Styled Components', href: 'https://styled-components.com' },
+} satisfies Record<string, TechStackItem>;
+
 export const portfolioProjects: PortfolioProject[] = [
   {
     name: 'Personal Website',
@@ -33,24 +47,24 @@ export const portfolioProjects: PortfolioProject[] = [
     style: 'max-height: 550px;',
     loading: 'eager',
     externalLinks: [
-      {
-        ariaLabel: 'View GitHub repository for my personal website',
-        href: 'https://github.com/BradNut/personal-website-sveltekit',
-        iconKey: 'github',
-        showIcon: true,
-        text: 'GitHub repository',
-      },
+      link('github', 'GitHub repository', 'View GitHub repository for my personal website', 'https://github.com/BradNut/personal-website-sveltekit'),
+      link(
+        'external',
+        'Syntax Podcast Show 444',
+        'Listen to Syntax Podcast Show 444, Syntax Highlight',
+        'https://syntax.fm/show/444/syntax-highlight',
+      ),
     ],
     techStack: [
       { label: 'SvelteKit', href: 'https://kit.svelte.dev/' },
       { label: 'Bits-UI', href: 'https://bits-ui.com/' },
       { label: 'TypeScript', href: 'https://www.typescriptlang.org/' },
-      { label: 'Coolify' },
+      { label: 'Coolify', href: 'https://coolify.io' },
     ],
     description: [
-      'My personal website re-written using SvelteKit.',
-      'The previous version was written using React and Gatsby.',
-      'Each iteration brings better code and my previous React version was improved after the suggestions on Show 444 of the Syntax Podcast.',
+      'My personal website built with SvelteKit, Bits-UI, and TypeScript.',
+      'It is a living project that improves with each rewrite.',
+      'This version incorporates feedback from Syntax Podcast Show 444 — Syntax Highlight.',
     ],
   },
   {
@@ -60,30 +74,16 @@ export const portfolioProjects: PortfolioProject[] = [
     alt: 'Picture of NextJS Wedding Website',
     style: 'max-height: 550px;',
     externalLinks: [
-      {
-        ariaLabel: 'View live wedding site demo',
-        href: 'https://weddingsite-six.vercel.app/',
-        iconKey: 'external',
-        showIcon: true,
-        text: 'View Site',
-        linkType: 'site',
-      },
-      {
-        ariaLabel: 'View GitHub repository for the wedding site',
-        href: 'https://github.com/BradNut/weddingsite',
-        iconKey: 'github',
-        showIcon: true,
-        text: 'GitHub repository',
-        linkType: 'repo',
-      },
+      link('external', 'View Site', 'View live wedding site demo', 'https://weddingsite-six.vercel.app/'),
+      link('github', 'GitHub repository', 'View GitHub repository for the wedding site', 'https://github.com/BradNut/weddingsite'),
     ],
     techStack: [
-      { label: 'Next.js 13' },
-      { label: 'React 18' },
-      { label: 'Radix UI', href: 'https://radix-ui.com/' },
-      { label: 'MongoDB' },
-      { label: 'Styled Components' },
-      { label: 'Next Iron Session' },
+      { label: 'Next.js 13', href: 'https://nextjs.org' },
+      TECH.react18,
+      TECH.radix,
+      { label: 'MongoDB', href: 'https://www.mongodb.com' },
+      TECH.styledComponents,
+      { label: 'Next Iron Session', href: 'https://github.com/vvo/iron-session' },
     ],
     description: [
       'The app was initially created for my wedding but what is linked here is a public demo of the application.',
@@ -97,15 +97,19 @@ export const portfolioProjects: PortfolioProject[] = [
     alt: 'Home Page of the old bradleyshellnut.com website',
     style: 'max-height: 320px;',
     externalLinks: [
-      {
-        ariaLabel: 'Archive of bradleyshellnut.com',
-        href: 'https://web.archive.org/web/20201205233507/https://bradleyshellnut.com/about',
-        iconKey: 'github',
-        showIcon: true,
-        text: 'Link to an archive snapshot',
-      },
+      link(
+        'github',
+        'Link to an archive snapshot',
+        'Archive of bradleyshellnut.com',
+        'https://web.archive.org/web/20201205233507/https://bradleyshellnut.com/about',
+      ),
     ],
-    techStack: [{ label: 'React' }, { label: 'Redux' }, { label: 'ReactStrap' }, { label: 'React Router' }],
+    techStack: [
+      TECH.react,
+      { label: 'Redux', href: 'https://redux.js.org' },
+      { label: 'ReactStrap', href: 'https://reactstrap.github.io' },
+      { label: 'React Router', href: 'https://reactrouter.com' },
+    ],
     description: ['My first personal website.', 'This was my first real personal website hosted on DigitalOcean.'],
   },
   {
@@ -123,13 +127,12 @@ export const portfolioProjects: PortfolioProject[] = [
       },
     ],
     techStack: [
-      { label: 'React 18' },
-      { label: 'Gatsby 5' },
-      { label: 'Radix UI', href: 'https://radix-ui.com/' },
-      { label: 'Styled Components' },
-      { label: 'GraphQL' },
-      { label: 'Lambda Functions' },
+      TECH.react18,
+      { label: 'Gatsby 5', href: 'https://www.gatsbyjs.com' },
+      TECH.radix,
+      TECH.styledComponents,
+      { label: 'GraphQL', href: 'https://graphql.org' },
     ],
-    description: ['Company website for Mark Shellnut Architect.'],
+    description: ['Company website for Mark Shellnut Architect, built with Gatsby 5, React 18, and GraphQL.'],
   },
 ];

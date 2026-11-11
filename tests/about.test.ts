@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { registerLayoutNavTests } from './helpers/layoutNavTests';
 
 test.describe('About page', () => {
   test('has expected main heading', async ({ page }) => {
@@ -6,56 +7,7 @@ test.describe('About page', () => {
     await expect(page.getByRole('heading', { level: 1, name: 'About' })).toBeVisible();
   });
 
-  test('header/footer links hover: color becomes shellYellow', async ({ page }) => {
-    await page.goto('/about');
-
-    const shellYellow = await page.evaluate(() => {
-      const probe = document.createElement('div');
-      probe.style.color = 'var(--shellYellow)';
-      document.body.appendChild(probe);
-      const color = getComputedStyle(probe).color;
-      probe.remove();
-      return color;
-    });
-
-    const areas = ['nav[aria-label="header navigation"]', 'footer nav[aria-label="footer navigation"]'];
-
-    for (const area of areas) {
-      const nav = page.locator(area);
-      await expect(nav).toBeVisible();
-
-      const link = nav.getByRole('link', { name: 'Portfolio', exact: true });
-      await expect(link).toBeVisible();
-
-      const before = await link.evaluate((el) => {
-        const cs = getComputedStyle(el as Element);
-        return { color: cs.color };
-      });
-      await link.hover();
-      // Wait for color transition to complete (0.2s ease)
-      await page.waitForTimeout(300);
-      const after = await link.evaluate((el) => {
-        const cs = getComputedStyle(el as Element);
-        return { color: cs.color };
-      });
-
-      expect(after.color).toBe(shellYellow);
-      // Sanity: it should change from the default color
-      expect(after.color).not.toBe(before.color);
-    }
-  });
-
-  test('current page (About) link is active in header and footer', async ({ page }) => {
-    await page.goto('/about');
-    const areas = ['nav[aria-label="header navigation"]', 'footer nav[aria-label="footer navigation"]'];
-    for (const area of areas) {
-      const nav = page.locator(area);
-      const aboutLink = nav.getByRole('link', { name: 'About', exact: true });
-      await expect(aboutLink).toBeVisible();
-      const isActive = await aboutLink.evaluate((el) => (el as Element).classList.contains('active'));
-      expect(isActive).toBeTruthy();
-    }
-  });
+  registerLayoutNavTests({ path: '/about', activeLink: 'About', hoverLink: 'Portfolio' });
 
   test('tech list hover changes color to shellYellow', async ({ page }) => {
     await page.goto('/about');
@@ -100,106 +52,94 @@ test.describe('About page', () => {
     }
   });
 
-  test('tablet viewport (~800px): extracurricular wraps to multiple rows', async ({ page }) => {
-    await page.setViewportSize({ width: 800, height: 1000 });
+  test('shows extracurricular learning sources intro', async ({ page }) => {
     await page.goto('/about');
-    const container = page.locator('.extracurricular');
-    await expect(container).toBeVisible();
-    const cards = container.locator('.card');
+    await expect(page.getByText('Outside of work, I’ve learned from:')).toBeVisible();
+  });
+
+  test('renders one compact card per learning source', async ({ page }) => {
+    await page.goto('/about');
+    const list = page.locator('ul.learning-sources');
+    await expect(list).toBeVisible();
+    await expect(list.locator('> li.source-card')).toHaveCount(6);
+  });
+
+  test('learning source links point to expected URLs', async ({ page }) => {
+    await page.goto('/about');
+    const list = page.locator('ul.learning-sources');
+
+    const sources = [
+      { name: 'Wes Bos', href: 'https://wesbos.com/courses' },
+      { name: 'Scott Tolinski', href: 'https://tolin.ski' },
+      { name: 'Josh Comeau', href: 'https://www.joshwcomeau.com' },
+      { name: 'Amy Kapernick', href: 'https://www.amyskapers.dev/' },
+      { name: 'Matt Pocock', href: 'https://www.aihero.dev/' },
+      { name: 'Syntax', href: 'https://syntax.fm' },
+    ];
+
+    for (const expected of sources) {
+      const link = list.locator(`a[href="${expected.href}"]`);
+      await expect(link).toBeVisible();
+      await expect(link).toHaveText(new RegExp(expected.name));
+    }
+  });
+
+  test('learning source cards open their links in a new tab safely', async ({ page }) => {
+    await page.goto('/about');
+    const links = page.locator('ul.learning-sources a');
+    const count = await links.count();
+    expect(count).toBeGreaterThan(0);
+    for (let i = 0; i < count; i += 1) {
+      const link = links.nth(i);
+      await expect(link).toHaveAttribute('target', '_blank');
+      await expect(link).toHaveAttribute('href', /^https:\/\//);
+    }
+  });
+
+  test('notable works are shown for the sources that have one', async ({ page }) => {
+    await page.goto('/about');
+    const list = page.locator('ul.learning-sources');
+
+    await expect(list.locator('a[href="https://levelup.video"]')).toHaveText(/Level Up Tutorials/);
+    await expect(list.locator('a[href="https://www.joyofreact.com"]')).toHaveText(/The Joy of React/);
+    await expect(list.locator('a[href="https://www.youtube.com/watch?v=taJlPG82Ucw"]')).toBeVisible();
+  });
+
+  test('every learning source card lists at least one subject', async ({ page }) => {
+    await page.goto('/about');
+    const cards = page.locator('ul.learning-sources > li.source-card');
     const count = await cards.count();
-    expect(count).toBeGreaterThanOrEqual(3);
-    const [c0, c1, c2] = await Promise.all([cards.nth(0).boundingBox(), cards.nth(1).boundingBox(), cards.nth(2).boundingBox()]);
-    expect(c0 && c1 && c2).toBeTruthy();
-    if (c0 && c1 && c2) {
-      // first two side-by-side on same row, third wrapped below
-      expect(Math.abs(c0.y - c1.y)).toBeLessThan(10);
-      expect(c2.y).toBeGreaterThan(c0.y + 10);
+    expect(count).toBeGreaterThan(0);
+    for (let i = 0; i < count; i += 1) {
+      const subjects = cards.nth(i).locator('ul.subjects > li');
+      expect(await subjects.count()).toBeGreaterThan(0);
     }
   });
 
-  test('mobile viewport (375px): extracurricular cards stack vertically', async ({ page }) => {
-    await page.setViewportSize({ width: 375, height: 900 });
+  test('subjects render as low-emphasis outline badges, not filled ones', async ({ page }) => {
     await page.goto('/about');
-    const container = page.locator('.extracurricular');
-    const cards = container.locator('.card');
-    const count = await cards.count();
-    expect(count).toBeGreaterThanOrEqual(2);
-    const [a, b] = await Promise.all([cards.nth(0).boundingBox(), cards.nth(1).boundingBox()]);
-    expect(a && b).toBeTruthy();
-    if (a && b) {
-      expect(b.y).toBeGreaterThan(a.y + 10);
-      expect(Math.abs(b.x - a.x)).toBeLessThan(40);
+    const badges = page.locator('ul.learning-sources .badge');
+    const count = await badges.count();
+    expect(count).toBeGreaterThan(5);
+    for (let i = 0; i < count; i += 1) {
+      await expect(badges.nth(i)).toHaveClass(/badge-outline/);
+      await expect(badges.nth(i)).not.toHaveClass(/badge-default/);
     }
   });
 
-  // Mirror header link presence from home tests
-  test('header navigation shows expected links', async ({ page }) => {
+  test('learning source cards form a multi-column grid on desktop and stack on mobile', async ({ page }) => {
     await page.goto('/about');
-    const headerNav = page.locator('nav[aria-label="header navigation"]');
-    await expect(headerNav).toBeVisible();
-    await expect(headerNav.getByRole('link', { name: 'Home', exact: true })).toBeVisible();
-    await expect(headerNav.getByRole('link', { name: 'About', exact: true })).toBeVisible();
-    await expect(headerNav.getByRole('link', { name: 'Portfolio', exact: true })).toBeVisible();
-    await expect(headerNav.getByRole('link', { name: 'Uses', exact: true })).toBeVisible();
-  });
+    const list = page.locator('ul.learning-sources');
 
-  // Mirror header navigation flow from home tests (starting on /about)
-  test('header navigation links go to correct routes (from /about)', async ({ page }) => {
-    await page.goto('/about');
-    const headerNav = page.locator('nav[aria-label="header navigation"]');
+    const desktopColumns = await list.evaluate((el) => getComputedStyle(el as Element).gridTemplateColumns.split(' ').length);
+    expect(desktopColumns).toBeGreaterThan(1);
 
-    await headerNav.getByRole('link', { name: 'Portfolio', exact: true }).click();
-    await expect(page).toHaveURL(/\/portfolio\/?$/);
+    await page.setViewportSize({ width: 375, height: 800 });
+    const mobileColumns = await list.evaluate((el) => getComputedStyle(el as Element).gridTemplateColumns.split(' ').length);
+    expect(mobileColumns).toBe(1);
 
-    await headerNav.getByRole('link', { name: 'Uses', exact: true }).click();
-    await expect(page).toHaveURL(/\/uses\/?$/);
-
-    await headerNav.getByRole('link', { name: 'Home', exact: true }).click();
-    await expect(page).toHaveURL(/\/?$/);
-
-    await headerNav.getByRole('link', { name: 'About', exact: true }).click();
-    await expect(page).toHaveURL(/\/about\/?$/);
-  });
-
-  // Mirror footer link presence from home tests
-  test('footer shows expected links', async ({ page }) => {
-    await page.goto('/about');
-    const footerNav = page.getByRole('navigation', { name: 'footer navigation' });
-    await expect(footerNav).toBeVisible();
-    await expect(footerNav.getByRole('link', { name: 'Home', exact: true })).toBeVisible();
-    await expect(footerNav.getByRole('link', { name: 'About', exact: true })).toBeVisible();
-    await expect(footerNav.getByRole('link', { name: 'Portfolio', exact: true })).toBeVisible();
-    await expect(footerNav.getByRole('link', { name: 'Uses', exact: true })).toBeVisible();
-    await expect(footerNav.getByRole('link', { name: 'Privacy', exact: true })).toBeVisible();
-    await expect(footerNav.getByRole('link', { name: 'Favorite Articles', exact: true })).toBeVisible();
-  });
-
-  // Mirror footer navigation flow from home tests (starting on /about)
-  test('footer navigation links go to correct routes (from /about)', async ({ page }) => {
-    await page.goto('/about');
-    const footerNav = page.getByRole('navigation', { name: 'footer navigation' });
-
-    await footerNav.getByRole('link', { name: 'Privacy', exact: true }).scrollIntoViewIfNeeded();
-    await footerNav.getByRole('link', { name: 'Privacy', exact: true }).click();
-    await expect(page).toHaveURL(/\/privacy\/?$/);
-
-    // Favorite Articles may route to /articles or /articles/1
-    const fav = footerNav.getByRole('link', { name: 'Favorite Articles', exact: true });
-    await fav.scrollIntoViewIfNeeded();
-    const href = await fav.getAttribute('href');
-    expect(href).toMatch(/\/articles(\/\d+)?\/?$/);
-    if (href) {
-      await page.goto(href);
-    }
-    await expect(page).toHaveURL(/\/articles(\/\d+)?\/?$/, { timeout: 15000 });
-
-    await footerNav.getByRole('link', { name: 'About', exact: true }).scrollIntoViewIfNeeded();
-    await footerNav.getByRole('link', { name: 'About', exact: true }).click();
-    await expect(page).toHaveURL(/\/about\/?$/);
-
-    await footerNav.getByRole('link', { name: 'Home', exact: true }).scrollIntoViewIfNeeded();
-    await footerNav.getByRole('link', { name: 'Home', exact: true }).click();
-    await expect(page).toHaveURL(/\/?$/);
+    const overflowX = await list.evaluate((el) => el.scrollWidth - el.clientWidth);
+    expect(overflowX).toBeLessThanOrEqual(2);
   });
 
   // Mobile viewport: ensure cat section has no horizontal overflow and second image fits viewport

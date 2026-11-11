@@ -74,27 +74,25 @@ describe('ExternalLink title attribute', () => {
 });
 
 describe('ExternalLink with ProjectLink prop', () => {
-  it('infers svg icon type when linkType is repo', () => {
+  it('renders an inline svg for a snippet icon', () => {
     const projectLink: ProjectLink = {
       ariaLabel: 'GitHub repo',
       href: 'https://github.com/example/repo',
-      icon: svgSnippet as unknown as Snippet,
+      icon: { type: 'svg', icon: svgSnippet as unknown as () => unknown },
       showIcon: true,
       text: 'GitHub repository',
-      linkType: 'repo',
     };
     const { body } = render(ExternalLink, { props: { projectLink } as any });
     expect(body).toContain('<svg');
   });
 
-  it('infers icon type when linkType is site', () => {
+  it('renders a Lucide component icon without treating it as a snippet', () => {
     const projectLink: ProjectLink = {
       ariaLabel: 'View live site',
       href: 'https://example.com',
-      icon: ExternalLinkIcon,
+      icon: { type: 'icon', icon: ExternalLinkIcon },
       showIcon: true,
       text: 'View Site',
-      linkType: 'site',
     };
     const { body } = render(ExternalLink, { props: { projectLink } as any });
     expect(body).toContain('lucide-icon');

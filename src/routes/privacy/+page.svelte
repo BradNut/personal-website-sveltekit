@@ -18,22 +18,22 @@
 			textData={{ text: "Umami Analytics", showIcon: true, location: "left" }}
 			linkData={{ href: "https://umami.is", ariaLabel: "Umami Analytics" }}
 		/> to anonymously track visits to my site. You can completely block this if you
-		want by either using an AdBlocker like <ExternalLink
+		want by either using AdBlockers like <ExternalLink
 			textData={{ text: "uBlock Origin", showIcon: true, location: "left" }}
 			linkData={{
 				href: "https://ublockorigin.com/",
 				ariaLabel: "uBlock Origin",
 			}}
-		/>. Sending "Do Not Track" requests in your browser is supported but not
-		overall it is not recommended to turn this on since it can be used to
-		fingerprint you on the web.
+		/>, or by sending "Do Not Track" requests in your browser. While these
+		requests are supported, it is not recommended to turn this on since it can be
+		used to fingerprint you on the web.
 	</p>
 	<p>
 		I am also using a self hosted instance of <ExternalLink
 			textData={{ text: "Bugsink", showIcon: true, location: "left" }}
 			linkData={{ href: "https://bugsink.com", ariaLabel: "Bugsink" }}
 		/> to collect and store any bugs or issues that occur on my site. Given this
-		is using the OpenSource Sentry project most AbBlockers can block this if you
+		is using the open-source Sentry project, most AdBlockers can block this if you
 		desire.
 	</p>
 </section>

@@ -13,19 +13,11 @@
 	const isProjectLink = (p: Props): p is { projectLink: ProjectLink; iconSize?: number } =>
 		"projectLink" in p;
 
-	function inferIconData(link: ProjectLink): LinkIconType | undefined {
-		if (!link.icon) return undefined;
-		if (link.linkType === "site") {
-			return { type: "icon", icon: link.icon as import("@lucide/svelte").LucideIcon };
-		}
-		return { type: "svg", icon: link.icon as () => unknown };
-	}
-
 	const defaultIconData: LinkIconType = { type: "icon", icon: ExternalLink };
 
 	const iconData = $derived(
 		isProjectLink(rawProps)
-			? (inferIconData(rawProps.projectLink) ?? defaultIconData)
+			? (rawProps.projectLink.icon ?? defaultIconData)
 			: (rawProps.iconData ?? defaultIconData),
 	);
 	const linkData = $derived(

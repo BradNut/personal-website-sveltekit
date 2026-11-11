@@ -1,0 +1,13 @@
+# Snyk (https://snyk.io) policy file
+version: v1.25.0
+ignore:
+  SNYK-JS-FFLATE-22392372:
+    - '*':
+        reason: >-
+          Not reachable. The only fflate import in @shuding/opentype.js (via satori) is inflateSync, used for
+          WOFF font decompression; the vulnerable unzipSync is never called. renderImage.ts loads a single
+          bundled TTF, so no user-supplied archives or fonts are processed. No fixed fflate release exists;
+          re-evaluate on expiry.
+        expires: 2027-02-09T00:00:00.000Z
+        created: 2026-11-11T00:00:00.000Z
+patch: {}

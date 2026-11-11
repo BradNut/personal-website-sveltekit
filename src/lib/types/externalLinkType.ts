@@ -1,11 +1,9 @@
-import type { LucideIcon as IconType } from '@lucide/svelte';
-import type { Snippet } from 'svelte';
+import type { LinkIconType } from './externalLinkTypes';
 
 export type ProjectLink = {
   ariaLabel: string;
   href: string;
-  icon?: Snippet | IconType;
+  icon?: LinkIconType;
   showIcon: boolean;
   text: string;
-  linkType?: 'repo' | 'site';
 };

@@ -4,11 +4,9 @@
 	import tortie_derp from "../../lib/assets/images/tortie_derp.jpg?enhanced";
 	import turnip from "../../lib/assets/images/turnip.svg?enhanced";
 	import TechStack from "../../lib/components/TechStack.svelte";
-	import type { Course } from "../../lib/types/courses";
-	import CourseCard from "./CourseCard.svelte";
-	import courseData from "./course.json";
-
-	const courses: Course[] = (courseData as { courses: Course[] }).courses;
+	import ExternalLink from "../../lib/components/ExternalLink.svelte";
+	import Badge from "../../lib/components/Badge.svelte";
+	import { learningSources } from "$lib/shared/learningSources";
 </script>
 
 <div class="about">
@@ -41,14 +39,37 @@
 	<section aria-labelledby="extracurricular-heading">
 		<h2 id="extracurricular-heading">Extracurricular</h2>
 		<p>
-			Outside of work I like to take tutorials from many instructors like those
-			below:
+			Outside of work, I’ve learned from:
 		</p>
-		<div class="extracurricular">
-			{#each courses as course}
-				<CourseCard {course} />
+		<ul class="learning-sources">
+			{#each learningSources as source (source.name)}
+				<li class="source-card">
+					<h3 class="source-name">
+						<ExternalLink
+							textData={{ text: source.name, showIcon: true, location: "left" }}
+							linkData={{ href: source.href, ariaLabel: source.name, target: "_blank" }}
+						/>
+					</h3>
+					{#if source.notableWork}
+						<ExternalLink
+							textData={{ text: source.notableWork.text, showIcon: true, location: "left" }}
+							linkData={{
+								href: source.notableWork.href,
+								ariaLabel: `${source.name} — ${source.notableWork.text}`,
+								target: "_blank",
+								clazz: "notable-work",
+							}}
+							iconSize={16}
+						/>
+					{/if}
+					<ul class="subjects" aria-label={`Subjects taught by ${source.name}`}>
+						{#each source.subjects as subject (subject)}
+							<li><Badge variant="outline">{subject}</Badge></li>
+						{/each}
+					</ul>
+				</li>
 			{/each}
-		</div>
+		</ul>
 	</section>
 	<Separator.Root class="about-separator" decorative={true} />
 	<section aria-labelledby="fun-things-heading">
@@ -58,7 +79,7 @@
 			<div class="flag-emojis">🇹🇼 🇯🇵 🌸</div>
 		</div>
 		<div>
-			<p>Hanging out with these two cats, Turnip and Taco.</p>
+			<p class="cat-blurb">Hanging out with these two cats, Turnip and Taco.</p>
 			<div class="cat-pics">
 				<figure>
 					<AspectRatio.Root ratio={4 / 3} class="cat-aspect-root">
@@ -135,19 +156,54 @@
 		}
 	}
 
-	.extracurricular {
-		display: flex;
-		flex-wrap: wrap;
-		place-content: center;
+	.learning-sources {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 		gap: 1.5rem;
 
-		:global(.card) {
-			max-width: 350px;
-			flex: 1 1 300px;
-		}
-
-		@media (max-width: 768px) {
+		@media (max-width: 480px) {
 			gap: 1rem;
+		}
+	}
+
+	.source-card {
+		display: grid;
+		align-content: start;
+		gap: 0.5rem;
+		padding: 1rem;
+		background-color: var(--cardBg);
+		border-radius: var(--borderRadius);
+	}
+
+	.source-name {
+		margin: 0;
+		font-size: var(--bodyTextSize);
+	}
+
+	.source-card :global(.notable-work) {
+		font-size: var(--smallText);
+	}
+
+	.subjects {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		align-items: center;
+	}
+
+	.cat-blurb {
+		font-size: 2.2rem;
+	}
+
+	@media (max-width: 480px) {
+		.cat-blurb {
+			font-size: var(--bodyTextSize);
 		}
 	}
 
@@ -195,6 +251,7 @@
 
 	figcaption {
 		margin-top: 0.5rem;
+		font-size: var(--bodyTextSize);
 	}
 
 	.center {

@@ -127,6 +127,8 @@
     flex-direction: row;
     justify-content: left;
     align-items: center;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
 
     & span {
       font-size: var(--smallText);
