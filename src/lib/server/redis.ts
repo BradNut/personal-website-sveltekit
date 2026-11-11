@@ -1,5 +1,6 @@
 import { Redis } from 'ioredis';
 import { ENV } from 'varlock/env';
+import { building } from '$app/environment';
 
 const NAMESPACE = 'personal-website';
 
@@ -10,12 +11,25 @@ export const REDIS_PREFIXES = {
 } as const;
 
 class RedisService {
-  public readonly redis: Redis | null;
-  private readonly namespace: string;
+  private readonly namespace = NAMESPACE;
+  // undefined = not created yet; null = caching disabled (or running during `vite build`)
+  private client: Redis | null | undefined;
 
-  constructor() {
-    this.redis = ENV.USE_REDIS_CACHE && ENV.REDIS_URI ? new Redis(ENV.REDIS_URI) : null;
-    this.namespace = NAMESPACE;
+  /**
+   * Created on first use rather than at import: SvelteKit imports server modules while
+   * analysing routes during `vite build`, where the Redis host is unreachable.
+   */
+  private get redis(): Redis | null {
+    if (this.client === undefined) {
+      this.client = building || !ENV.USE_REDIS_CACHE || !ENV.REDIS_URI ? null : this.connect(ENV.REDIS_URI);
+    }
+    return this.client;
+  }
+
+  private connect(uri: string): Redis {
+    const redis = new Redis(uri);
+    redis.on('error', (error) => console.error('[redis] connection error:', error.message));
+    return redis;
   }
 
   private buildKey(prefix: string, key: string): string {
@@ -43,14 +57,15 @@ class RedisService {
   }
 
   async scan(data: { prefix: string; pattern: string }): Promise<string[]> {
-    if (!this.redis) return [];
+    const redis = this.redis;
+    if (!redis) return [];
 
     const keys: string[] = [];
     const scanPattern = `${this.namespace}:${data.prefix}:${data.pattern}`;
     let cursor = '0';
 
     do {
-      const result = await this.redis.scan(cursor, 'MATCH', scanPattern, 'COUNT', 100);
+      const result = await redis.scan(cursor, 'MATCH', scanPattern, 'COUNT', 100);
       cursor = result[0];
       const foundKeys = result[1];
 

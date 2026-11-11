@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { StatusCodes } from "$lib/constants/status-codes";
 	import { page } from "$app/state";
+	import { StatusCodes } from "$lib/constants/status-codes";
 </script>
 
 {#if page.status === StatusCodes.NOT_FOUND}

@@ -105,7 +105,7 @@
 	</a>
 {/snippet}
 
-{#snippet linkIcon({ type, icon, iconClass }: LinkIconType, size: number = 20)}
+{#snippet linkIcon({ type, icon, iconClass }: LinkIconType, size = 20)}
 	{#if type === "svg" && icon && typeof icon === "function"}
 		<svg
 			style="width: {size}px; height: {size}px;"
