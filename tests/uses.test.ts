@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { registerLayoutNavTests } from './helpers/layoutNavTests';
 
 test.describe('Uses page', () => {
   test('has expected main heading', async ({ page }) => {
@@ -6,49 +7,7 @@ test.describe('Uses page', () => {
     await expect(page.getByRole('heading', { level: 1, name: '/Uses' })).toBeVisible();
   });
 
-  test('header/footer links hover: color becomes shellYellow', async ({ page }) => {
-    await page.goto('/uses');
-
-    const shellYellow = await page.evaluate(() => {
-      const probe = document.createElement('div');
-      probe.style.color = 'var(--shellYellow)';
-      document.body.appendChild(probe);
-      const color = getComputedStyle(probe).color;
-      probe.remove();
-      return color;
-    });
-
-    const areas = ['nav[aria-label="header navigation"]', 'footer nav[aria-label="footer navigation"]'];
-
-    for (const area of areas) {
-      const nav = page.locator(area);
-      await expect(nav).toBeVisible();
-
-      const link = nav.getByRole('link', { name: 'Uses', exact: true });
-      await expect(link).toBeVisible();
-
-      const before = await link.evaluate((el) => getComputedStyle(el as Element).color);
-      await link.hover();
-      // Wait for color transition to complete (0.2s ease)
-      await page.waitForTimeout(300);
-      const after = await link.evaluate((el) => getComputedStyle(el as Element).color);
-
-      expect(after).toBe(shellYellow);
-      expect(after).not.toBe(before);
-    }
-  });
-
-  test('current page (Uses) link is active in header and footer', async ({ page }) => {
-    await page.goto('/uses');
-    const areas = ['nav[aria-label="header navigation"]', 'footer nav[aria-label="footer navigation"]'];
-    for (const area of areas) {
-      const nav = page.locator(area);
-      const usesLink = nav.getByRole('link', { name: 'Uses', exact: true });
-      await expect(usesLink).toBeVisible();
-      const isActive = await usesLink.evaluate((el) => (el as Element).classList.contains('active'));
-      expect(isActive).toBeTruthy();
-    }
-  });
+  registerLayoutNavTests({ path: '/uses', activeLink: 'Uses', hoverLink: 'Uses' });
 
   test('hero image visible with correct alt text', async ({ page }) => {
     await page.goto('/uses');
@@ -67,11 +26,7 @@ test.describe('Uses page', () => {
   test('uses page sections are accordion triggers', async ({ page }) => {
     await page.goto('/uses');
 
-    const sections = [
-      'Hardware & Accessories',
-      'Development',
-      'Privacy Hardware and Software',
-    ];
+    const sections = ['Hardware & Accessories', 'Development', 'Privacy Hardware and Software'];
 
     for (const name of sections) {
       await expect(page.getByRole('button', { name, exact: true })).toBeVisible();
@@ -146,75 +101,5 @@ test.describe('Uses page', () => {
     for (const pattern of expectedLinks) {
       await expect(devSection.getByRole('link', { name: pattern })).toBeVisible();
     }
-  });
-
-  // Header nav presence
-  test('header navigation shows expected links', async ({ page }) => {
-    await page.goto('/uses');
-    const headerNav = page.locator('nav[aria-label="header navigation"]');
-    await expect(headerNav).toBeVisible();
-    await expect(headerNav.getByRole('link', { name: 'Home', exact: true })).toBeVisible();
-    await expect(headerNav.getByRole('link', { name: 'About', exact: true })).toBeVisible();
-    await expect(headerNav.getByRole('link', { name: 'Portfolio', exact: true })).toBeVisible();
-    await expect(headerNav.getByRole('link', { name: 'Uses', exact: true })).toBeVisible();
-  });
-
-  // Header navigation flow (starting on /uses)
-  test('header navigation links go to correct routes (from /uses)', async ({ page }) => {
-    await page.goto('/uses');
-    const headerNav = page.locator('nav[aria-label="header navigation"]');
-
-    await headerNav.getByRole('link', { name: 'About', exact: true }).click();
-    await expect(page).toHaveURL(/\/about\/?$/);
-
-    await headerNav.getByRole('link', { name: 'Portfolio', exact: true }).click();
-    await expect(page).toHaveURL(/\/portfolio\/?$/);
-
-    await headerNav.getByRole('link', { name: 'Home', exact: true }).click();
-    await expect(page).toHaveURL(/\/?$/);
-
-    await headerNav.getByRole('link', { name: 'Uses', exact: true }).click();
-    await expect(page).toHaveURL(/\/uses\/?$/);
-  });
-
-  // Footer link presence
-  test('footer shows expected links', async ({ page }) => {
-    await page.goto('/uses');
-    const footerNav = page.getByRole('navigation', { name: 'footer navigation' });
-    await expect(footerNav).toBeVisible();
-    await expect(footerNav.getByRole('link', { name: 'Home', exact: true })).toBeVisible();
-    await expect(footerNav.getByRole('link', { name: 'About', exact: true })).toBeVisible();
-    await expect(footerNav.getByRole('link', { name: 'Portfolio', exact: true })).toBeVisible();
-    await expect(footerNav.getByRole('link', { name: 'Uses', exact: true })).toBeVisible();
-    await expect(footerNav.getByRole('link', { name: 'Privacy', exact: true })).toBeVisible();
-    await expect(footerNav.getByRole('link', { name: 'Favorite Articles', exact: true })).toBeVisible();
-  });
-
-  // Footer navigation flow (starting on /uses)
-  test('footer navigation links go to correct routes (from /uses)', async ({ page }) => {
-    await page.goto('/uses');
-    const footerNav = page.getByRole('navigation', { name: 'footer navigation' });
-
-    await footerNav.getByRole('link', { name: 'Privacy', exact: true }).scrollIntoViewIfNeeded();
-    await footerNav.getByRole('link', { name: 'Privacy', exact: true }).click();
-    await expect(page).toHaveURL(/\/privacy\/?$/);
-
-    const fav = footerNav.getByRole('link', { name: 'Favorite Articles', exact: true });
-    await fav.scrollIntoViewIfNeeded();
-    const href = await fav.getAttribute('href');
-    expect(href).toBeTruthy();
-    if (href) {
-      expect(href).toMatch(/\/articles(\/\d+)?\/?$/);
-      await page.goto(href);
-      await expect(page).toHaveURL(/\/articles(\/\d+)?\/?$/, { timeout: 15000 });
-    }
-
-    await footerNav.getByRole('link', { name: 'About', exact: true }).scrollIntoViewIfNeeded();
-    await footerNav.getByRole('link', { name: 'About', exact: true }).click();
-    await expect(page).toHaveURL(/\/about\/?$/);
-
-    await footerNav.getByRole('link', { name: 'Home', exact: true }).scrollIntoViewIfNeeded();
-    await footerNav.getByRole('link', { name: 'Home', exact: true }).click();
-    await expect(page).toHaveURL(/\/?$/);
   });
 });

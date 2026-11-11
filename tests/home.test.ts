@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { registerLayoutNavTests } from './helpers/layoutNavTests';
 
 test.describe('Home page', () => {
   test('has expected main heading', async ({ page }) => {
@@ -6,86 +7,7 @@ test.describe('Home page', () => {
     await expect(page.locator('h1')).toHaveText("Hello! I'm Bradley Shellnut.");
   });
 
-  test('header/footer links hover: color becomes shellYellow', async ({ page }) => {
-    await page.goto('/');
-
-    const shellYellow = await page.evaluate(() => {
-      const probe = document.createElement('div');
-      probe.style.color = 'var(--shellYellow)';
-      document.body.appendChild(probe);
-      const color = getComputedStyle(probe).color;
-      probe.remove();
-      return color;
-    });
-
-    const areas = ['nav[aria-label="header navigation"]', 'footer nav[aria-label="footer navigation"]'];
-
-    for (const area of areas) {
-      const nav = page.locator(area);
-      await expect(nav).toBeVisible();
-
-      const link = nav.getByRole('link', { name: 'Portfolio', exact: true });
-      await expect(link).toBeVisible();
-
-      const before = await link.evaluate((el) => {
-        const cs = getComputedStyle(el);
-        return { color: cs.color };
-      });
-      await link.hover();
-      // Wait for color transition to complete (0.2s ease)
-      await page.waitForTimeout(300);
-      const after = await link.evaluate((el) => {
-        const cs = getComputedStyle(el);
-        return { color: cs.color };
-      });
-
-      expect(after.color).toBe(shellYellow);
-      expect(after.color).not.toBe(before.color);
-    }
-  });
-
-  test('current page (Home) link is active in header and footer', async ({ page }) => {
-    await page.goto('/');
-    const areas = ['nav[aria-label="header navigation"]', 'footer nav[aria-label="footer navigation"]'];
-    for (const area of areas) {
-      const nav = page.locator(area);
-      const link = nav.getByRole('link', { name: 'Home', exact: true });
-      await expect(link).toBeVisible();
-      const isActive = await link.evaluate((el) => el.classList.contains('active'));
-      expect(isActive).toBeTruthy();
-    }
-  });
-
-  test('header navigation links go to correct routes', async ({ page }) => {
-    await page.goto('/');
-    const headerNav = page.locator('nav[aria-label="header navigation"]');
-
-    // About
-    await headerNav.getByRole('link', { name: 'About', exact: true }).click();
-    await expect(page).toHaveURL(/\/about\/?$/);
-
-    // Portfolio
-    await headerNav.getByRole('link', { name: 'Portfolio', exact: true }).click();
-    await expect(page).toHaveURL(/\/portfolio\/?$/);
-
-    // Uses
-    await headerNav.getByRole('link', { name: 'Uses', exact: true }).click();
-    await expect(page).toHaveURL(/\/uses\/?$/);
-
-    // Home
-    await headerNav.getByRole('link', { name: 'Home', exact: true }).click();
-    await expect(page).toHaveURL(/\/?$/);
-  });
-
-  test('header navigation shows expected links', async ({ page }) => {
-    await page.goto('/');
-    const headerNavContainer = page.locator('nav[aria-label="header navigation"]');
-    await expect(headerNavContainer).toBeVisible();
-    await expect(headerNavContainer.getByRole('link', { name: 'Home', exact: true })).toBeVisible();
-    await expect(headerNavContainer.getByRole('link', { name: 'About', exact: true })).toBeVisible();
-    await expect(headerNavContainer.getByRole('link', { name: 'Portfolio', exact: true })).toBeVisible();
-    await expect(headerNavContainer.getByRole('link', { name: 'Uses', exact: true })).toBeVisible();
-  });
+  registerLayoutNavTests({ path: '/', activeLink: 'Home', hoverLink: 'Portfolio' });
 
   test('header navigation uses bits-ui navigation-menu structure', async ({ page }) => {
     await page.goto('/');
@@ -253,18 +175,6 @@ test.describe('Home page', () => {
     await page.goto('/');
     await expect(page.getByRole('link', { name: 'Contact through LinkedIn', exact: true })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Contact through Github', exact: true })).toBeVisible();
-  });
-
-  test('footer shows expected links', async ({ page }) => {
-    await page.goto('/');
-    const footerNav = page.getByRole('navigation', { name: 'footer navigation' });
-    await expect(footerNav).toBeVisible();
-    await expect(footerNav.getByRole('link', { name: 'Home', exact: true })).toBeVisible();
-    await expect(footerNav.getByRole('link', { name: 'About', exact: true })).toBeVisible();
-    await expect(footerNav.getByRole('link', { name: 'Portfolio', exact: true })).toBeVisible();
-    await expect(footerNav.getByRole('link', { name: 'Uses', exact: true })).toBeVisible();
-    await expect(footerNav.getByRole('link', { name: 'Privacy', exact: true })).toBeVisible();
-    await expect(footerNav.getByRole('link', { name: 'Favorite Articles', exact: true })).toBeVisible();
   });
 
   test('small viewport: Bandcamp grid 2x3 above Articles', async ({ page }) => {
