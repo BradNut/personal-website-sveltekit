@@ -44,7 +44,8 @@ async function getCachedResponse(cacheKey: string): Promise<ArticlePageLoad | nu
   // Cache hit, return cached payload with TTL-derived cache-control
   const response = JSON.parse(cached);
   const ttl = await redisService.ttl({ prefix: REDIS_PREFIXES.ARTICLES, key: cacheKey });
-  return { ...response, cacheControl: `max-age=${ttl}` };
+  // ttl <= 0: expired, no expiry set, or the TTL lookup failed open; don't send max-age=0 or negative
+  return { ...response, cacheControl: ttl > 0 ? `max-age=${ttl}` : 'no-cache' };
 }
 
 /** How long to stop calling Wallabag after a failure, so a dead upstream can't stall every page. */
