@@ -89,4 +89,20 @@ describe('load (articles [page])', () => {
 
     expect(capturedHeaders['cache-control']).toBe('no-cache');
   });
+
+  it('sends no-cache when the requested page result is marked no-cache, even if the layout result is cacheable', async () => {
+    fetchArticlesMock.mockResolvedValueOnce({
+      articles: [],
+      currentPage: 3,
+      totalPages: 4,
+      limit: 10,
+      totalArticles: 37,
+      cacheControl: 'no-cache',
+    });
+
+    const { args, capturedHeaders } = makeLoadArgs('3', 'max-age=120');
+    await load(args);
+
+    expect(capturedHeaders['cache-control']).toBe('no-cache');
+  });
 });

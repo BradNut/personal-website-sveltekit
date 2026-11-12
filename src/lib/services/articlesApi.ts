@@ -1,5 +1,6 @@
 import intersect from 'just-intersect';
 import { ENV } from 'varlock/env';
+import { ARTICLES_CACHE_TTL_SECONDS, NO_CACHE } from '$lib/constants/cache-control';
 import { REDIS_PREFIXES, redisService } from '$lib/server/redis';
 import type { Article, ArticlePageLoad, WallabagArticle } from '$lib/types/article';
 import { ArticleTag } from '$lib/types/articleTag';
@@ -224,11 +225,25 @@ export async function fetchArticles(queryParams: Record<string, string>): Promis
     console.info(`Wallabag entries: page=${page} pages=${pages} total=${total} limit=${limit}`);
 
     const articles = mapWallabagArticles(favoriteArticles.items as WallabagArticle[]);
-    const responseData: ArticlePageLoad = { articles, currentPage: page, totalPages: pages, limit, totalArticles: total, cacheControl };
+    // An empty list is never cacheable: if every entry was filtered out, a 12-hour header would keep it around after a fix
+    const cacheable = articles.length > 0;
+    const responseData: ArticlePageLoad = {
+      articles,
+      currentPage: page,
+      totalPages: pages,
+      limit,
+      totalArticles: total,
+      cacheControl: cacheable ? cacheControl : NO_CACHE,
+    };
 
-    if (ENV.USE_REDIS_CACHE && articles.length > 0) {
+    if (ENV.USE_REDIS_CACHE && cacheable) {
       console.log(`Storing in cache with key: ${cacheKey} for page ${page}`);
-      await redisService.setWithExpiry({ prefix: REDIS_PREFIXES.ARTICLES, key: cacheKey, value: JSON.stringify(responseData), expiry: 43200 });
+      await redisService.setWithExpiry({
+        prefix: REDIS_PREFIXES.ARTICLES,
+        key: cacheKey,
+        value: JSON.stringify(responseData),
+        expiry: ARTICLES_CACHE_TTL_SECONDS,
+      });
     }
 
     return responseData;

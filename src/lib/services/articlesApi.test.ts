@@ -221,6 +221,25 @@ describe('fetchArticles', () => {
     expect(result.articles.map((article) => article.title)).toEqual(['Article 1']);
   });
 
+  it('marks the result no-cache and skips Redis when every entry is filtered out, even if Wallabag says cacheable', async () => {
+    redisGet.mockResolvedValueOnce(null);
+
+    const entriesJson = makeWallabagResponse();
+    entriesJson._embedded.items[0].tags = [{ id: 2, label: 'Cooking', slug: 't:cooking' }];
+    const pageResponse = {
+      ok: true,
+      headers: { get: (k: string) => (k.toLowerCase() === 'cache-control' ? 'max-age=120' : null) },
+      json: async () => entriesJson,
+    };
+    globalThis.fetch = vi.fn().mockResolvedValueOnce(authOk()).mockResolvedValueOnce(pageResponse);
+
+    const result = await fetchArticles({ page: '1', limit: '10' });
+
+    expect(result.articles).toEqual([]);
+    expect(result.cacheControl).toBe('no-cache');
+    expect(redisSetWithExpiry).not.toHaveBeenCalled();
+  });
+
   it('clamps perPage to PAGE_SIZE when limit is out of range', async () => {
     redisGet.mockResolvedValueOnce(null);
 
