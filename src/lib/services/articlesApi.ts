@@ -21,7 +21,9 @@ function resolvePerPage(limit: string | undefined): number {
 
 function buildEntriesParams(queryParams: Record<string, string>): URLSearchParams {
   const pageQuery: PageQuery = {
-    sort: 'updated',
+    // created_at is when the article was saved; updated_at was bulk-rewritten during the Wallabag migration
+    sort: 'created',
+    order: 'desc',
     perPage: resolvePerPage(queryParams?.limit),
     since: 0,
     page: Number(queryParams?.page) || 1,
@@ -30,6 +32,7 @@ function buildEntriesParams(queryParams: Record<string, string>): URLSearchParam
   };
   return new URLSearchParams({
     sort: pageQuery.sort,
+    order: pageQuery.order,
     perPage: `${pageQuery.perPage}`,
     since: `${pageQuery.since}`,
     page: `${pageQuery.page}`,
