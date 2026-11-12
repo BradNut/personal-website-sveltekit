@@ -159,6 +159,19 @@ await redisService.scan({ prefix, pattern })          // → string[] (keys with
 
 Graceful degradation: all ops no-op if `USE_REDIS_CACHE !== 'true'` or Redis is unreachable.
 
+### Response cache
+
+External data services (`articlesApi`, `bandcampApi`) cache through `src/lib/server/responseCache.ts`, not `redisService` directly:
+
+```typescript
+const cache = createResponseCache<Payload>({ prefix: REDIS_PREFIXES.X, ttlSeconds: 43200 });
+await cache.read(key)          // → { value, cacheControl } | null (miss, disabled, unreachable, or unreadable entry)
+await cache.write(key, value)  // JSON with the cache TTL as expiry
+cache.freshCacheControl        // `max-age=<ttlSeconds>`
+```
+
+A hit sends `max-age=<remaining TTL>`. If the TTL is 0 or negative (expired, no expiry, lookup failed), it sends `no-cache`, never a zero or negative `max-age`.
+
 ---
 
 ## Rate Limiting

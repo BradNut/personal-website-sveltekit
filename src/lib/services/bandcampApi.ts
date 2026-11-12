@@ -1,28 +1,18 @@
 import scrapeIt, { type ScrapeResult } from 'scrape-it';
 import { ENV } from 'varlock/env';
-import { REDIS_PREFIXES, redisService } from '$lib/server/redis';
+import { NO_CACHE } from '$lib/constants/cache-control';
+import { REDIS_PREFIXES } from '$lib/server/redis';
+import { createResponseCache } from '$lib/server/responseCache';
 import type { Album, BandCampResults } from '$lib/types/album';
 import { retryWithBackoff } from '$lib/util/retry';
 
 const CACHE_KEY = 'albums';
-const CACHE_TTL_SECONDS = 43200; // 12 hours
-const FALLBACK_CACHE_CONTROL = `max-age=${CACHE_TTL_SECONDS}`;
+const albumsCache = createResponseCache<Album[]>({ prefix: REDIS_PREFIXES.BANDCAMP_ALBUMS, ttlSeconds: 43200 }); // 12 hours
 
 export type AlbumsResult = {
   albums: Album[];
   cacheControl: string;
 };
-
-async function getCachedAlbums(): Promise<AlbumsResult | null> {
-  if (!ENV.USE_REDIS_CACHE) return null;
-
-  const cached = await redisService.get({ prefix: REDIS_PREFIXES.BANDCAMP_ALBUMS, key: CACHE_KEY });
-  if (!cached) return null;
-
-  const albums: Album[] = JSON.parse(cached);
-  const ttl = await redisService.ttl({ prefix: REDIS_PREFIXES.BANDCAMP_ALBUMS, key: CACHE_KEY });
-  return { albums, cacheControl: ttl ? `max-age=${ttl}` : FALLBACK_CACHE_CONTROL };
-}
 
 async function scrapeAlbums(): Promise<Album[]> {
   const { data }: ScrapeResult<BandCampResults> = await retryWithBackoff(
@@ -45,27 +35,20 @@ async function scrapeAlbums(): Promise<Album[]> {
 
 export async function fetchAlbums(): Promise<AlbumsResult> {
   try {
-    const cached = await getCachedAlbums();
-    if (cached) return cached;
+    const cached = await albumsCache.read(CACHE_KEY);
+    if (cached) return { albums: cached.value, cacheControl: cached.cacheControl };
 
     const albums = await scrapeAlbums();
 
     if (albums.length === 0) {
-      return { albums: [], cacheControl: 'no-cache' };
+      return { albums: [], cacheControl: NO_CACHE };
     }
 
-    if (ENV.USE_REDIS_CACHE) {
-      await redisService.setWithExpiry({
-        prefix: REDIS_PREFIXES.BANDCAMP_ALBUMS,
-        key: CACHE_KEY,
-        value: JSON.stringify(albums),
-        expiry: CACHE_TTL_SECONDS,
-      });
-    }
+    await albumsCache.write(CACHE_KEY, albums);
 
-    return { albums, cacheControl: FALLBACK_CACHE_CONTROL };
+    return { albums, cacheControl: albumsCache.freshCacheControl };
   } catch (error) {
     console.error(error);
-    return { albums: [], cacheControl: 'no-cache' };
+    return { albums: [], cacheControl: NO_CACHE };
   }
 }

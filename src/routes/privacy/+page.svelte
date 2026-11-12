@@ -18,7 +18,7 @@
 			textData={{ text: "Umami Analytics", showIcon: true, location: "left" }}
 			linkData={{ href: "https://umami.is", ariaLabel: "Umami Analytics" }}
 		/> to anonymously track visits to my site. You can completely block this if you
-		want by either using AdBlockers like <ExternalLink
+		want by either using ad blockers like <ExternalLink
 			textData={{ text: "uBlock Origin", showIcon: true, location: "left" }}
 			linkData={{
 				href: "https://ublockorigin.com/",
@@ -33,7 +33,7 @@
 			textData={{ text: "Bugsink", showIcon: true, location: "left" }}
 			linkData={{ href: "https://bugsink.com", ariaLabel: "Bugsink" }}
 		/> to collect and store any bugs or issues that occur on my site. Given this
-		is using the open-source Sentry project, most AdBlockers can block this if you
+		uses the open-source Sentry SDK, most ad blockers can block this if you
 		desire.
 	</p>
 </section>
