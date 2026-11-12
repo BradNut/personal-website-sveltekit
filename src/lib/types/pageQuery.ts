@@ -1,5 +1,6 @@
 export type PageQuery = {
-  sort: string;
+  sort: 'created' | 'updated' | 'archived';
+  order: 'asc' | 'desc';
   perPage: number;
   since: number;
   page: number;

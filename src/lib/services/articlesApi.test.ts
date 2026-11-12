@@ -256,6 +256,24 @@ describe('fetchArticles', () => {
     expect(calledUrl).toContain('perPage=10');
   });
 
+  it('asks Wallabag for entries newest-added first', async () => {
+    redisGet.mockResolvedValueOnce(null);
+
+    const entriesJson = { _embedded: { items: [] }, page: 1, pages: 0, total: 0, limit: 10 };
+    const authResponse = { ok: true, json: async () => ({ access_token: 'token' }) };
+    const pageResponse = { ok: true, headers: { get: () => null }, json: async () => entriesJson };
+
+    const fetchMock = vi.fn().mockResolvedValueOnce(authResponse).mockResolvedValueOnce(pageResponse);
+    globalThis.fetch = fetchMock as unknown as typeof globalThis.fetch;
+
+    await fetchArticles({ page: '1', limit: '10' });
+
+    // updated_at was rewritten in bulk on the old Wallabag host, so only created_at reflects when an article was added
+    const params = new URL(fetchMock.mock.calls[1][0] as string).searchParams;
+    expect(params.get('sort')).toBe('created');
+    expect(params.get('order')).toBe('desc');
+  });
+
   it('fetches from API and stores in cache on cache miss', async () => {
     // Cache miss
     redisGet.mockResolvedValueOnce(null);
