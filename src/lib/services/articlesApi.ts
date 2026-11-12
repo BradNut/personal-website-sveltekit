@@ -47,51 +47,123 @@ async function getCachedResponse(cacheKey: string): Promise<ArticlePageLoad | nu
   return { ...response, cacheControl: `max-age=${ttl}` };
 }
 
-async function authenticateWallabag(): Promise<{ access_token: string }> {
-  return retryWithBackoff(async () => {
-    const authResponse = await fetch(getTokenUrl(), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
-        grant_type: 'password',
-        client_id: ENV.WALLABAG_CLIENT_ID ?? '',
-        client_secret: ENV.WALLABAG_CLIENT_SECRET,
-        username: ENV.WALLABAG_USERNAME,
-        password: ENV.WALLABAG_PASSWORD,
-      }),
-      signal: AbortSignal.timeout(10000), // 10 second timeout
-    });
+/** How long to stop calling Wallabag after a failure, so a dead upstream can't stall every page. */
+const WALLABAG_COOLDOWN_MS = 5 * 60 * 1000;
+/** Refresh the access token this long before Wallabag says it expires. */
+const TOKEN_EXPIRY_MARGIN_MS = 60 * 1000;
 
-    if (!authResponse.ok) {
-      throw new Error(`Auth failed: ${authResponse.status} ${authResponse.statusText}`);
-    }
+class WallabagHttpError extends Error {
+  constructor(
+    readonly step: 'auth' | 'entries',
+    readonly status: number,
+    statusText: string,
+  ) {
+    super(`Wallabag ${step} request failed: ${status} ${statusText}`);
+    this.name = 'WallabagHttpError';
+  }
+}
 
-    return await authResponse.json();
+/**
+ * Retry only transient failures. A timeout already waited the full deadline, and a 4xx
+ * (bad credentials, expired token) won't change on retry; repeated failed logins are
+ * also what gets an IP rate-limited or banned.
+ */
+function isRetryable(error: unknown): boolean {
+  if (error instanceof Error && (error.name === 'TimeoutError' || error.name === 'AbortError')) return false;
+  if (error instanceof WallabagHttpError && error.status < 500) return false;
+  return true;
+}
+
+type CachedToken = { accessToken: string; expiresAt: number };
+
+let cachedToken: CachedToken | null = null;
+let pendingAuth: Promise<CachedToken> | null = null;
+let unavailableUntil = 0;
+
+async function requestAccessToken(): Promise<CachedToken> {
+  return retryWithBackoff(
+    async () => {
+      const authResponse = await fetch(getTokenUrl(), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          grant_type: 'password',
+          client_id: ENV.WALLABAG_CLIENT_ID ?? '',
+          client_secret: ENV.WALLABAG_CLIENT_SECRET,
+          username: ENV.WALLABAG_USERNAME,
+          password: ENV.WALLABAG_PASSWORD,
+        }),
+        signal: AbortSignal.timeout(10000), // 10 second timeout
+      });
+
+      if (!authResponse.ok) {
+        throw new WallabagHttpError('auth', authResponse.status, authResponse.statusText);
+      }
+
+      const { access_token, expires_in }: { access_token: string; expires_in?: number } = await authResponse.json();
+      const lifetimeMs = (Number(expires_in) || 0) * 1000;
+      return { accessToken: access_token, expiresAt: Date.now() + lifetimeMs - TOKEN_EXPIRY_MARGIN_MS };
+    },
+    3,
+    500,
+    { shouldRetry: isRetryable },
+  );
+}
+
+/** Reuses the access token until shortly before expiry; concurrent callers share one login. */
+async function getAccessToken(): Promise<{ accessToken: string; reused: boolean }> {
+  if (cachedToken && cachedToken.expiresAt > Date.now()) {
+    return { accessToken: cachedToken.accessToken, reused: true };
+  }
+
+  pendingAuth ??= requestAccessToken().finally(() => {
+    pendingAuth = null;
   });
+  const token = await pendingAuth;
+  cachedToken = token.expiresAt > Date.now() ? token : null;
+  return { accessToken: token.accessToken, reused: false };
 }
 
 async function fetchWallabagEntries(accessToken: string, params: URLSearchParams) {
-  return retryWithBackoff(async () => {
-    const requestUrl = `${getEntriesUrl()}?${params}`;
-    const pageResponse = await fetch(requestUrl, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        Accept: 'application/json',
-      },
-      signal: AbortSignal.timeout(15000), // 15 second timeout
-    });
+  return retryWithBackoff(
+    async () => {
+      const requestUrl = `${getEntriesUrl()}?${params}`;
+      const pageResponse = await fetch(requestUrl, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Accept: 'application/json',
+        },
+        signal: AbortSignal.timeout(15000), // 15 second timeout
+      });
 
-    if (!pageResponse.ok) {
-      // Log status only to avoid leaking headers/body
-      console.warn(`Wallabag entries request failed: ${pageResponse.status} ${pageResponse.statusText}`);
-      throw new Error(`API request failed: ${pageResponse.status} ${pageResponse.statusText}`);
-    }
+      if (!pageResponse.ok) {
+        // Log status only to avoid leaking headers/body
+        console.warn(`Wallabag entries request failed: ${pageResponse.status} ${pageResponse.statusText}`);
+        throw new WallabagHttpError('entries', pageResponse.status, pageResponse.statusText);
+      }
 
-    const cacheControl = pageResponse.headers.get('cache-control') || 'no-cache';
-    const wallabagResponse = await pageResponse.json();
-    return { wallabagResponse, cacheControl };
-  });
+      const cacheControl = pageResponse.headers.get('cache-control') || 'no-cache';
+      const wallabagResponse = await pageResponse.json();
+      return { wallabagResponse, cacheControl };
+    },
+    3,
+    500,
+    { shouldRetry: isRetryable },
+  );
+}
+
+/** Fetches entries, logging in again once if a reused token has been revoked or expired early. */
+async function fetchEntriesWithAuth(params: URLSearchParams) {
+  const { accessToken, reused } = await getAccessToken();
+  try {
+    return await fetchWallabagEntries(accessToken, params);
+  } catch (error) {
+    if (!(reused && error instanceof WallabagHttpError && error.status === 401)) throw error;
+    cachedToken = null;
+    const fresh = await getAccessToken();
+    return fetchWallabagEntries(fresh.accessToken, params);
+  }
 }
 
 function mapWallabagArticles(items: WallabagArticle[]): Article[] {
@@ -135,8 +207,11 @@ export async function fetchArticles(queryParams: Record<string, string>): Promis
     const cachedResponse = await getCachedResponse(cacheKey);
     if (cachedResponse) return cachedResponse;
 
-    const auth = await authenticateWallabag();
-    const { wallabagResponse, cacheControl } = await fetchWallabagEntries(auth.access_token, entriesQueryParams);
+    if (Date.now() < unavailableUntil) {
+      return buildFallbackResponse(queryParams);
+    }
+
+    const { wallabagResponse, cacheControl } = await fetchEntriesOrCoolDown(entriesQueryParams);
     const { _embedded: favoriteArticles, page, pages, total, limit } = wallabagResponse;
 
     // Minimal, non-sensitive diagnostics
@@ -154,5 +229,16 @@ export async function fetchArticles(queryParams: Record<string, string>): Promis
   } catch (error) {
     console.error(`Error fetching articles for page ${queryParams?.page}:`, error);
     return buildFallbackResponse(queryParams);
+  }
+}
+
+/** Calls Wallabag; on failure, skips it for WALLABAG_COOLDOWN_MS so every page doesn't wait on a dead upstream. */
+async function fetchEntriesOrCoolDown(params: URLSearchParams) {
+  try {
+    return await fetchEntriesWithAuth(params);
+  } catch (error) {
+    unavailableUntil = Date.now() + WALLABAG_COOLDOWN_MS;
+    console.warn(`Wallabag unavailable; skipping requests for ${WALLABAG_COOLDOWN_MS / 1000}s`);
+    throw error;
   }
 }

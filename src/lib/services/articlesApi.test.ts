@@ -36,7 +36,8 @@ vi.mock('$lib/server/redis', () => ({
   },
 }));
 
-import { fetchArticles } from './articlesApi';
+// The service keeps module-level state (access token, cool-down), so load a fresh copy per test.
+let fetchArticles: typeof import('./articlesApi').fetchArticles;
 
 type MockResponse<T> = {
   ok: boolean;
@@ -78,7 +79,9 @@ const makeCachedResponse = () => ({
 
 const originalFetch: typeof globalThis.fetch = globalThis.fetch;
 
-beforeEach(() => {
+beforeEach(async () => {
+  vi.resetModules();
+  ({ fetchArticles } = await import('./articlesApi'));
   vi.useFakeTimers();
   redisGet.mockReset();
   redisSetWithExpiry.mockReset();
@@ -231,5 +234,145 @@ describe('fetchArticles', () => {
 
     expect(fetchMock).toHaveBeenCalledTimes(2);
     expect(redisSetWithExpiry).toHaveBeenCalled();
+  });
+});
+
+const authOk = (expiresIn?: number) => ({
+  ok: true,
+  json: async () => ({ access_token: 'token', ...(expiresIn ? { expires_in: expiresIn } : {}) }),
+});
+const entriesOk = () => ({ ok: true, headers: { get: () => null }, json: async () => makeWallabagResponse() });
+const timeoutError = () => Object.assign(new Error('The operation was aborted due to timeout'), { name: 'TimeoutError' });
+
+describe('fetchArticles — Wallabag auth and failure handling', () => {
+  beforeEach(() => {
+    redisGet.mockResolvedValue(null);
+  });
+
+  it('reuses the access token until it expires', async () => {
+    const fetchMock = vi.fn().mockResolvedValueOnce(authOk(3600)).mockResolvedValueOnce(entriesOk()).mockResolvedValueOnce(entriesOk());
+    globalThis.fetch = fetchMock as unknown as typeof globalThis.fetch;
+
+    await fetchArticles({ page: '1', limit: '10' });
+    await fetchArticles({ page: '2', limit: '10' });
+
+    const tokenCalls = fetchMock.mock.calls.filter(([url]) => String(url).includes('/oauth/v2/token'));
+    expect(tokenCalls).toHaveLength(1);
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+  });
+
+  it('logs in again once the token has expired', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(authOk(3600))
+      .mockResolvedValueOnce(entriesOk())
+      .mockResolvedValueOnce(authOk(3600))
+      .mockResolvedValueOnce(entriesOk());
+    globalThis.fetch = fetchMock as unknown as typeof globalThis.fetch;
+
+    await fetchArticles({ page: '1', limit: '10' });
+    vi.advanceTimersByTime(3600 * 1000);
+    await fetchArticles({ page: '1', limit: '10' });
+
+    const tokenCalls = fetchMock.mock.calls.filter(([url]) => String(url).includes('/oauth/v2/token'));
+    expect(tokenCalls).toHaveLength(2);
+  });
+
+  it('shares one login between concurrent requests', async () => {
+    const fetchMock = vi.fn((url: string) => Promise.resolve(String(url).includes('/oauth/v2/token') ? authOk(3600) : entriesOk()));
+    globalThis.fetch = fetchMock as unknown as typeof globalThis.fetch;
+
+    await Promise.all([fetchArticles({ page: '1', limit: '3' }), fetchArticles({ page: '1', limit: '10' })]);
+
+    const tokenCalls = fetchMock.mock.calls.filter(([url]) => String(url).includes('/oauth/v2/token'));
+    expect(tokenCalls).toHaveLength(1);
+  });
+
+  it('logs in again once when a reused token is rejected with 401', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(authOk(3600))
+      .mockResolvedValueOnce(entriesOk())
+      .mockResolvedValueOnce({ ok: false, status: 401, statusText: 'Unauthorized' })
+      .mockResolvedValueOnce(authOk(3600))
+      .mockResolvedValueOnce(entriesOk());
+    globalThis.fetch = fetchMock as unknown as typeof globalThis.fetch;
+
+    await fetchArticles({ page: '1', limit: '10' });
+    const result = await fetchArticles({ page: '1', limit: '10' });
+
+    expect(result.articles.length).toBeGreaterThan(0);
+    expect(fetchMock).toHaveBeenCalledTimes(5);
+  });
+
+  it('does not retry a timed-out login', async () => {
+    const fetchMock = vi.fn().mockRejectedValue(timeoutError());
+    globalThis.fetch = fetchMock as unknown as typeof globalThis.fetch;
+
+    const resultPromise = fetchArticles({ page: '1', limit: '10' });
+    await vi.runAllTimersAsync();
+    const result = await resultPromise;
+
+    expect(result.articles).toEqual([]);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not retry a login rejected with a 4xx', async () => {
+    const fetchMock = vi.fn().mockResolvedValue({ ok: false, status: 400, statusText: 'Bad Request' });
+    globalThis.fetch = fetchMock as unknown as typeof globalThis.fetch;
+
+    const resultPromise = fetchArticles({ page: '1', limit: '10' });
+    await vi.runAllTimersAsync();
+    await resultPromise;
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('retries a login that fails with a 5xx', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce({ ok: false, status: 503, statusText: 'Service Unavailable' })
+      .mockResolvedValueOnce(authOk(3600))
+      .mockResolvedValueOnce(entriesOk());
+    globalThis.fetch = fetchMock as unknown as typeof globalThis.fetch;
+
+    const resultPromise = fetchArticles({ page: '1', limit: '10' });
+    await vi.runAllTimersAsync();
+    const result = await resultPromise;
+
+    expect(result.articles.length).toBeGreaterThan(0);
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+  });
+
+  it('skips Wallabag for 5 minutes after a failure, then tries again', async () => {
+    const fetchMock = vi.fn().mockRejectedValueOnce(timeoutError()).mockResolvedValueOnce(authOk(3600)).mockResolvedValueOnce(entriesOk());
+    globalThis.fetch = fetchMock as unknown as typeof globalThis.fetch;
+
+    const first = fetchArticles({ page: '1', limit: '10' });
+    await vi.runAllTimersAsync();
+    await first;
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+
+    const duringCooldown = await fetchArticles({ page: '1', limit: '10' });
+    expect(duringCooldown.articles).toEqual([]);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+
+    vi.advanceTimersByTime(5 * 60 * 1000);
+    const afterCooldown = await fetchArticles({ page: '1', limit: '10' });
+    expect(afterCooldown.articles.length).toBeGreaterThan(0);
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+  });
+
+  it('still serves cached articles during the cool-down', async () => {
+    globalThis.fetch = vi.fn().mockRejectedValue(timeoutError()) as unknown as typeof globalThis.fetch;
+    const first = fetchArticles({ page: '1', limit: '10' });
+    await vi.runAllTimersAsync();
+    await first;
+
+    redisGet.mockResolvedValueOnce(JSON.stringify(makeCachedResponse()));
+    redisTtl.mockResolvedValueOnce(60);
+    const result = await fetchArticles({ page: '1', limit: '10' });
+
+    expect(result.cacheControl).toBe('max-age=60');
   });
 });
