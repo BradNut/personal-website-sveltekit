@@ -167,13 +167,18 @@ async function fetchEntriesWithAuth(params: URLSearchParams) {
   }
 }
 
+/** Self-hosted Wallabag 2.6+ prefixes every tag slug with `t:`; wallabag.it does not. */
+function normaliseTagSlug(slug: string): string {
+  return slug.replace(/^t:/i, '').toLowerCase();
+}
+
 function mapWallabagArticles(items: WallabagArticle[]): Article[] {
   const validTags = Object.values(ArticleTag);
   return items.reduce<Article[]>((acc, article) => {
-    const rawTags = article?.tags?.map((tag) => tag.slug);
-    if (intersect(rawTags, validTags)?.length > 0) {
+    const tagSlugs = (article?.tags ?? []).map((tag) => normaliseTagSlug(tag.slug));
+    if (intersect(tagSlugs, validTags).length > 0) {
       acc.push({
-        tags: rawTags.map((rawTag) => rawTag as unknown as ArticleTag),
+        tags: tagSlugs.map((slug) => slug as unknown as ArticleTag),
         title: article.title,
         url: new URL(article.url),
         domain_name: article.domain_name?.replace('www.', '') ?? '',
