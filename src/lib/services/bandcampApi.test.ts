@@ -1,36 +1,29 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { cacheFailures, timed } from '$lib/server/testing/fakeIoredis';
 
 const scrapeItMock = vi.fn();
-const redisGet = vi.fn();
-const redisTtl = vi.fn();
-const redisSetWithExpiry = vi.fn();
 
 vi.mock('varlock/env', () => ({
   initVarlockEnv: vi.fn(),
   ENV: {
     USE_REDIS_CACHE: true,
+    REDIS_URI: 'redis://test-host:6379',
     BANDCAMP_USERNAME: 'testuser',
   },
 }));
 
 vi.mock('scrape-it', () => ({ default: (...args: unknown[]) => scrapeItMock(...args) }));
 
-vi.mock('$lib/server/redis', () => ({
-  redisService: {
-    get: (d: unknown) => redisGet(d),
-    ttl: (d: unknown) => redisTtl(d),
-    setWithExpiry: (d: unknown) => redisSetWithExpiry(d),
-    set: vi.fn(),
-    delete: vi.fn(),
-    scan: vi.fn(),
-    redis: null,
-  },
-  REDIS_PREFIXES: {
-    ARTICLES: 'articles',
-    BANDCAMP_ALBUMS: 'bandcampAlbums',
-    PAGE_CACHE: 'pageCache',
-  },
-}));
+// Fake the ioredis boundary so the real redisService (and its fail-open handling) runs
+const { fake } = await vi.hoisted(async () => {
+  const { createFakeIoredis } = await import('$lib/server/testing/fakeIoredis');
+  return { fake: createFakeIoredis() };
+});
+vi.mock('ioredis', () => ({ Redis: fake.Redis }));
+vi.mock('$app/environment', () => ({ building: false }));
+const redisGet = fake.commands.get;
+const redisTtl = fake.commands.ttl;
+const redisSetWithExpiry = fake.commands.set;
 
 vi.mock('$lib/util/retry', () => ({
   retryWithBackoff: (fn: () => Promise<unknown>) => fn(),
@@ -103,4 +96,39 @@ describe('fetchAlbums', () => {
     expect(result.albums).toEqual([]);
     expect(result.cacheControl).toBe('no-cache');
   });
+});
+
+describe('fetchAlbums — Redis unavailable', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  for (const [failure, command] of Object.entries(cacheFailures)) {
+    it(`scrapes fresh albums within a second when the cache read ${failure}`, async () => {
+      redisGet.mockImplementation(command);
+      scrapeItMock.mockResolvedValueOnce({ data: { collectionItems: [makeAlbum()] } });
+
+      const { value, elapsedMs } = await timed(fetchAlbums());
+
+      expect(value.albums).toHaveLength(1);
+      expect(elapsedMs).toBeLessThanOrEqual(1000);
+    });
+
+    it(`still returns the scraped albums when the cache write ${failure}`, async () => {
+      redisGet.mockResolvedValue(null);
+      redisSetWithExpiry.mockImplementation(command);
+      scrapeItMock.mockResolvedValueOnce({ data: { collectionItems: [makeAlbum()] } });
+
+      const { value, elapsedMs } = await timed(fetchAlbums());
+
+      expect(value.albums).toHaveLength(1);
+      expect(value.cacheControl).toBe('max-age=43200');
+      expect(elapsedMs).toBeLessThanOrEqual(1000);
+    });
+  }
 });
