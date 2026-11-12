@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { hang, timed } from '$lib/server/testing/fakeIoredis';
+import { cacheFailures, timed } from '$lib/server/testing/fakeIoredis';
 
 // Mock varlock/env used by the service
 vi.mock('varlock/env', () => ({
@@ -100,6 +100,19 @@ describe('fetchArticles', () => {
     expect(redisGet).toHaveBeenCalledTimes(1);
     expect(globalThis.fetch).not.toHaveBeenCalled();
   });
+
+  for (const ttl of [0, -1, -2]) {
+    it(`returns no-cache on cache hit when the TTL is ${ttl}`, async () => {
+      redisGet.mockResolvedValueOnce(JSON.stringify(makeCachedResponse()));
+      redisTtl.mockResolvedValueOnce(ttl);
+      globalThis.fetch = vi.fn() as unknown as typeof globalThis.fetch;
+
+      const result = await fetchArticles({ page: '1', limit: '10' });
+
+      expect(result.cacheControl).toBe('no-cache');
+      expect(globalThis.fetch).not.toHaveBeenCalled();
+    });
+  }
 
   it('returns fallback empty response when auth fetch throws', async () => {
     redisGet.mockResolvedValueOnce(null);
@@ -369,11 +382,6 @@ describe('fetchArticles — Wallabag auth and failure handling', () => {
 });
 
 describe('fetchArticles — Redis unavailable', () => {
-  const cacheFailures = {
-    throws: () => Promise.reject(new Error('ECONNREFUSED')),
-    'times out': hang,
-  };
-
   beforeEach(() => {
     vi.spyOn(console, 'warn').mockImplementation(() => {});
   });

@@ -1,9 +1,14 @@
+import type { RedisOptions } from 'ioredis';
 import { vi } from 'vitest';
-
-type RedisOptions = { commandTimeout?: number };
 
 /** Never settles: stands in for a command stuck behind an unreachable Redis. */
 export const hang = () => new Promise<never>(() => {});
+
+/** The ways a cache command can fail while Redis is unavailable, keyed by test-name fragment. */
+export const cacheFailures = {
+  throws: () => Promise.reject(new Error('ECONNREFUSED')),
+  'times out': hang,
+};
 
 /**
  * Test double for the `ioredis` boundary. Like the real client, a command that gets no
@@ -13,12 +18,6 @@ export function createFakeIoredis() {
   const commands = { get: vi.fn(), set: vi.fn(), ttl: vi.fn(), del: vi.fn(), scan: vi.fn() };
   const constructed = vi.fn();
   const connection = { status: 'ready' };
-
-  function withCommandTimeout<T>(reply: Promise<T>, options: RedisOptions): Promise<T> {
-    const { commandTimeout } = options;
-    if (typeof commandTimeout !== 'number') return reply;
-    return Promise.race([reply, new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Command timed out')), commandTimeout))]);
-  }
 
   class Redis {
     private readonly options: RedisOptions;
@@ -32,20 +31,18 @@ export function createFakeIoredis() {
     on() {
       return this;
     }
-    get(...args: unknown[]) {
-      return withCommandTimeout(Promise.resolve(commands.get(...args)), this.options);
-    }
-    set(...args: unknown[]) {
-      return withCommandTimeout(Promise.resolve(commands.set(...args)), this.options);
-    }
-    ttl(...args: unknown[]) {
-      return withCommandTimeout(Promise.resolve(commands.ttl(...args)), this.options);
-    }
-    del(...args: unknown[]) {
-      return withCommandTimeout(Promise.resolve(commands.del(...args)), this.options);
-    }
-    scan(...args: unknown[]) {
-      return withCommandTimeout(Promise.resolve(commands.scan(...args)), this.options);
+    get = (...args: unknown[]) => this.send('get', args);
+    set = (...args: unknown[]) => this.send('set', args);
+    ttl = (...args: unknown[]) => this.send('ttl', args);
+    del = (...args: unknown[]) => this.send('del', args);
+    scan = (...args: unknown[]) => this.send('scan', args);
+
+    /** One reply path for every command: the stubbed reply, raced against `commandTimeout` if set. */
+    private send(name: keyof typeof commands, args: unknown[]) {
+      const reply = Promise.resolve(commands[name](...args));
+      const { commandTimeout } = this.options;
+      if (typeof commandTimeout !== 'number') return reply;
+      return Promise.race([reply, new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Command timed out')), commandTimeout))]);
     }
   }
 

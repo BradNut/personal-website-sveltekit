@@ -12,7 +12,7 @@ const COMMAND_TIMEOUT_MS = 500;
 /** How long one connection attempt may take before ioredis gives up and schedules a retry. */
 const CONNECT_TIMEOUT_MS = 1000;
 /** Connection states in which Redis is known to be down; commands are skipped instead of queued. */
-const UNAVAILABLE_STATUSES = new Set(['reconnecting', 'close', 'end']);
+const UNAVAILABLE_STATUSES: ReadonlySet<Redis['status']> = new Set<Redis['status']>(['reconnecting', 'close', 'end']);
 
 export const REDIS_PREFIXES = {
   ARTICLES: 'articles',
@@ -56,41 +56,41 @@ class RedisService {
    * Runs a cache command, failing open: if Redis is down, slow, or errors, returns `fallback`
    * instead of throwing or waiting, so callers behave as on a cache miss.
    */
-  private async run<T>(command: string, fallback: T, operation: (redis: Redis) => Promise<T>): Promise<T> {
+  private async failOpen<T>(label: string, fallback: T, operation: (redis: Redis) => Promise<T>): Promise<T> {
     const redis = this.redis;
     if (!redis || UNAVAILABLE_STATUSES.has(redis.status)) return fallback;
     try {
       return await operation(redis);
     } catch (error) {
-      console.warn(`[redis] ${command} failed, skipping cache:`, error instanceof Error ? error.message : error);
+      console.warn(`[redis] ${label} failed, skipping cache:`, error instanceof Error ? error.message : error);
       return fallback;
     }
   }
 
   async get(data: { prefix: string; key: string }): Promise<string | null> {
-    return this.run('get', null, (redis) => redis.get(this.buildKey(data.prefix, data.key)));
+    return this.failOpen('get', null, (redis) => redis.get(this.buildKey(data.prefix, data.key)));
   }
 
   async set(data: { prefix: string; key: string; value: string }): Promise<void> {
-    await this.run('set', undefined, async (redis) => {
+    await this.failOpen('set', undefined, async (redis) => {
       await redis.set(this.buildKey(data.prefix, data.key), data.value);
     });
   }
 
   async delete(data: { prefix: string; key: string }): Promise<void> {
-    await this.run('del', undefined, async (redis) => {
+    await this.failOpen('del', undefined, async (redis) => {
       await redis.del(this.buildKey(data.prefix, data.key));
     });
   }
 
   async setWithExpiry(data: { prefix: string; key: string; value: string; expiry: number }): Promise<void> {
-    await this.run('set', undefined, async (redis) => {
+    await this.failOpen('setex', undefined, async (redis) => {
       await redis.set(this.buildKey(data.prefix, data.key), data.value, 'EX', Math.floor(data.expiry));
     });
   }
 
   async scan(data: { prefix: string; pattern: string }): Promise<string[]> {
-    return this.run('scan', [], async (redis) => {
+    return this.failOpen('scan', [], async (redis) => {
       const keys: string[] = [];
       const scanPattern = `${this.namespace}:${data.prefix}:${data.pattern}`;
       let cursor = '0';
@@ -110,7 +110,7 @@ class RedisService {
   }
 
   async ttl(data: { prefix: string; key: string }): Promise<number> {
-    return this.run('ttl', 0, (redis) => redis.ttl(this.buildKey(data.prefix, data.key)));
+    return this.failOpen('ttl', 0, (redis) => redis.ttl(this.buildKey(data.prefix, data.key)));
   }
 }
 

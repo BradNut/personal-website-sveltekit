@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { hang, timed } from '$lib/server/testing/fakeIoredis';
+import { cacheFailures, timed } from '$lib/server/testing/fakeIoredis';
 
 const scrapeItMock = vi.fn();
 
@@ -99,11 +99,6 @@ describe('fetchAlbums', () => {
 });
 
 describe('fetchAlbums — Redis unavailable', () => {
-  const cacheFailures = {
-    throws: () => Promise.reject(new Error('ECONNREFUSED')),
-    'times out': hang,
-  };
-
   beforeEach(() => {
     vi.useFakeTimers();
     vi.spyOn(console, 'warn').mockImplementation(() => {});
