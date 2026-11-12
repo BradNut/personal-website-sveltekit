@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Album } from "$lib/types/album";
+	import type { Album } from "#lib/types/album.ts";
 	import BandcampAlbum from "./BandcampAlbum.svelte";
 
 	let { albums }: { albums: Album[] } = $props();

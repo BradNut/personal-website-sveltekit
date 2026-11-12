@@ -1,7 +1,7 @@
 import type { MetaTagsProps } from 'svelte-meta-tags';
-import { fetchArticles } from '$lib/services/articlesApi';
-import { articlesPageCacheControl } from '$lib/shared/articlesCacheControl';
-import { resolveCurrentPageUrl, resolveOgEndpointUrl } from '$lib/shared/siteUrl';
+import { fetchArticles } from '#lib/services/articlesApi.ts';
+import { articlesPageCacheControl } from '#lib/shared/articlesCacheControl.ts';
+import { resolveCurrentPageUrl, resolveOgEndpointUrl } from '#lib/shared/siteUrl.ts';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params, setHeaders, url, parent }) => {

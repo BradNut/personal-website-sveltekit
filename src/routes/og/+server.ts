@@ -1,6 +1,6 @@
-import SocialImageCard from '$lib/components/socialImageCard.svelte';
-import { componentToPng } from '$lib/renderImage';
-import { resolveAssetUrl, resolveSiteUrl } from '$lib/shared/siteUrl';
+import SocialImageCard from '#lib/components/socialImageCard.svelte';
+import { componentToPng } from '#lib/renderImage.ts';
+import { resolveAssetUrl, resolveSiteUrl } from '#lib/shared/siteUrl.ts';
 
 const height = 630;
 const width = 1200;

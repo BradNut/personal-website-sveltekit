@@ -20,7 +20,7 @@ vi.mock('varlock/env', () => ({
   },
 }));
 
-vi.mock('$app/environment', () => ({
+vi.mock('$app/env', () => ({
   dev: false,
 }));
 
@@ -64,7 +64,7 @@ describe('server handleError', () => {
     const error = new Error('boom');
     const event = { url: new URL('https://example.com') } as Parameters<typeof handleError>[0]['event'];
 
-    const result = (await handleError({ error, event, status: 500, message: 'boom' })) as {
+    const result = (await handleError({ kind: 'unknown', error, event })) as {
       message: string;
       errorId?: string;
     };
@@ -74,5 +74,14 @@ describe('server handleError', () => {
       extra: { event, errorId: result.errorId, status: 500 },
     });
     expect(result).toEqual({ message: 'Whoops!', errorId: expect.any(String) });
+  });
+
+  it('does not report framework 4xx errors such as missing routes', async () => {
+    const event = { url: new URL('https://example.com/missing') } as Parameters<typeof handleError>[0]['event'];
+
+    const result = await handleError({ kind: 'framework', error: { status: 404, message: 'Not Found' }, event });
+
+    expect(captureExceptionMock).not.toHaveBeenCalled();
+    expect(result).toEqual({ message: 'Whoops!' });
   });
 });

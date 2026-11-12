@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 vi.mock('./$types', () => ({}));
 
 const fetchArticlesMock = vi.fn();
-vi.mock('$lib/services/articlesApi', () => ({
+vi.mock('#lib/services/articlesApi.ts', () => ({
   fetchArticles: (...args: unknown[]) => fetchArticlesMock(...args),
 }));
 

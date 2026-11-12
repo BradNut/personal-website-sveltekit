@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { AspectRatio, Separator } from "bits-ui";
-	import { learningSources } from "$lib/shared/learningSources";
+	import { learningSources } from "#lib/shared/learningSources.ts";
 	import orange_derp from "../../lib/assets/images/orange_derp.jpg?enhanced";
 	import tortie_derp from "../../lib/assets/images/tortie_derp.jpg?enhanced";
 	import turnip from "../../lib/assets/images/turnip.svg?enhanced";

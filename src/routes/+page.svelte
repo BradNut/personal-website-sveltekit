@@ -1,8 +1,8 @@
 <script lang="ts">
-	import Articles from "$lib/components/Articles.svelte";
-	import Bandcamp from "$lib/components/Bandcamp.svelte";
-	import type { Album } from "$lib/types/album";
-	import type { Article, ArticlePageLoad } from "$lib/types/article";
+	import Articles from "#lib/components/Articles.svelte";
+	import Bandcamp from "#lib/components/Bandcamp.svelte";
+	import type { Album } from "#lib/types/album.ts";
+	import type { Article, ArticlePageLoad } from "#lib/types/article.ts";
 
 	const { data } = $props();
 	let albums: Album[] = $derived(data.albums);

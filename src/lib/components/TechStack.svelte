@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { techStack } from '$lib/shared/techStack';
+  import { techStack } from '#lib/shared/techStack.ts';
 </script>
 
 <div class="tech-list">

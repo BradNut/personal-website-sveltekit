@@ -1,6 +1,6 @@
 <script module lang="ts">
   import { defineMeta } from "@storybook/addon-svelte-csf";
-  import type { Album } from "$lib/types/album";
+  import type { Album } from "#lib/types/album.ts";
   import BandcampAlbum from "./BandcampAlbum.svelte";
 
   export const sampleAlbum: Album = {

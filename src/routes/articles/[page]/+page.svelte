@@ -1,7 +1,7 @@
 <script lang="ts">
+  import Articles from "#lib/components/Articles.svelte";
+  import Pagination from "#lib/components/Pagination.svelte";
   import { navigating } from "$app/state";
-  import Articles from "$lib/components/Articles.svelte";
-  import Pagination from "$lib/components/Pagination.svelte";
   import type { PageData } from "./$types";
 
   interface Props {

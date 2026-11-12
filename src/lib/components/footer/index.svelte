@@ -1,6 +1,6 @@
 <script lang="ts">
+	import ContactHub from "#lib/components/ContactHub.svelte";
 	import { page } from "$app/state";
-	import ContactHub from "$lib/components/ContactHub.svelte";
 
 	const userNames = {
 		github: "BradNut",

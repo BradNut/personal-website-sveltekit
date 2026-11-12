@@ -17,7 +17,7 @@ const mockArticle = {
 const mockArticles = { articles: [mockArticle], currentPage: 1, totalPages: 1, limit: 3, totalArticles: 1, cacheControl: 'max-age=120' };
 const emptyNoCacheArticles = { articles: [], currentPage: 1, totalPages: 0, limit: 3, totalArticles: 0, cacheControl: 'no-cache' };
 const fetchArticlesMock = vi.fn();
-vi.mock('$lib/services/articlesApi', () => ({
+vi.mock('#lib/services/articlesApi.ts', () => ({
   fetchArticles: (...args: unknown[]) => fetchArticlesMock(...args),
 }));
 

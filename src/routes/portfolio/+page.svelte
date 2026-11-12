@@ -3,10 +3,10 @@
 	import { Tabs } from 'bits-ui';
 	import type { Picture } from 'vite-imagetools';
 
-	import ExternalLink from '$lib/components/ExternalLink.svelte';
-	import type { ProjectLink } from '$lib/types/externalLinkType';
-	import type { LinkIconType } from '$lib/types/externalLinkTypes';
-	import { gitHubIcon } from '$lib/util/logoIcons.svelte';
+	import ExternalLink from '#lib/components/ExternalLink.svelte';
+	import type { ProjectLink } from '#lib/types/externalLinkType.ts';
+	import type { LinkIconType } from '#lib/types/externalLinkTypes.ts';
+	import { gitHubIcon } from '#lib/util/logoIcons.svelte';
 
 	import personalSiteImg from '../../lib/assets/images/portfolio/Bradley_Shellnut_New_Site.png?enhanced';
 	import shellnutArchitectWebsiteImg from '../../lib/assets/images/portfolio/Mark_Shellnut_Architect.png?enhanced';

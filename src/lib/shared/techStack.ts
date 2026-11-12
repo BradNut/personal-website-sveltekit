@@ -1,4 +1,4 @@
-import type { TechEntry } from '$lib/types/techStack';
+import type { TechEntry } from '#lib/types/techStack.ts';
 
 export const techStack: TechEntry[] = [
   {

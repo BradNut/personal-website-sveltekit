@@ -1,8 +1,8 @@
 import * as Sentry from '@sentry/sveltekit';
-import type { HandleClientError } from '@sveltejs/kit';
+import type { HandleClientError } from '@sveltejs/kit/hooks';
 import { ENV } from 'varlock/env';
-import { dev } from '$app/environment';
-import { reportError } from '$lib/shared/errorReporter';
+import { reportError } from '#lib/shared/errorReporter.ts';
+import { dev } from '$app/env';
 
 Sentry.init({
   release: `personal-website@${ENV.PUBLIC_SITE_VERSION}`,
@@ -13,5 +13,6 @@ Sentry.init({
   spotlight: true,
 });
 
-export const handleError: HandleClientError = async ({ error, event, status }) =>
-  reportError({ error, event, status, capture: Sentry.captureException });
+export const handleError: HandleClientError = async ({ error, event, kind }) =>
+  // Kit 3 passes 4xx (app/framework) errors here too; their status lets reportError skip them.
+  reportError({ error, event, status: kind === 'unknown' ? 500 : error.status, capture: Sentry.captureException });
