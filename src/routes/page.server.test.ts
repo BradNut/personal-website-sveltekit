@@ -2,7 +2,20 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('./$types', () => ({}));
 
-const mockArticles = { articles: [], currentPage: 1, totalPages: 0, limit: 3, totalArticles: 0, cacheControl: 'no-cache' };
+const mockArticle = {
+  title: 'Article 1',
+  url: new URL('https://example.com/a1'),
+  domain_name: 'example.com',
+  hashed_url: 'hash1',
+  reading_time: 5,
+  preview_picture: '',
+  tags: [],
+  created_at: new Date('2024-01-01T00:00:00.000Z'),
+  updated_at: new Date('2024-01-02T00:00:00.000Z'),
+  archived_at: null,
+};
+const mockArticles = { articles: [mockArticle], currentPage: 1, totalPages: 1, limit: 3, totalArticles: 1, cacheControl: 'max-age=120' };
+const emptyNoCacheArticles = { articles: [], currentPage: 1, totalPages: 0, limit: 3, totalArticles: 0, cacheControl: 'no-cache' };
 const fetchArticlesMock = vi.fn();
 vi.mock('$lib/services/articlesApi', () => ({
   fetchArticles: (...args: unknown[]) => fetchArticlesMock(...args),
@@ -53,6 +66,14 @@ describe('load (root page)', () => {
     expect(result.articlesData).toEqual(mockArticles);
     expect(result.baseUrl).toBe('http://localhost/'); // NOSONAR - localhost test fixture, not production
     expect(result.metaTagsChild).toBeDefined();
+  });
+
+  it('sends no-cache when the articles result is marked no-cache', async () => {
+    fetchArticlesMock.mockResolvedValueOnce(emptyNoCacheArticles);
+    const { args, capturedHeaders } = makeLoadArgs();
+    await load(args);
+
+    expect(capturedHeaders['cache-control']).toBe('no-cache');
   });
 
   it('uses PUBLIC_SITE_URL fallback for prerender origin', async () => {

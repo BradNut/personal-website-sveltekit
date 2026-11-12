@@ -26,27 +26,40 @@ Redis key pattern: `personal-website:<prefix>:<key>`. TTL 43200s (12h) for all c
 
 ## Wallabag (Articles)
 
+Self-hosted Wallabag (2.6.x) on Coolify. The base URL is `$WALLABAG_URL`. Locally it comes from Proton Pass (`personal-website-wallabag`, field `url`). In production it comes from the Coolify build-time env var. Never commit the real hostname: this repo is public.
+
 ### Symptoms
 - `/api/articles` returns empty `[]` or errors
 - "Favorite Articles" section blank on home page
+- Total is non-zero (e.g. "108 articles, 18 pages") but the article list is empty
 
 ### Diagnosis
 ```bash
 # Test auth
-curl -X POST https://app.wallabag.it/oauth/v2/token \
-  -d "grant_type=password&client_id=...&client_secret=...&username=...&password=..."
-# Expect: JSON with access_token
+TOKEN=$(curl -s -X POST "$WALLABAG_URL/oauth/v2/token" \
+  -d "grant_type=password&client_id=...&client_secret=...&username=...&password=..." | jq -r .access_token)
+# Expect: a token, not "null"
+
+# Inspect the Tag Slugs Wallabag returns
+curl -s -H "Authorization: Bearer $TOKEN" \
+  "$WALLABAG_URL/api/entries.json?tags=programming&perPage=5" | jq '._embedded.items[].tags[].slug'
+# Compare with the Allowed Tags in src/lib/types/articleTag.ts
 ```
+
+When reading the page's `__data.json`, remember it is devalue-encoded: object fields are array indices, not values.
 
 ### Fixes
 | Problem | Fix |
 |---|---|
-| Expired/wrong credentials | Rotate in wallabag.it settings → update Coolify env |
-| `WALLABAG_URL` missing trailing path | Must be base URL only e.g. `https://app.wallabag.it` |
-| Articles have no `programming` tag | Tag articles in Wallabag with `programming` tag |
-| Wallabag.it down | Check https://app.wallabag.it — service outage |
+| Expired/wrong credentials | Rotate the API client in the Wallabag instance settings → update Proton Pass and Coolify env |
+| `WALLABAG_URL` has a trailing path | Must be the base URL only, e.g. `https://wallabag.example.com` |
+| Total is non-zero but the list is empty | The Tag Slug format changed (self-hosted 2.6+ prefixes slugs with `t:`). Slugs are normalised (prefix removed, lowercased) before matching Allowed Tags; check the slugs above and update the normalisation if the format changed again |
+| Articles have no Allowed Tag | Tag articles in Wallabag with a tag in `src/lib/types/articleTag.ts` |
+| Instance down | Check the Wallabag service and its database in Coolify |
 
-Articles filtered by `programming` tag in `src/lib/types/articleTag.ts`.
+Articles are fetched with the `programming` tag and published only if one of their Tag Slugs is an Allowed Tag (`src/lib/types/articleTag.ts`). Matching uses Tag Slugs, never Tag Labels (see `GLOSSARY.md`).
+
+**Cooldown:** after a failed Wallabag request the app skips Wallabag for 5 minutes (in memory) and serves a `no-cache` fallback. After fixing the upstream, restart the app in Coolify or wait out the cooldown before deciding the fix didn't work. Empty article lists are always sent `no-cache` and never written to Redis, so browsers and CDNs pick up the fix right away.
 
 ---
 
