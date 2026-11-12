@@ -12,6 +12,9 @@ import type { PageQuery } from '../types/pageQuery';
 const getTokenUrl = () => new URL('/oauth/v2/token', ENV.WALLABAG_URL).toString();
 const getEntriesUrl = () => new URL('/api/entries.json', ENV.WALLABAG_URL).toString();
 
+/** Which page of Favorite Articles to fetch: raw route/query strings; invalid values fall back to defaults. */
+type ArticlesQuery = { page?: string; limit?: string };
+
 function resolvePerPage(limit: string | undefined): number {
   const parsed = Number(limit);
   if (Number.isNaN(parsed) || parsed > 30 || parsed < 1) {
@@ -20,14 +23,14 @@ function resolvePerPage(limit: string | undefined): number {
   return parsed;
 }
 
-function buildEntriesParams(queryParams: Record<string, string>): URLSearchParams {
+function buildEntriesParams(queryParams: ArticlesQuery): URLSearchParams {
   const pageQuery: PageQuery = {
     // created_at is when the article was saved; updated_at was bulk-rewritten during the Wallabag migration
     sort: 'created',
     order: 'desc',
-    perPage: resolvePerPage(queryParams?.limit),
+    perPage: resolvePerPage(queryParams.limit),
     since: 0,
-    page: Number(queryParams?.page) || 1,
+    page: Number(queryParams.page) || 1,
     tags: 'programming',
     content: 'metadata',
   };
@@ -190,18 +193,18 @@ function mapWallabagArticles(items: WallabagArticle[]): Article[] {
   }, []);
 }
 
-function buildFallbackResponse(queryParams: Record<string, string>): ArticlePageLoad {
+function buildFallbackResponse(queryParams: ArticlesQuery): ArticlePageLoad {
   return {
     articles: [],
-    currentPage: Number(queryParams?.page) || 1,
+    currentPage: Number(queryParams.page) || 1,
     totalPages: 0,
-    limit: Number(queryParams?.limit) || Number(ENV.PAGE_SIZE),
+    limit: Number(queryParams.limit) || Number(ENV.PAGE_SIZE),
     totalArticles: 0,
     cacheControl: NO_CACHE,
   };
 }
 
-export async function fetchArticles(queryParams: Record<string, string>): Promise<ArticlePageLoad> {
+export async function fetchArticles(queryParams: ArticlesQuery): Promise<ArticlePageLoad> {
   try {
     const entriesQueryParams = buildEntriesParams(queryParams);
     const cacheKey = entriesQueryParams.toString();
@@ -238,7 +241,7 @@ export async function fetchArticles(queryParams: Record<string, string>): Promis
 
     return responseData;
   } catch (error) {
-    console.error(`Error fetching articles for page ${queryParams?.page}:`, error);
+    console.error(`Error fetching articles for page ${queryParams.page}:`, error);
     return buildFallbackResponse(queryParams);
   }
 }
