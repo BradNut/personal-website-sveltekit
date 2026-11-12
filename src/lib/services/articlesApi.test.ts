@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { hang, timed } from '$lib/server/testing/fakeIoredis';
 
 // Mock varlock/env used by the service
 vi.mock('varlock/env', () => ({
@@ -15,26 +16,16 @@ vi.mock('varlock/env', () => ({
   },
 }));
 
-// Mock redis service
-const redisGet = vi.fn();
-const redisSetWithExpiry = vi.fn();
-const redisTtl = vi.fn();
-vi.mock('$lib/server/redis', () => ({
-  redisService: {
-    get: (data: { prefix: string; key: string }) => redisGet(data),
-    set: vi.fn(),
-    setWithExpiry: (data: { prefix: string; key: string; value: string; expiry: number }) => redisSetWithExpiry(data),
-    ttl: (data: { prefix: string; key: string }) => redisTtl(data),
-    delete: vi.fn(),
-    scan: vi.fn(),
-    redis: null,
-  },
-  REDIS_PREFIXES: {
-    ARTICLES: 'articles',
-    BANDCAMP_ALBUMS: 'bandcampAlbums',
-    PAGE_CACHE: 'pageCache',
-  },
-}));
+// Fake the ioredis boundary so the real redisService (and its fail-open handling) runs
+const { fake } = await vi.hoisted(async () => {
+  const { createFakeIoredis } = await import('$lib/server/testing/fakeIoredis');
+  return { fake: createFakeIoredis() };
+});
+vi.mock('ioredis', () => ({ Redis: fake.Redis }));
+vi.mock('$app/environment', () => ({ building: false }));
+const redisGet = fake.commands.get;
+const redisSetWithExpiry = fake.commands.set;
+const redisTtl = fake.commands.ttl;
 
 // The service keeps module-level state (access token, cool-down), so load a fresh copy per test.
 let fetchArticles: typeof import('./articlesApi').fetchArticles;
@@ -375,4 +366,52 @@ describe('fetchArticles — Wallabag auth and failure handling', () => {
 
     expect(result.cacheControl).toBe('max-age=60');
   });
+});
+
+describe('fetchArticles — Redis unavailable', () => {
+  const cacheFailures = {
+    throws: () => Promise.reject(new Error('ECONNREFUSED')),
+    'times out': hang,
+  };
+
+  beforeEach(() => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+  });
+
+  for (const [failure, command] of Object.entries(cacheFailures)) {
+    it(`serves fresh articles within a second when the cache read ${failure}`, async () => {
+      redisGet.mockImplementation(command);
+      globalThis.fetch = vi.fn().mockResolvedValueOnce(authOk(3600)).mockResolvedValueOnce(entriesOk()) as unknown as typeof globalThis.fetch;
+
+      const { value, elapsedMs } = await timed(fetchArticles({ page: '1', limit: '10' }));
+
+      expect(value.articles.length).toBeGreaterThan(0);
+      expect(elapsedMs).toBeLessThanOrEqual(1000);
+    });
+
+    it(`still returns the fetched articles when the cache write ${failure}`, async () => {
+      redisGet.mockResolvedValue(null);
+      redisSetWithExpiry.mockImplementation(command);
+      globalThis.fetch = vi.fn().mockResolvedValueOnce(authOk(3600)).mockResolvedValueOnce(entriesOk()) as unknown as typeof globalThis.fetch;
+
+      const { value, elapsedMs } = await timed(fetchArticles({ page: '1', limit: '10' }));
+
+      expect(value.articles.length).toBeGreaterThan(0);
+      expect(value.totalArticles).toBe(1);
+      expect(elapsedMs).toBeLessThanOrEqual(1000);
+    });
+
+    it(`does not start the Wallabag cool-down when the cache ${failure}`, async () => {
+      redisGet.mockImplementation(command);
+      redisSetWithExpiry.mockImplementation(command);
+      const fetchMock = vi.fn().mockResolvedValueOnce(authOk(3600)).mockResolvedValue(entriesOk());
+      globalThis.fetch = fetchMock as unknown as typeof globalThis.fetch;
+
+      await timed(fetchArticles({ page: '1', limit: '10' }));
+      const { value } = await timed(fetchArticles({ page: '1', limit: '10' }));
+
+      expect(value.articles.length).toBeGreaterThan(0);
+      expect(fetchMock).toHaveBeenCalledTimes(3); // login once, entries on both requests
+    });
+  }
 });
