@@ -55,14 +55,17 @@ describe('fetchAlbums', () => {
     expect(scrapeItMock).not.toHaveBeenCalled();
   });
 
-  it('falls back to max-age=43200 on cache hit when TTL is missing', async () => {
-    redisGet.mockResolvedValueOnce(JSON.stringify([makeAlbum()]));
-    redisTtl.mockResolvedValueOnce(0);
+  for (const ttl of [0, -1, -2]) {
+    it(`returns cached albums with no-cache when the TTL is ${ttl}`, async () => {
+      redisGet.mockResolvedValueOnce(JSON.stringify([makeAlbum()]));
+      redisTtl.mockResolvedValueOnce(ttl);
 
-    const result = await fetchAlbums();
+      const result = await fetchAlbums();
 
-    expect(result.cacheControl).toBe('max-age=43200');
-  });
+      expect(result.albums).toHaveLength(1);
+      expect(result.cacheControl).toBe('no-cache');
+    });
+  }
 
   it('scrapes, stores, and returns albums on cache miss', async () => {
     redisGet.mockResolvedValueOnce(null);

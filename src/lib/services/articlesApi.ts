@@ -1,7 +1,8 @@
 import intersect from 'just-intersect';
 import { ENV } from 'varlock/env';
 import { ARTICLES_CACHE_TTL_SECONDS, NO_CACHE } from '$lib/constants/cache-control';
-import { REDIS_PREFIXES, redisService } from '$lib/server/redis';
+import { REDIS_PREFIXES } from '$lib/server/redis';
+import { createResponseCache } from '$lib/server/responseCache';
 import type { Article, ArticlePageLoad, WallabagArticle } from '$lib/types/article';
 import { ArticleTag } from '$lib/types/articleTag';
 import { retryWithBackoff } from '$lib/util/retry';
@@ -41,16 +42,7 @@ function buildEntriesParams(queryParams: Record<string, string>): URLSearchParam
   });
 }
 
-async function getCachedResponse(cacheKey: string): Promise<ArticlePageLoad | null> {
-  if (!ENV.USE_REDIS_CACHE) return null;
-  const cached = await redisService.get({ prefix: REDIS_PREFIXES.ARTICLES, key: cacheKey });
-  if (!cached) return null;
-  // Cache hit, return cached payload with TTL-derived cache-control
-  const response = JSON.parse(cached);
-  const ttl = await redisService.ttl({ prefix: REDIS_PREFIXES.ARTICLES, key: cacheKey });
-  // ttl <= 0: expired, no expiry set, or the TTL lookup failed open; don't send max-age=0 or negative
-  return { ...response, cacheControl: ttl > 0 ? `max-age=${ttl}` : 'no-cache' };
-}
+const articlesCache = createResponseCache<ArticlePageLoad>({ prefix: REDIS_PREFIXES.ARTICLES, ttlSeconds: ARTICLES_CACHE_TTL_SECONDS });
 
 /** How long to stop calling Wallabag after a failure, so a dead upstream can't stall every page. */
 const WALLABAG_COOLDOWN_MS = 5 * 60 * 1000;
@@ -205,7 +197,7 @@ function buildFallbackResponse(queryParams: Record<string, string>): ArticlePage
     totalPages: 0,
     limit: Number(queryParams?.limit) || Number(ENV.PAGE_SIZE),
     totalArticles: 0,
-    cacheControl: 'no-cache',
+    cacheControl: NO_CACHE,
   };
 }
 
@@ -214,8 +206,8 @@ export async function fetchArticles(queryParams: Record<string, string>): Promis
     const entriesQueryParams = buildEntriesParams(queryParams);
     const cacheKey = entriesQueryParams.toString();
 
-    const cachedResponse = await getCachedResponse(cacheKey);
-    if (cachedResponse) return cachedResponse;
+    const cached = await articlesCache.read(cacheKey);
+    if (cached) return { ...cached.value, cacheControl: cached.cacheControl };
 
     if (Date.now() < unavailableUntil) {
       return buildFallbackResponse(queryParams);
@@ -239,14 +231,9 @@ export async function fetchArticles(queryParams: Record<string, string>): Promis
       cacheControl: cacheable ? cacheControl : NO_CACHE,
     };
 
-    if (ENV.USE_REDIS_CACHE && cacheable) {
+    if (cacheable) {
       console.log(`Storing in cache with key: ${cacheKey} for page ${page}`);
-      await redisService.setWithExpiry({
-        prefix: REDIS_PREFIXES.ARTICLES,
-        key: cacheKey,
-        value: JSON.stringify(responseData),
-        expiry: ARTICLES_CACHE_TTL_SECONDS,
-      });
+      await articlesCache.write(cacheKey, responseData);
     }
 
     return responseData;
