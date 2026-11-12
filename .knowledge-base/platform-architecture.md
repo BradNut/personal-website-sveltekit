@@ -6,7 +6,7 @@
 Browser
   └─ SvelteKit SSR (+page.server.ts load)
        ├─ /api/bandcamp/albums  → scrape-it → bandcamp.com → Redis cache
-       └─ /api/articles         → Wallabag API (wallabag.it) → Redis cache
+       └─ /api/articles         → Wallabag API (self-hosted) → Redis cache
 ```
 
 Home `load` fires both in parallel via `Promise.all`.

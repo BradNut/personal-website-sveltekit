@@ -1,4 +1,5 @@
 import { fetchArticles } from '$lib/services/articlesApi';
+import { articlesPageCacheControl } from '$lib/shared/articlesCacheControl';
 import { buildPageMetaTags } from '$lib/shared/pageMeta';
 import { resolveSiteUrl } from '$lib/shared/siteUrl';
 import type { Album } from '$lib/types/album';
@@ -27,7 +28,7 @@ export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
   ]);
 
   setHeaders({
-    'cache-control': 'max-age=43200',
+    'cache-control': articlesPageCacheControl(articles.cacheControl),
   });
   return {
     baseUrl,

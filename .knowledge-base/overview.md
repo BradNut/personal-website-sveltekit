@@ -25,7 +25,7 @@ Personal website. SvelteKit 2, Svelte 5, TypeScript strict, Tailwind v4, Bits UI
 
 ## External Services
 
-- **Wallabag** (wallabag.it) — reads tagged articles for the Favorite Articles section
+- **Wallabag** (self-hosted) — reads tagged articles for the Favorite Articles section
 - **Bandcamp** — scrapes user collection for Currently Listening section
 - **Redis** — caching layer for Wallabag + Bandcamp responses (always on in prod)
 - **Sentry** — error tracking (browser + node)

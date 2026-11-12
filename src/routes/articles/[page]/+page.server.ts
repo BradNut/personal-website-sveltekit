@@ -1,21 +1,13 @@
 import type { MetaTagsProps } from 'svelte-meta-tags';
 import { fetchArticles } from '$lib/services/articlesApi';
+import { articlesPageCacheControl } from '$lib/shared/articlesCacheControl';
 import { resolveCurrentPageUrl, resolveOgEndpointUrl } from '$lib/shared/siteUrl';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params, setHeaders, url, parent }) => {
   const { page } = params;
-  const { cacheControl } = await parent();
-
-  if (cacheControl?.includes('no-cache')) {
-    setHeaders({
-      'cache-control': cacheControl,
-    });
-  } else {
-    setHeaders({
-      'cache-control': 'max-age=43200', // 12 hours
-    });
-  }
+  // The articles layout's own articles result (it currently fetches page 1 for shared metadata)
+  const { cacheControl: layoutCacheControl } = await parent();
 
   const currentPageUrl = resolveCurrentPageUrl(url);
   const ogImageUrl = resolveOgEndpointUrl(url, {
@@ -52,7 +44,11 @@ export const load: PageServerLoad = async ({ params, setHeaders, url, parent }) 
     url: currentPageUrl,
   });
 
-  const { articles, currentPage } = await fetchArticles({ page });
+  const { articles, currentPage, cacheControl } = await fetchArticles({ page });
+
+  setHeaders({
+    'cache-control': articlesPageCacheControl(layoutCacheControl, cacheControl),
+  });
 
   return {
     articles,

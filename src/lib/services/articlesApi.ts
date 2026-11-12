@@ -1,5 +1,6 @@
 import intersect from 'just-intersect';
 import { ENV } from 'varlock/env';
+import { ARTICLES_CACHE_TTL_SECONDS, NO_CACHE } from '$lib/constants/cache-control';
 import { REDIS_PREFIXES, redisService } from '$lib/server/redis';
 import type { Article, ArticlePageLoad, WallabagArticle } from '$lib/types/article';
 import { ArticleTag } from '$lib/types/articleTag';
@@ -167,13 +168,18 @@ async function fetchEntriesWithAuth(params: URLSearchParams) {
   }
 }
 
+/** Self-hosted Wallabag 2.6+ prefixes every tag slug with `t:`; wallabag.it does not. */
+function normaliseTagSlug(slug: string): string {
+  return slug.replace(/^t:/i, '').toLowerCase();
+}
+
 function mapWallabagArticles(items: WallabagArticle[]): Article[] {
   const validTags = Object.values(ArticleTag);
   return items.reduce<Article[]>((acc, article) => {
-    const rawTags = article?.tags?.map((tag) => tag.slug);
-    if (intersect(rawTags, validTags)?.length > 0) {
+    const tagSlugs = (article?.tags ?? []).map((tag) => normaliseTagSlug(tag.slug));
+    if (intersect(tagSlugs, validTags).length > 0) {
       acc.push({
-        tags: rawTags.map((rawTag) => rawTag as unknown as ArticleTag),
+        tags: tagSlugs.map((slug) => slug as unknown as ArticleTag),
         title: article.title,
         url: new URL(article.url),
         domain_name: article.domain_name?.replace('www.', '') ?? '',
@@ -219,11 +225,25 @@ export async function fetchArticles(queryParams: Record<string, string>): Promis
     console.info(`Wallabag entries: page=${page} pages=${pages} total=${total} limit=${limit}`);
 
     const articles = mapWallabagArticles(favoriteArticles.items as WallabagArticle[]);
-    const responseData: ArticlePageLoad = { articles, currentPage: page, totalPages: pages, limit, totalArticles: total, cacheControl };
+    // An empty list is never cacheable: if every entry was filtered out, a 12-hour header would keep it around after a fix
+    const cacheable = articles.length > 0;
+    const responseData: ArticlePageLoad = {
+      articles,
+      currentPage: page,
+      totalPages: pages,
+      limit,
+      totalArticles: total,
+      cacheControl: cacheable ? cacheControl : NO_CACHE,
+    };
 
-    if (ENV.USE_REDIS_CACHE && articles.length > 0) {
+    if (ENV.USE_REDIS_CACHE && cacheable) {
       console.log(`Storing in cache with key: ${cacheKey} for page ${page}`);
-      await redisService.setWithExpiry({ prefix: REDIS_PREFIXES.ARTICLES, key: cacheKey, value: JSON.stringify(responseData), expiry: 43200 });
+      await redisService.setWithExpiry({
+        prefix: REDIS_PREFIXES.ARTICLES,
+        key: cacheKey,
+        value: JSON.stringify(responseData),
+        expiry: ARTICLES_CACHE_TTL_SECONDS,
+      });
     }
 
     return responseData;

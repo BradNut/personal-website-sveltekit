@@ -9,7 +9,7 @@ Reference: `.env.example`
 | `ORIGIN` | `https://production-url.com` | SvelteKit CSRF/cookie origin. Must match public URL. |
 | `PUBLIC_SITE_URL` | `https://production-url.com` | Used in OG image URLs and meta tags. |
 | `PUBLIC_SITE_VERSION` | `1.0.0` | App version shown in UI/logs. |
-| `WALLABAG_URL` | `<wallabag-url>` | Wallabag instance base URL. |
+| `WALLABAG_URL` | `<wallabag-url>` | Self-hosted Wallabag base URL. Non-sensitive (inlined at build). Local: Proton Pass `personal-website-wallabag` field `url`. Prod: Coolify build-time env var. Never commit the real hostname. |
 | `WALLABAG_CLIENT_ID` | `<id>` | Wallabag OAuth client ID. |
 | `WALLABAG_CLIENT_SECRET` | `<secret>` | Wallabag OAuth client secret. |
 | `WALLABAG_USERNAME` | `<user>` | Wallabag account username. |

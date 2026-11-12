@@ -189,6 +189,57 @@ describe('fetchArticles', () => {
     expect(redisSetWithExpiry).not.toHaveBeenCalled();
   });
 
+  it('publishes articles whose t: prefixed tag slugs match an allowed tag, showing tags without the prefix', async () => {
+    redisGet.mockResolvedValueOnce(null);
+
+    const entriesJson = makeWallabagResponse();
+    entriesJson._embedded.items[0].tags = [
+      { id: 1, label: 'Programming', slug: 't:programming' },
+      { id: 2, label: 'Cooking', slug: 't:cooking' },
+    ];
+    const pageResponse = { ok: true, headers: { get: () => null }, json: async () => entriesJson };
+    globalThis.fetch = vi.fn().mockResolvedValueOnce(authOk()).mockResolvedValueOnce(pageResponse);
+
+    const result = await fetchArticles({ page: '1', limit: '10' });
+
+    expect(result.articles).toHaveLength(1);
+    expect(result.articles[0].tags).toEqual(['programming', 'cooking']);
+  });
+
+  it('skips an entry with no tags without failing the page', async () => {
+    redisGet.mockResolvedValueOnce(null);
+
+    const wallabagResponse = makeWallabagResponse();
+    const tagged = wallabagResponse._embedded.items[0];
+    const { tags: _tags, ...untagged } = { ...tagged, title: 'No tags', hashed_url: 'hash-none' };
+    const entriesJson = { ...wallabagResponse, _embedded: { items: [untagged, tagged] } };
+    const pageResponse = { ok: true, headers: { get: () => null }, json: async () => entriesJson };
+    globalThis.fetch = vi.fn().mockResolvedValueOnce(authOk()).mockResolvedValueOnce(pageResponse);
+
+    const result = await fetchArticles({ page: '1', limit: '10' });
+
+    expect(result.articles.map((article) => article.title)).toEqual(['Article 1']);
+  });
+
+  it('marks the result no-cache and skips Redis when every entry is filtered out, even if Wallabag says cacheable', async () => {
+    redisGet.mockResolvedValueOnce(null);
+
+    const entriesJson = makeWallabagResponse();
+    entriesJson._embedded.items[0].tags = [{ id: 2, label: 'Cooking', slug: 't:cooking' }];
+    const pageResponse = {
+      ok: true,
+      headers: { get: (k: string) => (k.toLowerCase() === 'cache-control' ? 'max-age=120' : null) },
+      json: async () => entriesJson,
+    };
+    globalThis.fetch = vi.fn().mockResolvedValueOnce(authOk()).mockResolvedValueOnce(pageResponse);
+
+    const result = await fetchArticles({ page: '1', limit: '10' });
+
+    expect(result.articles).toEqual([]);
+    expect(result.cacheControl).toBe('no-cache');
+    expect(redisSetWithExpiry).not.toHaveBeenCalled();
+  });
+
   it('clamps perPage to PAGE_SIZE when limit is out of range', async () => {
     redisGet.mockResolvedValueOnce(null);
 
