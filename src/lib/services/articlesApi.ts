@@ -2,11 +2,10 @@ import intersect from 'just-intersect';
 import { ENV } from 'varlock/env';
 import { ARTICLES_CACHE_TTL_SECONDS, NO_CACHE } from '#lib/constants/cache-control.ts';
 import { REDIS_PREFIXES } from '#lib/server/redis.ts';
-import { createResponseCache } from '#lib/server/responseCache.ts';
+import { type CachedResponse, createResponseCache } from '#lib/server/responseCache.ts';
 import type { Article, ArticlePageLoad, WallabagArticle } from '#lib/types/article.ts';
 import { ArticleTag } from '#lib/types/articleTag.ts';
 import { retryWithBackoff } from '#lib/util/retry.ts';
-import type { PageQuery } from '../types/pageQuery';
 
 // Lazy URL construction — WALLABAG_URL may be empty locally; only evaluated at request time
 const getTokenUrl = () => new URL('/oauth/v2/token', ENV.WALLABAG_URL).toString();
@@ -23,29 +22,30 @@ function resolvePerPage(limit: string | undefined): number {
   return parsed;
 }
 
-function buildEntriesParams(queryParams: ArticlesQuery): URLSearchParams {
-  const pageQuery: PageQuery = {
-    // created_at is when the article was saved; updated_at was bulk-rewritten during the Wallabag migration
-    sort: 'created',
-    order: 'desc',
-    perPage: resolvePerPage(queryParams.limit),
-    since: 0,
-    page: Number(queryParams.page) || 1,
+/**
+ * Wallabag can't page by date added: its `sort=created` orders by entry id, and the Wallabag migration
+ * imported entries in an order that doesn't match `created_at` (`updated_at` was bulk-rewritten too).
+ * So the full tagged list is fetched in batches, sorted by `created_at` here, cached once, and paged locally.
+ */
+const WALLABAG_BATCH_SIZE = 100;
+/** Upper bound on batches per refresh, so a misreported page count can't loop indefinitely. */
+const MAX_WALLABAG_BATCHES = 20;
+const ARTICLE_LIST_CACHE_KEY = 'all-by-created-desc';
+
+function buildEntriesParams(page: number): URLSearchParams {
+  return new URLSearchParams({
+    perPage: `${WALLABAG_BATCH_SIZE}`,
+    since: '0',
+    page: `${page}`,
     tags: 'programming',
     content: 'metadata',
-  };
-  return new URLSearchParams({
-    sort: pageQuery.sort,
-    order: pageQuery.order,
-    perPage: `${pageQuery.perPage}`,
-    since: `${pageQuery.since}`,
-    page: `${pageQuery.page}`,
-    tags: pageQuery.tags,
-    content: pageQuery.content,
   });
 }
 
-const articlesCache = createResponseCache<ArticlePageLoad>({ prefix: REDIS_PREFIXES.ARTICLES, ttlSeconds: ARTICLES_CACHE_TTL_SECONDS });
+/** Every published article, newest added first. */
+type ArticleList = { articles: Article[] };
+
+const articlesCache = createResponseCache<ArticleList>({ prefix: REDIS_PREFIXES.ARTICLES, ttlSeconds: ARTICLES_CACHE_TTL_SECONDS });
 
 /** How long to stop calling Wallabag after a failure, so a dead upstream can't stall every page. */
 const WALLABAG_COOLDOWN_MS = 5 * 60 * 1000;
@@ -79,6 +79,7 @@ type CachedToken = { accessToken: string; expiresAt: number };
 let cachedToken: CachedToken | null = null;
 let pendingAuth: Promise<CachedToken> | null = null;
 let unavailableUntil = 0;
+let pendingList: Promise<CachedResponse<ArticleList>> | null = null;
 
 async function requestAccessToken(): Promise<CachedToken> {
   return retryWithBackoff(
@@ -193,56 +194,75 @@ function mapWallabagArticles(items: WallabagArticle[]): Article[] {
   }, []);
 }
 
-function buildFallbackResponse(queryParams: ArticlesQuery): ArticlePageLoad {
+function byNewestAdded(a: Article, b: Article): number {
+  return b.created_at.getTime() - a.created_at.getTime();
+}
+
+/** Fetches every tagged Wallabag entry and sorts the published ones newest added first. */
+async function fetchArticleList(): Promise<CachedResponse<ArticleList>> {
+  // The first batch reports how many batches there are; the rest are fetched in parallel (arrival order is irrelevant, the list is sorted below)
+  const first = await fetchEntriesOrCoolDown(buildEntriesParams(1));
+  const batches = Math.min(Number(first.wallabagResponse.pages) || 1, MAX_WALLABAG_BATCHES);
+  const rest = await Promise.all(Array.from({ length: batches - 1 }, (_, i) => fetchEntriesOrCoolDown(buildEntriesParams(i + 2))));
+  const items = [first, ...rest].flatMap(({ wallabagResponse }) => (wallabagResponse._embedded?.items ?? []) as WallabagArticle[]);
+  const { cacheControl } = first;
+
+  // Minimal, non-sensitive diagnostics
+  console.info(`Wallabag entries: fetched=${items.length} batches=${batches}`);
+
+  const articles = mapWallabagArticles(items).sort(byNewestAdded);
+  // An empty list is never cacheable: if every entry was filtered out, a 12-hour header would keep it around after a fix
+  if (articles.length === 0) return { value: { articles }, cacheControl: NO_CACHE };
+
+  await articlesCache.write(ARTICLE_LIST_CACHE_KEY, { articles });
+  return { value: { articles }, cacheControl };
+}
+
+/** The sorted article list from cache, or from Wallabag (one shared fetch for concurrent callers); `null` during a cool-down. */
+async function loadArticleList(): Promise<CachedResponse<ArticleList> | null> {
+  const cached = await articlesCache.read(ARTICLE_LIST_CACHE_KEY);
+  if (cached) return cached;
+
+  if (Date.now() < unavailableUntil) return null;
+
+  pendingList ??= fetchArticleList().finally(() => {
+    pendingList = null;
+  });
+  return pendingList;
+}
+
+function buildFallbackResponse(currentPage: number, limit: number): ArticlePageLoad {
   return {
     articles: [],
-    currentPage: Number(queryParams.page) || 1,
+    currentPage,
     totalPages: 0,
-    limit: Number(queryParams.limit) || Number(ENV.PAGE_SIZE),
+    limit,
     totalArticles: 0,
     cacheControl: NO_CACHE,
   };
 }
 
 export async function fetchArticles(queryParams: ArticlesQuery): Promise<ArticlePageLoad> {
+  const perPage = resolvePerPage(queryParams.limit);
+  const currentPage = Number(queryParams.page) || 1;
+
   try {
-    const entriesQueryParams = buildEntriesParams(queryParams);
-    const cacheKey = entriesQueryParams.toString();
+    const list = await loadArticleList();
+    if (!list) return buildFallbackResponse(currentPage, perPage);
 
-    const cached = await articlesCache.read(cacheKey);
-    if (cached) return { ...cached.value, cacheControl: cached.cacheControl };
-
-    if (Date.now() < unavailableUntil) {
-      return buildFallbackResponse(queryParams);
-    }
-
-    const { wallabagResponse, cacheControl } = await fetchEntriesOrCoolDown(entriesQueryParams);
-    const { _embedded: favoriteArticles, page, pages, total, limit } = wallabagResponse;
-
-    // Minimal, non-sensitive diagnostics
-    console.info(`Wallabag entries: page=${page} pages=${pages} total=${total} limit=${limit}`);
-
-    const articles = mapWallabagArticles(favoriteArticles.items as WallabagArticle[]);
-    // An empty list is never cacheable: if every entry was filtered out, a 12-hour header would keep it around after a fix
-    const cacheable = articles.length > 0;
-    const responseData: ArticlePageLoad = {
-      articles,
-      currentPage: page,
-      totalPages: pages,
-      limit,
-      totalArticles: total,
-      cacheControl: cacheable ? cacheControl : NO_CACHE,
+    const { articles } = list.value;
+    const start = (currentPage - 1) * perPage;
+    return {
+      articles: articles.slice(start, start + perPage),
+      currentPage,
+      totalPages: Math.ceil(articles.length / perPage),
+      limit: perPage,
+      totalArticles: articles.length,
+      cacheControl: list.cacheControl,
     };
-
-    if (cacheable) {
-      console.log(`Storing in cache with key: ${cacheKey} for page ${page}`);
-      await articlesCache.write(cacheKey, responseData);
-    }
-
-    return responseData;
   } catch (error) {
     console.error(`Error fetching articles for page ${queryParams.page}:`, error);
-    return buildFallbackResponse(queryParams);
+    return buildFallbackResponse(currentPage, perPage);
   }
 }
 
