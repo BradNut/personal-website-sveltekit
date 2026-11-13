@@ -1,15 +1,9 @@
 import type { MetaTagsProps } from 'svelte-meta-tags';
-import { resolveCurrentPageUrl, resolveOgEndpointUrl } from '#lib/shared/siteUrl.ts';
+import { type OgEndpointParams, resolveCurrentPageUrl, resolveOgEndpointUrl } from '#lib/shared/siteUrl.ts';
 
 const SITE_NAME = 'Bradley Shellnut Personal Website';
 const OG_IMAGE_WIDTH = 1200;
 const OG_IMAGE_HEIGHT = 630;
-
-type OgEndpointParams = {
-  header: string;
-  page: string;
-  content?: string;
-};
 
 type PageMetaInput = {
   url: URL;
