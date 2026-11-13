@@ -198,21 +198,17 @@ function byNewestAdded(a: Article, b: Article): number {
   return b.created_at.getTime() - a.created_at.getTime();
 }
 
-/** Fetches every tagged Wallabag entry, batch by batch, and sorts the published ones newest added first. */
+/** Fetches every tagged Wallabag entry and sorts the published ones newest added first. */
 async function fetchArticleList(): Promise<CachedResponse<ArticleList>> {
-  const items: WallabagArticle[] = [];
-  let cacheControl = NO_CACHE;
-  let pages = 1;
-
-  for (let page = 1; page <= Math.min(pages, MAX_WALLABAG_BATCHES); page++) {
-    const { wallabagResponse, cacheControl: batchCacheControl } = await fetchEntriesOrCoolDown(buildEntriesParams(page));
-    items.push(...((wallabagResponse._embedded?.items ?? []) as WallabagArticle[]));
-    pages = Number(wallabagResponse.pages) || 1;
-    if (page === 1) cacheControl = batchCacheControl;
-  }
+  // The first batch reports how many batches there are; the rest are fetched in parallel (arrival order is irrelevant, the list is sorted below)
+  const first = await fetchEntriesOrCoolDown(buildEntriesParams(1));
+  const batches = Math.min(Number(first.wallabagResponse.pages) || 1, MAX_WALLABAG_BATCHES);
+  const rest = await Promise.all(Array.from({ length: batches - 1 }, (_, i) => fetchEntriesOrCoolDown(buildEntriesParams(i + 2))));
+  const items = [first, ...rest].flatMap(({ wallabagResponse }) => (wallabagResponse._embedded?.items ?? []) as WallabagArticle[]);
+  const { cacheControl } = first;
 
   // Minimal, non-sensitive diagnostics
-  console.info(`Wallabag entries: fetched=${items.length} batches=${Math.min(pages, MAX_WALLABAG_BATCHES)}`);
+  console.info(`Wallabag entries: fetched=${items.length} batches=${batches}`);
 
   const articles = mapWallabagArticles(items).sort(byNewestAdded);
   // An empty list is never cacheable: if every entry was filtered out, a 12-hour header would keep it around after a fix
