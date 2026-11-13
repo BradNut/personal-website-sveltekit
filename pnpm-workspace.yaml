@@ -7,6 +7,8 @@ allowBuilds:
 overrides:
   # satori -> @shuding/opentype.js pins fflate 0.7.3 (GHSA advisory, fixed in 0.7.5)
   fflate: ^0.7.5
+  # @zerodevx/svelte-img (unmaintained) -> vite-imagetools 6 -> imagetools-core pins sharp ^0.33 (GHSA-wq5f-xc86-pv6w, fixed in 0.35.5)
+  sharp: ^0.35.5
 
 peerDependencyRules:
   allowedVersions:
