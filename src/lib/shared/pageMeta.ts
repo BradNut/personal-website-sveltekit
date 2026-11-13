@@ -1,5 +1,5 @@
 import type { MetaTagsProps } from 'svelte-meta-tags';
-import { resolveCurrentPageUrl, resolveOgEndpointUrl } from '$lib/shared/siteUrl';
+import { resolveCurrentPageUrl, resolveOgEndpointUrl } from '#lib/shared/siteUrl.ts';
 
 const SITE_NAME = 'Bradley Shellnut Personal Website';
 const TWITTER_IMAGE_ALT = 'Bradley Shellnut Website Logo';

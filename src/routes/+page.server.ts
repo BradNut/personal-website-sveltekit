@@ -1,9 +1,9 @@
-import { fetchArticles } from '$lib/services/articlesApi';
-import { articlesPageCacheControl } from '$lib/shared/articlesCacheControl';
-import { buildPageMetaTags } from '$lib/shared/pageMeta';
-import { resolveSiteUrl } from '$lib/shared/siteUrl';
-import type { Album } from '$lib/types/album';
-import type { ArticlePageLoad } from '$lib/types/article';
+import { fetchArticles } from '#lib/services/articlesApi.ts';
+import { articlesPageCacheControl } from '#lib/shared/articlesCacheControl.ts';
+import { buildPageMetaTags } from '#lib/shared/pageMeta.ts';
+import { resolveSiteUrl } from '#lib/shared/siteUrl.ts';
+import type { Album } from '#lib/types/album.ts';
+import type { ArticlePageLoad } from '#lib/types/article.ts';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {

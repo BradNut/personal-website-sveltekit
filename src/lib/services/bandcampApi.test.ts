@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cacheFailures, timed } from '$lib/server/testing/fakeIoredis';
+import { cacheFailures, timed } from '#lib/server/testing/fakeIoredis.ts';
 
 const scrapeItMock = vi.fn();
 
@@ -16,16 +16,16 @@ vi.mock('scrape-it', () => ({ default: (...args: unknown[]) => scrapeItMock(...a
 
 // Fake the ioredis boundary so the real redisService (and its fail-open handling) runs
 const { fake } = await vi.hoisted(async () => {
-  const { createFakeIoredis } = await import('$lib/server/testing/fakeIoredis');
+  const { createFakeIoredis } = await import('#lib/server/testing/fakeIoredis.ts');
   return { fake: createFakeIoredis() };
 });
 vi.mock('ioredis', () => ({ Redis: fake.Redis }));
-vi.mock('$app/environment', () => ({ building: false }));
+vi.mock('$app/env', () => ({ building: false }));
 const redisGet = fake.commands.get;
 const redisTtl = fake.commands.ttl;
 const redisSetWithExpiry = fake.commands.set;
 
-vi.mock('$lib/util/retry', () => ({
+vi.mock('#lib/util/retry.ts', () => ({
   retryWithBackoff: (fn: () => Promise<unknown>) => fn(),
 }));
 

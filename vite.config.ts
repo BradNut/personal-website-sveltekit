@@ -15,25 +15,15 @@ export default defineConfig({
     varlockVitePlugin(),
     sveltekit({
       adapter: adapter(),
-      alias: {
-        $: './src',
-        $lib: './src/lib',
-        '@': './src',
-      },
-      typescript: {
-        config(config) {
-          config.include.push('../env.d.ts');
-        },
-      },
       compilerOptions: {
         css: 'injected',
+        // Lets the async client `handleError` hook be awaited during rendering.
+        experimental: { async: true },
       },
-      vitePlugin: {
-        inspector: {
-          toggleKeyCombo: 'control-alt-shift',
-          showToggleButton: 'always',
-          toggleButtonPos: 'bottom-right',
-        },
+      inspector: {
+        toggleKeyCombo: 'control-alt-shift',
+        showToggleButton: 'always',
+        toggleButtonPos: 'bottom-right',
       },
     }),
     imagetools({

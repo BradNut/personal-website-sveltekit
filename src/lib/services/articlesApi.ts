@@ -1,11 +1,11 @@
 import intersect from 'just-intersect';
 import { ENV } from 'varlock/env';
-import { ARTICLES_CACHE_TTL_SECONDS, NO_CACHE } from '$lib/constants/cache-control';
-import { REDIS_PREFIXES } from '$lib/server/redis';
-import { createResponseCache } from '$lib/server/responseCache';
-import type { Article, ArticlePageLoad, WallabagArticle } from '$lib/types/article';
-import { ArticleTag } from '$lib/types/articleTag';
-import { retryWithBackoff } from '$lib/util/retry';
+import { ARTICLES_CACHE_TTL_SECONDS, NO_CACHE } from '#lib/constants/cache-control.ts';
+import { REDIS_PREFIXES } from '#lib/server/redis.ts';
+import { createResponseCache } from '#lib/server/responseCache.ts';
+import type { Article, ArticlePageLoad, WallabagArticle } from '#lib/types/article.ts';
+import { ArticleTag } from '#lib/types/articleTag.ts';
+import { retryWithBackoff } from '#lib/util/retry.ts';
 import type { PageQuery } from '../types/pageQuery';
 
 // Lazy URL construction — WALLABAG_URL may be empty locally; only evaluated at request time

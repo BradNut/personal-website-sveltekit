@@ -12,7 +12,7 @@ const { env, appEnv, fake } = await vi.hoisted(async () => {
 
 vi.mock('ioredis', () => ({ Redis: fake.Redis }));
 vi.mock('varlock/env', () => ({ initVarlockEnv: vi.fn(), ENV: env }));
-vi.mock('$app/environment', () => ({
+vi.mock('$app/env', () => ({
   get building() {
     return appEnv.building;
   },

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Album } from "$lib/types/album";
+  import type { Album } from "#lib/types/album.ts";
   import LazyImage from "./LazyImage.svelte";
 
   const { album }: { album: Album } = $props();

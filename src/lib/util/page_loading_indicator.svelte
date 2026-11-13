@@ -12,7 +12,9 @@
 	const increment = 1;
 	let interval: ReturnType<typeof setInterval> | null = null;
 
-	beforeNavigate(() => {
+	beforeNavigate(({ shallow, type }) => {
+		if (shallow && type === 'goto') return;
+
 		// Start the progress bar immediately when navigation begins
 		visible = true;
 		progress = 0;
@@ -34,6 +36,8 @@
 	});
 
 	onNavigate((navigation) => {
+		if (navigation.shallow && navigation.type === 'goto') return;
+
 		console.log("Navigating to", navigation?.to);
 		let start = performance.now();
 

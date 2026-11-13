@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Separator } from "bits-ui";
-	import ExternalLink from "$lib/components/ExternalLink.svelte";
+	import ExternalLink from "#lib/components/ExternalLink.svelte";
 </script>
 
 <section>

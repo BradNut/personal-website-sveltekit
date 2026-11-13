@@ -1,6 +1,6 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import { fetchArticles } from '$lib/services/articlesApi';
-import { resolveSitemapUrl } from '$lib/shared/siteUrl';
+import { fetchArticles } from '#lib/services/articlesApi.ts';
+import { resolveSitemapUrl } from '#lib/shared/siteUrl.ts';
 
 export const GET: RequestHandler = async function GET({ setHeaders }) {
   const { totalPages } = await fetchArticles({});

@@ -2,8 +2,8 @@ import { ExternalLink as ExternalLinkIcon } from '@lucide/svelte';
 import type { Snippet } from 'svelte';
 import { render } from 'svelte/server';
 import { describe, expect, it } from 'vitest';
-import type { ProjectLink } from '$lib/types/externalLinkType';
-import type { ExternalLinkType } from '$lib/types/externalLinkTypes';
+import type { ProjectLink } from '#lib/types/externalLinkType.ts';
+import type { ExternalLinkType } from '#lib/types/externalLinkTypes.ts';
 import ExternalLink from './ExternalLink.svelte';
 
 function renderWithLocation(location?: 'top' | 'bottom' | 'left' | 'right') {

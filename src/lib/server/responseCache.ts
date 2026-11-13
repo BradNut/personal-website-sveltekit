@@ -1,5 +1,5 @@
-import { NO_CACHE } from '$lib/constants/cache-control';
-import { redisService } from '$lib/server/redis';
+import { NO_CACHE } from '#lib/constants/cache-control.ts';
+import { redisService } from '#lib/server/redis.ts';
 
 /** A cached payload and the cache-control header to send with it. */
 export type CachedResponse<T> = { value: T; cacheControl: string };
