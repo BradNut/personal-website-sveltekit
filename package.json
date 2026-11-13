@@ -64,7 +64,7 @@
     "@sveltejs/kit": "^3.2.0",
     "bits-ui": "2.21.0",
     "ioredis": "^6.0.0",
-    "satori": "^0.33.5",
+    "satori": "^0.63.2",
     "satori-html": "^0.3.2",
     "scrape-it": "^6.1.16",
     "svelte": "^5.57.3",
