@@ -59,14 +59,8 @@ const makeWallabagResponse = () => ({
   limit: 10,
 });
 
-const makeCachedResponse = () => ({
-  articles: [],
-  currentPage: 1,
-  totalPages: 1,
-  limit: 10,
-  totalArticles: 0,
-  cacheControl: 'max-age=60',
-});
+// The cached value is the full sorted article list; pages are sliced from it
+const makeCachedResponse = () => ({ articles: [] });
 
 const originalFetch: typeof globalThis.fetch = globalThis.fetch;
 
@@ -185,7 +179,8 @@ describe('fetchArticles', () => {
     const result = await fetchArticles({ page: '1', limit: '10' });
 
     expect(result.articles).toEqual([]);
-    expect(result.totalArticles).toBe(1);
+    // Only published articles count towards pagination
+    expect(result.totalArticles).toBe(0);
     expect(redisSetWithExpiry).not.toHaveBeenCalled();
   });
 
@@ -240,38 +235,54 @@ describe('fetchArticles', () => {
     expect(redisSetWithExpiry).not.toHaveBeenCalled();
   });
 
-  it('clamps perPage to PAGE_SIZE when limit is out of range', async () => {
+  it('clamps the page size to PAGE_SIZE when limit is out of range', async () => {
     redisGet.mockResolvedValueOnce(null);
+    globalThis.fetch = vi.fn().mockResolvedValueOnce(authOk()).mockResolvedValueOnce(entriesOk()) as unknown as typeof globalThis.fetch;
 
-    const entriesJson = { _embedded: { items: [] }, page: 1, pages: 0, total: 0, limit: 10 };
-    const authResponse = { ok: true, json: async () => ({ access_token: 'token' }) };
-    const pageResponse = { ok: true, headers: { get: () => null }, json: async () => entriesJson };
+    const result = await fetchArticles({ page: '1', limit: '999' });
 
-    const fetchMock = vi.fn().mockResolvedValueOnce(authResponse).mockResolvedValueOnce(pageResponse);
-    globalThis.fetch = fetchMock as unknown as typeof globalThis.fetch;
-
-    await fetchArticles({ page: '1', limit: '999' });
-
-    const calledUrl: string = fetchMock.mock.calls[1][0] as string;
-    expect(calledUrl).toContain('perPage=10');
+    expect(result.limit).toBe(10);
   });
 
-  it('asks Wallabag for entries newest-added first', async () => {
-    redisGet.mockResolvedValueOnce(null);
+  it('orders articles newest-added first across every Wallabag batch, then pages them', async () => {
+    redisGet.mockResolvedValue(null);
 
-    const entriesJson = { _embedded: { items: [] }, page: 1, pages: 0, total: 0, limit: 10 };
-    const authResponse = { ok: true, json: async () => ({ access_token: 'token' }) };
-    const pageResponse = { ok: true, headers: { get: () => null }, json: async () => entriesJson };
-
-    const fetchMock = vi.fn().mockResolvedValueOnce(authResponse).mockResolvedValueOnce(pageResponse);
+    // Wallabag's sort=created orders by entry id, which doesn't follow created_at after the migration
+    const entry = (n: number, createdAt: string) => ({
+      ...makeWallabagResponse()._embedded.items[0],
+      title: `Article ${n}`,
+      hashed_url: `hash${n}`,
+      created_at: createdAt,
+    });
+    const batch = (page: number, items: ReturnType<typeof entry>[]) => ({
+      ok: true,
+      headers: { get: () => null },
+      json: async () => ({ _embedded: { items }, page, pages: 2, total: 4, limit: 100 }),
+    });
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(authOk(3600))
+      .mockResolvedValueOnce(batch(1, [entry(1, '2017-02-23T08:55:12Z'), entry(3, '2024-05-01T00:00:00Z')]))
+      .mockResolvedValueOnce(batch(2, [entry(4, '2026-01-10T00:00:00Z'), entry(2, '2021-01-27T20:16:25Z')]));
     globalThis.fetch = fetchMock as unknown as typeof globalThis.fetch;
 
-    await fetchArticles({ page: '1', limit: '10' });
+    const firstPage = await fetchArticles({ page: '1', limit: '3' });
 
-    // updated_at was rewritten in bulk on the old Wallabag host, so only created_at reflects when an article was added
-    const params = new URL(fetchMock.mock.calls[1][0] as string).searchParams;
-    expect(params.get('sort')).toBe('created');
-    expect(params.get('order')).toBe('desc');
+    const entryCalls = fetchMock.mock.calls.slice(1).map(([url]) => new URL(url as string).searchParams.get('page'));
+    expect(entryCalls).toEqual(['1', '2']);
+    expect(firstPage.articles.map((article) => article.title)).toEqual(['Article 4', 'Article 3', 'Article 2']);
+    expect(firstPage.totalArticles).toBe(4);
+    expect(firstPage.totalPages).toBe(2);
+
+    // The sorted list was cached once; page 2 is sliced from it
+    const [, cachedList] = redisSetWithExpiry.mock.calls[0] as [string, string];
+    redisGet.mockResolvedValueOnce(cachedList);
+    redisTtl.mockResolvedValueOnce(60);
+    const secondPage = await fetchArticles({ page: '2', limit: '3' });
+
+    expect(secondPage.articles.map((article) => article.title)).toEqual(['Article 1']);
+    expect(secondPage.currentPage).toBe(2);
+    expect(fetchMock).toHaveBeenCalledTimes(3);
   });
 
   it('fetches from API and stores in cache on cache miss', async () => {
