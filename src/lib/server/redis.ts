@@ -1,6 +1,6 @@
 import { Redis } from 'ioredis';
 import { ENV } from 'varlock/env';
-import { building } from '$app/environment';
+import { building } from '$app/env';
 
 const NAMESPACE = 'personal-website';
 

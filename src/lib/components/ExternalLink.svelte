@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { ExternalLink } from "@lucide/svelte";
-	import type { ProjectLink } from "$lib/types/externalLinkType";
+	import type { ProjectLink } from "#lib/types/externalLinkType.ts";
 	import type {
 		ExternalLinkType,
 		LinkIconType,
-	} from "$lib/types/externalLinkTypes";
+	} from "#lib/types/externalLinkTypes.ts";
 
 	type Props = (ExternalLinkType | { projectLink: ProjectLink }) & { iconSize?: number };
 

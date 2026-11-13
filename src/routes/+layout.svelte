@@ -1,7 +1,7 @@
 <script lang="ts">
 	import "../styles/styles.pcss";
 	import { MetaTags } from "svelte-meta-tags";
-	import { dev } from "$app/environment";
+	import { dev } from "$app/env";
 	import { onNavigate } from "$app/navigation";
 	import { page } from "$app/state";
 	import Analytics from "../lib/components/analytics/index.svelte";
@@ -18,6 +18,7 @@
 	const production = !dev || import.meta.env.NODE_ENV !== "production";
 
 	onNavigate(async (navigation) => {
+		if (navigation.shallow && navigation.type === "goto") return;
 		if (!document.startViewTransition) return;
 
 		return new Promise((oldStateCaptureResolve) => {

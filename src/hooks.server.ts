@@ -1,11 +1,10 @@
 import * as Sentry from '@sentry/sveltekit';
-import type { Handle, HandleServerError } from '@sveltejs/kit';
-import { sequence } from '@sveltejs/kit/hooks';
+import { type Handle, type HandleServerError, sequence } from '@sveltejs/kit/hooks';
 import { ENV } from 'varlock/env';
-import { dev } from '$app/environment';
-import { StatusCodes } from '$lib/constants/status-codes';
-import { isProbeRequest } from '$lib/server/probeRequest';
-import { reportError } from '$lib/shared/errorReporter';
+import { StatusCodes } from '#lib/constants/status-codes.ts';
+import { isProbeRequest } from '#lib/server/probeRequest.ts';
+import { reportError } from '#lib/shared/errorReporter.ts';
+import { dev } from '$app/env';
 
 Sentry.init({
   release: `personal-website@${ENV.PUBLIC_SITE_VERSION}`,
@@ -30,5 +29,6 @@ export const handleProbeRequest: Handle = async ({ event, resolve }) => {
 
 export const handle: Handle = sequence(handleProbeRequest, Sentry.sentryHandle());
 
-export const handleError: HandleServerError = async ({ error, event, status }) =>
-  reportError({ error, event, status, capture: Sentry.captureException });
+export const handleError: HandleServerError = async ({ error, event, kind }) =>
+  // Kit 3 passes 4xx (app/framework) errors here too; their status lets reportError skip them.
+  reportError({ error, event, status: kind === 'unknown' ? 500 : error.status, capture: Sentry.captureException });

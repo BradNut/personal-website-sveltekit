@@ -1,10 +1,10 @@
 import scrapeIt, { type ScrapeResult } from 'scrape-it';
 import { ENV } from 'varlock/env';
-import { NO_CACHE } from '$lib/constants/cache-control';
-import { REDIS_PREFIXES } from '$lib/server/redis';
-import { createResponseCache } from '$lib/server/responseCache';
-import type { Album, BandCampResults } from '$lib/types/album';
-import { retryWithBackoff } from '$lib/util/retry';
+import { NO_CACHE } from '#lib/constants/cache-control.ts';
+import { REDIS_PREFIXES } from '#lib/server/redis.ts';
+import { createResponseCache } from '#lib/server/responseCache.ts';
+import type { Album, BandCampResults } from '#lib/types/album.ts';
+import { retryWithBackoff } from '#lib/util/retry.ts';
 
 const CACHE_KEY = 'albums';
 const albumsCache = createResponseCache<Album[]>({ prefix: REDIS_PREFIXES.BANDCAMP_ALBUMS, ttlSeconds: 43200 }); // 12 hours

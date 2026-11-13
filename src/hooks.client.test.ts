@@ -18,7 +18,7 @@ vi.mock('varlock/env', () => ({
   },
 }));
 
-vi.mock('$app/environment', () => ({
+vi.mock('$app/env', () => ({
   dev: false,
 }));
 
@@ -33,7 +33,7 @@ describe('client handleError', () => {
     const error = new Error('boom');
     const event = { url: new URL('https://example.com') } as Parameters<typeof handleError>[0]['event'];
 
-    const result = (await handleError({ error, event, status: 500, message: 'boom' })) as {
+    const result = (await handleError({ kind: 'unknown', error, event })) as {
       message: string;
       errorId?: string;
     };

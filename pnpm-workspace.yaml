@@ -7,3 +7,8 @@ allowBuilds:
 overrides:
   # satori -> @shuding/opentype.js pins fflate 0.7.3 (GHSA advisory, fixed in 0.7.5)
   fflate: ^0.7.5
+
+peerDependencyRules:
+  allowedVersions:
+    # bits-ui -> runed 0.35 declares an optional kit ^2 peer for its `runed/kit` entry, which bits-ui never imports
+    runed>@sveltejs/kit: '3'

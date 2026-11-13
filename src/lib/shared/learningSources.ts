@@ -1,4 +1,4 @@
-import type { LearningSource } from '$lib/types/learningSource';
+import type { LearningSource } from '#lib/types/learningSource.ts';
 
 export const learningSources: LearningSource[] = [
   {
