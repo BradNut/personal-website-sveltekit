@@ -11,7 +11,7 @@ Sentry.init({
   dsn: `${ENV.SENTRY_BACKEND_URL}`,
   tracesSampleRate: 0.01,
   environment: dev ? 'development' : 'production',
-  spotlight: true,
+  spotlight: dev,
 });
 
 export const handleProbeRequest: Handle = async ({ event, resolve }) => {

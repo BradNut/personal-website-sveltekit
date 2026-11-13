@@ -8,5 +8,5 @@ Sentry.init({
   environment: ENV.ENVIRONMENT === 'production' ? 'production' : 'development',
   tracesSampleRate: 0,
   release: `personal-website@${ENV.SITE_VERSION}`,
-  spotlight: true,
+  spotlight: ENV.ENVIRONMENT !== 'production',
 });

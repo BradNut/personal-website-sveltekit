@@ -9,7 +9,7 @@ Sentry.init({
   dsn: `${ENV.PUBLIC_SENTRY_URL}`,
   tracesSampleRate: 0.01,
   environment: dev ? 'development' : 'production',
-  spotlight: true,
+  spotlight: dev,
 });
 
 export const handleError: HandleClientError = async ({ error, event, kind }) =>
