@@ -6,7 +6,8 @@ import { ENV } from 'varlock/env';
 Sentry.init({
   dsn: ENV.SENTRY_BACKEND_URL,
   environment: ENV.ENVIRONMENT === 'production' ? 'production' : 'development',
-  tracesSampleRate: 0,
   release: `personal-website@${ENV.SITE_VERSION}`,
   spotlight: ENV.ENVIRONMENT !== 'production',
+  // Bugsink only needs the error; request/response bodies add size without helping debug.
+  dataCollection: { httpBodies: [] },
 });

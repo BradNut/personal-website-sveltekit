@@ -9,9 +9,10 @@ import { dev } from '$app/env';
 Sentry.init({
   release: `personal-website@${ENV.PUBLIC_SITE_VERSION}`,
   dsn: `${ENV.SENTRY_BACKEND_URL}`,
-  tracesSampleRate: 0.01,
   environment: dev ? 'development' : 'production',
   spotlight: dev,
+  // Bugsink only needs the error; request/response bodies add size without helping debug.
+  dataCollection: { httpBodies: [] },
 });
 
 export const handleProbeRequest: Handle = async ({ event, resolve }) => {
