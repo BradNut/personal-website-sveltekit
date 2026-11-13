@@ -11,7 +11,6 @@ Sentry.init({
   dsn: `${ENV.SENTRY_BACKEND_URL}`,
   tracesSampleRate: 0.01,
   environment: dev ? 'development' : 'production',
-  sendDefaultPii: true,
   spotlight: true,
 });
 

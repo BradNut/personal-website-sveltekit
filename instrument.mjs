@@ -7,7 +7,6 @@ Sentry.init({
   dsn: ENV.SENTRY_BACKEND_URL,
   environment: ENV.ENVIRONMENT === 'production' ? 'production' : 'development',
   tracesSampleRate: 0,
-  sendDefaultPii: true,
   release: `personal-website@${ENV.SITE_VERSION}`,
   spotlight: true,
 });

@@ -9,7 +9,6 @@ Sentry.init({
   dsn: `${ENV.PUBLIC_SENTRY_URL}`,
   tracesSampleRate: 0.01,
   environment: dev ? 'development' : 'production',
-  sendDefaultPii: true,
   spotlight: true,
 });
 
