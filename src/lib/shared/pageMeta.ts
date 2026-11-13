@@ -2,7 +2,6 @@ import type { MetaTagsProps } from 'svelte-meta-tags';
 import { resolveCurrentPageUrl, resolveOgEndpointUrl } from '#lib/shared/siteUrl.ts';
 
 const SITE_NAME = 'Bradley Shellnut Personal Website';
-const TWITTER_IMAGE_ALT = 'Bradley Shellnut Website Logo';
 const OG_IMAGE_WIDTH = 1200;
 const OG_IMAGE_HEIGHT = 630;
 
@@ -49,7 +48,7 @@ export function buildPageMetaTags({ url, title, description, og, imageAlt, twitt
       description: twitterDescription ?? description,
       card: 'summary_large_image',
       image: ogImageUrl,
-      imageAlt: TWITTER_IMAGE_ALT,
+      imageAlt,
     },
     url: currentPageUrl,
   });
