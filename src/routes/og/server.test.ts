@@ -8,6 +8,12 @@ vi.mock('#lib/renderImage.ts', () => ({
 
 vi.mock('#lib/components/socialImageCard.svelte', () => ({ default: {} }));
 
+vi.mock('#lib/assets/images/b_shell_nut_favicon.png', () => ({ default: '/favicon-asset.png' }));
+
+vi.mock('$app/server', () => ({
+  read: () => new Response(new Uint8Array([1, 2, 3])),
+}));
+
 import { GET } from './+server.js';
 
 function makeEvent(params: Record<string, string> = {}): Parameters<typeof GET>[0] {
@@ -37,7 +43,7 @@ describe('GET /og', () => {
     expect(props.header).toBe('My Header');
     expect(props.page).toBe('Home');
     expect(props.content).toBe('Some content');
-    expect(props.image).toBe('http://localhost/b_shell_nut_favicon.png'); // NOSONAR - localhost test fixture
+    expect(props.image).toBe('data:image/png;base64,AQID');
     expect(props.width).toBe('1200');
     expect(props.height).toBe('630');
     expect(props.url).toBe('http://localhost/'); // NOSONAR - localhost test fixture
