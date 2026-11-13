@@ -309,7 +309,7 @@ test.describe('Home page', () => {
     expect(styles.clientHeight).toBeLessThan(styles.scrollHeight);
   });
 
-  test('mobile layout: album cards align at the 575px breakpoint', async ({ page }) => {
+  test('mobile layout: album cards align at the 550px breakpoint', async ({ page }) => {
     await page.goto('/');
     const albumCards = page.locator('.albumStyles');
     const albumCount = await albumCards.count();
@@ -318,7 +318,7 @@ test.describe('Home page', () => {
       return;
     }
 
-    await page.setViewportSize({ width: 575, height: 900 });
+    await page.setViewportSize({ width: 550, height: 900 });
     const alignItems = await albumCards.first().evaluate((el) => getComputedStyle(el).alignItems);
     expect(alignItems).toBe('center');
   });
