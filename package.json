@@ -40,7 +40,6 @@
     "@varlock/bitwarden-plugin": "^2.0.2",
     "@varlock/proton-pass-plugin": "^2.0.2",
     "@varlock/vite-integration": "^1.5.5",
-    "@zerodevx/svelte-img": "^2.1.2",
     "just-intersect": "^4.3.0",
     "postcss": "^8.5.32",
     "postcss-custom-media": "^12.0.3",

@@ -7,12 +7,4 @@ export type Album = {
   artwork: string;
   title: string;
   artist: string;
-  src: Record<string, unknown> | ExternalImageSource[] | undefined;
-};
-
-export type ExternalImageSource = {
-  format: string;
-  img: string;
-  w: number;
-  h?: number;
 };

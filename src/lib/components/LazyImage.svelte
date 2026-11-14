@@ -1,16 +1,15 @@
 <script lang="ts">
-	import Img from "@zerodevx/svelte-img";
-	import type { ExternalImageSource } from "../types/album";
-
 	interface Props {
 		clazz?: string;
-		src: Record<string, any> | ExternalImageSource[] | undefined;
+		src: string;
 		alt: string;
+		width?: number;
+		height?: number;
 		style?: string;
 		loading?: "lazy" | "eager";
 	}
 
-	let { clazz = "", src, alt, style = "", loading = "lazy" }: Props = $props();
+	let { clazz = "", src, alt, width, height, style = "", loading = "lazy" }: Props = $props();
 
 	let ref: HTMLImageElement | null | undefined = $state();
 	let loaded: boolean = $derived.by(() => {
@@ -20,7 +19,17 @@
 </script>
 
 <div class="wrap">
-	<Img class={clazz} {style} {src} {alt} {loading} bind:ref />
+	<img
+		class={clazz}
+		style={style || undefined}
+		{src}
+		{alt}
+		{width}
+		{height}
+		{loading}
+		decoding="async"
+		bind:this={ref}
+	/>
 	<div class:blur={loaded} class:loaded></div>
 </div>
 
