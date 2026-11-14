@@ -6,9 +6,9 @@ type SiteUrlOptions = {
   publicSiteUrl?: string;
 };
 
-type OgEndpointParams = {
-  header?: string;
-  page?: string;
+export type OgEndpointParams = {
+  header: string;
+  page: string;
   content?: string;
 };
 
