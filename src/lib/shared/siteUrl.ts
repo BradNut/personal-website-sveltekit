@@ -30,10 +30,6 @@ export function resolveCurrentPageUrl(url: URL, options: SiteUrlOptions = {}) {
   return new URL(url.pathname, resolveSiteUrl(url, options)).href;
 }
 
-export function resolveAssetUrl(url: URL, assetPath: string, options: SiteUrlOptions = {}) {
-  return new URL(assetPath, resolveSiteUrl(url, options)).href;
-}
-
 export function resolveOgEndpointUrl(url: URL, params: OgEndpointParams, options: SiteUrlOptions = {}) {
   const ogUrl = new URL('og', resolveSiteUrl(url, options));
 
