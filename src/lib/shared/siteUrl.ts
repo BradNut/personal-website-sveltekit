@@ -6,9 +6,9 @@ type SiteUrlOptions = {
   publicSiteUrl?: string;
 };
 
-type OgEndpointParams = {
-  header?: string;
-  page?: string;
+export type OgEndpointParams = {
+  header: string;
+  page: string;
   content?: string;
 };
 
@@ -28,10 +28,6 @@ export function resolveSiteUrl(url: URL, options: SiteUrlOptions = {}) {
 
 export function resolveCurrentPageUrl(url: URL, options: SiteUrlOptions = {}) {
   return new URL(url.pathname, resolveSiteUrl(url, options)).href;
-}
-
-export function resolveAssetUrl(url: URL, assetPath: string, options: SiteUrlOptions = {}) {
-  return new URL(assetPath, resolveSiteUrl(url, options)).href;
 }
 
 export function resolveOgEndpointUrl(url: URL, params: OgEndpointParams, options: SiteUrlOptions = {}) {

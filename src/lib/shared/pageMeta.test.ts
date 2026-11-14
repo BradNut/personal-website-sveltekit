@@ -59,4 +59,11 @@ describe('buildPageMetaTags', () => {
     expect(params.has('content')).toBe(false);
     expect(params.get('header')).toBe('Header');
   });
+
+  it('uses the page imageAlt for both the openGraph image and the twitter image', () => {
+    const meta = build({ imageAlt: 'Bradley Shellnut Uses Page' });
+
+    expect(meta.openGraph?.images?.[0]?.alt).toBe('Bradley Shellnut Uses Page');
+    expect(meta.twitter?.imageAlt).toBe('Bradley Shellnut Uses Page');
+  });
 });
