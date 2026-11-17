@@ -1,7 +1,7 @@
 import faviconPng from '#lib/assets/images/b_shell_nut_favicon.png';
-import SocialImageCard from '#lib/components/socialImageCard.svelte';
-import { componentToPng } from '#lib/renderImage.ts';
-import { resolveSiteUrl } from '#lib/shared/siteUrl.ts';
+import SocialImageCard from '#lib/components/social-image-card.svelte';
+import { componentToPng } from '#lib/render-image.ts';
+import { resolveSiteUrl } from '#lib/shared/site-url.ts';
 import { read } from '$app/server';
 
 const height = 630;

@@ -5,13 +5,13 @@
 
 ## Context
 
-Every other icon link on the site (contact hub, course cards, social links) is rendered via `ExternalLink.svelte`, which accepts `iconData / linkData / textData` triples and handles text positioning, decoration, and tracking events.
+Every other icon link on the site (contact hub, course cards, social links) is rendered via `external-link.svelte`, which accepts `iconData / linkData / textData` triples and handles text positioning, decoration, and tracking events.
 
 The Tech Stack grid on the about page has a fixed, uniform layout: icon above, label below, `target="_blank"`, no underline, hover yellow. All 7 entries are identical in structure.
 
 ## Decision
 
-`TechStack.svelte` renders `<a>` + SVG snippet directly, without delegating to `ExternalLink.svelte`.
+`tech-stack.svelte` renders `<a>` + SVG snippet directly, without delegating to `external-link.svelte`.
 
 ## Reasoning
 

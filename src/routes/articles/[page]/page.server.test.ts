@@ -11,7 +11,7 @@ vi.mock('varlock/env', () => ({
 }));
 
 const fetchArticlesMock = vi.fn();
-vi.mock('#lib/services/articlesApi.ts', () => ({
+vi.mock('#lib/services/articles-api.ts', () => ({
   fetchArticles: (...args: unknown[]) => fetchArticlesMock(...args),
 }));
 

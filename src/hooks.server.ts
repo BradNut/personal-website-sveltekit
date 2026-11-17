@@ -2,8 +2,8 @@ import * as Sentry from '@sentry/sveltekit';
 import { type Handle, type HandleServerError, sequence } from '@sveltejs/kit/hooks';
 import { ENV } from 'varlock/env';
 import { StatusCodes } from '#lib/constants/status-codes.ts';
-import { isProbeRequest } from '#lib/server/probeRequest.ts';
-import { reportError } from '#lib/shared/errorReporter.ts';
+import { isProbeRequest } from '#lib/server/probe-request.ts';
+import { reportError } from '#lib/shared/error-reporter.ts';
 import { dev } from '$app/env';
 
 Sentry.init({

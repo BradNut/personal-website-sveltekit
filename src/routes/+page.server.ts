@@ -1,7 +1,7 @@
-import { fetchArticles } from '#lib/services/articlesApi.ts';
-import { articlesPageCacheControl } from '#lib/shared/articlesCacheControl.ts';
-import { buildPageMetaTags } from '#lib/shared/pageMeta.ts';
-import { resolveSiteUrl } from '#lib/shared/siteUrl.ts';
+import { fetchArticles } from '#lib/services/articles-api.ts';
+import { articlesPageCacheControl } from '#lib/shared/articles-cache-control.ts';
+import { buildPageMetaTags } from '#lib/shared/page-meta.ts';
+import { resolveSiteUrl } from '#lib/shared/site-url.ts';
 import type { Album } from '#lib/types/album.ts';
 import type { ArticlePageLoad } from '#lib/types/article.ts';
 import type { PageServerLoad } from './$types';
