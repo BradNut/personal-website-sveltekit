@@ -14,7 +14,7 @@ Home `load` fires both in parallel via `Promise.all`.
 ## Server/Client Boundaries
 
 - `src/lib/server/` — server-only: `redis.ts`, `response-cache.ts`, `probe-request.ts`
-- `src/lib/services/articles-api.ts`, `src/lib/services/bandcamp-api.ts` — server-only (import `$lib/server/*` and `varlock/env`)
+- `src/lib/services/articles-api.ts`, `src/lib/services/bandcamp-api.ts` — server-only (import `#lib/server/*` and `varlock/env`)
 - `src/routes/api/` — server-only API routes
 - Rest of `src/lib/` — client or universal
 

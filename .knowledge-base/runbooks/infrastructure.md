@@ -134,7 +134,7 @@ If a suppressed path unexpectedly shows up as a Bugsink issue, check `isProbeReq
 
 ## Redis Service
 
-`src/lib/server/redis.ts`. Import: `import { redisService, REDIS_PREFIXES } from '$lib/server/redis'`.
+`src/lib/server/redis.ts`. Import: `import { redisService, REDIS_PREFIXES } from '#lib/server/redis.ts'`.
 
 Key pattern: `personal-website:<prefix>:<key>`. Namespace isolates from other projects on shared Redis.
 
