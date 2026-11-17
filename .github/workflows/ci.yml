@@ -1,10 +1,16 @@
 name: CI
 
 on:
+  # No paths-ignore on pull_request: these jobs are required checks (.knowledge-base/runbooks/branch-protection.md),
+  # and a required check that never runs leaves a docs-only PR unmergeable.
   pull_request:
-    branches: [master, main, development]
+    branches: [master, development]
   push:
-    branches: [master, main]
+    branches: [master]
+    paths-ignore:
+      - '**.md'
+      - '.knowledge-base/**'
+      - 'docs/**'
   workflow_dispatch:
 
 concurrency:
@@ -34,34 +40,36 @@ env:
   SENTRY_BACKEND_URL: https://sentry-backend.test
 
 jobs:
+  # Biome plus the pinned actions/images guard and its tests.
   lint:
     name: Lint (Biome)
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
-      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
-        with:
-          standalone: true
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/setup
       - run: pnpm lint
+      - run: pnpm check:pinned-refs
+      - run: pnpm test:scripts
+
+  # Fails on any high or critical production advisory. Moderates and lows stay visible in the output but
+  # do not block; see .knowledge-base/runbooks/branch-protection.md.
+  audit:
+    name: Dependency audit (production)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/setup
+      - run: pnpm audit --prod --audit-level=high
 
   check:
     name: Typecheck (svelte-check)
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
-      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
-        with:
-          standalone: true
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/setup
       - name: Generate Varlock types
         run: pnpm exec varlock typegen
       - run: pnpm check
@@ -69,18 +77,12 @@ jobs:
   unit:
     name: Unit tests (Vitest)
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     env:
       USE_REDIS_CACHE: 'true'
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
-      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
-        with:
-          standalone: true
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/setup
       - run: pnpm test:unit --run
 
   e2e:
@@ -91,15 +93,8 @@ jobs:
       # Feature PRs into development get fast Chromium-only feedback; master gets all browsers.
       E2E_SCOPE: ${{ github.event_name == 'pull_request' && github.base_ref == 'development' && 'chromium' || 'all' }}
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
-      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
-        with:
-          standalone: true
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ./.github/actions/setup
       - name: Resolve Playwright version and browsers
         id: pw
         run: |
@@ -127,7 +122,7 @@ jobs:
         run: pnpm exec playwright install-deps ${{ steps.pw.outputs.browsers }}
       - name: Run tests
         run: pnpm test:integration ${{ steps.pw.outputs.project }}
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: ${{ !cancelled() }}
         continue-on-error: true
         with:

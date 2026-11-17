@@ -18,6 +18,8 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "biome check .",
+    "check:pinned-refs": "node scripts/check-pinned-refs.mjs",
+    "test:scripts": "node --test scripts/*.test.mjs",
     "format": "biome format --write .",
     "organize": "biome check --write --formatter-enabled=false --linter-enabled=false .",
     "storybook": "storybook dev -p 6006",

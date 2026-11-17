@@ -2,10 +2,13 @@ name: Fallow Analysis
 
 on:
   pull_request:
-    branches: [master, main, development]
+    branches: [master, development]
   push:
-    branches: [master, main]
+    branches: [master]
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 concurrency:
   group: fallow-${{ github.event.pull_request.number || github.ref }}
@@ -15,30 +18,24 @@ jobs:
   fallow:
     name: Dead code, duplication & complexity
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: read
       pull-requests: write
       security-events: write
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
-      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
-        with:
-          standalone: true
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile --ignore-scripts
-      - uses: fallow-rs/fallow@624adaf8c8ae33de863911658890890a529a46f3
+      - uses: ./.github/actions/setup
+      - uses: fallow-rs/fallow@624adaf8c8ae33de863911658890890a529a46f3 # v2.67.0
         with:
           format: sarif
           comment: true
           auto-changed-since: true
           fail-on-issues: false
           production: true
-      - uses: github/codeql-action/upload-sarif@5e316336eb4f107009e477d4bfbfff13d7250fae
+      - uses: github/codeql-action/upload-sarif@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
         if: always()
         with:
           sarif_file: fallow-results.sarif
