@@ -1,6 +1,6 @@
 # Environment Configuration
 
-Reference: `.env.example`
+Reference: `.env.schema` (varlock schema — every variable, its type and whether it's required)
 
 ## Required
 
@@ -36,7 +36,7 @@ Reference: `.env.example`
 ## Local Dev Setup
 
 ```bash
-cp .env.example .env
+touch .env   # values for the variables declared in .env.schema
 # Fill in WALLABAG_*, BANDCAMP_USERNAME, REDIS_URI
 # Set USE_REDIS_CACHE=false to skip Redis locally
 pnpm dev
