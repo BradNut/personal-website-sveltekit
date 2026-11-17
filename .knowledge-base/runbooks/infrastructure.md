@@ -171,29 +171,3 @@ cache.freshCacheControl        // `max-age=<ttlSeconds>`
 ```
 
 A hit sends `max-age=<remaining TTL>`. If the TTL is 0 or negative (expired, no expiry, lookup failed), it sends `no-cache`, never a zero or negative `max-age`.
-
----
-
-## Rate Limiting
-
-`src/lib/server/rateLimiter.ts`. In-memory (no Redis). Resets on server restart.
-
-**Protected**: `/api/articles`, `/api/bandcamp/albums`
-
-**Limits**: 30 req/min per IP+UA → 100 req/hr per IP. First limit hit wins.
-
-Returns `429 { "message": "Too many requests. Please try again later." }`.
-
-### Custom limiter
-
-```typescript
-import { createRateLimiter } from '$lib/server/rateLimiter';
-const limiter = createRateLimiter({ IPUA: [10, 'm'], IP: [50, 'h'] });
-```
-
-### Test locally
-
-```bash
-for i in {1..35}; do curl -s http://localhost:5173/api/articles?page=1 > /dev/null; echo $i; done
-# Request 31+ should return 429
-```

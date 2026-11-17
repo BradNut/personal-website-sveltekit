@@ -12,13 +12,13 @@ NODE_OPTIONS=--max-old-space-size=2048 pnpm build
 
 ## Native Deps (sharp, resvg-js)
 
-Nixpacks needs `libvips-dev` for sharp. If missing:
+sharp ships prebuilt libvips binaries (`@img/sharp-*`). If the platform binary is missing:
 
 ```
 Error: Cannot find module './build/Release/sharp.node'
 ```
 
-Add to Nixpacks apt packages or Dockerfile:
+Add the apt packages to `railpack.json`:
 
 ```
 libvips-dev libvips-tools build-essential

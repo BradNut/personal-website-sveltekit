@@ -3,7 +3,7 @@
 ## Glossary
 
 ### Tech Stack
-The set of frameworks, languages, and platforms Bradley personally explores outside of work. Displayed on the about page as an icon-link grid. Each entry links to the technology's homepage. Distinct from the website's own implementation stack (SvelteKit, Tailwind, Bits UI).
+The set of frameworks, languages, and platforms Bradley personally explores outside of work. Displayed on the about page as an icon-link grid. Each entry links to the technology's homepage. Distinct from the website's own implementation stack (SvelteKit, Svelte, Bits UI).
 
 ### Project Stack
 The set of technologies a single portfolio project was built with. Listed alongside that project on the portfolio page. An entry usually names a product with a canonical home page, but may name a general technique or concept that has no single authoritative link. Distinct from Tech Stack, which describes Bradley's own interests rather than any one project's implementation.

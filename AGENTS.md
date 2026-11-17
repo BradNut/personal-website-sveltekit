@@ -1,6 +1,6 @@
 # AGENTS
 
-Personal website. SvelteKit 2, Svelte 5, TypeScript strict, Tailwind v4, Bits UI.
+Personal website. SvelteKit 3, Svelte 5, TypeScript strict, Bits UI. Styling: PostCSS global styles + scoped component `<style>`.
 
 ## Essentials
 

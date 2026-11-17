@@ -2,7 +2,7 @@
 
 ## Method
 
-Coolify + Nixpacks. Push to `main` → Coolify auto-builds → replaces container.
+Coolify + Railpack (`railpack.json`). Push to `master` → Coolify auto-builds → replaces container.
 
 ## Build
 
@@ -11,7 +11,7 @@ pnpm install --frozen-lockfile
 pnpm build   # vite build → outputs to build/
 ```
 
-Start: `node build/index.js` (adapter-node).
+Start: `pnpm start` → `varlock run -- node build/index.js` (adapter-node).
 
 ## Required Env Before Deploy
 
