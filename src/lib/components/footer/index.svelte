@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ContactHub from "#lib/components/ContactHub.svelte";
+	import ContactHub from "#lib/components/contact-hub.svelte";
 	import { page } from "$app/state";
 
 	const userNames = {

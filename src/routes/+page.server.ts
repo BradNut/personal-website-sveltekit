@@ -1,14 +1,11 @@
-import { fetchArticles } from '#lib/services/articlesApi.ts';
-import { articlesPageCacheControl } from '#lib/shared/articlesCacheControl.ts';
-import { buildPageMetaTags } from '#lib/shared/pageMeta.ts';
-import { resolveSiteUrl } from '#lib/shared/siteUrl.ts';
+import { fetchArticles } from '#lib/services/articles-api.ts';
+import { articlesPageCacheControl } from '#lib/shared/articles-cache-control.ts';
+import { buildPageMetaTags } from '#lib/shared/page-meta.ts';
 import type { Album } from '#lib/types/album.ts';
 import type { ArticlePageLoad } from '#lib/types/article.ts';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
-  const baseUrl = resolveSiteUrl(url);
-
   const metaTags = buildPageMetaTags({
     url,
     title: 'Home',
@@ -31,7 +28,6 @@ export const load: PageServerLoad = async ({ fetch, setHeaders, url }) => {
     'cache-control': articlesPageCacheControl(articles.cacheControl),
   });
   return {
-    baseUrl,
     metaTagsChild: metaTags,
     albums,
     articlesData: articles,

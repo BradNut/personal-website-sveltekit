@@ -1,0 +1,28 @@
+version: 2
+updates:
+  # Keeps the SHA-pinned actions in .github/ current.
+  - package-ecosystem: github-actions
+    directories:
+      - /
+      - /.github/actions/*
+    target-branch: development
+    schedule:
+      interval: weekly
+    groups:
+      github-actions:
+        patterns:
+          - '*'
+    commit-message:
+      prefix: ci
+
+  # npm is security-updates only: the zero PR limit turns version updates off, and the entry exists so security-update
+  # PRs target development instead of the default branch.
+  - package-ecosystem: npm
+    directory: /
+    target-branch: development
+    # Required by the schema even though the zero limit means no version-update PRs are opened.
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 0
+    commit-message:
+      prefix: fix

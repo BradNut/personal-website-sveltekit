@@ -7,12 +7,6 @@
       "skillPath": "plugins/svelte-skills/skills/svelte-runes/SKILL.md",
       "computedHash": "eb00a303243ba55e8e29a89927e4a8d08226c768583fb3f3c048420458ad16fa"
     },
-    "sveltekit-svelte5-tailwind-skill": {
-      "source": "claude-skills/sveltekit-svelte5-tailwind-skill",
-      "sourceType": "github",
-      "skillPath": "SKILL.md",
-      "computedHash": "bb72a52a2c415aa8743bf3146dd615f9084e17a8a05e2198f8c3ba23a8053b8b"
-    },
     "typescript-advanced-types": {
       "source": "wshobson/agents",
       "sourceType": "github",

@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { AspectRatio, Separator } from "bits-ui";
-	import { learningSources } from "#lib/shared/learningSources.ts";
+	import { learningSources } from "#lib/shared/learning-sources.ts";
 	import orange_derp from "../../lib/assets/images/orange_derp.jpg?enhanced";
 	import tortie_derp from "../../lib/assets/images/tortie_derp.jpg?enhanced";
 	import turnip from "../../lib/assets/images/turnip.svg?enhanced";
-	import Badge from "../../lib/components/Badge.svelte";
-	import ExternalLink from "../../lib/components/ExternalLink.svelte";
-	import TechStack from "../../lib/components/TechStack.svelte";
+	import Badge from "../../lib/components/badge.svelte";
+	import ExternalLink from "../../lib/components/external-link.svelte";
+	import TechStack from "../../lib/components/tech-stack.svelte";
 </script>
 
 <div class="about">

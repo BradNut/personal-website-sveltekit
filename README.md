@@ -6,23 +6,27 @@ This is a work in progress to get the site on par with my old one and eventually
 
 ## Developing
 
-Install dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Requires Node 24+ and pnpm. Env comes through varlock (`.env.schema`); see the [environment runbook](.knowledge-base/runbooks/environment-config.md).
 
 ```bash
-npm run dev
+pnpm install
+pnpm dev
+```
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+## Checks
+
+```bash
+pnpm lint              # Biome
+pnpm check             # svelte-check
+pnpm test:unit         # Vitest
+pnpm test:integration  # Playwright
 ```
 
 ## Building
 
-To create a production version of your app:
-
 ```bash
-npm run build
+pnpm build
+pnpm start   # varlock run -- node build/index.js (adapter-node)
 ```
 
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+Deployed with Coolify + Railpack. See the [deployment runbook](.knowledge-base/runbooks/deployment.md).

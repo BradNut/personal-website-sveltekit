@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const fetchAlbumsMock = vi.fn();
-vi.mock('#lib/services/bandcampApi.ts', () => ({
+vi.mock('#lib/services/bandcamp-api.ts', () => ({
   fetchAlbums: (...args: unknown[]) => fetchAlbumsMock(...args),
 }));
 

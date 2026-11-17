@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { hang, timed } from './testing/fakeIoredis';
+import { hang, timed } from './testing/fake-ioredis';
 
 const { env, appEnv, fake } = await vi.hoisted(async () => {
-  const { createFakeIoredis } = await import('./testing/fakeIoredis');
+  const { createFakeIoredis } = await import('./testing/fake-ioredis');
   return {
     env: { USE_REDIS_CACHE: true, REDIS_URI: 'redis://cache.internal:6379' },
     appEnv: { building: false },

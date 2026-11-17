@@ -17,7 +17,7 @@ const mockArticle = {
 const mockArticles = { articles: [mockArticle], currentPage: 1, totalPages: 1, limit: 3, totalArticles: 1, cacheControl: 'max-age=120' };
 const emptyNoCacheArticles = { articles: [], currentPage: 1, totalPages: 0, limit: 3, totalArticles: 0, cacheControl: 'no-cache' };
 const fetchArticlesMock = vi.fn();
-vi.mock('#lib/services/articlesApi.ts', () => ({
+vi.mock('#lib/services/articles-api.ts', () => ({
   fetchArticles: (...args: unknown[]) => fetchArticlesMock(...args),
 }));
 
@@ -64,7 +64,6 @@ describe('load (root page)', () => {
     expect(capturedHeaders['cache-control']).toBe('max-age=43200');
     expect(result.albums).toEqual(mockAlbums);
     expect(result.articlesData).toEqual(mockArticles);
-    expect(result.baseUrl).toBe('http://localhost/'); // NOSONAR - localhost test fixture, not production
     expect(result.metaTagsChild).toBeDefined();
   });
 
@@ -82,8 +81,7 @@ describe('load (root page)', () => {
     const meta = result.metaTagsChild as Record<string, unknown>;
 
     // ENV.PUBLIC_SITE_URL from .env.test, or hardcoded fallback
-    expect(result.baseUrl).toBeTruthy();
-    expect(result.baseUrl).not.toContain('prerender');
+    expect(meta.url).toBeTruthy();
     expect(meta.url).not.toContain('prerender');
   });
 

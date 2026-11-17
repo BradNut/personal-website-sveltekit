@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { registerLayoutNavTests } from './helpers/layoutNavTests';
+import { registerLayoutNavTests } from './helpers/layout-nav-tests';
 
 test.describe('Portfolio page', () => {
   test('has expected main heading', async ({ page }) => {
@@ -64,7 +64,7 @@ test.describe('Portfolio page', () => {
       .first();
 
     await expect(professionalCard).toBeVisible();
-    // Accessible name derived from aria-label in ExternalLink.svelte
+    // Accessible name derived from aria-label in external-link.svelte
     await expect(professionalCard.getByRole('link', { name: /Open\s+View Mark Shellnut Architect\s+externally/i })).toBeVisible();
   });
 });

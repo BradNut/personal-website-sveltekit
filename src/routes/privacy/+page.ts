@@ -1,6 +1,6 @@
 export const prerender = true;
 
-import { buildPageMetaTags } from '#lib/shared/pageMeta.ts';
+import { buildPageMetaTags } from '#lib/shared/page-meta.ts';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ url }) => {

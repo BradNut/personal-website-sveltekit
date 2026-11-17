@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Articles from "#lib/components/Articles.svelte";
-	import Bandcamp from "#lib/components/Bandcamp.svelte";
+	import Articles from "#lib/components/articles.svelte";
+	import Bandcamp from "#lib/components/bandcamp.svelte";
 	import type { Album } from "#lib/types/album.ts";
 	import type { Article, ArticlePageLoad } from "#lib/types/article.ts";
 

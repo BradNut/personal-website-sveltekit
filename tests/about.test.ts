@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { registerLayoutNavTests } from './helpers/layoutNavTests';
+import { registerLayoutNavTests } from './helpers/layout-nav-tests';
 
 test.describe('About page', () => {
   test('has expected main heading', async ({ page }) => {

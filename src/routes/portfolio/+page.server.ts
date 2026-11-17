@@ -1,8 +1,8 @@
 export const prerender = true;
 
-import { buildPageMetaTags } from '#lib/shared/pageMeta.ts';
+import { buildPageMetaTags } from '#lib/shared/page-meta.ts';
 import type { PageServerLoad } from './$types';
-import { portfolioProjects } from './portfolioProjects';
+import { portfolioProjects } from './portfolio-projects';
 
 export const load: PageServerLoad = async ({ url }) => {
   const metaTags = buildPageMetaTags({

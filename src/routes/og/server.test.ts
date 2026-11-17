@@ -2,11 +2,11 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const componentToPngMock = vi.fn();
 
-vi.mock('#lib/renderImage.ts', () => ({
+vi.mock('#lib/render-image.ts', () => ({
   componentToPng: (...args: unknown[]) => componentToPngMock(...args),
 }));
 
-vi.mock('#lib/components/socialImageCard.svelte', () => ({ default: {} }));
+vi.mock('#lib/components/social-image-card.svelte', () => ({ default: {} }));
 
 vi.mock('#lib/assets/images/b_shell_nut_favicon.png', () => ({ default: '/favicon-asset.png' }));
 
