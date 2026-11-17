@@ -20,6 +20,9 @@ updates:
   - package-ecosystem: npm
     directory: /
     target-branch: development
+    # Required by the schema even though the zero limit means no version-update PRs are opened.
+    schedule:
+      interval: weekly
     open-pull-requests-limit: 0
     commit-message:
       prefix: fix
