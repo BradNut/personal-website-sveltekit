@@ -4,35 +4,6 @@
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/b_shell_nut_favicon.gif" />
 		<meta name="viewport" content="width=device-width" />
-		<script>
-			const htmlElement = document.documentElement;
-			const userTheme = localStorage.theme;
-
-			const prefersDarkMode = globalThis.matchMedia('prefers-color-scheme: dark').matches;
-			const prefersLightMode = globalThis.matchMedia('prefers-color-scheme: light').matches;
-
-			// check if the user set a theme
-			if (userTheme) {
-				htmlElement.dataset.theme = userTheme;
-			}
-
-			// otherwise check for user preference
-			if (!userTheme && prefersDarkMode) {
-				htmlElement.dataset.theme = '🌛 Night';
-				localStorage.theme = '🌛 Night';
-			}
-
-			if (!userTheme && prefersLightMode) {
-				htmlElement.dataset.theme = '☀️ Light';
-				localStorage.theme = '☀️ Light';
-			}
-
-			// if nothing is set default to dark mode
-			if (!userTheme && !prefersDarkMode && !prefersLightMode) {
-				htmlElement.dataset.theme = '🌛 Night';
-				localStorage.theme = '🌛 Night';
-			}
-		</script>
 		%sveltekit.head%
 	</head>
 
