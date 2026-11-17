@@ -1,12 +1,12 @@
 # Environment Configuration
 
-Reference: `.env.example`
+Reference: `.env.schema` (varlock; types and validation for every variable below)
 
 ## Required
 
 | Variable | Example | Notes |
 |---|---|---|
-| `ORIGIN` | `https://production-url.com` | SvelteKit CSRF/cookie origin. Must match public URL. |
+| `ORIGIN` | `https://bradleyshellnut.com` | Public origin adapter-node uses for request URLs and the CSRF check. Runtime, no rebuild needed. Must match the public URL. Never set it to an empty string. Not used by `pnpm dev`. See [Request Origin](./deployment.md#request-origin). |
 | `PUBLIC_SITE_URL` | `https://production-url.com` | Used in OG image URLs and meta tags. |
 | `PUBLIC_SITE_VERSION` | `1.0.0` | App version shown in UI/logs. |
 | `WALLABAG_URL` | `<wallabag-url>` | Self-hosted Wallabag base URL. Non-sensitive (inlined at build). Local: Proton Pass `personal-website-wallabag` field `url`. Prod: Coolify build-time env var. Never commit the real hostname. |
