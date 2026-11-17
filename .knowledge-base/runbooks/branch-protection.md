@@ -5,9 +5,14 @@ way to reproduce them. Everything here needs repository admin rights.
 
 ## Model
 
-A solo maintainer merges their own pull requests, so the CI checks are the gate, not a reviewer. Both branches
-require a pull request and the checks below to pass, **administrators included**, with 0 required approvals. To add a
-reviewer later, set `required_approving_review_count` to 1 and re-run the command below.
+CI checks are the gate on both branches. Administrators are **not** enforced, because the release flow fast-forwards
+`development` to `master` with a direct push after each `development` → `master` PR merges, and that commit's checks
+never ran under the `development` check names.
+
+- `master`: pull request required with 1 approval (dismissed when stale), conversations must be resolved, required
+  checks below. The admin merges their own PRs by bypassing.
+- `development`: no pull request requirement, required checks below.
+- Both: no force pushes, no deletions.
 
 ## Required checks
 
@@ -32,35 +37,35 @@ unmergeable.
 
 ## Apply
 
-Run after the workflows have merged and each job has run once (GitHub only accepts a required check it has seen).
-`PUT` replaces the whole protection object, so this is the complete desired state.
+GitHub only lists a check in its UI picker once it has run, but the API accepts any context name. `PUT` replaces the
+whole protection object, so these are the complete desired states.
 
 ```sh
-for branch in master development; do
-  if [ "$branch" = master ]; then e2e='E2E (all browsers)'; else e2e='E2E (chromium)'; fi
-  gh api -X PUT "repos/BradNut/personal-website-sveltekit/branches/$branch/protection" --input - <<JSON
+R=repos/BradNut/personal-website-sveltekit/branches
+checks='"Lint (Biome)","Dependency audit (production)","Typecheck (svelte-check)","Unit tests (Vitest)","CodeQL (javascript-typescript)","CodeQL (actions)"'
+
+gh api -X PUT "$R/master/protection" --input - <<JSON
 {
-  "required_status_checks": {
-    "strict": false,
-    "contexts": [
-      "Lint (Biome)",
-      "Dependency audit (production)",
-      "Typecheck (svelte-check)",
-      "Unit tests (Vitest)",
-      "$e2e",
-      "CodeQL (javascript-typescript)",
-      "CodeQL (actions)"
-    ]
-  },
-  "enforce_admins": true,
-  "required_pull_request_reviews": {
-    "required_approving_review_count": 0,
-    "dismiss_stale_reviews": true
-  },
-  "restrictions": null
+  "required_status_checks": {"strict": false, "contexts": [$checks, "E2E (all browsers)"]},
+  "enforce_admins": false,
+  "required_pull_request_reviews": {"required_approving_review_count": 1, "dismiss_stale_reviews": true},
+  "restrictions": null,
+  "required_conversation_resolution": true,
+  "allow_force_pushes": false,
+  "allow_deletions": false
 }
 JSON
-done
+
+gh api -X PUT "$R/development/protection" --input - <<JSON
+{
+  "required_status_checks": {"strict": false, "contexts": [$checks, "E2E (chromium)"]},
+  "enforce_admins": false,
+  "required_pull_request_reviews": null,
+  "restrictions": null,
+  "allow_force_pushes": false,
+  "allow_deletions": false
+}
+JSON
 ```
 
 Verify:
@@ -68,13 +73,13 @@ Verify:
 ```sh
 for branch in master development; do
   gh api "repos/BradNut/personal-website-sveltekit/branches/$branch/protection" \
-    --jq '{checks: .required_status_checks.contexts, approvals: .required_pull_request_reviews.required_approving_review_count, admins: .enforce_admins.enabled}'
+    --jq '{checks: .required_status_checks.contexts, approvals: .required_pull_request_reviews.required_approving_review_count, admins: .enforce_admins.enabled, conversations: .required_conversation_resolution.enabled}'
 done
 ```
 
 ## Dependabot
 
-In Settings → Code security, turn on **Dependabot alerts** and **Dependabot security updates**. `.github/dependabot.yml`
+**Dependabot alerts** and **Dependabot security updates** are on (Settings → Code security, or `gh api -X PUT repos/BradNut/personal-website-sveltekit/vulnerability-alerts` and `.../automated-security-fixes`). `.github/dependabot.yml`
 sets the npm entry to `target-branch: development` with `open-pull-requests-limit: 0`, so only security updates open
 PRs and they land on `development`. The github-actions entry keeps the SHA pins current with a weekly grouped PR.
 Default code-scanning setup stays **off**: `codeql.yml` replaces it.
