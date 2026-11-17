@@ -3,21 +3,7 @@
 	import BandcampAlbum from "./BandcampAlbum.svelte";
 
 	let { albums }: { albums: Album[] } = $props();
-	const displayAlbums = $derived.by(() => {
-		const subset = albums.length > 6 ? albums.slice(0, 6) : albums;
-
-		return subset.map((album) => ({
-			...album,
-			src: {
-				img: { src: `${album.artwork}`, w: 230, h: 230 },
-				sources: {
-					avif: `${album.artwork}`,
-					webp: `${album.artwork}`,
-					jpg: `${album.artwork}`,
-				},
-			},
-		}));
-	});
+	const displayAlbums = $derived(albums.slice(0, 6));
 </script>
 
 <div>

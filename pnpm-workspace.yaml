@@ -5,7 +5,7 @@ allowBuilds:
   svelte-preprocess: true
 
 overrides:
-  # satori -> @shuding/opentype.js pins fflate 0.7.3 (GHSA advisory, fixed in 0.7.5)
+  # satori (and its @shuding/opentype.js) pin fflate 0.7.3 (GHSA advisory, fixed in 0.7.5)
   fflate: ^0.7.5
 
 peerDependencyRules:

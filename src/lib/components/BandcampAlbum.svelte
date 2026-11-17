@@ -15,7 +15,9 @@
     >
       <LazyImage
         clazz="album-artwork"
-        src={album.src}
+        src={album.artwork}
+        width={230}
+        height={230}
         alt={`Album art for ${album.title}`}
       />
     </a>

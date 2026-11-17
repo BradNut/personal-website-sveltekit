@@ -1,3 +1,4 @@
+import type { MetaTagsProps } from 'svelte-meta-tags';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('./$types', () => ({}));
@@ -71,7 +72,6 @@ describe('load (articles [page])', () => {
     expect(articles[0].url).toBeInstanceOf(URL);
     expect(articles[0].created_at).toBeInstanceOf(Date);
     expect(capturedHeaders['cache-control']).toBe('max-age=43200');
-    expect(result.metaTagsChild).toBeDefined();
   });
 
   it('honors no-cache from parent cacheControl', async () => {
@@ -104,5 +104,34 @@ describe('load (articles [page])', () => {
     await load(args);
 
     expect(capturedHeaders['cache-control']).toBe('no-cache');
+  });
+
+  it('builds page metadata whose OG image encodes the requested page number', async () => {
+    fetchArticlesMock.mockResolvedValueOnce({
+      articles: [],
+      currentPage: 3,
+      totalPages: 4,
+      limit: 10,
+      totalArticles: 37,
+      cacheControl: 'max-age=120',
+    });
+
+    const { args } = makeLoadArgs('3');
+    const result = (await load(args)) as { metaTagsChild: MetaTagsProps };
+    const meta = result.metaTagsChild;
+
+    expect(meta.title).toBe('Favorite Articles');
+    expect(meta.description).toBe('My favorite articles');
+    expect(meta.openGraph?.url).toBe('https://bradleyshellnut.com/articles/3');
+
+    const image = meta.openGraph?.images?.[0];
+    expect(image?.alt).toBe('Bradley Shellnut Articles Page 3');
+    expect(meta.twitter?.imageAlt).toBe('Bradley Shellnut Articles Page 3');
+
+    const ogUrl = new URL(image?.url ?? '');
+    expect(ogUrl.origin + ogUrl.pathname).toBe('https://bradleyshellnut.com/og');
+    expect(ogUrl.searchParams.get('header')).toBe('Articles Page 3 | bradleyshellnut.com');
+    expect(ogUrl.searchParams.get('page')).toBe('My favorite articles');
+    expect(meta.twitter?.image).toBe(image?.url);
   });
 });

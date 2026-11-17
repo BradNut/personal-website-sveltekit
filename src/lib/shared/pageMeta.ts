@@ -1,16 +1,9 @@
 import type { MetaTagsProps } from 'svelte-meta-tags';
-import { resolveCurrentPageUrl, resolveOgEndpointUrl } from '#lib/shared/siteUrl.ts';
+import { type OgEndpointParams, resolveCurrentPageUrl, resolveOgEndpointUrl } from '#lib/shared/siteUrl.ts';
 
 const SITE_NAME = 'Bradley Shellnut Personal Website';
-const TWITTER_IMAGE_ALT = 'Bradley Shellnut Website Logo';
 const OG_IMAGE_WIDTH = 1200;
 const OG_IMAGE_HEIGHT = 630;
-
-type OgEndpointParams = {
-  header: string;
-  page: string;
-  content?: string;
-};
 
 type PageMetaInput = {
   url: URL;
@@ -49,7 +42,7 @@ export function buildPageMetaTags({ url, title, description, og, imageAlt, twitt
       description: twitterDescription ?? description,
       card: 'summary_large_image',
       image: ogImageUrl,
-      imageAlt: TWITTER_IMAGE_ALT,
+      imageAlt,
     },
     url: currentPageUrl,
   });

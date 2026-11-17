@@ -1,7 +1,6 @@
-import type { MetaTagsProps } from 'svelte-meta-tags';
 import { fetchArticles } from '#lib/services/articlesApi.ts';
 import { articlesPageCacheControl } from '#lib/shared/articlesCacheControl.ts';
-import { resolveCurrentPageUrl, resolveOgEndpointUrl } from '#lib/shared/siteUrl.ts';
+import { buildPageMetaTags } from '#lib/shared/pageMeta.ts';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params, setHeaders, url, parent }) => {
@@ -9,39 +8,15 @@ export const load: PageServerLoad = async ({ params, setHeaders, url, parent }) 
   // The articles layout's own articles result (it currently fetches page 1 for shared metadata)
   const { cacheControl: layoutCacheControl } = await parent();
 
-  const currentPageUrl = resolveCurrentPageUrl(url);
-  const ogImageUrl = resolveOgEndpointUrl(url, {
-    header: `Articles Page ${page} | bradleyshellnut.com`,
-    page: 'My favorite articles',
-  });
-
-  const metaTags: MetaTagsProps = Object.freeze({
+  const metaTags = buildPageMetaTags({
+    url,
     title: 'Favorite Articles',
     description: 'My favorite articles',
-    openGraph: {
-      title: 'Favorite Articles',
-      description: 'My favorite articles',
-      url: currentPageUrl,
-      siteName: 'Bradley Shellnut Personal Website',
-      type: 'website',
-      locale: 'en_US',
-      images: [
-        {
-          url: ogImageUrl,
-          alt: `Bradley Shellnut Articles Page ${page}`,
-          width: 1200,
-          height: 630,
-        },
-      ],
+    og: {
+      header: `Articles Page ${page} | bradleyshellnut.com`,
+      page: 'My favorite articles',
     },
-    twitter: {
-      title: 'Favorite Articles',
-      description: 'My favorite articles',
-      card: 'summary_large_image',
-      image: ogImageUrl,
-      imageAlt: 'Bradley Shellnut Website Logo',
-    },
-    url: currentPageUrl,
+    imageAlt: `Bradley Shellnut Articles Page ${page}`,
   });
 
   const { articles, currentPage, cacheControl } = await fetchArticles({ page });

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { resolveAssetUrl, resolveCurrentPageUrl, resolveOgEndpointUrl, resolveSitemapUrl, resolveSiteUrl } from './siteUrl.js';
+import { resolveCurrentPageUrl, resolveOgEndpointUrl, resolveSitemapUrl, resolveSiteUrl } from './siteUrl.js';
 
 describe('site URL resolution', () => {
   it('uses configured public site URL for prerender origins', () => {
@@ -33,11 +33,10 @@ describe('site URL resolution', () => {
     expect(resolved).toBe('https://bradleyshellnut.com/articles/2');
   });
 
-  it('resolves asset and OG endpoint URLs against the public site URL', () => {
+  it('resolves OG endpoint URLs against the public site URL', () => {
     const url = new URL('http://prerender.internal/about');
     const options = { publicSiteUrl: 'https://bradleyshellnut.com' };
 
-    expect(resolveAssetUrl(url, 'b_shell_nut_favicon.png', options)).toBe('https://bradleyshellnut.com/b_shell_nut_favicon.png');
     expect(resolveOgEndpointUrl(url, { header: 'About | bradleyshellnut.com', page: 'About Bradley Shellnut' }, options)).toBe(
       'https://bradleyshellnut.com/og?header=About+%7C+bradleyshellnut.com&page=About+Bradley+Shellnut',
     );
