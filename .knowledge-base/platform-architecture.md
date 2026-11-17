@@ -44,4 +44,4 @@ Stories in `.storybook/`. `pnpm storybook` → port 6006. Chromatic for visual r
 
 ## Deployment
 
-Coolify + Nixpacks. `pnpm build` → `node build/index.js`. Port 3000. See [deployment runbook](./runbooks/deployment.md).
+Coolify + Railpack. `pnpm build` → `pnpm start` (`varlock run -- node build/index.js`). Port 3000. See [deployment runbook](./runbooks/deployment.md).

@@ -12,13 +12,13 @@ NODE_OPTIONS=--max-old-space-size=2048 pnpm build
 
 ## Native Deps (sharp, resvg-js)
 
-Nixpacks needs `libvips-dev` for sharp. If missing:
+The Railpack build image needs `libvips-dev` for sharp. If missing:
 
 ```
 Error: Cannot find module './build/Release/sharp.node'
 ```
 
-Add to Nixpacks apt packages or Dockerfile:
+Add the packages to `buildAptPackages` in `railpack.json`:
 
 ```
 libvips-dev libvips-tools build-essential
@@ -43,7 +43,7 @@ Common issues:
 ## Local Build Verify
 
 ```bash
-pnpm build && node build/index.js
+pnpm build && ORIGIN=http://localhost:3000 pnpm start
 curl -I http://localhost:3000/
 ```
 

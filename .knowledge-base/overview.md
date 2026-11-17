@@ -1,6 +1,6 @@
 # App Overview
 
-Personal website. SvelteKit 2, Svelte 5, TypeScript strict, Tailwind v4, Bits UI. Node adapter. Coolify + Nixpacks. Vitest + Playwright + Storybook. Biome.
+Personal website. SvelteKit 2, Svelte 5, TypeScript strict, Tailwind v4, Bits UI. Node adapter. Coolify + Railpack. Vitest + Playwright + Storybook. Biome.
 
 ## Pages
 
