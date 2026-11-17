@@ -104,6 +104,8 @@ jobs:
         id: pw
         run: |
           echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
+          # Browser builds link against OS libraries (e.g. WebKit needs the image's ICU), so key the cache on the runner image.
+          echo "image=${ImageOS:?ImageOS not set}" >> "$GITHUB_OUTPUT"
           if [ "$E2E_SCOPE" = chromium ]; then
             echo "browsers=chromium" >> "$GITHUB_OUTPUT"
             echo "project=--project=chromium" >> "$GITHUB_OUTPUT"
@@ -116,7 +118,7 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ steps.pw.outputs.version }}-${{ env.E2E_SCOPE }}
+          key: playwright-${{ runner.os }}-${{ steps.pw.outputs.image }}-${{ steps.pw.outputs.version }}-${{ env.E2E_SCOPE }}
       - name: Install Playwright browsers
         if: steps.pw-cache.outputs.cache-hit != 'true'
         run: pnpm exec playwright install --with-deps ${{ steps.pw.outputs.browsers }}
