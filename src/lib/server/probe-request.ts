@@ -8,7 +8,7 @@ const PROBE_DENYLIST_PREFIXES = ['/wp-admin/', '/wp-content/', '/wp-includes/', 
 
 const ROOT_LEVEL_PHP_PROBE = /^\/[^/]+\.php$/;
 
-export function isProbeRequest(pathname: string): boolean {
+function isProbeRequest(pathname: string): boolean {
   if (PROBE_DENYLIST_EXACT.has(pathname)) {
     return true;
   }
