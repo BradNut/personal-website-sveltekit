@@ -39,7 +39,7 @@ Common issues:
 ## Local Build Verify
 
 ```bash
-pnpm build && pnpm start   # varlock run -- node build/index.js
+pnpm build && ORIGIN=http://localhost:3000 pnpm start   # varlock run -- node build/index.js
 curl -I http://localhost:3000/
 ```
 

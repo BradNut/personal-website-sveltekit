@@ -1,13 +1,13 @@
 # Environment Configuration
 
-Reference: `.env.schema` (varlock schema — every variable, its type and whether it's required)
+Reference: `.env.schema` (varlock; types and validation for every variable below)
 
 ## Required
 
 | Variable | Example | Notes |
 |---|---|---|
-| `ORIGIN` | `https://production-url.com` | SvelteKit CSRF/cookie origin. Must match public URL. |
-| `PUBLIC_SITE_URL` | `https://production-url.com` | Used in OG image URLs and meta tags. |
+| `ORIGIN` | `https://bradleyshellnut.com` | Public origin for request URLs and the CSRF check. Required in production; optional in the schema. See [Request Origin](./deployment.md#request-origin). |
+| `PUBLIC_SITE_URL` | `https://bradleyshellnut.com` | Used in OG image URLs and meta tags. |
 | `PUBLIC_SITE_VERSION` | `1.0.0` | App version shown in UI/logs. |
 | `WALLABAG_URL` | `<wallabag-url>` | Self-hosted Wallabag base URL. Non-sensitive (inlined at build). Local: Proton Pass `personal-website-wallabag` field `url`. Prod: Coolify build-time env var. Never commit the real hostname. |
 | `WALLABAG_CLIENT_ID` | `<id>` | Wallabag OAuth client ID. |
@@ -36,9 +36,8 @@ Reference: `.env.schema` (varlock schema — every variable, its type and whethe
 ## Local Dev Setup
 
 ```bash
-touch .env   # values for the variables declared in .env.schema
-# Fill in WALLABAG_*, BANDCAMP_USERNAME, REDIS_URI
-# Set USE_REDIS_CACHE=false to skip Redis locally
+# No .env to copy: varlock reads .env.schema (plus .env.[ENVIRONMENT] when set); secrets resolve from Proton Pass, so its CLI must be signed in
+# Override locally in .env.local, e.g. USE_REDIS_CACHE=false to skip Redis
 pnpm dev
 ```
 
