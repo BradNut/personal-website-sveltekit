@@ -2,15 +2,14 @@
 // version comment, a container image is untagged, `latest` or a floating
 // major-only tag, or a Dockerfile installs a package at `@latest`. Scans tracked workflows/actions, compose files and Dockerfiles.
 
-import { execFileSync } from 'node:child_process';
-import { existsSync, readFileSync } from 'node:fs';
+import { globSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const usesPattern = /^\s*-?\s*uses:\s*['"]?([^'"\s#]+)/;
+const usesPattern = /^\s*(?:-\s*)?uses:\s*['"]?([^'"\s#]+)/;
 const fullSha = /@[0-9a-f]{40}$/;
 const versionComment = /#\s*v\d+(\.\d+)*\s*$/;
-const imagePattern = /^\s*-?\s*image:\s*['"]?([^'"\s#]+)/;
+const imagePattern = /^\s*(?:-\s*)?image:\s*['"]?([^'"\s#]+)/;
 const fromPattern = /^\s*FROM\s+(?:--platform=\S+\s+)?(\S+)(?:\s+AS\s+(\S+))?/i;
 // A specific version has at least major.minor (`18.7`, `v1.33.1`, `24.22.3-alpine`, `5.2.6-24`).
 const specificVersion = /^v?\d+\.\d+/;
@@ -64,12 +63,21 @@ export function findUnpinnedRefs(file, content) {
   content.split('\n').forEach((text, index) => {
     const uses = usesPattern.exec(text);
     const image = imagePattern.exec(text);
-    const ref = uses?.[1] ?? image?.[1];
-    const reason = uses ? checkAction(ref, text) : image ? checkImage(ref) : null;
+    let ref = null;
+    let reason = null;
+    if (uses) {
+      ref = uses[1];
+      reason = checkAction(ref, text);
+    } else if (image) {
+      ref = image[1];
+      reason = checkImage(ref);
+    }
     if (reason) findings.push({ file, line: index + 1, ref, reason });
   });
   return findings;
 }
+
+const ignoredDirs = new Set(['.git', 'node_modules', '.svelte-kit', 'build', '.codegraph', 'playwright-report', 'test-results']);
 
 function isChecked(file) {
   if (isDockerfile(file)) return true;
@@ -79,9 +87,11 @@ function isChecked(file) {
 
 function main() {
   const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-  const files = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard'], { cwd: projectRoot, encoding: 'utf8' })
-    .split('\n')
-    .filter((file) => file && isChecked(file) && existsSync(path.join(projectRoot, file)));
+  // Walk the tree instead of spawning git, so the script does not depend on PATH.
+  const files = globSync(['**/*', '.github/**/*'], { cwd: projectRoot, exclude: (name) => ignoredDirs.has(name) })
+    .map((file) => file.split(path.sep).join('/'))
+    .filter((file) => isChecked(file) && statSync(path.join(projectRoot, file)).isFile())
+    .sort();
   const findings = files.flatMap((file) => findUnpinnedRefs(file, readFileSync(path.join(projectRoot, file), 'utf8')));
   if (findings.length === 0) {
     console.log(`Pinned refs: ${files.length} files checked, all actions and images pinned.`);
