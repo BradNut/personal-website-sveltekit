@@ -15,7 +15,7 @@ Start: `pnpm start`, which runs `varlock run -- node build/index.js` (adapter-no
 
 ## Required Env Before Deploy
 
-`ORIGIN`, `PUBLIC_SITE_URL`, `WALLABAG_*`, `REDIS_URI`, `USE_REDIS_CACHE=true`.
+`ORIGIN` (optional in `.env.schema` so dev can omit it, but set it in production), `PUBLIC_SITE_URL`, `WALLABAG_*`, `REDIS_URI`, `USE_REDIS_CACHE=true`.
 
 Full list: [environment-config.md](./environment-config.md).
 
@@ -23,26 +23,26 @@ Full list: [environment-config.md](./environment-config.md).
 
 adapter-node builds every request URL (`url.origin`, `url.protocol`) and SvelteKit's CSRF origin check from, in order:
 
-1. `paths.origin` in the SvelteKit config (not set here);
+1. `paths.origin` in the `sveltekit()` options in `vite.config.ts` (not set);
 2. the `ORIGIN` env var, read at runtime, so changing it needs a restart, not a rebuild;
 3. otherwise the request headers: `PROTOCOL_HEADER` / `HOST_HEADER` if set, else the `Host` header with the scheme **assumed `https`**.
 
-Set `ORIGIN=https://bradleyshellnut.com` as a runtime env var on the Coolify app, so the origin doesn't depend on what the proxy forwards. Security headers that depend on the scheme (HSTS) rely on this being right.
+Set `ORIGIN=https://bradleyshellnut.com` as a runtime env var on the Coolify app, so the origin doesn't depend on what the proxy forwards.
 
 - **Local `node build` / `pnpm start` over plain HTTP:** set `ORIGIN=http://localhost:3000` (or your port). Without it the server assumes `https` and every URL it builds is wrong.
 - **`pnpm dev` / `pnpm preview`:** Vite serves these, not adapter-node, so `ORIGIN` has no effect.
-- **Never set `ORIGIN` to an empty string.** adapter-node refuses to start on an invalid `ORIGIN`. Leaving it unset is fine: varlock doesn't pass an unset variable to the server, and it rejects a non-URL value before the server starts.
+- **Never set `ORIGIN` to an empty string**, e.g. a blank Coolify variable. varlock passes `""` through unchecked and adapter-node then crashes at startup with `Invalid ORIGIN: ''`. Leaving it unset is fine: varlock doesn't pass an unset variable on. A non-empty value that isn't a URL is rejected by varlock before the server starts.
 
 ## Post-Deploy Check
 
 ```bash
-curl -I https://production-url.com/
+curl -I https://bradleyshellnut.com/
 # Expect: 200
 
-curl https://production-url.com/api/bandcamp/albums
+curl https://bradleyshellnut.com/api/bandcamp/albums
 # Expect: JSON array
 
-curl https://production-url.com/api/articles?page=1&limit=3
+curl https://bradleyshellnut.com/api/articles?page=1&limit=3
 # Expect: JSON with articles array
 ```
 

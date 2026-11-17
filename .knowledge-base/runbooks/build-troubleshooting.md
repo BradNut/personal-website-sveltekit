@@ -43,7 +43,7 @@ Common issues:
 ## Local Build Verify
 
 ```bash
-pnpm build && node build/index.js
+pnpm build && ORIGIN=http://localhost:3000 pnpm start
 curl -I http://localhost:3000/
 ```
 

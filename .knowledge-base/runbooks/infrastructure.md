@@ -71,7 +71,7 @@ Articles are fetched with the `programming` tag and published only if one of the
 
 ### Diagnosis
 ```bash
-curl https://production-url.com/api/bandcamp/albums
+curl https://bradleyshellnut.com/api/bandcamp/albums
 # Expect: JSON array of albums
 ```
 
@@ -111,11 +111,11 @@ In the meantime, the manual backup is Bugsink's own issue tooling: mute or resol
 
 ```bash
 # Known Probe Request path -> plain generic 404, no Bugsink event
-curl -i https://production-url.com/wp-login.php
+curl -i https://bradleyshellnut.com/wp-login.php
 # Expect: HTTP/1.1 404, body "Not Found", no corresponding issue in Bugsink
 
 # Ordinary Route Miss -> normal site 404 page, no Bugsink event
-curl -i https://production-url.com/some-typo-page
+curl -i https://bradleyshellnut.com/some-typo-page
 # Expect: HTTP/1.1 404 with the site's styled not-found page, no corresponding issue in Bugsink
 
 # Genuine unexpected failure -> still reported
