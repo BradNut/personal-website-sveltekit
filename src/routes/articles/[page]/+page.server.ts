@@ -1,6 +1,6 @@
-import { fetchArticles } from '#lib/services/articlesApi.ts';
-import { articlesPageCacheControl } from '#lib/shared/articlesCacheControl.ts';
-import { buildPageMetaTags } from '#lib/shared/pageMeta.ts';
+import { fetchArticles } from '#lib/services/articles-api.ts';
+import { articlesPageCacheControl } from '#lib/shared/articles-cache-control.ts';
+import { buildPageMetaTags } from '#lib/shared/page-meta.ts';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params, setHeaders, url, parent }) => {

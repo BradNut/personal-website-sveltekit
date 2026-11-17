@@ -3,18 +3,18 @@
 	import { Tabs } from 'bits-ui';
 	import type { Picture } from 'vite-imagetools';
 
-	import ExternalLink from '#lib/components/ExternalLink.svelte';
-	import type { ProjectLink } from '#lib/types/externalLinkType.ts';
-	import type { LinkIconType } from '#lib/types/externalLinkTypes.ts';
-	import { gitHubIcon } from '#lib/util/logoIcons.svelte';
+	import ExternalLink from '#lib/components/external-link.svelte';
+	import type { ProjectLink } from '#lib/types/external-link-type.ts';
+	import type { LinkIconType } from '#lib/types/external-link-types.ts';
+	import { gitHubIcon } from '#lib/util/logo-icons.svelte';
 
 	import personalSiteImg from '../../lib/assets/images/portfolio/Bradley_Shellnut_New_Site.png?enhanced';
 	import shellnutArchitectWebsiteImg from '../../lib/assets/images/portfolio/Mark_Shellnut_Architect.png?enhanced';
 	import oldSiteImg from '../../lib/assets/images/portfolio/Old_Website_Bradley_Shellnut.png?enhanced';
 	import weddingWebsiteImg from '../../lib/assets/images/portfolio/Wedding_Website.png?enhanced';
 	import type { PageData } from './$types';
-	import Portfolio from './Portfolio.svelte';
-	import type { PortfolioProject, PortfolioProjectLink } from './portfolioProjects';
+	import Portfolio from './portfolio.svelte';
+	import type { PortfolioProject, PortfolioProjectLink } from './portfolio-projects';
 
 	const { data }: { data: PageData } = $props();
 

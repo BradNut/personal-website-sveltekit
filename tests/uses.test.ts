@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { registerLayoutNavTests } from './helpers/layoutNavTests';
+import { registerLayoutNavTests } from './helpers/layout-nav-tests';
 
 test.describe('Uses page', () => {
   test('has expected main heading', async ({ page }) => {
@@ -17,7 +17,7 @@ test.describe('Uses page', () => {
   test('intro external links are accessible by aria-label-based names', async ({ page }) => {
     await page.goto('/uses');
 
-    // ExternalLink.svelte sets accessible name as: "Open {ariaLabel|title|href} externally"
+    // external-link.svelte sets accessible name as: "Open {ariaLabel|title|href} externally"
     await expect(page.getByRole('link', { name: /Open\s+Wes Bos' Website\s+externally/i })).toBeVisible();
     await expect(page.getByRole('link', { name: /Open\s+Wes Bos' Uses Page\s+externally/i })).toBeVisible();
     await expect(page.getByRole('link', { name: /Open\s+Uses\.tech\s+externally/i })).toBeVisible();

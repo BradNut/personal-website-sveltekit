@@ -1,5 +1,5 @@
 import type { RequestEvent } from '@sveltejs/kit';
-import { fetchAlbums } from '#lib/services/bandcampApi.ts';
+import { fetchAlbums } from '#lib/services/bandcamp-api.ts';
 
 export async function GET(event: RequestEvent) {
   const { setHeaders } = event;

@@ -29,7 +29,6 @@
       "!**/pnpm-lock.yaml",
       "!**/package-lock.json",
       "!**/yarn.lock",
-      "!**/paraglide/**",
       "!.agents",
       "!**/*.md",
       "!**/*.yml",
@@ -80,11 +79,6 @@
     },
     "parser": {
       "unsafeParameterDecoratorsEnabled": true
-    }
-  },
-  "css": {
-    "parser": {
-      "tailwindDirectives": true
     }
   },
   "html": {

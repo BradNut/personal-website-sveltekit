@@ -4,8 +4,16 @@ Use these rules for test work.
 
 ## Test commands
 
-- Unit tests: `pnpm test:unit` (Vitest)
+- Unit tests: `pnpm test:unit` (Vitest, `ENVIRONMENT=test` so varlock loads `.env.test`)
 - Integration tests: `pnpm test:integration` (Playwright)
+- Repo guard scripts: `pnpm test:scripts` (`node --test`)
+
+## File layout
+
+- Unit tests sit next to the source as `{name}.test.ts` (Vitest includes `src/**/*.{test,spec}.{js,ts}`).
+- Route tests sit in the route folder without the `+` (`page.server.test.ts`, `server.test.ts`).
+- Playwright specs live in `tests/`; shared helpers in `tests/helpers/`.
+- Redis-backed code is tested against `src/lib/server/testing/fake-ioredis.ts`, never a real Redis.
 
 ## Coverage expectations
 

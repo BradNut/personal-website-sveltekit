@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
 
 const fetchArticlesMock = vi.fn();
-vi.mock('#lib/services/articlesApi.ts', () => ({
+vi.mock('#lib/services/articles-api.ts', () => ({
   fetchArticles: (...args: unknown[]) => fetchArticlesMock(...args),
 }));
 
-vi.mock('#lib/shared/siteUrl.ts', () => ({
+vi.mock('#lib/shared/site-url.ts', () => ({
   resolveSitemapUrl: (pathname: string) => `https://bradleyshellnut.com${pathname}`,
 }));
 

@@ -1,4 +1,4 @@
-import { fetchArticles } from '#lib/services/articlesApi.ts';
+import { fetchArticles } from '#lib/services/articles-api.ts';
 import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async () => {

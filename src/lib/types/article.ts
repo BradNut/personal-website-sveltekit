@@ -1,4 +1,4 @@
-import type { ArticleTag } from './articleTag';
+import type { ArticleTag } from './article-tag';
 
 export type Article = {
   tags: ArticleTag[];

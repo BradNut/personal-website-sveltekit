@@ -12,17 +12,13 @@ NODE_OPTIONS=--max-old-space-size=2048 pnpm build
 
 ## Native Deps (sharp, resvg-js)
 
-The Railpack build image needs `libvips-dev` for sharp. If missing:
+sharp (transitive, via `vite-imagetools`) and `@resvg/resvg-js` ship prebuilt platform binaries as optional dependencies (`@img/sharp-*`, `@resvg/resvg-js-*`). No system libvips is needed. If the platform binary is missing:
 
 ```
-Error: Cannot find module './build/Release/sharp.node'
+Error: Could not load the "sharp" module using the linux-x64 runtime
 ```
 
-Add the packages to `buildAptPackages` in `railpack.json`:
-
-```
-libvips-dev libvips-tools build-essential
-```
+Make sure the install didn't skip optional dependencies (`pnpm install --frozen-lockfile`, no `--no-optional`).
 
 ## TypeScript Errors
 
@@ -33,7 +29,7 @@ pnpm check
 ```
 
 Common issues:
-- Missing `$env/static/private` vars at typecheck time → ensure `.env` populated
+- Env errors → env is loaded by varlock from `.env.schema` + `.env`; ensure `.env` is populated
 - `svelte-kit sync` not run → `pnpm check` runs it automatically
 
 ## Vite Build Fails on Image Imports
@@ -43,7 +39,7 @@ Common issues:
 ## Local Build Verify
 
 ```bash
-pnpm build && ORIGIN=http://localhost:3000 pnpm start
+pnpm build && ORIGIN=http://localhost:3000 pnpm start   # varlock run -- node build/index.js
 curl -I http://localhost:3000/
 ```
 

@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/sveltekit';
 import type { HandleClientError } from '@sveltejs/kit/hooks';
 import { ENV } from 'varlock/env';
-import { reportError } from '#lib/shared/errorReporter.ts';
+import { reportError } from '#lib/shared/error-reporter.ts';
 import { dev } from '$app/env';
 
 Sentry.init({

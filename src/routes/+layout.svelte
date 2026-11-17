@@ -7,7 +7,7 @@
 	import Analytics from "../lib/components/analytics/index.svelte";
 	import Footer from "../lib/components/footer/index.svelte";
 	import Header from "../lib/components/header/index.svelte";
-	import PageLoadingIndicator from "../lib/util/page_loading_indicator.svelte";
+	import PageLoadingIndicator from "../lib/util/page-loading-indicator.svelte";
 
 	interface Props {
 		children?: import("svelte").Snippet;

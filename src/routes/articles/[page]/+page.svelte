@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Articles from "#lib/components/Articles.svelte";
-  import Pagination from "#lib/components/Pagination.svelte";
+  import Articles from "#lib/components/articles.svelte";
+  import Pagination from "#lib/components/pagination.svelte";
   import { navigating } from "$app/state";
   import type { PageData } from "./$types";
 

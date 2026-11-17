@@ -33,10 +33,13 @@ No `export let`, no `$:`, no legacy stores for component state.
 
 ## Styling
 
-- Tailwind v4 utility classes.
-- Bits UI for headless interactive components.
-- `cn()` from `$lib/utils` for conditional class merging.
-- Scoped `<style>` only when Tailwind insufficient.
+No Tailwind or utility-class framework.
+
+- Global styles: `.pcss` files in `src/styles/` (`reset`, `typeography`, `global`, `styles`; custom properties in `global.pcss`). Use the custom properties (`var(--textColor)`, `var(--linkHover)`, …) rather than hard-coded values.
+- PostCSS (`postcss.config.cjs`): `postcss-import`, `postcss-preset-env` (stage 3, nesting, media-query ranges) and `postcss-custom-media`.
+- Breakpoints: `postcss.config.cjs` defines custom media (`--below_med`, `--above_large`, …), but components currently use plain `@media (max-width: …)` queries.
+- Component styles: scoped `<style lang="postcss">` (or plain `<style>`) blocks in the component.
+- Bits UI for headless interactive components, styled with scoped styles.
 
 ## Accessibility
 
