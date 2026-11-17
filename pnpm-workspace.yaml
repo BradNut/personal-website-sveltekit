@@ -12,3 +12,10 @@ peerDependencyRules:
   allowedVersions:
     # bits-ui -> runed 0.35 declares an optional kit ^2 peer for its `runed/kit` entry, which bits-ui never imports
     runed>@sveltejs/kit: '3'
+
+auditConfig:
+  ignoreGhsas:
+    # picomatch <=4.0.7 ReDoS (no patched release yet). Only reachable through vite (via @sentry/sveltekit and
+    # tinyglobby), which is build tooling: the built server never imports vite or picomatch, and no code compiles
+    # untrusted glob patterns. Remove once picomatch ships a fix.
+    - GHSA-fc5q-39xc-vjpf

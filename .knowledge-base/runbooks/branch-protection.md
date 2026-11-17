@@ -94,5 +94,8 @@ by editing its tag in `docker-compose.yaml`.
 
 `pnpm audit --prod --audit-level=high` runs in CI and fails on any high or critical advisory. Prefer a fix (a bump or
 an `overrides` entry in `pnpm-workspace.yaml`) over ignoring it. If a high is judged not exploitable here, record it in
-`auditConfig.ignoreGhsas` with a comment giving the reason. At the time of writing `pnpm audit --prod` reports no
-known vulnerabilities.
+`auditConfig.ignoreGhsas` with a comment giving the reason. Currently ignored:
+
+| GHSA | Package | Why it's not exploitable | Remove when |
+|---|---|---|---|
+| `GHSA-fc5q-39xc-vjpf` | picomatch <=4.0.7 (ReDoS) | Reached only through vite (build tooling); the built server never imports it and no code compiles untrusted globs | picomatch ships a patched release |
