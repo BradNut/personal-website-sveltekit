@@ -125,6 +125,20 @@ curl -i https://bradleyshellnut.com/some-typo-page
 
 If a suppressed path unexpectedly shows up as a Bugsink issue, check `isProbeRequest`/`isReportableError` first before assuming a backup filter is misconfigured — there isn't one to misconfigure.
 
+## Content Security Policy
+
+Pages rendered per request carry `Content-Security-Policy-Report-Only` (report-only until #129 enforces it). The directives live in `src/lib/constants/csp-directives.ts`, which says why each external origin is allowed. The Umami and Bugsink origins come from `PUBLIC_UMAMI_URL` / `PUBLIC_SENTRY_URL` at **build** time, so changing either needs a rebuild.
+
+Browsers POST violations to `/api/csp-report`, which logs one line per violation:
+
+```
+[csp] img-src blocked https://f9.bcbits.com/img/a1.jpg on /
+```
+
+To allow a new origin, add it to `createCspDirectives` with a comment saying what loads from it, and extend `tests/csp.test.ts` if a page starts loading it. Never put a secret or the Wallabag hostname in the directives: the policy is sent to every browser.
+
+Prerendered pages (about, portfolio, uses, privacy) are served as static files by adapter-node, so they get no report-only header.
+
 ## Related
 
 - [Environment Configuration](./environment-config.md)
