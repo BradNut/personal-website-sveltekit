@@ -51,6 +51,20 @@ describe('POST /api/csp-report', () => {
     expect(warn.mock.calls[0].join(' ').length).toBeLessThan(400);
   });
 
+  it('strips newlines and control characters so a report cannot forge log lines', async () => {
+    const forged = 'https://evil.test/x\n[error] database password reset\r\u001b[31mred\u0007';
+
+    await report(
+      JSON.stringify({
+        'csp-report': { ...violation['csp-report'], 'blocked-uri': forged, 'effective-directive': 'img-src\nfake' },
+      }),
+    );
+
+    const line = warn.mock.calls[0].join(' ');
+    expect(line).not.toMatch(/\p{Cc}/u);
+    expect(line).toBe('[csp] img-src fake blocked https://evil.test/x [error] database password reset [31mred on /articles/2');
+  });
+
   for (const [name, body] of [
     ['malformed JSON', '{not json'],
     ['a body without a csp-report', JSON.stringify({ hello: 'world' })],

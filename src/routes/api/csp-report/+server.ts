@@ -8,8 +8,12 @@ const MAX_FIELD_LENGTH = 120;
 
 type CspReport = Partial<Record<'document-uri' | 'effective-directive' | 'violated-directive' | 'blocked-uri', unknown>>;
 
+/** Newlines, escape codes and other control characters, which could forge or colour log lines. */
+const CONTROL_CHARACTERS = /\p{Cc}+/gu;
+
 function field(value: unknown): string {
-  return typeof value === 'string' && value ? value.slice(0, MAX_FIELD_LENGTH) : 'unknown';
+  const text = typeof value === 'string' ? value.replace(CONTROL_CHARACTERS, ' ').slice(0, MAX_FIELD_LENGTH).trim() : '';
+  return text || 'unknown';
 }
 
 /** The page path only: query strings and fragments can carry personal data. */
