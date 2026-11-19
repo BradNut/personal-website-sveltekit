@@ -45,7 +45,7 @@ const placeholders = $derived.by(() => Array.from({ length: count }));
     border-radius: 8px;
     padding: 1rem;
     border: 1px solid var(--grey, #e5e7eb);
-    background: var(--surface, #0f172a0d);
+    background: #0f172a0d;
   }
 
   .skeleton-text {
