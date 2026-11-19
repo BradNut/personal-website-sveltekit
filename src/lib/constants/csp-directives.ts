@@ -8,8 +8,9 @@ type Origin = `${string}://${string}.${string}`;
 /**
  * Content Security Policy directives, consumed by `vite.config.ts` (`sveltekit({ csp })`).
  * Keywords are written bare (`self`, not `'self'`); SvelteKit 3 quotes them in the header.
- * SvelteKit's `csp.mode: 'auto'` adds a per-request nonce (or, on prerendered pages, a hash)
- * for its own inline bootstrap script, so `script-src` never needs `'unsafe-inline'`.
+ * SvelteKit's `csp.mode: 'hash'` adds the hash of its own inline bootstrap script, so `script-src`
+ * never needs `'unsafe-inline'`. Why hashes, and why no page is prerendered: see the Content
+ * Security Policy section of `.knowledge-base/runbooks/infrastructure.md`.
  *
  * Why each external origin is allowed (keep in sync with what the site really loads):
  * - **Umami** (`PUBLIC_UMAMI_URL`): the analytics `<script>` in `lib/components/analytics`

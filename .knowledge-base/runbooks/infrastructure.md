@@ -137,7 +137,7 @@ Browsers POST violations to `/api/csp-report`, which logs one line per violation
 
 To allow a new origin, add it to `createCspDirectives` with a comment saying what loads from it, and extend `tests/csp.test.ts` if a page starts loading it. Never put a secret or the Wallabag hostname in the directives: the policy is sent to every browser.
 
-Prerendered pages (about, portfolio, uses, privacy) are served as static files by adapter-node, so they get no report-only header.
+Every page carries the policy, so **don't prerender pages**: adapter-node serves prerendered pages as static files, which never get the header (or, later, the #127 security headers). The policy uses `csp.mode: 'hash'` rather than nonces, so a page renders identically on every request and its etag can revalidate. One exception remains: Bits UI 2.21 numbers the NavigationMenu list wrapper with a process-wide counter (`id="bits-<n>"`), so pages with the nav don't get 304s until Bits UI uses `$props.id()` there.
 
 ## Related
 

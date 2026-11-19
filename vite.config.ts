@@ -21,7 +21,8 @@ export default defineConfig(({ command }) => ({
         experimental: { async: true },
       },
       csp: {
-        mode: 'auto',
+        // Hashes, not nonces, so pages can revalidate: see the CSP section of .knowledge-base/runbooks/infrastructure.md
+        mode: 'hash',
         // Report-only while the allow-list is proven in production; #129 switches it to `directives`.
         // The varlock plugin has loaded the env into process.env by the time this config is evaluated.
         reportOnly: createCspDirectives({

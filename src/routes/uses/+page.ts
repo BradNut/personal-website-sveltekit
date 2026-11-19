@@ -1,5 +1,3 @@
-export const prerender = true;
-
 import { buildPageMetaTags } from '#lib/shared/page-meta.ts';
 import type { PageLoad } from './$types';
 

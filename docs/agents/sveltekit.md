@@ -16,6 +16,6 @@ Use these rules for routing, data loading, and server/client boundaries.
 
 ## Rendering
 
-- Prefer SSR/SSG defaults.
-- Use prerendering when a route is static.
+- Prefer SSR defaults.
+- Don't prerender routes, even static ones: adapter-node serves prerendered pages as static files, which never get the Content Security Policy header ([runbook](../../.knowledge-base/runbooks/infrastructure.md#content-security-policy)).
 - Keep client JavaScript minimal.
