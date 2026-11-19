@@ -36,14 +36,14 @@ test.describe('Content Security Policy', () => {
       const response = await request.get(path);
       const policy = response.headers()[POLICY_HEADER] ?? '';
       const html = await response.text();
-      const inlineScripts = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)].filter(([, , body]) => body.trim());
+      const inlineScripts = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script[^>]*>/gi)].filter(([, , body]) => body.trim());
 
       expect(policy).toContain("default-src 'self'");
       expect(policy).toContain('report-uri /api/csp-report');
       expect(policy).not.toMatch(/script-src[^;]*'unsafe-inline'/);
       expect(inlineScripts.length).toBeGreaterThan(0);
       for (const [, attributes] of inlineScripts) {
-        const nonce = /nonce="([^"]+)"/.exec(attributes)?.[1];
+        const nonce = /nonce="([^"]+)"/i.exec(attributes)?.[1];
         expect(nonce, `inline script without a nonce: ${attributes}`).toBeTruthy();
         expect(policy).toContain(`'nonce-${nonce}'`);
       }
