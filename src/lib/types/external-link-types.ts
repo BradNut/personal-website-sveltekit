@@ -1,4 +1,5 @@
 import type { LucideIcon as IconType } from '@lucide/svelte';
+import type { Snippet } from 'svelte';
 
 export interface LinkTextType {
   text?: string;
@@ -26,7 +27,7 @@ export interface ExternalLinkType {
 export type LinkIconType =
   | {
       type: 'svg';
-      icon: () => unknown;
+      icon: Snippet;
       iconClass?: string;
     }
   | {
