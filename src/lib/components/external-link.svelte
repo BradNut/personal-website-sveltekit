@@ -48,18 +48,7 @@
 		},
 	);
 
-	const textLocationClass = $derived.by(() => {
-		if (textData?.location === "top") {
-			return "text-top";
-		}if (textData?.location === "bottom") {
-			return "text-bottom";
-		}if (textData?.location === "left") {
-			return "text-left";
-		}if (textData?.location === "right") {
-			return "text-right";
-		}
-			return "text-left";
-	});
+	const textLocationClass = $derived(`text-${textData?.location ?? "left"}`);
 
 	const linkDecoration = $derived(
 		linkData?.textDecoration && linkData?.textDecoration === "none"
@@ -72,38 +61,19 @@
 	const ariaLabel = $derived(
 		`Open ${linkData?.ariaLabel ?? linkData?.title ?? linkData?.href} externally`,
 	);
+	const trackingEvent = $derived(linkData.trackingEvent ?? "External Link Click");
+	/** Text rendered before the icon (`top`, `left`) or after it (`bottom`, `right`); none when no location is set. */
+	const textBefore = $derived(
+		textData?.location === "top" || textData?.location === "left" ? textData.text : undefined,
+	);
+	const textAfter = $derived(
+		textData?.location === "bottom" || textData?.location === "right" ? textData.text : undefined,
+	);
 	const titleAttribute = $derived(
 		linkData?.title && linkData.title !== ariaLabel ? linkData.title : undefined,
 	);
 </script>
 
-{#snippet externalLink({
-	iconData = { type: "icon", icon: ExternalLink },
-	linkData,
-	textData,
-}: ExternalLinkType)}
-	<a
-		class={linkClass}
-		aria-label={ariaLabel}
-		title={titleAttribute}
-		href={linkData.href}
-		rel={linkData?.rel ?? "noreferrer"}
-		target={linkData?.target ?? "_blank"}
-		data-umami-event={linkData?.trackingEvent ?? "External Link Click"}
-		data-umami-event-url={linkData.href}
-		data-umami-event-label={ariaLabel}
-	>
-		{#if textData?.location === "top" || (textData?.location === "left" && textData?.text)}
-			{textData?.text}
-		{/if}
-		{#if textData?.showIcon}
-			{@render linkIcon(safeIconData, iconSize)}
-		{/if}
-		{#if textData?.location === "bottom" || (textData?.location === "right" && textData?.text)}
-			{textData?.text}
-		{/if}
-	</a>
-{/snippet}
 
 {#snippet linkIcon({ type, icon, iconClass }: LinkIconType, size = 20)}
 	{#if type === "svg" && icon && typeof icon === "function"}
@@ -125,7 +95,27 @@
 	{/if}
 {/snippet}
 
-{@render externalLink({ iconData, linkData, textData })}
+<a
+	class={linkClass}
+	aria-label={ariaLabel}
+	title={titleAttribute}
+	href={linkData.href}
+	rel={linkData.rel ?? "noreferrer"}
+	target={linkData.target ?? "_blank"}
+	data-umami-event={trackingEvent}
+	data-umami-event-url={linkData.href}
+	data-umami-event-label={ariaLabel}
+>
+	{#if textBefore}
+		{textBefore}
+	{/if}
+	{#if textData?.showIcon}
+		{@render linkIcon(safeIconData, iconSize)}
+	{/if}
+	{#if textAfter}
+		{textAfter}
+	{/if}
+</a>
 
 <style lang="postcss">
 	a {
