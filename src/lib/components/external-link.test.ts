@@ -1,5 +1,5 @@
 import { ExternalLink as ExternalLinkIcon } from '@lucide/svelte';
-import type { Snippet } from 'svelte';
+import type { ComponentProps, Snippet } from 'svelte';
 import { render } from 'svelte/server';
 import { describe, expect, it } from 'vitest';
 import type { ProjectLink } from '#lib/types/external-link-type.ts';
@@ -16,6 +16,15 @@ function renderWithLocation(location?: 'top' | 'bottom' | 'left' | 'right') {
 }
 
 const svgSnippet = (() => {}) as unknown as Snippet;
+
+/**
+ * `render()` types props as `Omit<Props, ...>`, which collapses this component's union props to their
+ * shared keys, so an inline `{ projectLink }` is rejected. Annotating with the component's own props keeps it type-checked.
+ */
+function renderProjectLink(projectLink: ProjectLink) {
+  const props: ComponentProps<typeof ExternalLink> = { projectLink };
+  return render(ExternalLink, { props });
+}
 
 describe('ExternalLink textLocationClass', () => {
   it('applies text-top class for top location', () => {
@@ -78,11 +87,11 @@ describe('ExternalLink with ProjectLink prop', () => {
     const projectLink: ProjectLink = {
       ariaLabel: 'GitHub repo',
       href: 'https://github.com/example/repo',
-      icon: { type: 'svg', icon: svgSnippet as unknown as () => unknown },
+      icon: { type: 'svg', icon: svgSnippet },
       showIcon: true,
       text: 'GitHub repository',
     };
-    const { body } = render(ExternalLink, { props: { projectLink } as any });
+    const { body } = renderProjectLink(projectLink);
     expect(body).toContain('<svg');
   });
 
@@ -94,7 +103,7 @@ describe('ExternalLink with ProjectLink prop', () => {
       showIcon: true,
       text: 'View Site',
     };
-    const { body } = render(ExternalLink, { props: { projectLink } as any });
+    const { body } = renderProjectLink(projectLink);
     expect(body).toContain('lucide-icon');
     expect(body).not.toContain('viewBox="0 0 24 24" xmlns=');
   });
@@ -106,7 +115,7 @@ describe('ExternalLink with ProjectLink prop', () => {
       showIcon: true,
       text: 'Link',
     };
-    const { body } = render(ExternalLink, { props: { projectLink } as any });
+    const { body } = renderProjectLink(projectLink);
     expect(body).toContain('href="https://example.com"');
     expect(body).toContain('aria-label');
   });

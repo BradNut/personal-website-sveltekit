@@ -1,5 +1,6 @@
 <script module lang="ts">
-	// biome-ignore lint/style/useExportType: Svelte snippets are runtime values consumed by ExternalLink, not types.
+	import type { LucideIcon } from "@lucide/svelte";
+
 	export {
 		blueSkyIcon,
 		dockerIcon,
@@ -93,7 +94,7 @@
 	/>
 {/snippet}
 
-{#snippet lucideIcon(icon: any)}
+{#snippet lucideIcon(icon: LucideIcon)}
 	{@const Icon = icon}
 	<Icon />
 {/snippet}
