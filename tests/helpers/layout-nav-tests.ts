@@ -3,9 +3,11 @@ import { expect, type Page, test } from '@playwright/test';
 const HEADER_NAV = 'nav[aria-label="header navigation"]';
 const FOOTER_NAV = 'footer nav[aria-label="footer navigation"]';
 const NAV_AREAS = [HEADER_NAV, FOOTER_NAV];
+/** The site root only: `/\/?$/` would match every URL, so the assertion would pass before navigating. */
+const HOME_URL = /^https?:\/\/[^/]+\/?$/;
 
 const HEADER_ROUTES = [
-  { name: 'Home', url: /\/?$/ },
+  { name: 'Home', url: HOME_URL },
   { name: 'About', url: /\/about\/?$/ },
   { name: 'Portfolio', url: /\/portfolio\/?$/ },
   { name: 'Uses', url: /\/uses\/?$/ },
@@ -126,6 +128,6 @@ export function registerLayoutNavTests({ path, activeLink, hoverLink }: LayoutNa
     await expect(page).toHaveURL(/\/about\/?$/);
 
     await clickFooterLink(page, 'Home');
-    await expect(page).toHaveURL(/\/?$/);
+    await expect(page).toHaveURL(HOME_URL);
   });
 }

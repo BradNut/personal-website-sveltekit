@@ -20,7 +20,6 @@
     margin: 0 auto;
     padding: 2rem 1rem;
     font-weight: 700;
-    color: var(--color-theme-1);
     text-align: center;
     margin-bottom: 2rem;
   }
@@ -28,7 +27,6 @@
   h1 {
     font-size: 2.5rem;
     font-weight: 700;
-    color: var(--color-theme-1);
     text-align: center;
     margin-bottom: 2rem;
   }
