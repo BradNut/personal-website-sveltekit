@@ -206,3 +206,66 @@ test.describe('Interactive states: ContactHub color transition', () => {
     expect(coversColorAndTransform).toBeTruthy();
   });
 });
+
+test.describe('Interactive states: pagination current page', () => {
+  const resolveColor = (page: import('@playwright/test').Page, variable: string) =>
+    page.evaluate((v) => {
+      const probe = document.createElement('div');
+      probe.style.color = `var(${v})`;
+      document.body.appendChild(probe);
+      const color = getComputedStyle(probe).color;
+      probe.remove();
+      return color;
+    }, variable);
+
+  const backgroundOf = (locator: import('@playwright/test').Locator) => locator.evaluate((el) => getComputedStyle(el).backgroundColor);
+
+  test('current page is filled yellow with dark bold text', async ({ page }) => {
+    await page.goto('/articles/1');
+    const current = page.locator('.top-pagination [data-pagination-page][aria-current="page"]');
+    await expect(current).toHaveCount(1);
+
+    const styles = await current.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return { background: cs.backgroundColor, color: cs.color, weight: cs.fontWeight };
+    });
+    expect(styles.background).toBe(await resolveColor(page, '--shellYellow'));
+    expect(styles.color).toBe(await resolveColor(page, '--black'));
+    expect(styles.weight).toBe('700');
+  });
+
+  test('non-current page is transparent until hovered, then filled yellow', async ({ page }) => {
+    await page.goto('/articles/1');
+    const other = page.locator('.top-pagination [data-pagination-page]:not([aria-current])').first();
+    if ((await other.count()) === 0) {
+      // Only one page of articles (e.g. the upstream source is unavailable in CI).
+      test.skip();
+      return;
+    }
+
+    await expect(other).not.toHaveAttribute('aria-current');
+    expect(await backgroundOf(other)).toBe('rgba(0, 0, 0, 0)');
+    expect(await other.evaluate((el) => getComputedStyle(el).fontWeight)).toBe('400');
+
+    await other.hover();
+    await expect.poll(() => backgroundOf(other)).toBe(await resolveColor(page, '--shellYellow'));
+  });
+
+  test('disabled previous button stays transparent on hover', async ({ page }) => {
+    await page.goto('/articles/1');
+    const prev = page.locator('.top-pagination [data-pagination-prev]');
+    await expect(prev).toBeDisabled();
+
+    await prev.hover({ force: true });
+    expect(await backgroundOf(prev)).toBe('rgba(0, 0, 0, 0)');
+  });
+
+  test('previous and next buttons have equal padding', async ({ page }) => {
+    await page.goto('/articles/1');
+    const paddingOf = (selector: string) => page.locator(`.top-pagination ${selector}`).evaluate((el) => getComputedStyle(el).padding);
+
+    const prevPadding = await paddingOf('[data-pagination-prev]');
+    expect(prevPadding).toBe('10px');
+    expect(await paddingOf('[data-pagination-next]')).toBe(prevPadding);
+  });
+});
