@@ -12,7 +12,6 @@ const fontData = read(firaSansSemiBold).arrayBuffer();
 
 export async function componentToPng(component: Component, props: Record<string, string | undefined>, height: number, width: number) {
   const result = render(component, { props });
-  console.log('result', result);
   const markup = toReactNode(`${result.body}${result.head}`);
 
   // biome-ignore lint/suspicious/noExplicitAny: satori-html output incompatible with satori ReactNode
