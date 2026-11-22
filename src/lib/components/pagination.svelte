@@ -107,6 +107,11 @@
       outline-offset: -4px;
     }
 
+    /* A yellow ring on the Current Page's yellow fill would be invisible. */
+    &[data-selected]:focus-visible {
+      outline-color: var(--black);
+    }
+
     &:active:not(:disabled) {
       transform: scale(0.98);
     }

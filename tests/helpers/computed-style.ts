@@ -16,3 +16,16 @@ export function resolveColor(page: Page, variable: string): Promise<string> {
 export function backgroundOf(locator: Locator): Promise<string> {
   return locator.evaluate((el) => getComputedStyle(el).backgroundColor);
 }
+
+/** The computed `background-color` of an element with no fill. */
+export const TRANSPARENT = 'rgba(0, 0, 0, 0)';
+
+/** The element's computed text `color`. */
+export function colorOf(locator: Locator): Promise<string> {
+  return locator.evaluate((el) => getComputedStyle(el).color);
+}
+
+/** The element's computed `box-shadow`. */
+export function boxShadowOf(locator: Locator): Promise<string> {
+  return locator.evaluate((el) => getComputedStyle(el).boxShadow);
+}

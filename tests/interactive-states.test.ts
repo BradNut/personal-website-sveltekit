@@ -1,6 +1,6 @@
 import type { Locator, Page } from '@playwright/test';
 import { expect, test } from '@playwright/test';
-import { backgroundOf, resolveColor } from './helpers/computed-style.ts';
+import { backgroundOf, boxShadowOf, colorOf, resolveColor, TRANSPARENT } from './helpers/computed-style.ts';
 
 /**
  * Hovering a pagination item tints its text and edge yellow but never fills it, so it can't be
@@ -11,9 +11,9 @@ async function expectHoverAccent(page: Page, item: Locator) {
   const before = await item.boundingBox();
 
   await item.hover();
-  await expect.poll(() => item.evaluate((el) => getComputedStyle(el).color)).toBe(yellow);
-  expect(await backgroundOf(item)).toBe('rgba(0, 0, 0, 0)');
-  expect(await item.evaluate((el) => getComputedStyle(el).boxShadow)).toContain(`${yellow} 0px 0px 0px 1px inset`);
+  await expect.poll(() => colorOf(item)).toBe(yellow);
+  expect(await backgroundOf(item)).toBe(TRANSPARENT);
+  expect(await boxShadowOf(item)).toContain(`${yellow} 0px 0px 0px 1px inset`);
   expect(await item.boundingBox()).toEqual(before);
 }
 
@@ -237,7 +237,7 @@ test.describe('Interactive states: pagination current page', () => {
     await page.goto('/articles/1');
     const other = page.locator('.top-pagination [data-pagination-page]:not([aria-current])').first();
     await expect(other).not.toHaveAttribute('aria-current');
-    expect(await backgroundOf(other)).toBe('rgba(0, 0, 0, 0)');
+    expect(await backgroundOf(other)).toBe(TRANSPARENT);
     expect(await other.evaluate((el) => getComputedStyle(el).fontWeight)).toBe('400');
 
     await expectHoverAccent(page, other);
@@ -248,11 +248,11 @@ test.describe('Interactive states: pagination current page', () => {
     const prev = page.locator('.top-pagination [data-pagination-prev]');
     await expect(prev).toBeDisabled();
 
-    const colorBefore = await prev.evaluate((el) => getComputedStyle(el).color);
+    const colorBefore = await colorOf(prev);
     await prev.hover({ force: true });
-    expect(await backgroundOf(prev)).toBe('rgba(0, 0, 0, 0)');
-    expect(await prev.evaluate((el) => getComputedStyle(el).color)).toBe(colorBefore);
-    expect(await prev.evaluate((el) => getComputedStyle(el).boxShadow)).toBe('none');
+    expect(await backgroundOf(prev)).toBe(TRANSPARENT);
+    expect(await colorOf(prev)).toBe(colorBefore);
+    expect(await boxShadowOf(prev)).toBe('none');
   });
 
   test('after clicking next only the new Current Page is filled, not the next button under the pointer', async ({ page }) => {
@@ -267,7 +267,7 @@ test.describe('Interactive states: pagination current page', () => {
 
     const yellow = await resolveColor(page, '--shellYellow');
     await expect.poll(() => backgroundOf(current)).toBe(yellow);
-    expect(await backgroundOf(next)).toBe('rgba(0, 0, 0, 0)');
+    expect(await backgroundOf(next)).toBe(TRANSPARENT);
     expect(
       await top
         .locator('[data-pagination-prev], [data-pagination-next], [data-pagination-page]')
@@ -295,7 +295,7 @@ test.describe('Interactive states: pagination prev/next hover', () => {
       await page.goto(path);
       const button = page.locator(`.top-pagination ${selector}`);
       await expect(button).toBeEnabled();
-      expect(await backgroundOf(button)).toBe('rgba(0, 0, 0, 0)');
+      expect(await backgroundOf(button)).toBe(TRANSPARENT);
 
       await expectHoverAccent(page, button);
     });
@@ -359,13 +359,23 @@ test.describe('Interactive states: pagination layout', () => {
     };
 
     await page.goto('/articles/1');
-    const pageItems = page.locator('.top-pagination [data-pagination-page]');
+    const root = page.locator('.top-pagination');
+    const pageItems = root.locator('[data-pagination-page]');
     const firstPageLabels = await pageItems.allTextContents();
     const onFirstPage = await arrowXs();
 
-    await page.goto('/articles/4');
-    // A middle page shows a different set of page numbers than page 1
+    // Navigate client-side, as a reader does, to a middle page with a different set of page numbers
+    for (const target of [2, 3, 4]) {
+      await root.locator('[data-pagination-next]').click();
+      await expect(page).toHaveURL(new RegExp(`/articles/${target}$`));
+    }
+    await expect(root.locator('[aria-current="page"]')).toHaveText('4');
     expect(await pageItems.allTextContents()).not.toEqual(firstPageLabels);
+    expect(await arrowXs()).toEqual(onFirstPage);
+
+    await root.getByRole('button', { name: 'Go to page 1', exact: true }).click();
+    await expect(page).toHaveURL(/\/articles\/1$/);
+    await expect(root.locator('[aria-current="page"]')).toHaveText('1');
     expect(await arrowXs()).toEqual(onFirstPage);
   });
 });
@@ -396,6 +406,22 @@ test.describe('Interactive states: pagination focus', () => {
     expect(outline.offset).toBeLessThanOrEqual(-outline.width);
   });
 
+  test('keyboard focus on the Current Page stays visible against its yellow fill', async ({ page }) => {
+    await page.goto('/articles/2');
+    const current = page.locator('.top-pagination [aria-current="page"]');
+    await current.focus();
+    await page.keyboard.press('Tab');
+    await page.keyboard.press('Shift+Tab');
+    await expect(current).toBeFocused();
+
+    const { outline, fill } = await current.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return { outline: cs.outlineColor, fill: cs.backgroundColor };
+    });
+    expect(outline).not.toBe(fill);
+    expect(outline).toBe(await resolveColor(page, '--black'));
+  });
+
   test('a mouse click leaves no outline on the clicked button', async ({ page }) => {
     await page.goto('/articles/2');
     const next = page.locator('.top-pagination [data-pagination-next]');
@@ -416,12 +442,12 @@ test.describe('Interactive states: pagination on touch screens', () => {
     expect(await page.evaluate(() => matchMedia('(hover: hover)').matches)).toBe(false);
 
     const next = page.locator('.top-pagination [data-pagination-next]');
-    const colorBefore = await next.evaluate((el) => getComputedStyle(el).color);
+    const colorBefore = await colorOf(next);
     await next.tap();
     await expect(page).toHaveURL(/\/articles\/3$/);
 
-    expect(await next.evaluate((el) => getComputedStyle(el).boxShadow)).toBe('none');
-    expect(await next.evaluate((el) => getComputedStyle(el).color)).toBe(colorBefore);
-    expect(await backgroundOf(next)).toBe('rgba(0, 0, 0, 0)');
+    expect(await boxShadowOf(next)).toBe('none');
+    expect(await colorOf(next)).toBe(colorBefore);
+    expect(await backgroundOf(next)).toBe(TRANSPARENT);
   });
 });
