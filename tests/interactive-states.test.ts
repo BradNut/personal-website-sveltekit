@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { backgroundOf, resolveColor } from './helpers/computed-style.ts';
 
 test.describe('Interactive states: focus-visible ring', () => {
   test('Tab to a link shows focus-visible outline with shellYellow color', async ({ page }) => {
@@ -142,12 +143,6 @@ test.describe('Interactive states: article card hover lift', () => {
   test('article card lifts on hover with elevated shadow', async ({ page }) => {
     await page.goto('/');
 
-    const articleCount = await page.locator('section.articles article').count();
-    if (articleCount === 0) {
-      test.skip();
-      return;
-    }
-
     const firstCard = page.locator('section.articles article').first();
     await expect(firstCard).toBeVisible();
 
@@ -208,18 +203,6 @@ test.describe('Interactive states: ContactHub color transition', () => {
 });
 
 test.describe('Interactive states: pagination current page', () => {
-  const resolveColor = (page: import('@playwright/test').Page, variable: string) =>
-    page.evaluate((v) => {
-      const probe = document.createElement('div');
-      probe.style.color = `var(${v})`;
-      document.body.appendChild(probe);
-      const color = getComputedStyle(probe).color;
-      probe.remove();
-      return color;
-    }, variable);
-
-  const backgroundOf = (locator: import('@playwright/test').Locator) => locator.evaluate((el) => getComputedStyle(el).backgroundColor);
-
   test('current page is filled yellow with dark bold text', async ({ page }) => {
     await page.goto('/articles/1');
     const current = page.locator('.top-pagination [data-pagination-page][aria-current="page"]');
@@ -237,12 +220,6 @@ test.describe('Interactive states: pagination current page', () => {
   test('non-current page is transparent until hovered, then filled yellow', async ({ page }) => {
     await page.goto('/articles/1');
     const other = page.locator('.top-pagination [data-pagination-page]:not([aria-current])').first();
-    if ((await other.count()) === 0) {
-      // Only one page of articles (e.g. the upstream source is unavailable in CI).
-      test.skip();
-      return;
-    }
-
     await expect(other).not.toHaveAttribute('aria-current');
     expect(await backgroundOf(other)).toBe('rgba(0, 0, 0, 0)');
     expect(await other.evaluate((el) => getComputedStyle(el).fontWeight)).toBe('400');
@@ -267,5 +244,54 @@ test.describe('Interactive states: pagination current page', () => {
     const prevPadding = await paddingOf('[data-pagination-prev]');
     expect(prevPadding).toBe('10px');
     expect(await paddingOf('[data-pagination-next]')).toBe(prevPadding);
+  });
+});
+
+test.describe('Interactive states: pagination prev/next hover', () => {
+  for (const { name, path, selector } of [
+    { name: 'next', path: '/articles/1', selector: '[data-pagination-next]' },
+    { name: 'next', path: '/articles/2', selector: '[data-pagination-next]' },
+    { name: 'previous', path: '/articles/2', selector: '[data-pagination-prev]' },
+  ]) {
+    test(`enabled ${name} button on ${path} is transparent until hovered, then filled yellow`, async ({ page }) => {
+      await page.goto(path);
+      const button = page.locator(`.top-pagination ${selector}`);
+      await expect(button).toBeEnabled();
+      expect(await backgroundOf(button)).toBe('rgba(0, 0, 0, 0)');
+
+      await button.hover();
+      await expect.poll(() => backgroundOf(button)).toBe(await resolveColor(page, '--shellYellow'));
+    });
+  }
+});
+
+test.describe('Interactive states: pagination aria-current', () => {
+  test('aria-current="page" marks exactly the cell Bits UI selects', async ({ page }) => {
+    await page.goto('/articles/1');
+    const cells = page.locator('.top-pagination [data-pagination-page]');
+    await expect(cells.first()).toBeVisible();
+
+    const mismatches = await cells.evaluateAll((els) =>
+      els.filter((el) => el.hasAttribute('data-selected') !== (el.getAttribute('aria-current') === 'page')).map((el) => el.textContent?.trim()),
+    );
+    expect(mismatches).toEqual([]);
+    await expect(page.locator('.top-pagination [data-pagination-page][data-selected]')).toHaveAttribute('aria-current', 'page');
+  });
+
+  test('aria-current follows the selected cell before navigation completes', async ({ page }) => {
+    await page.goto('/articles/1');
+    const top = page.locator('.top-pagination');
+    const target = top.locator('[data-pagination-page]:not([data-selected])').first();
+    await expect(target).toBeVisible();
+    const label = await target.getAttribute('aria-label');
+
+    // Hold the client-side data request so the route's currentPage stays on the old page.
+    await page.route('**/__data.json*', () => {});
+    await target.click();
+
+    const clicked = top.getByRole('button', { name: label ?? '', exact: true });
+    await expect(clicked).toHaveAttribute('data-selected', '');
+    await expect(clicked).toHaveAttribute('aria-current', 'page');
+    await expect(top.locator('[aria-current="page"]')).toHaveCount(1);
   });
 });
