@@ -1,11 +1,10 @@
 // A dependency-free stand-in for the Wallabag API, run by Playwright as a web server so e2e tests see a
-// fixed set of Favorite Articles. Articles are fetched server-side, so `page.route` cannot mock them.
+// fixed set of favorite articles. Articles are fetched server-side, so `page.route` cannot mock them.
 // Usage: node tests/helpers/fake-wallabag/server.mjs <port>
-import { readFileSync } from 'node:fs';
 import { createServer } from 'node:http';
+import { entriesTagged } from './entries.mjs';
 
 const ACCESS_TOKEN = 'fake-wallabag-access-token';
-const { items } = JSON.parse(readFileSync(new URL('./entries.json', import.meta.url), 'utf8'));
 
 /**
  * @param {import('node:http').ServerResponse} response
@@ -18,10 +17,11 @@ function sendJson(response, status, body) {
 }
 
 /**
- * One page of entries in Wallabag's HATEOAS shape; `page` and `perPage` behave as Wallabag's do.
+ * One page of entries in Wallabag's HATEOAS shape; `tags`, `page` and `perPage` behave as Wallabag's do.
  * @param {URLSearchParams} searchParams
  */
 function entriesPage(searchParams) {
+  const items = entriesTagged(searchParams.get('tags'));
   const perPage = Number(searchParams.get('perPage')) || 30;
   const page = Number(searchParams.get('page')) || 1;
   const start = (page - 1) * perPage;

@@ -51,10 +51,20 @@ test.describe('Articles page', () => {
     await expect(page.locator('.top-pagination [data-pagination-next]')).toBeDisabled();
   });
 
-  test('an entry with no Allowed Tag is not published', async ({ page }) => {
-    // The untagged entry is the newest added, so it would lead page 1 if it were published
+  test('with three pages every page number is shown and there is no ellipsis', async ({ page }) => {
+    expect(FAKE_WALLABAG.publishedPages).toBe(3);
+    await page.goto('/articles/2');
+    await expect(page.locator('.top-pagination [data-pagination-page]')).toHaveText(['1', '2', '3']);
+    await expect(page.locator('.top-pagination .ellipsis')).toHaveCount(0);
+  });
+
+  test('entries Wallabag does not return for the programming tag are never published', async ({ page }) => {
+    // These entries are the newest added, so they would lead page 1 if they were published
+    expect(FAKE_WALLABAG.unpublishedTitles.length).toBeGreaterThan(0);
     await page.goto('/articles/1');
     await expect(page.locator('.columns article.card').first()).toBeVisible();
-    await expect(page.getByText(FAKE_WALLABAG.untaggedTitle)).toHaveCount(0);
+    for (const title of FAKE_WALLABAG.unpublishedTitles) {
+      await expect(page.getByText(title)).toHaveCount(0);
+    }
   });
 });

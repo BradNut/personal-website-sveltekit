@@ -1,6 +1,25 @@
 {
   "items": [
     {
+      "id": 32,
+      "title": "Fake entry not tagged programming",
+      "url": "https://example.com/not-programming",
+      "domain_name": "example.com",
+      "hashed_url": "fake-not-programming",
+      "reading_time": 1,
+      "preview_picture": "",
+      "created_at": "2026-02-02T12:00:00+00:00",
+      "updated_at": "2026-02-02T12:00:00+00:00",
+      "archived_at": null,
+      "tags": [
+        {
+          "id": 2,
+          "label": "svelte",
+          "slug": "t:svelte"
+        }
+      ]
+    },
+    {
       "id": 31,
       "title": "Fake entry without an Allowed Tag",
       "url": "https://example.com/untagged",
@@ -51,6 +70,11 @@
       "archived_at": null,
       "tags": [
         {
+          "id": 1,
+          "label": "programming",
+          "slug": "t:programming"
+        },
+        {
           "id": 5,
           "label": "selfhosting",
           "slug": "t:selfhosting"
@@ -69,6 +93,11 @@
       "updated_at": "2026-01-28T12:00:00+00:00",
       "archived_at": null,
       "tags": [
+        {
+          "id": 1,
+          "label": "programming",
+          "slug": "programming"
+        },
         {
           "id": 4,
           "label": "javascript",
@@ -89,6 +118,11 @@
       "archived_at": null,
       "tags": [
         {
+          "id": 1,
+          "label": "programming",
+          "slug": "t:programming"
+        },
+        {
           "id": 3,
           "label": "css",
           "slug": "t:css"
@@ -107,6 +141,11 @@
       "updated_at": "2026-01-26T12:00:00+00:00",
       "archived_at": null,
       "tags": [
+        {
+          "id": 1,
+          "label": "programming",
+          "slug": "programming"
+        },
         {
           "id": 2,
           "label": "svelte",
@@ -146,6 +185,11 @@
       "archived_at": null,
       "tags": [
         {
+          "id": 1,
+          "label": "programming",
+          "slug": "programming"
+        },
+        {
           "id": 5,
           "label": "selfhosting",
           "slug": "selfhosting"
@@ -164,6 +208,11 @@
       "updated_at": "2026-01-23T12:00:00+00:00",
       "archived_at": null,
       "tags": [
+        {
+          "id": 1,
+          "label": "programming",
+          "slug": "t:programming"
+        },
         {
           "id": 4,
           "label": "javascript",
@@ -184,6 +233,11 @@
       "archived_at": null,
       "tags": [
         {
+          "id": 1,
+          "label": "programming",
+          "slug": "programming"
+        },
+        {
           "id": 3,
           "label": "css",
           "slug": "css"
@@ -202,6 +256,11 @@
       "updated_at": "2026-01-21T12:00:00+00:00",
       "archived_at": null,
       "tags": [
+        {
+          "id": 1,
+          "label": "programming",
+          "slug": "t:programming"
+        },
         {
           "id": 2,
           "label": "svelte",
@@ -241,6 +300,11 @@
       "archived_at": null,
       "tags": [
         {
+          "id": 1,
+          "label": "programming",
+          "slug": "t:programming"
+        },
+        {
           "id": 5,
           "label": "selfhosting",
           "slug": "t:selfhosting"
@@ -259,6 +323,11 @@
       "updated_at": "2026-01-18T12:00:00+00:00",
       "archived_at": null,
       "tags": [
+        {
+          "id": 1,
+          "label": "programming",
+          "slug": "programming"
+        },
         {
           "id": 4,
           "label": "javascript",
@@ -279,6 +348,11 @@
       "archived_at": null,
       "tags": [
         {
+          "id": 1,
+          "label": "programming",
+          "slug": "t:programming"
+        },
+        {
           "id": 3,
           "label": "css",
           "slug": "t:css"
@@ -297,6 +371,11 @@
       "updated_at": "2026-01-16T12:00:00+00:00",
       "archived_at": null,
       "tags": [
+        {
+          "id": 1,
+          "label": "programming",
+          "slug": "programming"
+        },
         {
           "id": 2,
           "label": "svelte",
@@ -336,6 +415,11 @@
       "archived_at": null,
       "tags": [
         {
+          "id": 1,
+          "label": "programming",
+          "slug": "programming"
+        },
+        {
           "id": 5,
           "label": "selfhosting",
           "slug": "selfhosting"
@@ -354,6 +438,11 @@
       "updated_at": "2026-01-13T12:00:00+00:00",
       "archived_at": null,
       "tags": [
+        {
+          "id": 1,
+          "label": "programming",
+          "slug": "t:programming"
+        },
         {
           "id": 4,
           "label": "javascript",
@@ -374,6 +463,11 @@
       "archived_at": null,
       "tags": [
         {
+          "id": 1,
+          "label": "programming",
+          "slug": "programming"
+        },
+        {
           "id": 3,
           "label": "css",
           "slug": "css"
@@ -392,6 +486,11 @@
       "updated_at": "2026-01-11T12:00:00+00:00",
       "archived_at": null,
       "tags": [
+        {
+          "id": 1,
+          "label": "programming",
+          "slug": "t:programming"
+        },
         {
           "id": 2,
           "label": "svelte",
@@ -431,6 +530,11 @@
       "archived_at": null,
       "tags": [
         {
+          "id": 1,
+          "label": "programming",
+          "slug": "t:programming"
+        },
+        {
           "id": 5,
           "label": "selfhosting",
           "slug": "t:selfhosting"
@@ -449,6 +553,11 @@
       "updated_at": "2026-01-08T12:00:00+00:00",
       "archived_at": null,
       "tags": [
+        {
+          "id": 1,
+          "label": "programming",
+          "slug": "programming"
+        },
         {
           "id": 4,
           "label": "javascript",
@@ -469,6 +578,11 @@
       "archived_at": null,
       "tags": [
         {
+          "id": 1,
+          "label": "programming",
+          "slug": "t:programming"
+        },
+        {
           "id": 3,
           "label": "css",
           "slug": "t:css"
@@ -487,6 +601,11 @@
       "updated_at": "2026-01-06T12:00:00+00:00",
       "archived_at": null,
       "tags": [
+        {
+          "id": 1,
+          "label": "programming",
+          "slug": "programming"
+        },
         {
           "id": 2,
           "label": "svelte",
@@ -526,6 +645,11 @@
       "archived_at": null,
       "tags": [
         {
+          "id": 1,
+          "label": "programming",
+          "slug": "programming"
+        },
+        {
           "id": 5,
           "label": "selfhosting",
           "slug": "selfhosting"
@@ -544,6 +668,11 @@
       "updated_at": "2026-01-03T12:00:00+00:00",
       "archived_at": null,
       "tags": [
+        {
+          "id": 1,
+          "label": "programming",
+          "slug": "t:programming"
+        },
         {
           "id": 4,
           "label": "javascript",
@@ -564,6 +693,11 @@
       "archived_at": null,
       "tags": [
         {
+          "id": 1,
+          "label": "programming",
+          "slug": "programming"
+        },
+        {
           "id": 3,
           "label": "css",
           "slug": "css"
@@ -582,6 +716,11 @@
       "updated_at": "2026-01-01T12:00:00+00:00",
       "archived_at": null,
       "tags": [
+        {
+          "id": 1,
+          "label": "programming",
+          "slug": "t:programming"
+        },
         {
           "id": 2,
           "label": "svelte",
