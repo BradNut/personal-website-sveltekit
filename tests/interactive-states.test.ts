@@ -269,3 +269,34 @@ test.describe('Interactive states: pagination current page', () => {
     expect(await paddingOf('[data-pagination-next]')).toBe(prevPadding);
   });
 });
+
+test.describe('Interactive states: pagination aria-current', () => {
+  test('aria-current="page" marks exactly the cell Bits UI selects', async ({ page }) => {
+    await page.goto('/articles/1');
+    const cells = page.locator('.top-pagination [data-pagination-page]');
+    await expect(cells.first()).toBeVisible();
+
+    const mismatches = await cells.evaluateAll((els) =>
+      els.filter((el) => el.hasAttribute('data-selected') !== (el.getAttribute('aria-current') === 'page')).map((el) => el.textContent?.trim()),
+    );
+    expect(mismatches).toEqual([]);
+    await expect(page.locator('.top-pagination [data-pagination-page][data-selected]')).toHaveAttribute('aria-current', 'page');
+  });
+
+  test('aria-current follows the selected cell before navigation completes', async ({ page }) => {
+    await page.goto('/articles/1');
+    const top = page.locator('.top-pagination');
+    const target = top.locator('[data-pagination-page]:not([data-selected])').first();
+    await expect(target).toBeVisible();
+    const label = await target.getAttribute('aria-label');
+
+    // Hold the client-side data request so the route's currentPage stays on the old page.
+    await page.route('**/__data.json*', () => {});
+    await target.click();
+
+    const clicked = top.getByRole('button', { name: label ?? '', exact: true });
+    await expect(clicked).toHaveAttribute('data-selected', '');
+    await expect(clicked).toHaveAttribute('aria-current', 'page');
+    await expect(top.locator('[aria-current="page"]')).toHaveCount(1);
+  });
+});

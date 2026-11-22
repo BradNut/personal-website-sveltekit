@@ -44,7 +44,7 @@
               {...props}
               type="button"
               aria-label={`Go to page ${page.value}`}
-              aria-current={page.value === (currentPage || 1) ? "page" : undefined}
+              aria-current={props["data-selected"] === undefined ? undefined : "page"}
               data-umami-event="Pagination"
               data-umami-event-action={`Page ${page.value}`}
             >
