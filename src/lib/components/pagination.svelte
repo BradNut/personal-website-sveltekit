@@ -67,9 +67,8 @@
 <style lang="postcss">
   :global([data-pagination-root]) {
     display: flex;
-    align-content: center;
-    align-items: center;
-    justify-items: center;
+    /* Every item fills the bar's height, so fills and borders meet the root's border. */
+    align-items: stretch;
     border: 1px solid var(--grey);
     margin: 3rem 0;
     border-radius: 5px;
@@ -84,12 +83,28 @@
     padding: 1rem;
     transition:
       background-color 0.2s ease,
-      color 0.2s ease;
+      color 0.2s ease,
+      box-shadow 0.2s ease;
 
-    &:hover:not(:disabled),
+    /* Only the Current Page is filled. */
     &[data-selected] {
       background-color: var(--shellYellow);
       color: var(--black);
+    }
+
+    /* Hover tints the text and draws an inset edge, so it can't be mistaken for the Current Page and
+       the item doesn't change size. Touch screens get no hover, so a tap leaves nothing behind. */
+    @media (hover: hover) {
+      &:hover:not(:disabled, [data-selected]) {
+        color: var(--shellYellow);
+        box-shadow: inset 0 0 0 1px var(--shellYellow);
+      }
+    }
+
+    /* Keyboard focus only, drawn inside the item so the bar's border and corners can't hide it. */
+    &:focus-visible {
+      outline: 2px solid var(--shellYellow);
+      outline-offset: -4px;
     }
 
     &:active:not(:disabled) {
@@ -123,6 +138,8 @@
   }
 
   :global(.ellipsis) {
+    display: grid;
+    place-items: center;
     padding: 1rem;
     border-right: 1px solid var(--grey);
   }

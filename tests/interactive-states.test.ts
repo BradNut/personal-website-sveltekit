@@ -1,5 +1,21 @@
+import type { Locator, Page } from '@playwright/test';
 import { expect, test } from '@playwright/test';
 import { backgroundOf, resolveColor } from './helpers/computed-style.ts';
+
+/**
+ * Hovering a pagination item tints its text and edge yellow but never fills it, so it can't be
+ * mistaken for the Current Page, and the edge is drawn inside the item so its size doesn't change.
+ */
+async function expectHoverAccent(page: Page, item: Locator) {
+  const yellow = await resolveColor(page, '--shellYellow');
+  const before = await item.boundingBox();
+
+  await item.hover();
+  await expect.poll(() => item.evaluate((el) => getComputedStyle(el).color)).toBe(yellow);
+  expect(await backgroundOf(item)).toBe('rgba(0, 0, 0, 0)');
+  expect(await item.evaluate((el) => getComputedStyle(el).boxShadow)).toContain(`${yellow} 0px 0px 0px 1px inset`);
+  expect(await item.boundingBox()).toEqual(before);
+}
 
 test.describe('Interactive states: focus-visible ring', () => {
   test('Tab to a link shows focus-visible outline with shellYellow color', async ({ page }) => {
@@ -217,15 +233,14 @@ test.describe('Interactive states: pagination current page', () => {
     expect(styles.weight).toBe('700');
   });
 
-  test('non-current page is transparent until hovered, then filled yellow', async ({ page }) => {
+  test('hovering a non-current page shows yellow text and edge without looking like the Current Page', async ({ page }) => {
     await page.goto('/articles/1');
     const other = page.locator('.top-pagination [data-pagination-page]:not([aria-current])').first();
     await expect(other).not.toHaveAttribute('aria-current');
     expect(await backgroundOf(other)).toBe('rgba(0, 0, 0, 0)');
     expect(await other.evaluate((el) => getComputedStyle(el).fontWeight)).toBe('400');
 
-    await other.hover();
-    await expect.poll(() => backgroundOf(other)).toBe(await resolveColor(page, '--shellYellow'));
+    await expectHoverAccent(page, other);
   });
 
   test('disabled previous button stays transparent on hover', async ({ page }) => {
@@ -233,8 +248,31 @@ test.describe('Interactive states: pagination current page', () => {
     const prev = page.locator('.top-pagination [data-pagination-prev]');
     await expect(prev).toBeDisabled();
 
+    const colorBefore = await prev.evaluate((el) => getComputedStyle(el).color);
     await prev.hover({ force: true });
     expect(await backgroundOf(prev)).toBe('rgba(0, 0, 0, 0)');
+    expect(await prev.evaluate((el) => getComputedStyle(el).color)).toBe(colorBefore);
+    expect(await prev.evaluate((el) => getComputedStyle(el).boxShadow)).toBe('none');
+  });
+
+  test('after clicking next only the new Current Page is filled, not the next button under the pointer', async ({ page }) => {
+    await page.goto('/articles/1');
+    const top = page.locator('.top-pagination');
+    const next = top.locator('[data-pagination-next]');
+
+    await next.click();
+    await expect(page).toHaveURL(/\/articles\/2$/);
+    const current = top.locator('[aria-current="page"]');
+    await expect(current).toHaveText('2');
+
+    const yellow = await resolveColor(page, '--shellYellow');
+    await expect.poll(() => backgroundOf(current)).toBe(yellow);
+    expect(await backgroundOf(next)).toBe('rgba(0, 0, 0, 0)');
+    expect(
+      await top
+        .locator('[data-pagination-prev], [data-pagination-next], [data-pagination-page]')
+        .evaluateAll((els, fill) => els.filter((el) => getComputedStyle(el).backgroundColor === fill).length, yellow),
+    ).toBe(1);
   });
 
   test('previous and next buttons have equal padding', async ({ page }) => {
@@ -253,14 +291,13 @@ test.describe('Interactive states: pagination prev/next hover', () => {
     { name: 'next', path: '/articles/2', selector: '[data-pagination-next]' },
     { name: 'previous', path: '/articles/2', selector: '[data-pagination-prev]' },
   ]) {
-    test(`enabled ${name} button on ${path} is transparent until hovered, then filled yellow`, async ({ page }) => {
+    test(`enabled ${name} button on ${path} shows yellow text and edge on hover, never a fill`, async ({ page }) => {
       await page.goto(path);
       const button = page.locator(`.top-pagination ${selector}`);
       await expect(button).toBeEnabled();
       expect(await backgroundOf(button)).toBe('rgba(0, 0, 0, 0)');
 
-      await button.hover();
-      await expect.poll(() => backgroundOf(button)).toBe(await resolveColor(page, '--shellYellow'));
+      await expectHoverAccent(page, button);
     });
   }
 });
@@ -293,5 +330,98 @@ test.describe('Interactive states: pagination aria-current', () => {
     await expect(clicked).toHaveAttribute('data-selected', '');
     await expect(clicked).toHaveAttribute('aria-current', 'page');
     await expect(top.locator('[aria-current="page"]')).toHaveCount(1);
+  });
+});
+
+test.describe('Interactive states: pagination layout', () => {
+  test('every pagination item fills the bar to its border', async ({ page }) => {
+    await page.goto('/articles/1');
+    const root = page.locator('.top-pagination');
+    await expect(root.locator('.ellipsis')).toHaveCount(1);
+
+    const { innerHeight, itemHeights } = await root.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      const borders = Number.parseFloat(cs.borderTopWidth) + Number.parseFloat(cs.borderBottomWidth);
+      return {
+        innerHeight: el.getBoundingClientRect().height - borders,
+        itemHeights: [...el.children].map((child) => child.getBoundingClientRect().height),
+      };
+    });
+    for (const height of itemHeights) expect(height).toBeCloseTo(innerHeight, 0);
+  });
+
+  test('previous and next keep their positions when the page list changes', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    const arrowXs = async () => {
+      const root = page.locator('.top-pagination');
+      const xOf = (selector: string) => root.locator(selector).evaluate((el) => el.getBoundingClientRect().x);
+      return { prev: await xOf('[data-pagination-prev]'), next: await xOf('[data-pagination-next]') };
+    };
+
+    await page.goto('/articles/1');
+    const pageItems = page.locator('.top-pagination [data-pagination-page]');
+    const firstPageLabels = await pageItems.allTextContents();
+    const onFirstPage = await arrowXs();
+
+    await page.goto('/articles/4');
+    // A middle page shows a different set of page numbers than page 1
+    expect(await pageItems.allTextContents()).not.toEqual(firstPageLabels);
+    expect(await arrowXs()).toEqual(onFirstPage);
+  });
+});
+
+test.describe('Interactive states: pagination focus', () => {
+  test('keyboard focus draws a yellow outline inside the button', async ({ page }) => {
+    await page.goto('/articles/2');
+    const prev = page.locator('.top-pagination [data-pagination-prev]');
+    await prev.focus();
+    // Move focus with the keyboard so the browser treats it as :focus-visible
+    await page.keyboard.press('Tab');
+    await page.keyboard.press('Shift+Tab');
+    await expect(prev).toBeFocused();
+
+    const outline = await prev.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return {
+        style: cs.outlineStyle,
+        color: cs.outlineColor,
+        width: Number.parseFloat(cs.outlineWidth),
+        offset: Number.parseFloat(cs.outlineOffset),
+      };
+    });
+    expect(outline.style).toBe('solid');
+    expect(outline.color).toBe(await resolveColor(page, '--shellYellow'));
+    expect(outline.width).toBeGreaterThanOrEqual(2);
+    // Inside the button, so the bar's border and rounded corners can't hide it
+    expect(outline.offset).toBeLessThanOrEqual(-outline.width);
+  });
+
+  test('a mouse click leaves no outline on the clicked button', async ({ page }) => {
+    await page.goto('/articles/2');
+    const next = page.locator('.top-pagination [data-pagination-next]');
+    await next.click();
+    await expect(page).toHaveURL(/\/articles\/3$/);
+    // Browsers differ on whether a click leaves focus on the button; either way it must not show the keyboard ring.
+    expect(await next.evaluate((el) => el.matches(':focus-visible'))).toBe(false);
+    expect(await next.evaluate((el) => getComputedStyle(el).outlineStyle)).toBe('none');
+  });
+});
+
+test.describe('Interactive states: pagination on touch screens', () => {
+  test.use({ hasTouch: true, isMobile: true });
+  test.skip(({ browserName }) => browserName === 'firefox', 'Firefox does not support mobile emulation');
+
+  test('tapping an arrow leaves no hover accent behind', async ({ page }) => {
+    await page.goto('/articles/2');
+    expect(await page.evaluate(() => matchMedia('(hover: hover)').matches)).toBe(false);
+
+    const next = page.locator('.top-pagination [data-pagination-next]');
+    const colorBefore = await next.evaluate((el) => getComputedStyle(el).color);
+    await next.tap();
+    await expect(page).toHaveURL(/\/articles\/3$/);
+
+    expect(await next.evaluate((el) => getComputedStyle(el).boxShadow)).toBe('none');
+    expect(await next.evaluate((el) => getComputedStyle(el).color)).toBe(colorBefore);
+    expect(await backgroundOf(next)).toBe('rgba(0, 0, 0, 0)');
   });
 });

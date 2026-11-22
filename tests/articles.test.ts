@@ -47,15 +47,16 @@ test.describe('Articles page', () => {
   test('the last page holds the remaining published articles and there is no page beyond it', async ({ page }) => {
     await page.goto(`/articles/${FAKE_WALLABAG.publishedPages}`);
     await expect(page.locator('.columns article.card')).toHaveCount(ARTICLES_PER_PAGE);
-    await expect(page.locator('.top-pagination [data-pagination-page]')).toHaveCount(FAKE_WALLABAG.publishedPages);
+    await expect(page.locator('.top-pagination [data-pagination-page]').last()).toHaveText(`${FAKE_WALLABAG.publishedPages}`);
     await expect(page.locator('.top-pagination [data-pagination-next]')).toBeDisabled();
   });
 
-  test('with three pages every page number is shown and there is no ellipsis', async ({ page }) => {
-    expect(FAKE_WALLABAG.publishedPages).toBe(3);
-    await page.goto('/articles/2');
-    await expect(page.locator('.top-pagination [data-pagination-page]')).toHaveText(['1', '2', '3']);
-    await expect(page.locator('.top-pagination .ellipsis')).toHaveCount(0);
+  test('with more than seven pages the page list collapses around the current page', async ({ page }) => {
+    // Bits UI only shows an ellipsis from 8 pages; the pagination layout tests need one to appear.
+    expect(FAKE_WALLABAG.publishedPages).toBe(8);
+    await page.goto('/articles/4');
+    await expect(page.locator('.top-pagination [data-pagination-page]')).toHaveText(['1', '3', '4', '5', '8']);
+    await expect(page.locator('.top-pagination .ellipsis')).toHaveCount(2);
   });
 
   test('entries Wallabag does not return for the programming tag are never published', async ({ page }) => {
