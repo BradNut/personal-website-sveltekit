@@ -142,12 +142,6 @@ test.describe('Interactive states: article card hover lift', () => {
   test('article card lifts on hover with elevated shadow', async ({ page }) => {
     await page.goto('/');
 
-    const articleCount = await page.locator('section.articles article').count();
-    if (articleCount === 0) {
-      test.skip();
-      return;
-    }
-
     const firstCard = page.locator('section.articles article').first();
     await expect(firstCard).toBeVisible();
 
@@ -237,12 +231,6 @@ test.describe('Interactive states: pagination current page', () => {
   test('non-current page is transparent until hovered, then filled yellow', async ({ page }) => {
     await page.goto('/articles/1');
     const other = page.locator('.top-pagination [data-pagination-page]:not([aria-current])').first();
-    if ((await other.count()) === 0) {
-      // Only one page of articles (e.g. the upstream source is unavailable in CI).
-      test.skip();
-      return;
-    }
-
     await expect(other).not.toHaveAttribute('aria-current');
     expect(await backgroundOf(other)).toBe('rgba(0, 0, 0, 0)');
     expect(await other.evaluate((el) => getComputedStyle(el).fontWeight)).toBe('400');
@@ -268,4 +256,34 @@ test.describe('Interactive states: pagination current page', () => {
     expect(prevPadding).toBe('10px');
     expect(await paddingOf('[data-pagination-next]')).toBe(prevPadding);
   });
+});
+
+test.describe('Interactive states: pagination prev/next hover', () => {
+  const resolveColor = (page: import('@playwright/test').Page, variable: string) =>
+    page.evaluate((v) => {
+      const probe = document.createElement('div');
+      probe.style.color = `var(${v})`;
+      document.body.appendChild(probe);
+      const color = getComputedStyle(probe).color;
+      probe.remove();
+      return color;
+    }, variable);
+
+  const backgroundOf = (locator: import('@playwright/test').Locator) => locator.evaluate((el) => getComputedStyle(el).backgroundColor);
+
+  for (const { name, path, selector } of [
+    { name: 'next', path: '/articles/1', selector: '[data-pagination-next]' },
+    { name: 'next', path: '/articles/2', selector: '[data-pagination-next]' },
+    { name: 'previous', path: '/articles/2', selector: '[data-pagination-prev]' },
+  ]) {
+    test(`enabled ${name} button on ${path} is transparent until hovered, then filled yellow`, async ({ page }) => {
+      await page.goto(path);
+      const button = page.locator(`.top-pagination ${selector}`);
+      await expect(button).toBeEnabled();
+      expect(await backgroundOf(button)).toBe('rgba(0, 0, 0, 0)');
+
+      await button.hover();
+      await expect.poll(() => backgroundOf(button)).toBe(await resolveColor(page, '--shellYellow'));
+    });
+  }
 });
