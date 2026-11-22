@@ -44,6 +44,7 @@
               {...props}
               type="button"
               aria-label={`Go to page ${page.value}`}
+              aria-current={props["data-selected"] === undefined ? undefined : "page"}
               data-umami-event="Pagination"
               data-umami-event-action={`Page ${page.value}`}
             >
@@ -64,79 +65,87 @@
 </Pagination.Root>
 
 <style lang="postcss">
-  :global([data-pagination-prev-button]) {
-    &:hover {
-      color: var(--shellYellow);
-    }
-
-    &:active {
-      transform: scale(0.98); /* Equivalent to active:scale-98 in Tailwind */
-    }
-
-    &:disabled {
-      cursor: not-allowed; /* Equivalent to disabled:cursor-not-allowed in Tailwind */
-      color: #6b7280; /* Equivalent to disabled:text-muted-foreground in Tailwind */
-    }
-
-    &:hover:disabled {
-      background-color: transparent; /* Equivalent to hover:disabled:bg-transparent in Tailwind */
-    }
-
-    border-right: 1px solid var(--grey);
-    padding: 1rem;
-  }
-
-  :global(.ellipsis) {
-    padding: 1rem;
-    border-right: 1px solid var(--grey);
-  }
-
-  :global([data-pagination-next-button]) {
-    &:hover {
-      color: var(--shellYellow);
-    }
-
-    &:active {
-      transform: scale(0.98); /* Equivalent to active:scale-98 in Tailwind */
-    }
-
-    &:disabled {
-      cursor: not-allowed; /* Equivalent to disabled:cursor-not-allowed in Tailwind */
-      color: #6b7280; /* Equivalent to disabled:text-muted-foreground in Tailwind */
-    }
-
-    &:hover:disabled {
-      background-color: transparent; /* Equivalent to hover:disabled:bg-transparent in Tailwind */
-    }
-  }
-
-  :global([data-selected]) {
-    color: var(--shellYellow);
-  }
-
   :global([data-pagination-root]) {
     display: flex;
-    align-content: center;
-    align-items: center;
-    justify-items: center;
+    /* Every item fills the bar's height, so fills and borders meet the root's border. */
+    align-items: stretch;
     border: 1px solid var(--grey);
     margin: 3rem 0;
     border-radius: 5px;
     text-align: center;
     font-size: 1.5rem;
+    font-weight: 400;
+  }
+
+  :global([data-pagination-prev]),
+  :global([data-pagination-next]),
+  :global([data-pagination-page]) {
+    padding: 1rem;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease,
+      box-shadow 0.2s ease;
+
+    /* Only the Current Page is filled. */
+    &[data-selected] {
+      background-color: var(--shellYellow);
+      color: var(--black);
+    }
+
+    /* Hover tints the text and draws an inset edge, so it can't be mistaken for the Current Page and
+       the item doesn't change size. Touch screens get no hover, so a tap leaves nothing behind. */
+    @media (hover: hover) {
+      &:hover:not(:disabled, [data-selected]) {
+        color: var(--shellYellow);
+        box-shadow: inset 0 0 0 1px var(--shellYellow);
+      }
+    }
+
+    /* Keyboard focus only, drawn inside the item so the bar's border and corners can't hide it. */
+    &:focus-visible {
+      outline: 2px solid var(--shellYellow);
+      outline-offset: -4px;
+    }
+
+    /* A yellow ring on the Current Page's yellow fill would be invisible. */
+    &[data-selected]:focus-visible {
+      outline-color: var(--black);
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      color: #6b7280;
+    }
+  }
+
+  /* Keep the hover fill inside the root's rounded corners (5px minus its 1px border). */
+  :global([data-pagination-prev]) {
+    border-right: 1px solid var(--grey);
+    border-radius: 4px 0 0 4px;
+  }
+
+  :global([data-pagination-next]) {
+    border-radius: 0 4px 4px 0;
   }
 
   :global([data-pagination-page]) {
-    padding: 1rem;
     flex: 1;
-    border: 0;
     border-right: 1px solid var(--grey);
-    background: transparent;
     text-decoration: none;
-    cursor: pointer;
 
-    &:hover {
-      color: var(--shellYellow);
+    &[data-selected] {
+      font-weight: 700;
     }
+  }
+
+  :global(.ellipsis) {
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+    border-right: 1px solid var(--grey);
   }
 </style>

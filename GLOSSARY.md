@@ -17,3 +17,7 @@ _Avoid_: Tag name
 **Allowed Tag**:
 A Tag Slug the site chooses to publish (the `ArticleTag` values). An article is published only if it has at least one Allowed Tag.
 _Avoid_: Valid tag, article tag
+
+**Current Page**:
+The page of the article list a reader is viewing. It is the only pagination item that looks selected. Hovering over or clicking any other item, including Previous and Next, never makes that item look like the Current Page.
+_Avoid_: Selected page, active page

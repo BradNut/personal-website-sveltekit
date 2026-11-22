@@ -16,7 +16,10 @@
 
 <style>
   .articles-layout {
-    max-width: 1200px;
+    /* Ask for the full max width and let <main>'s own max-width cap it, instead of shrinking to the
+       widest article card: the column, and the pagination bar in it, stays the same width on every page. */
+    width: var(--maxWidth);
+    max-width: 100%;
     margin: 0 auto;
     padding: 2rem 1rem;
     font-weight: 700;

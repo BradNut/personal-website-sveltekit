@@ -38,7 +38,6 @@
 	onNavigate((navigation) => {
 		if (navigation.shallow && navigation.type === 'goto') return;
 
-		console.log("Navigating to", navigation?.to);
 		let start = performance.now();
 
 		// Resolve the promise when the page is done loading

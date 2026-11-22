@@ -49,22 +49,14 @@ test.describe('Home page', () => {
     expect(count).toBeLessThanOrEqual(6);
   });
 
-  test('renders at least one favorite article card', async ({ page }) => {
+  test('renders the three newest favorite article cards', async ({ page }) => {
     await page.goto('/');
-    const articleCards = page.locator('section.articles .article-card');
-    const count = await articleCards.count();
-    // In CI, Wallabag API may not be available, so we allow 0 articles
-    expect(count).toBeGreaterThanOrEqual(0);
+    // The home page loads the first 3 published articles; the fake Wallabag has more than that
+    await expect(page.locator('section.articles article.card')).toHaveCount(3);
   });
 
   test('article cards have hover state', async ({ page }) => {
     await page.goto('/');
-    // Skip if no articles loaded (API unavailable in CI)
-    const articleCount = await page.locator('section.articles article').count();
-    if (articleCount === 0) {
-      test.skip();
-      return;
-    }
     const firstCard = page.locator('section.articles article').first();
     await expect(firstCard).toBeVisible();
 
@@ -79,12 +71,6 @@ test.describe('Home page', () => {
 
   test('article cards maintain responsive layout', async ({ page }) => {
     await page.goto('/');
-    // Skip if no articles loaded (API unavailable in CI)
-    const articleCount = await page.locator('section.articles article').count();
-    if (articleCount === 0) {
-      test.skip();
-      return;
-    }
 
     // Test desktop layout
     await page.setViewportSize({ width: 1200, height: 800 });
@@ -99,12 +85,6 @@ test.describe('Home page', () => {
 
   test('article title links navigate to correct URLs', async ({ page }) => {
     await page.goto('/');
-    // Skip if no articles loaded (API unavailable in CI)
-    const articleCount = await page.locator('section.articles article').count();
-    if (articleCount === 0) {
-      test.skip();
-      return;
-    }
 
     const firstCard = page.locator('section.articles article').first();
     const link = firstCard.getByRole('link').first();
