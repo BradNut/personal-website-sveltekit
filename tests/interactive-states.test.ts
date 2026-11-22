@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { backgroundOf, resolveColor } from './helpers/computed-style.ts';
 
 test.describe('Interactive states: focus-visible ring', () => {
   test('Tab to a link shows focus-visible outline with shellYellow color', async ({ page }) => {
@@ -202,18 +203,6 @@ test.describe('Interactive states: ContactHub color transition', () => {
 });
 
 test.describe('Interactive states: pagination current page', () => {
-  const resolveColor = (page: import('@playwright/test').Page, variable: string) =>
-    page.evaluate((v) => {
-      const probe = document.createElement('div');
-      probe.style.color = `var(${v})`;
-      document.body.appendChild(probe);
-      const color = getComputedStyle(probe).color;
-      probe.remove();
-      return color;
-    }, variable);
-
-  const backgroundOf = (locator: import('@playwright/test').Locator) => locator.evaluate((el) => getComputedStyle(el).backgroundColor);
-
   test('current page is filled yellow with dark bold text', async ({ page }) => {
     await page.goto('/articles/1');
     const current = page.locator('.top-pagination [data-pagination-page][aria-current="page"]');
@@ -259,18 +248,6 @@ test.describe('Interactive states: pagination current page', () => {
 });
 
 test.describe('Interactive states: pagination prev/next hover', () => {
-  const resolveColor = (page: import('@playwright/test').Page, variable: string) =>
-    page.evaluate((v) => {
-      const probe = document.createElement('div');
-      probe.style.color = `var(${v})`;
-      document.body.appendChild(probe);
-      const color = getComputedStyle(probe).color;
-      probe.remove();
-      return color;
-    }, variable);
-
-  const backgroundOf = (locator: import('@playwright/test').Locator) => locator.evaluate((el) => getComputedStyle(el).backgroundColor);
-
   for (const { name, path, selector } of [
     { name: 'next', path: '/articles/1', selector: '[data-pagination-next]' },
     { name: 'next', path: '/articles/2', selector: '[data-pagination-next]' },

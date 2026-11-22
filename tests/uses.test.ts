@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { backgroundOf, resolveColor } from './helpers/computed-style.ts';
 import { registerLayoutNavTests } from './helpers/layout-nav-tests';
 
 test.describe('Uses page', () => {
@@ -105,28 +106,18 @@ test.describe('Uses page', () => {
 });
 
 test.describe('Uses page: accordion trigger states', () => {
-  const resolveColor = (page: import('@playwright/test').Page, variable: string) =>
-    page.evaluate((v) => {
-      const probe = document.createElement('div');
-      probe.style.color = `var(${v})`;
-      document.body.appendChild(probe);
-      const color = getComputedStyle(probe).color;
-      probe.remove();
-      return color;
-    }, variable);
-
   test('trigger is transparent and its border turns link-hover on hover', async ({ page }) => {
     await page.goto('/uses');
     const trigger = page.locator('.uses-trigger').first();
     await expect(trigger).toBeVisible();
 
     const borderOf = () => trigger.evaluate((el) => getComputedStyle(el).borderTopColor);
-    expect(await trigger.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgba(0, 0, 0, 0)');
+    expect(await backgroundOf(trigger)).toBe('rgba(0, 0, 0, 0)');
     const linkHover = await resolveColor(page, '--linkHover');
     expect(await borderOf()).not.toBe(linkHover);
 
     await trigger.hover();
     await expect.poll(borderOf).toBe(linkHover);
-    expect(await trigger.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgba(0, 0, 0, 0)');
+    expect(await backgroundOf(trigger)).toBe('rgba(0, 0, 0, 0)');
   });
 });
